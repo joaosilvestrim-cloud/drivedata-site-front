@@ -11,6 +11,10 @@ import {
   getSEOConfigByLanguage,
 } from '../common/seo';
 
+// Renderiza as rotas sob demanda (sem pré-render no build). Evita falha de build
+// quando o backend de conteúdo não está disponível (o fetch só roda no request).
+export const dynamic = 'force-dynamic';
+
 const sora = Sora({
   subsets: ['latin'],
   display: 'swap',
