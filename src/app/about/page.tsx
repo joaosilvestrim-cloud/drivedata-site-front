@@ -9,35 +9,32 @@ import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
 import { FaqModel } from '@/common/model/faq.model';
 import { SolutionModel } from '@/common/model/solution.model';
 import { TestimonialModel } from '@/common/model/testimonial.model';
-import { httpFindManyArticle } from '@/modules/article/api/find-many-article/http-find-many-article';
 import { FindManyArticleResult } from '@/modules/article/types/find-many-article-case';
-import { httpFindManyFaq } from '@/modules/faq/api/find-many-faq/http-find-many-faq';
-import { httpFindManySolution } from '@/modules/solution/api/find-many-solution/http-find-many-solution';
-import { httpFindManyTestimonial } from '@/modules/testimonial/api/find-many-testimonial/http-find-many-testimonial';
+import { getArticles, getFaqs, getSolutions, getTestimonials } from '@/server/content-db';
 
 
 export default async function About() {
   const lang = await getLanguageSafeAsync();
-  
+
   let solutions: SolutionModel[] = [];
   let testimonials: TestimonialModel[] = [];
   let articles: FindManyArticleResult = [];
   let faqs: FaqModel[] = [];
-  
+
   try {
-    solutions = await httpFindManySolution({}, lang);
+    solutions = (await getSolutions(lang)) as SolutionModel[];
   } catch {}
 
   try {
-    testimonials = await httpFindManyTestimonial({}, lang);
+    testimonials = (await getTestimonials(lang)) as TestimonialModel[];
   } catch {}
 
   try {
-    articles = await httpFindManyArticle({ limit: 3 }, lang);
+    articles = (await getArticles({ limit: 3 }, lang)) as FindManyArticleResult;
   } catch {}
 
   try {
-    faqs = await httpFindManyFaq({}, lang);
+    faqs = (await getFaqs(lang)) as FaqModel[];
   } catch {}
 
   return (

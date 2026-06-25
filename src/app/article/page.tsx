@@ -2,8 +2,8 @@ import { Header } from '@/common/components';
 import { ArticlesSection } from '@/common/components/articles-section';
 import { Footer } from '@/common/components/footer';
 import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
-import { httpFindManyArticle } from '@/modules/article/api/find-many-article/http-find-many-article';
 import { FindManyArticleResult } from '@/modules/article/types/find-many-article-case';
+import { getArticles } from '@/server/content-db';
 
 
 export default async function Page() {
@@ -11,7 +11,7 @@ export default async function Page() {
   let articles: FindManyArticleResult = [];
 
   try {
-    articles = await httpFindManyArticle({}, lang);
+    articles = (await getArticles({}, lang)) as FindManyArticleResult;
   } catch (error) {
     console.error(error);
   }
