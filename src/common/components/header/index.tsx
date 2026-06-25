@@ -268,14 +268,14 @@ export const Header = ({ className }: HeaderProps) => {
         }
       } else {
         // Link normal sem âncora
-        // Se estamos na mesma página, apenas remove o hash se existir
         if (pathname === path) {
-          // Remove o hash se existir
+          // Já estamos na página: remove o hash (se houver) e rola pro topo,
+          // pra o clique no item ativo dar feedback em vez de não fazer nada.
           if (window.location.hash) {
             window.history.pushState(null, '', pathname);
-            // Dispara evento hashchange manualmente para atualizar o estado
             window.dispatchEvent(new HashChangeEvent('hashchange'));
           }
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           router.push(href);
         }
