@@ -7,13 +7,17 @@ export const runtime = 'nodejs';
 export async function POST(request: Request) {
   try {
     const body = (await request.json().catch(() => null)) as
-      | { name?: string; email?: string; company?: string; message?: string; origin?: string; page?: string }
+      | {
+          name?: string; email?: string; phone?: string; company?: string;
+          message?: string; revenue?: string; segment?: string;
+          origin?: string; page?: string;
+        }
       | null;
     if (!body) return Response.json({ error: 'Payload inválido' }, { status: 400 });
 
-    const { name, email, company, message, origin, page } = body;
-    if (!email && !name) {
-      return Response.json({ error: 'Informe ao menos nome e e-mail.' }, { status: 422 });
+    const { name, email, phone, company, message, revenue, segment, origin, page } = body;
+    if (!email && !name && !phone) {
+      return Response.json({ error: 'Informe ao menos nome, e-mail ou telefone.' }, { status: 422 });
     }
 
     const SUPABASE_URL = process.env.CRM_SUPABASE_URL;
@@ -42,13 +46,16 @@ export async function POST(request: Request) {
       `🌐 Origem: ${origin || 'Site DriveData'}`,
       `📄 Página: ${page || '/'}`,
     ];
-    if (message) noteLines.push(`💬 Mensagem: ${message}`);
+    if (revenue) noteLines.push(`💰 Faturamento: ${revenue}`);
+    if (segment) noteLines.push(`🏷️ Segmento: ${segment}`);
+    if (message) noteLines.push(`💬 Necessidade: ${message}`);
 
     const lead = {
       tenant_id: tenantId,
       first_name: firstName,
       last_name: lastName,
       email: email ? String(email).toLowerCase().trim() : null,
+      phone: phone || null,
       company: company || null,
       status: 'new',
       source: 'website',
