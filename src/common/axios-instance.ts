@@ -1,8 +1,20 @@
 import { API_URL } from '@/common/consts/api';
 import axios, { AxiosResponse } from 'axios';
 
+// Base da API de conteúdo. Prioridade:
+// 1) NEXT_PUBLIC_API_URL (se quiserem apontar p/ outro host)
+// 2) no cliente: mesma origem (string vazia -> URL relativa)
+// 3) no servidor (Vercel): https://$VERCEL_URL (self-call do próprio deploy)
+// 4) dev: http://localhost:3000
+const resolveApiBase = (): string => {
+  if (API_URL) return API_URL;
+  if (typeof window !== 'undefined') return '';
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return 'http://localhost:3000';
+};
+
 export const makeApiUrl = (path = ''): string => {
-  return `${API_URL}${path}`;
+  return `${resolveApiBase()}${path}`;
 };
 
 const cleanJSON = (json: Record<string, any>) => {
