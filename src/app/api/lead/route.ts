@@ -7,11 +7,11 @@ export const runtime = 'nodejs';
 export async function POST(request: Request) {
   try {
     const body = (await request.json().catch(() => null)) as
-      | { name?: string; email?: string; company?: string; message?: string }
+      | { name?: string; email?: string; company?: string; message?: string; origin?: string; page?: string }
       | null;
     if (!body) return Response.json({ error: 'Payload inválido' }, { status: 400 });
 
-    const { name, email, company, message } = body;
+    const { name, email, company, message, origin, page } = body;
     if (!email && !name) {
       return Response.json({ error: 'Informe ao menos nome e e-mail.' }, { status: 422 });
     }
@@ -37,6 +37,13 @@ export async function POST(request: Request) {
     const firstName = parts[0] || 'Lead';
     const lastName = parts.slice(1).join(' ') || '';
 
+    // Origem detalhada vai nas notes (o CRM mostra no detalhe da lead).
+    const noteLines = [
+      `🌐 Origem: ${origin || 'Site DriveData'}`,
+      `📄 Página: ${page || '/'}`,
+    ];
+    if (message) noteLines.push(`💬 Mensagem: ${message}`);
+
     const lead = {
       tenant_id: tenantId,
       first_name: firstName,
@@ -46,7 +53,7 @@ export async function POST(request: Request) {
       status: 'new',
       source: 'website',
       score: 50,
-      notes: message ? `Site DriveData — ${message}` : 'Lead via site DriveData',
+      notes: noteLines.join('\n'),
     };
 
     const iRes = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {

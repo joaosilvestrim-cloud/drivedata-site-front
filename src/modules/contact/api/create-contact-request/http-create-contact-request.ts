@@ -11,7 +11,11 @@ export const httpCreateContactRequest = async (
   const res = await fetch('/api/lead', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(params),
+    body: JSON.stringify({
+      ...params,
+      origin: 'Site DriveData — Formulário de Contato',
+      page: typeof window !== 'undefined' ? window.location.pathname : '/',
+    }),
   });
 
   if (!res.ok) {
