@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     emotion: true,
   },
 
+
   // Otimizações de performance
   experimental: {
     optimizeCss: true,
