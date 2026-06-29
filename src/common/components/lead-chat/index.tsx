@@ -19,7 +19,7 @@ interface Step {
 }
 
 export function LeadChat() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   // Passos do chat construídos a partir do i18n (seguem o idioma atual).
   const STEPS: Step[] = useMemo(
     () => [
@@ -46,10 +46,14 @@ export function LeadChat() {
   const [status, setStatus] = useState<'asking' | 'sending' | 'done' | 'failed'>('asking');
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // primeira pergunta
+  // Saudação no idioma atual. Roda no mount e quando o idioma muda — mas só
+  // enquanto ninguém respondeu ainda (stepIdx === 0), pra não apagar a conversa.
   useEffect(() => {
-    setMessages([{ from: 'bot', text: STEPS[0].prompt({}) }]);
-  }, []);
+    if (stepIdx === 0) {
+      setMessages([{ from: 'bot', text: STEPS[0].prompt({}) }]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
