@@ -1,4 +1,5 @@
 export { AboutUsSection } from './about-us-section';
+export { AcademySection } from './academy-section';
 export { ArticleContentSection } from './article-content-section';
 export { Button } from './button';
 export { ChaosSection } from './chaos-section';

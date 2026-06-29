@@ -3,6 +3,7 @@ import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
 import { TargetAudienceProfileModel } from '@/common/model/target-audience-profile.model';
 import { getProfiles } from '@/server/content-db';
 import {
+  AcademySection,
   ChaosSection,
   ClientsSection,
   CtaSection,
@@ -33,6 +34,7 @@ export default async function Home() {
       <ClientsSection />
       <SolutionsSection />
       <ProcessSection />
+      <AcademySection />
       <CtaSection />
       <Footer />
     </>

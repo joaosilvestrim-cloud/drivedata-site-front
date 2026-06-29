@@ -98,6 +98,12 @@ export const ptTranslations = {
       'Agende uma demonstração personalizada e veja como podemos eliminar o caos dos seus dados e acelerar seu crescimento.',
     button: 'Agendar Demonstração',
   },
+  academySection: {
+    badge: 'DriveData Academy',
+    title: 'Aprenda a dominar seus dados',
+    description: 'Cursos e trilhas práticas de dados, BI e analytics para capacitar você e sua equipe.',
+    button: 'Acessar a Academy',
+  },
   footer: {
     usefulLinks: 'Links úteis',
     social: 'Social',

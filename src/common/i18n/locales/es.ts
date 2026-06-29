@@ -102,6 +102,12 @@ export const esTranslations = {
       'Programa una demostración personalizada y ve cómo podemos eliminar el caos de tus datos y acelerar tu crecimiento.',
     button: 'Programar Demostración',
   },
+  academySection: {
+    badge: 'DriveData Academy',
+    title: 'Aprende a dominar tus datos',
+    description: 'Cursos y rutas prácticas de datos, BI y analítica para capacitar a ti y a tu equipo.',
+    button: 'Ir a la Academy',
+  },
   footer: {
     usefulLinks: 'Enlaces útiles',
     social: 'Social',

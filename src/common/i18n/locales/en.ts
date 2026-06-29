@@ -100,6 +100,12 @@ export const enTranslations = {
       'Schedule a personalized demo and see how we can eliminate the chaos of your data and accelerate your growth.',
     button: 'Schedule Demo',
   },
+  academySection: {
+    badge: 'DriveData Academy',
+    title: 'Learn to master your data',
+    description: 'Practical courses and learning paths in data, BI and analytics to upskill you and your team.',
+    button: 'Go to the Academy',
+  },
   footer: {
     usefulLinks: 'Useful Links',
     social: 'Social',

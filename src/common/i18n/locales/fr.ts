@@ -98,6 +98,12 @@ export const frTranslations = {
       'Planifiez une démo personnalisée et découvrez comment nous pouvons éliminer le chaos de vos données et accélérer votre croissance.',
     button: 'Planifier une démo',
   },
+  academySection: {
+    badge: 'DriveData Academy',
+    title: 'Apprenez à maîtriser vos données',
+    description: 'Cours et parcours pratiques en données, BI et analytics pour monter en compétence, vous et votre équipe.',
+    button: 'Accéder à l’Academy',
+  },
   footer: {
     usefulLinks: 'Liens utiles',
     social: 'Réseaux sociaux',
