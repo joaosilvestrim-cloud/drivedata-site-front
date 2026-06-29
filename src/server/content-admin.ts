@@ -131,6 +131,20 @@ function coerce(type: FieldType, value: any): any {
 
 const ptOf = (v: any) => (v && typeof v === 'object' ? v.pt ?? '' : v ?? '');
 
+// Mescla um i18n recebido (string pt vinda do editor simples OU objeto {pt,en,…})
+// com o valor já gravado, PRESERVANDO os idiomas que não vieram no payload.
+// Evita que editar em PT apague as traduções EN/ES/FR existentes.
+function mergeI18n(existingVal: any, incoming: any): string | null {
+  const base: Record<string, string> =
+    existingVal && typeof existingVal === 'object'
+      ? { ...existingVal }
+      : typeof existingVal === 'string' && existingVal.trim()
+        ? { pt: existingVal }
+        : {};
+  Object.assign(base, normI18n(incoming));
+  return Object.keys(base).length ? JSON.stringify(base) : null;
+}
+
 export function slugify(s: string): string {
   return (s || '')
     .normalize('NFD')
@@ -263,20 +277,18 @@ export async function adminCreate(entity: string, body: Record<string, any>) {
 export async function adminUpdate(entity: string, id: string, body: Record<string, any>) {
   const cfg = ENTITIES[entity];
   if (!cfg) throw new Error('entidade inválida');
-  const existing =
-    cfg.table === 'article'
-      ? await getPool()
-          .query(`select * from article where id = $1`, [id])
-          .then((r) => r.rows[0])
-      : null;
+  // Lê a linha atual de QUALQUER entidade (p/ mesclar i18n e preservar idiomas).
+  const existing = await getPool()
+    .query(`select * from ${cfg.table} where id = $1`, [id])
+    .then((r) => r.rows[0]);
 
   const sets: string[] = [];
   const params: any[] = [];
   for (const [key, f] of Object.entries(cfg.fields)) {
     if (!(key in body)) continue;
     if (cfg.table === 'article' && (key === 'status' || key === 'publishedAt' || key === 'scheduledAt')) continue;
-    let val = coerce(f.type, body[key]);
-    if (f.type === 'slug') val = await uniqueSlug(val || ptOf(normI18n(body.title)) || existing?.slug || '', id);
+    let val = f.type === 'i18n' ? mergeI18n(existing?.[f.col], body[key]) : coerce(f.type, body[key]);
+    if (f.type === 'slug') val = await uniqueSlug((val as string) || ptOf(normI18n(body.title)) || existing?.slug || '', id);
     params.push(val);
     sets.push(`"${f.col}" = $${params.length}`);
   }
