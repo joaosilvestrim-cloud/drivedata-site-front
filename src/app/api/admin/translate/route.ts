@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const from: string = body.from || 'pt';
-    const targets: string[] = Array.isArray(body.targets) && body.targets.length ? body.targets : ['en', 'fr'];
+    const targets: string[] = Array.isArray(body.targets) && body.targets.length ? body.targets : ['en', 'es', 'fr'];
     const fields: TranslatableFields = body.fields || {};
     const result: Record<string, TranslatableFields> = {};
     for (const to of targets) {

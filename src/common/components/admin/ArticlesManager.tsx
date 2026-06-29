@@ -24,8 +24,10 @@ type Category = { id: string; name: string };
 const LANGS = [
   { code: 'pt', label: 'Português', flag: '🇧🇷' },
   { code: 'en', label: 'English', flag: '🇺🇸' },
+  { code: 'es', label: 'Español', flag: '🇪🇸' },
   { code: 'fr', label: 'Français', flag: '🇫🇷' },
 ];
+const TRANSLATE_TARGETS = ['en', 'es', 'fr'];
 const I18N_KEYS = ['title', 'subTitle', 'description', 'content', 'seoTitle', 'seoDescription'] as const;
 
 const QUILL_MODULES = {
@@ -143,13 +145,13 @@ export function ArticlesManager() {
       const r = await fetch('/api/admin/translate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ from: 'pt', targets: ['en', 'fr'], fields }),
+        body: JSON.stringify({ from: 'pt', targets: TRANSLATE_TARGETS, fields }),
       });
       const data = await r.json();
       if (!r.ok) throw new Error(data.error || 'erro');
       setForm((p) => {
         const next: any = { ...p };
-        for (const to of ['en', 'fr']) {
+        for (const to of TRANSLATE_TARGETS) {
           const tr = data.translations?.[to] || {};
           for (const k of I18N_KEYS) {
             if (tr[k]) next[k] = { ...next[k], [to]: tr[k] };
@@ -333,8 +335,8 @@ export function ArticlesManager() {
                 ))}
               </div>
               <Button variant="ghost" icon="translate" onClick={translate} disabled={translating || !transEnabled}
-                title={transEnabled ? 'Traduzir PT → EN e FR (DeepL)' : 'Configure DEEPL_API_KEY para habilitar'}>
-                {translating ? 'Traduzindo…' : 'Traduzir PT → EN/FR'}
+                title={transEnabled ? 'Traduzir PT → EN, ES e FR (DeepL)' : 'Configure DEEPL_API_KEY para habilitar'}>
+                {translating ? 'Traduzindo…' : 'Traduzir PT → EN/ES/FR'}
               </Button>
             </div>
           )}
