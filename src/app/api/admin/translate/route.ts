@@ -1,5 +1,5 @@
 import { getAdminUser } from '@/server/supabase-server';
-import { translateFields, hasTranslationProvider, type TranslatableFields } from '@/server/translate';
+import { translateFields, hasTranslationProvider, activeProvider, type TranslatableFields } from '@/server/translate';
 import { logError } from '@/server/content-db';
 
 export const runtime = 'nodejs';
@@ -8,7 +8,7 @@ export const maxDuration = 60;
 
 export async function GET() {
   if (!(await getAdminUser())) return Response.json({ error: 'não autorizado' }, { status: 401 });
-  return Response.json({ enabled: hasTranslationProvider() });
+  return Response.json({ enabled: hasTranslationProvider(), provider: activeProvider() });
 }
 
 export async function POST(req: Request) {

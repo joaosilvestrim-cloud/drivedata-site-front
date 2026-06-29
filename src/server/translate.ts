@@ -36,6 +36,9 @@ function provider(): Provider {
 export function hasTranslationProvider(): boolean {
   return provider() !== null;
 }
+export function activeProvider(): string {
+  return provider() ?? 'none';
+}
 
 // ───────── fatiamento de HTML grande (corta após o fechamento de blocos) ─────────
 function splitHtml(html: string, budget: number): string[] {
