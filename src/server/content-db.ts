@@ -330,7 +330,7 @@ export async function getHealth() {
   // Integrações: CRM (leads) e tradução (Anthropic)
   out.integrations = [
     { key: 'crm', label: 'CRM (leads)', ok: !!process.env.CRM_SUPABASE_URL && !!process.env.NEXT_PUBLIC_API_URL },
-    { key: 'translate', label: 'Tradução (DeepL)', ok: !!process.env.DEEPL_API_KEY },
+    { key: 'translate', label: 'Tradução (DeepL/Google)', ok: !!process.env.DEEPL_API_KEY || !!process.env.GOOGLE_TRANSLATE_API_KEY },
     { key: 'storage', label: 'Storage (Supabase)', ok: !!process.env.NEXT_PUBLIC_SUPABASE_URL },
   ];
   return out;
