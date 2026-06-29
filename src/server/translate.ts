@@ -1,7 +1,10 @@
 // Tradução automática de conteúdo (PT -> EN/ES/FR), usada pelo editor de artigos.
-// Suporta DOIS provedores (escolhido por env, sem mudar código):
-//   • Google Cloud Translate v2  — set GOOGLE_TRANSLATE_API_KEY  (preferido se existir)
-//   • DeepL                      — set DEEPL_API_KEY (Free termina em ":fx")
+// Suporta TRÊS provedores (escolhido por env, sem mudar código):
+//   • Google Cloud Translate v2  — GOOGLE_TRANSLATE_API_KEY
+//   • DeepL                      — DEEPL_API_KEY (Free termina em ":fx")
+//   • LibreTranslate             — LIBRETRANSLATE_URL (+ LIBRETRANSLATE_API_KEY opcional)
+// Force um provedor específico com TRANSLATE_PROVIDER=google|deepl|libre.
+// Ordem automática (sem TRANSLATE_PROVIDER): google -> deepl -> libre.
 // Traduz CAMPO A CAMPO e FATIA HTML grande em blocos, para não estourar limites
 // de tamanho por requisição. Preserva o HTML (tags) e traduz só o texto visível.
 
@@ -19,10 +22,15 @@ const DEEPL_SOURCE: Record<string, string> = { pt: 'PT', en: 'EN', fr: 'FR', es:
 
 const CHUNK_BUDGET = 90_000; // bytes por requisição (folga sob os limites dos provedores)
 
-type Provider = 'google' | 'deepl' | null;
+type Provider = 'google' | 'deepl' | 'libre' | null;
 function provider(): Provider {
+  const forced = (process.env.TRANSLATE_PROVIDER || '').toLowerCase();
+  if (forced === 'google' && process.env.GOOGLE_TRANSLATE_API_KEY) return 'google';
+  if (forced === 'deepl' && process.env.DEEPL_API_KEY) return 'deepl';
+  if (forced === 'libre' && process.env.LIBRETRANSLATE_URL) return 'libre';
   if (process.env.GOOGLE_TRANSLATE_API_KEY) return 'google';
   if (process.env.DEEPL_API_KEY) return 'deepl';
+  if (process.env.LIBRETRANSLATE_URL) return 'libre';
   return null;
 }
 export function hasTranslationProvider(): boolean {
@@ -90,8 +98,32 @@ async function deeplTranslate(texts: string[], from: string, to: string): Promis
   return (data?.translations ?? []).map((x: { text: string }) => x.text);
 }
 
+async function libreTranslate(texts: string[], from: string, to: string): Promise<string[]> {
+  const base = (process.env.LIBRETRANSLATE_URL || '').replace(/\/+$/, '');
+  const apiKey = process.env.LIBRETRANSLATE_API_KEY || undefined;
+  const out: string[] = [];
+  // LibreTranslate: 1 texto por requisição (suporte a array varia entre instâncias)
+  for (const q of texts) {
+    const res = await fetch(`${base}/translate`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ q, source: from, target: to, format: 'html', ...(apiKey ? { api_key: apiKey } : {}) }),
+    });
+    if (!res.ok) {
+      const t = await res.text().catch(() => '');
+      throw new Error(`LibreTranslate ${res.status}: ${t.slice(0, 200)}`);
+    }
+    const data = await res.json();
+    out.push(data?.translatedText ?? '');
+  }
+  return out;
+}
+
 async function translateChunk(texts: string[], from: string, to: string): Promise<string[]> {
-  return provider() === 'google' ? googleTranslate(texts, from, to) : deeplTranslate(texts, from, to);
+  const p = provider();
+  if (p === 'google') return googleTranslate(texts, from, to);
+  if (p === 'libre') return libreTranslate(texts, from, to);
+  return deeplTranslate(texts, from, to);
 }
 
 async function translateOneField(text: string, from: string, to: string): Promise<string> {
@@ -103,7 +135,7 @@ async function translateOneField(text: string, from: string, to: string): Promis
 }
 
 export async function translateFields(fields: TranslatableFields, from: string, to: string): Promise<TranslatableFields> {
-  if (!hasTranslationProvider()) throw new Error('Tradução indisponível: configure GOOGLE_TRANSLATE_API_KEY ou DEEPL_API_KEY.');
+  if (!hasTranslationProvider()) throw new Error('Tradução indisponível: configure GOOGLE_TRANSLATE_API_KEY, DEEPL_API_KEY ou LIBRETRANSLATE_URL.');
   const keys = (Object.keys(fields) as (keyof TranslatableFields)[]).filter(
     (k) => typeof fields[k] === 'string' && (fields[k] as string).trim().length > 0,
   );
