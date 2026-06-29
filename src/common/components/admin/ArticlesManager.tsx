@@ -141,7 +141,7 @@ export function ArticlesManager() {
     lang !== 'pt' && transEnabled ? (
       <button type="button" onClick={() => translateField(key)} disabled={translatingField === key}
         style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'none', border: 'none', color: C.green, fontSize: 11.5, fontWeight: 600, cursor: 'pointer', padding: 0 }}>
-        <Icon name="translate" size={13} /> {translatingField === key ? 'Traduzindo…' : 'Traduzir do PT'}
+        <Icon name="translate" size={13} /> {translatingField === key ? 'Traduzindo…' : 'Traduzir do português'}
       </button>
     ) : null;
 
@@ -162,6 +162,40 @@ export function ArticlesManager() {
       setError('Upload falhou: ' + (e as Error).message);
     }
     setUploading(false);
+  }
+
+  // idioma "preenchido" = tem título OU conteúdo naquele idioma
+  const langFilled = (code: string) =>
+    !!((form as any).title?.[code]?.trim() || (form as any).content?.[code]?.trim());
+
+  // Traduz TODOS os campos do PT para UM idioma (botão da barra contextual).
+  async function translateAllTo(target: string) {
+    if (target === 'pt') return;
+    setTranslating(true);
+    setError(null);
+    try {
+      const fields: Record<string, string> = {};
+      for (const k of I18N_KEYS) {
+        const v = (form as any)[k]?.pt;
+        if (v && String(v).trim()) fields[k] = v;
+      }
+      const r = await fetch('/api/admin/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from: 'pt', targets: [target], fields }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'erro');
+      const tr = data.translations?.[target] || {};
+      setForm((p) => {
+        const next: any = { ...p };
+        for (const k of I18N_KEYS) if (tr[k]) next[k] = { ...next[k], [target]: tr[k] };
+        return next;
+      });
+    } catch (e) {
+      setError('Tradução falhou: ' + (e as Error).message);
+    }
+    setTranslating(false);
   }
 
   async function translate() {
@@ -357,18 +391,58 @@ export function ArticlesManager() {
 
           {/* Seletor de idioma + tradução (vale p/ Conteúdo e SEO) */}
           {tab !== 'publish' && (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, gap: 10, flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', gap: 6 }}>
-                {LANGS.map((l) => (
-                  <button key={l.code} onClick={() => setLang(l.code)} style={langBtn(lang === l.code)}>
-                    {l.flag} {l.label}
-                  </button>
-                ))}
+            <div style={{ marginBottom: 16 }}>
+              {/* Abas de idioma com status (preenchido / vazio) */}
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
+                {LANGS.map((l) => {
+                  const active = lang === l.code;
+                  const filled = langFilled(l.code);
+                  return (
+                    <button key={l.code} onClick={() => setLang(l.code)} style={langBtn(active)}>
+                      <span>{l.flag} {l.label}</span>
+                      {l.code === 'pt' ? (
+                        <span style={origBadge}>original</span>
+                      ) : (
+                        <span title={filled ? 'Já traduzido' : 'Sem tradução'} style={{
+                          width: 8, height: 8, borderRadius: '50%',
+                          background: filled ? C.green : 'transparent',
+                          border: filled ? 'none' : `1.5px solid ${C.faint}`, display: 'inline-block',
+                        }} />
+                      )}
+                    </button>
+                  );
+                })}
               </div>
-              <Button variant="ghost" icon="translate" onClick={translate} disabled={translating || !transEnabled}
-                title={transEnabled ? 'Traduzir PT → EN, ES e FR (DeepL)' : 'Configure DEEPL_API_KEY para habilitar'}>
-                {translating ? 'Traduzindo…' : 'Traduzir PT → EN/ES/FR'}
-              </Button>
+
+              {/* Barra contextual: muda conforme a aba */}
+              {lang === 'pt' ? (
+                <div style={helperBar}>
+                  <span style={helperText}>
+                    <Icon name="globe" size={15} color={C.green} />
+                    Idioma <b style={{ color: C.text }}>original</b> — escreva aqui e depois gere as traduções.
+                  </span>
+                  <Button variant="primary" icon="translate" onClick={translate} disabled={translating || !transEnabled}
+                    title={transEnabled ? undefined : 'Tradução automática indisponível'}>
+                    {translating ? 'Traduzindo…' : 'Traduzir para EN, ES e FR'}
+                  </Button>
+                </div>
+              ) : (
+                <div style={helperBar}>
+                  <span style={helperText}>
+                    <Icon name="translate" size={15} color={C.green} />
+                    Tradução para <b style={{ color: C.text }}>{LANGS.find((x) => x.code === lang)?.label}</b> — gere e <b style={{ color: C.text }}>revise</b> antes de publicar.
+                  </span>
+                  <Button variant="primary" icon="translate" onClick={() => translateAllTo(lang)} disabled={translating || !transEnabled}
+                    title={transEnabled ? undefined : 'Tradução automática indisponível'}>
+                    {translating ? 'Traduzindo…' : 'Traduzir tudo do português'}
+                  </Button>
+                </div>
+              )}
+              {!transEnabled && (
+                <div style={{ fontSize: 11.5, color: C.faint, marginTop: 6 }}>
+                  Tradução automática indisponível — você ainda pode digitar cada idioma manualmente.
+                </div>
+              )}
             </div>
           )}
 
@@ -517,9 +591,19 @@ const tabBtn = (active: boolean): React.CSSProperties => ({
   color: active ? C.text : C.muted, padding: '9px 14px', fontSize: 14, fontWeight: 600, cursor: 'pointer', marginBottom: -1,
 });
 const langBtn = (active: boolean): React.CSSProperties => ({
+  display: 'inline-flex', alignItems: 'center', gap: 7,
   background: active ? 'rgba(10,150,236,.15)' : 'rgba(255,255,255,.04)', border: `1px solid ${active ? 'rgba(10,150,236,.4)' : C.border}`,
   color: active ? C.text : C.muted, padding: '6px 11px', borderRadius: 8, fontSize: 12.5, cursor: 'pointer', fontWeight: 500,
 });
+const origBadge: React.CSSProperties = {
+  fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5,
+  background: 'rgba(84,218,137,.16)', color: C.green, borderRadius: 5, padding: '1px 5px',
+};
+const helperBar: React.CSSProperties = {
+  display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap',
+  background: 'rgba(255,255,255,.035)', border: `1px solid ${C.border}`, borderRadius: 12, padding: '10px 14px',
+};
+const helperText: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: C.muted, lineHeight: 1.4 };
 const statusOpt = (active: boolean): React.CSSProperties => ({
   flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7,
   background: active ? 'rgba(84,218,137,.14)' : 'rgba(255,255,255,.04)', border: `1px solid ${active ? 'rgba(84,218,137,.4)' : C.borderStrong}`,
