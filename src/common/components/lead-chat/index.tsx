@@ -1,7 +1,8 @@
 'use client';
 
 import styled from '@emotion/styled';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 // Chat de captação próprio da DriveData. Coleta os dados (mesmo fluxo do antigo
 // Typebot) e grava direto no CRM via /api/lead (origem "Chat"). Sem dependência
@@ -17,21 +18,26 @@ interface Step {
   validate?: (v: string) => string | null; // retorna erro ou null
 }
 
-const STEPS: Step[] = [
-  { field: 'name', prompt: () => 'Oi! Eu sou a Tamires 👋 Vou te fazer umas perguntas rápidas. Como é o seu nome?' },
-  {
-    field: 'email',
-    prompt: (d) => `Prazer, ${d.name?.split(' ')[0] || ''}! Qual o seu melhor e-mail?`,
-    validate: (v) => (/\S+@\S+\.\S+/.test(v) ? null : 'Hmm, esse e-mail não parece válido. Pode conferir?'),
-  },
-  { field: 'phone', prompt: () => 'Perfeito. Informe seu telefone com DDD.' },
-  { field: 'company', prompt: () => 'Qual o nome da sua empresa?' },
-  { field: 'revenue', prompt: () => 'Qual o faturamento mensal da sua empresa?', options: ['Até R$10 mil', 'Até R$50 mil', 'Acima de R$50 mil'] },
-  { field: 'segment', prompt: () => 'Selecione o segmento da sua empresa.', options: ['Varejo', 'Indústria', 'Serviços', 'Tecnologia', 'Saúde', 'Outro'] },
-  { field: 'message', prompt: () => 'Por fim, conta rapidamente: qual a sua necessidade hoje?' },
-];
-
 export function LeadChat() {
+  const { t } = useTranslation();
+  // Passos do chat construídos a partir do i18n (seguem o idioma atual).
+  const STEPS: Step[] = useMemo(
+    () => [
+      { field: 'name', prompt: () => t('leadChat.steps.name') },
+      {
+        field: 'email',
+        prompt: (d) => t('leadChat.steps.email', { name: d.name?.split(' ')[0] || '' }),
+        validate: (v) => (/\S+@\S+\.\S+/.test(v) ? null : t('leadChat.validation.email')),
+      },
+      { field: 'phone', prompt: () => t('leadChat.steps.phone') },
+      { field: 'company', prompt: () => t('leadChat.steps.company') },
+      { field: 'revenue', prompt: () => t('leadChat.steps.revenue'), options: t('leadChat.revenueOptions', { returnObjects: true }) as unknown as string[] },
+      { field: 'segment', prompt: () => t('leadChat.steps.segment'), options: t('leadChat.segmentOptions', { returnObjects: true }) as unknown as string[] },
+      { field: 'message', prompt: () => t('leadChat.steps.message') },
+    ],
+    [t],
+  );
+
   const [data, setData] = useState<Partial<Record<Field, string>>>({});
   const [stepIdx, setStepIdx] = useState(0);
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -53,7 +59,7 @@ export function LeadChat() {
 
   async function submit(allData: Partial<Record<Field, string>>) {
     setStatus('sending');
-    setMessages((m) => [...m, { from: 'bot', text: '🙌 Obrigada! Enviando seus dados para a nossa equipe…' }]);
+    setMessages((m) => [...m, { from: 'bot', text: t('leadChat.messages.sending') }]);
     try {
       const res = await fetch('/api/lead', {
         method: 'POST',
@@ -72,10 +78,10 @@ export function LeadChat() {
       });
       if (!res.ok) throw new Error('falha');
       setStatus('done');
-      setMessages((m) => [...m, { from: 'bot', text: '✅ Seus dados foram enviados com sucesso! Em breve nossa equipe entra em contato. Muito obrigada! 💙' }]);
+      setMessages((m) => [...m, { from: 'bot', text: t('leadChat.messages.success') }]);
     } catch {
       setStatus('failed');
-      setMessages((m) => [...m, { from: 'bot', text: '😕 Tivemos um problema ao enviar. Tente novamente em instantes ou use o formulário de contato.' }]);
+      setMessages((m) => [...m, { from: 'bot', text: t('leadChat.messages.error') }]);
     }
   }
 
@@ -106,8 +112,8 @@ export function LeadChat() {
       <HeaderBar>
         <Avatar style={{ backgroundImage: 'url(/tamires-avatar.png)' }} />
         <div>
-          <HeaderName>Tamires · DriveData</HeaderName>
-          <HeaderStatus>online agora</HeaderStatus>
+          <HeaderName>{t('leadChat.ui.headerName')}</HeaderName>
+          <HeaderStatus>{t('leadChat.ui.status')}</HeaderStatus>
         </div>
       </HeaderBar>
 
@@ -139,9 +145,9 @@ export function LeadChat() {
                 autoFocus
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Digite aqui…"
+                placeholder={t('leadChat.ui.placeholder')}
               />
-              <SendBtn type="submit" disabled={!input.trim()}>Enviar</SendBtn>
+              <SendBtn type="submit" disabled={!input.trim()}>{t('leadChat.ui.send')}</SendBtn>
             </InputRow>
           )}
           {error && <ErrorText>{error}</ErrorText>}

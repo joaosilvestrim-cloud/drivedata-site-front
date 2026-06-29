@@ -7,6 +7,7 @@ export interface HeaderProps {
 export interface NavigationItem {
   labelKey: string;
   href: string;
+  external?: boolean;
 }
 
 export type LanguageCode = AppLanguage;

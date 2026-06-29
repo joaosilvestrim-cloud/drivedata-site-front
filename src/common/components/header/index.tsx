@@ -50,6 +50,7 @@ const navigationLinks: NavigationItem[] = [
   { href: '/about#solucoes', labelKey: 'header.navigation.solutions' },
   { href: '/about#articles', labelKey: 'header.navigation.articles' },
   { href: '/about#clientes', labelKey: 'header.navigation.clients' },
+  { href: 'https://academy.drivedata.com.br/', labelKey: 'header.navigation.trainings', external: true },
 ];
 
 const htmlLanguageMap: Record<LanguageOption['code'], string> = {
@@ -380,16 +381,28 @@ export const Header = ({ className }: HeaderProps) => {
             </Logo>
 
             <Navigation>
-              {navigationLinks.map((item) => (
-                <NavLink
-                  key={item.labelKey}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href)}
-                  isActive={isLinkActive(item.href)}
-                >
-                  {t(item.labelKey)}
-                </NavLink>
-              ))}
+              {navigationLinks.map((item) =>
+                item.external ? (
+                  <NavLink
+                    key={item.labelKey}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    isActive={false}
+                  >
+                    {t(item.labelKey)}
+                  </NavLink>
+                ) : (
+                  <NavLink
+                    key={item.labelKey}
+                    href={item.href}
+                    onClick={(e) => handleNavClick(e, item.href)}
+                    isActive={isLinkActive(item.href)}
+                  >
+                    {t(item.labelKey)}
+                  </NavLink>
+                ),
+              )}
             </Navigation>
 
             <HeaderActions>
@@ -451,16 +464,29 @@ export const Header = ({ className }: HeaderProps) => {
       />
 
       <MobileMenu isOpen={isMobileMenuOpen}>
-        {navigationLinks.map((item) => (
-          <MobileNavLink
-            key={item.labelKey}
-            href={item.href}
-            onClick={(e) => handleNavClick(e, item.href)}
-            isActive={isLinkActive(item.href)}
-          >
-            {t(item.labelKey)}
-          </MobileNavLink>
-        ))}
+        {navigationLinks.map((item) =>
+          item.external ? (
+            <MobileNavLink
+              key={item.labelKey}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+              isActive={false}
+            >
+              {t(item.labelKey)}
+            </MobileNavLink>
+          ) : (
+            <MobileNavLink
+              key={item.labelKey}
+              href={item.href}
+              onClick={(e) => handleNavClick(e, item.href)}
+              isActive={isLinkActive(item.href)}
+            >
+              {t(item.labelKey)}
+            </MobileNavLink>
+          ),
+        )}
 
         <MobileLanguageSection>
           <MobileLanguageToggle
