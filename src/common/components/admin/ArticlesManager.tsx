@@ -66,6 +66,7 @@ export function ArticlesManager() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [translating, setTranslating] = useState(false);
+  const [translatingField, setTranslatingField] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
@@ -113,6 +114,36 @@ export function ArticlesManager() {
   const setI18n = (key: string, value: string) =>
     setForm((p) => ({ ...p, [key]: { ...(p as any)[key], [lang]: value } }));
   const getI18n = (key: string) => ((form as any)[key]?.[lang] ?? '') as string;
+
+  // Traduz UM campo do PT para o idioma da aba atual (botão por caixinha).
+  async function translateField(key: string) {
+    const pt = (form as any)[key]?.pt as string | undefined;
+    if (!pt || !pt.trim() || lang === 'pt') return;
+    setTranslatingField(key);
+    setError(null);
+    try {
+      const r = await fetch('/api/admin/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from: 'pt', targets: [lang], fields: { [key]: pt } }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'erro');
+      const tr = data.translations?.[lang]?.[key];
+      if (tr != null) setForm((p) => ({ ...p, [key]: { ...(p as any)[key], [lang]: tr } }));
+    } catch (e) {
+      setError('Tradução falhou: ' + (e as Error).message);
+    }
+    setTranslatingField(null);
+  }
+  // Botão pequeno "Traduzir do PT" ao lado do rótulo (só em abas != PT).
+  const transAction = (key: string) =>
+    lang !== 'pt' && transEnabled ? (
+      <button type="button" onClick={() => translateField(key)} disabled={translatingField === key}
+        style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'none', border: 'none', color: C.green, fontSize: 11.5, fontWeight: 600, cursor: 'pointer', padding: 0 }}>
+        <Icon name="translate" size={13} /> {translatingField === key ? 'Traduzindo…' : 'Traduzir do PT'}
+      </button>
+    ) : null;
 
   // slug automático a partir do título PT (até o usuário editar manualmente)
   useEffect(() => {
@@ -343,10 +374,10 @@ export function ArticlesManager() {
 
           {tab === 'content' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <Field label="Título"><Input value={getI18n('title')} onChange={(e) => setI18n('title', e.target.value)} /></Field>
-              <Field label="Subtítulo"><Input value={getI18n('subTitle')} onChange={(e) => setI18n('subTitle', e.target.value)} /></Field>
-              <Field label="Resumo (aparece nos cards)"><Textarea value={getI18n('description')} onChange={(e) => setI18n('description', e.target.value)} /></Field>
-              <Field label="Conteúdo">
+              <Field label="Título" action={transAction('title')}><Input value={getI18n('title')} onChange={(e) => setI18n('title', e.target.value)} /></Field>
+              <Field label="Subtítulo" action={transAction('subTitle')}><Input value={getI18n('subTitle')} onChange={(e) => setI18n('subTitle', e.target.value)} /></Field>
+              <Field label="Resumo (aparece nos cards)" action={transAction('description')}><Textarea value={getI18n('description')} onChange={(e) => setI18n('description', e.target.value)} /></Field>
+              <Field label="Conteúdo" action={transAction('content')}>
                 <div style={{ background: '#fff', borderRadius: 10, color: '#111', overflow: 'hidden' }}>
                   <ReactQuill theme="snow" modules={QUILL_MODULES} value={getI18n('content')} onChange={(v: string) => setI18n('content', v)} />
                 </div>
@@ -359,10 +390,10 @@ export function ArticlesManager() {
               <Field label="URL amigável (slug)" hint={`/article/${form.slug || '...'}`}>
                 <Input value={form.slug || ''} onChange={(e) => { setSlugTouched(true); setForm((p) => ({ ...p, slug: slugify(e.target.value) })); }} />
               </Field>
-              <Field label="Título de SEO" hint={`${getI18n('seoTitle').length}/60 caracteres`}>
+              <Field label="Título de SEO" hint={`${getI18n('seoTitle').length}/60 caracteres`} action={transAction('seoTitle')}>
                 <Input value={getI18n('seoTitle')} onChange={(e) => setI18n('seoTitle', e.target.value)} placeholder="Usa o título do artigo se vazio" />
               </Field>
-              <Field label="Meta descrição" hint={`${getI18n('seoDescription').length}/160 caracteres`}>
+              <Field label="Meta descrição" hint={`${getI18n('seoDescription').length}/160 caracteres`} action={transAction('seoDescription')}>
                 <Textarea value={getI18n('seoDescription')} onChange={(e) => setI18n('seoDescription', e.target.value)} placeholder="Usa o resumo se vazio" />
               </Field>
               <SerpPreview title={getI18n('seoTitle') || getI18n('title')} desc={getI18n('seoDescription') || getI18n('description')} slug={form.slug || ''} />

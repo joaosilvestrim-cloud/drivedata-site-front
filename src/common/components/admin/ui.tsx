@@ -108,10 +108,15 @@ export const field: Record<string, React.CSSProperties> = {
   },
 };
 
-export function Field({ label, hint, children }: { label?: string; hint?: string; children: React.ReactNode }) {
+export function Field({ label, hint, action, children }: { label?: string; hint?: string; action?: React.ReactNode; children: React.ReactNode }) {
   return (
     <div>
-      {label && <label style={field.label}>{label}</label>}
+      {(label || action) && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 6 }}>
+          {label ? <label style={{ ...field.label, marginBottom: 0 }}>{label}</label> : <span />}
+          {action}
+        </div>
+      )}
       {children}
       {hint && <div style={{ fontSize: 11, color: C.faint, marginTop: 4 }}>{hint}</div>}
     </div>
