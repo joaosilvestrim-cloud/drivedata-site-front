@@ -100,7 +100,17 @@ export async function GET(req: Request) {
     add('tags', 'Tag Manager no site (GTM)', 'warn', 'não foi possível buscar o HTML do site');
   }
 
-  // 7) Gatilho SQL/Venda (070) — informativo (não verificável via REST)
+  // 7) LinkedIn Conversions API (envio automático)
+  const liToken = !!process.env.LINKEDIN_ACCESS_TOKEN;
+  const liUrns = ['LINKEDIN_CONV_LEAD', 'LINKEDIN_CONV_MQL', 'LINKEDIN_CONV_SQL', 'LINKEDIN_CONV_WON']
+    .filter((k) => process.env[k]).length;
+  add('linkedin_capi', 'LinkedIn Conversions API',
+    liToken && liUrns === 4 ? 'ok' : liToken || liUrns ? 'warn' : 'info',
+    liToken
+      ? `token presente · ${liUrns}/4 conversões (URNs) configuradas`
+      : 'sem token — defina LINKEDIN_ACCESS_TOKEN + as 4 URNs (LINKEDIN_CONV_*) para o envio automático');
+
+  // 8) Gatilho SQL/Venda (070) — informativo (não verificável via REST)
   add('trigger', 'Gatilho SQL/Venda (070)', 'info', 'Aplicado por migration no CRM (verificável no banco)');
 
   const summary = {
