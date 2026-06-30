@@ -49,6 +49,21 @@ export function IntegrationsClient() {
         actions={<Button variant="ghost" icon="refresh" onClick={() => void load()}>Revalidar</Button>}
       />
 
+      <div style={{ background: 'rgba(10,150,236,.10)', border: `1px solid rgba(10,150,236,.25)`, borderRadius: C.radius, padding: 16, marginBottom: 16 }}>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8 }}>
+          <Icon name="help" size={18} color={C.blue} />
+          <strong style={{ fontSize: 14 }}>O que é esta página</strong>
+        </div>
+        <p style={{ margin: 0, fontSize: 13, color: C.muted, lineHeight: 1.6 }}>
+          É um <b>raio-x</b> da integração com os anúncios. Cada linha é um teste automático.
+          <b style={{ color: C.green }}> Verde = tudo certo</b>;
+          <b style={{ color: C.warn }}> amarelo = atenção</b>;
+          <b style={{ color: C.danger }}> vermelho = algo quebrou</b> (nesse caso, avise o time técnico).
+          Clique em <b>Revalidar</b> a qualquer momento pra checar de novo. Você não precisa fazer nada aqui —
+          é só pra acompanhar se está tudo funcionando.
+        </p>
+      </div>
+
       {error && (
         <div style={{ color: C.danger, background: C.dangerBg, padding: '9px 13px', borderRadius: 10, marginBottom: 16, fontSize: 13 }}>{error}</div>
       )}
