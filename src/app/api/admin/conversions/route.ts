@@ -12,13 +12,23 @@ export const dynamic = 'force-dynamic';
 
 interface LedgerRow {
   id: string;
+  event_type: string;
   conversion_name: string | null;
   click_id: string | null;
   value: number | null;
   currency: string | null;
   occurred_at: string;
-  leads?: { email: string | null } | null; // embed p/ LinkedIn (hash de e-mail)
+  // embed do lead p/ o CSV do LinkedIn (casa por e-mail com hash + dados do membro)
+  leads?: {
+    email: string | null;
+    first_name: string | null;
+    last_name: string | null;
+    company: string | null;
+    job_title: string | null;
+  } | null;
 }
+
+const LI_EVENT_NAME: Record<string, string> = { lead: 'Lead', mql: 'MQL', sql: 'SQL', won: 'Venda' };
 
 // SHA256 do e-mail normalizado (formato exigido pelo LinkedIn p/ casar membro).
 function sha256Email(email: string): string {
@@ -62,17 +72,19 @@ export async function GET(req: Request) {
   const platform = url.searchParams.get('platform') || 'google';
   const commit = url.searchParams.get('commit') === '1';
   const asJson = url.searchParams.get('format') === 'json';
+  const eventFilter = url.searchParams.get('event'); // opcional: lead|mql|sql|won
 
-  // Pendentes da plataforma, com click id atribuível. LinkedIn também traz o
-  // e-mail do lead (embed) p/ gerar o hash SHA256 de casamento de membro.
+  // Pendentes da plataforma. LinkedIn traz os dados do lead (embed) p/ o CSV
+  // (casa por e-mail com hash SHA256 + nome/empresa/cargo).
   const selectCols =
     platform === 'linkedin'
-      ? 'id,conversion_name,click_id,value,currency,occurred_at,leads(email)'
-      : 'id,conversion_name,click_id,value,currency,occurred_at';
+      ? 'id,event_type,conversion_name,click_id,value,currency,occurred_at,leads(email,first_name,last_name,company,job_title)'
+      : 'id,event_type,conversion_name,click_id,value,currency,occurred_at';
   const query =
     `${SUPABASE_URL}/rest/v1/lead_conversion_events` +
     `?platform=eq.${encodeURIComponent(platform)}` +
     `&status=eq.pending&click_id=not.is.null` +
+    (eventFilter ? `&event_type=eq.${encodeURIComponent(eventFilter)}` : '') +
     `&select=${selectCols}` +
     `&order=occurred_at.asc`;
 
@@ -85,21 +97,28 @@ export async function GET(req: Request) {
 
   if (asJson) return Response.json({ count: rows.length, rows });
 
+  const exportedIds: string[] = [];
   let lines: string[];
   if (platform === 'linkedin') {
-    // LinkedIn: casa por li_fat_id (1st-party) e/ou e-mail com hash SHA256.
-    // Tempo em ISO 8601. Felipe mapeia as colunas no upload / ou usamos na CAPI.
-    lines = ['Conversion Name,Conversion Time,Conversion Value,Currency,li_fat_id,SHA256 Email'];
+    // LinkedIn: template oficial de conversões offline (casa por e-mail SHA256).
+    lines = ['email,firstName,lastName,employeecompany,title,country,timestamp,eventtype,amount,currency'];
     for (const r of rows) {
-      const email = r.leads?.email ?? '';
+      const lead = r.leads;
+      const email = lead?.email ? sha256Email(lead.email) : '';
+      if (!email) continue; // sem e-mail não há como casar o membro no CSV
+      exportedIds.push(r.id);
       lines.push(
         [
-          csvCell(r.conversion_name || ''),
-          r.occurred_at,
-          String(r.value ?? 0),
-          r.currency || 'BRL',
-          csvCell(r.click_id as string),
-          email ? sha256Email(email) : '',
+          email,
+          csvCell(lead?.first_name || ''),
+          csvCell(lead?.last_name || ''),
+          csvCell(lead?.company || ''),
+          csvCell(lead?.job_title || ''),
+          'BR',
+          String(Date.parse(r.occurred_at)),
+          csvCell(LI_EVENT_NAME[r.event_type] || r.event_type),
+          r.value != null ? String(r.value) : '',
+          (r.currency || 'BRL').toLowerCase(),
         ].join(','),
       );
     }
@@ -110,6 +129,7 @@ export async function GET(req: Request) {
       'Google Click ID,Conversion Name,Conversion Time,Conversion Value,Conversion Currency',
     ];
     for (const r of rows) {
+      exportedIds.push(r.id);
       lines.push(
         [
           csvCell(r.click_id as string),
@@ -123,9 +143,9 @@ export async function GET(req: Request) {
   }
   const csv = lines.join('\n');
 
-  // commit=1: marca as linhas exportadas como enviadas (evita reenvio/duplicidade).
-  if (commit && rows.length) {
-    const ids = rows.map((r) => r.id);
+  // commit=1: marca como enviadas só as linhas realmente exportadas (evita reenvio).
+  if (commit && exportedIds.length) {
+    const ids = exportedIds;
     const patchUrl =
       `${SUPABASE_URL}/rest/v1/lead_conversion_events` +
       `?id=in.(${ids.map((id) => encodeURIComponent(id)).join(',')})`;

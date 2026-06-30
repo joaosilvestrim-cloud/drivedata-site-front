@@ -31,7 +31,7 @@ const META: Record<Platform, { label: string; icon: string; hint: string }> = {
   linkedin: {
     label: 'LinkedIn Ads',
     icon: 'users',
-    hint: 'Inclui li_fat_id e e-mail com hash SHA256. Suba no Campaign Manager (conversões offline) ou via Conversions API.',
+    hint: 'Modelo oficial do LinkedIn (casa o membro por e-mail com hash SHA256). Suba na conversão do tipo "arquivo CSV" no Campaign Manager.',
   },
 };
 
@@ -40,7 +40,6 @@ export function ConversionsClient() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [sendResult, setSendResult] = useState<string | null>(null);
 
   const loadCounts = useCallback(async () => {
     setLoading(true);
@@ -80,25 +79,6 @@ export function ConversionsClient() {
       a.remove();
       URL.revokeObjectURL(url);
       if (commit) await loadCounts();
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      setBusy(null);
-    }
-  }
-
-  async function sendLinkedIn() {
-    setBusy('linkedin-send');
-    setError(null);
-    setSendResult(null);
-    try {
-      const res = await fetch('/api/admin/conversions/send?platform=linkedin', { method: 'POST' });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || `Falha no envio (${res.status})`);
-      setSendResult(
-        `LinkedIn: ${data.sent} enviada(s), ${data.errors} erro(s)${data.skipped ? `, ${data.skipped} sem URN` : ''} de ${data.total}.`,
-      );
-      await loadCounts();
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -165,25 +145,13 @@ export function ConversionsClient() {
                   <Button variant="ghost" icon="doc" disabled={empty || !!busy} onClick={() => download(p, false)}>
                     {busy === `${p}-false` ? 'Gerando…' : 'Baixar CSV (prévia)'}
                   </Button>
-                  {p === 'linkedin' ? (
-                    <Button variant="primary" icon="upload" disabled={empty || !!busy} onClick={() => sendLinkedIn()}>
-                      {busy === 'linkedin-send' ? 'Enviando…' : 'Enviar agora (API)'}
-                    </Button>
-                  ) : (
-                    <Button variant="primary" icon="upload" disabled={empty || !!busy} onClick={() => download(p, true)}>
-                      {busy === `${p}-true` ? 'Gerando…' : 'Baixar e marcar enviado'}
-                    </Button>
-                  )}
+                  <Button variant="primary" icon="upload" disabled={empty || !!busy} onClick={() => download(p, true)}>
+                    {busy === `${p}-true` ? 'Gerando…' : 'Baixar e marcar enviado'}
+                  </Button>
                 </div>
               </Card>
             );
           })}
-        </div>
-      )}
-
-      {sendResult && (
-        <div style={{ marginTop: 16, color: C.green, background: 'rgba(84,218,137,.12)', border: '1px solid rgba(84,218,137,.3)', padding: '10px 14px', borderRadius: 10, fontSize: 13 }}>
-          {sendResult}
         </div>
       )}
 
@@ -226,10 +194,10 @@ export function ConversionsClient() {
           title="Como subir no LinkedIn"
           steps={[
             'Aqui no painel, clique em "Baixar e marcar enviado" no card do LinkedIn Ads.',
-            'Abra o LinkedIn Campaign Manager.',
-            'No menu, vá em "Analyze" → "Conversion tracking" (Conversões).',
-            'Use a opção de conversões offline / upload de arquivo e selecione o CSV.',
-            'Se pedir pra mapear colunas, use o "li_fat_id" ou o e-mail (hash). Confirme.',
+            'Abra o LinkedIn Campaign Manager → Conversões.',
+            'Abra a conversão do tipo "arquivo CSV" e use "Enviar/Upload arquivo".',
+            'Selecione o CSV baixado (as colunas já vêm no formato oficial do LinkedIn).',
+            'Confirme. O LinkedIn casa o membro pelo e-mail (hash) automaticamente.',
           ]}
         />
       </div>
