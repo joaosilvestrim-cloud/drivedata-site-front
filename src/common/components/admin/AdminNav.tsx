@@ -29,6 +29,7 @@ const GROUPS: { title: string; links: { href: string; label: string; icon: strin
     links: [
       { href: '/admin/analytics', label: 'Analytics', icon: 'chart' },
       { href: '/admin/conversions', label: 'Conversões (Ads)', icon: 'upload' },
+      { href: '/admin/integrations', label: 'Integrações', icon: 'settings' },
       { href: '/admin/system', label: 'Sistema & Saúde', icon: 'server' },
     ],
   },
