@@ -10,13 +10,14 @@ export async function POST(request: Request) {
       | {
           name?: string; email?: string; phone?: string; company?: string;
           message?: string; revenue?: string; segment?: string;
+          role?: string; urgency?: string; leadScore?: number; mql?: boolean;
           origin?: string; page?: string;
           tracking?: Record<string, string | undefined>;
         }
       | null;
     if (!body) return Response.json({ error: 'Payload inválido' }, { status: 400 });
 
-    const { name, email, phone, company, message, revenue, segment, origin, page, tracking } = body;
+    const { name, email, phone, company, message, revenue, segment, role, urgency, leadScore, mql, origin, page, tracking } = body;
     if (!email && !name && !phone) {
       return Response.json({ error: 'Informe ao menos nome, e-mail ou telefone.' }, { status: 422 });
     }
@@ -47,9 +48,14 @@ export async function POST(request: Request) {
       `🌐 Origem: ${origin || 'Site DriveData'}`,
       `📄 Página: ${page || '/'}`,
     ];
-    if (revenue) noteLines.push(`💰 Faturamento: ${revenue}`);
+    if (typeof leadScore === 'number') {
+      noteLines.push(`⭐ Lead Score: ${leadScore}/10 ${mql ? '→ MQL ✅' : '→ não-MQL'}`);
+    }
+    if (role) noteLines.push(`👤 Cargo: ${role}`);
+    if (revenue) noteLines.push(`💰 Faturamento anual: ${revenue}`);
     if (segment) noteLines.push(`🏷️ Segmento: ${segment}`);
-    if (message) noteLines.push(`💬 Necessidade: ${message}`);
+    if (urgency) noteLines.push(`⏱️ Urgência: ${urgency}`);
+    if (message) noteLines.push(`💬 Desafio de dados: ${message}`);
 
     // Atribuição de mídia paga (GCLID/UTM). Por ora gravamos nas notes; na Fase 1
     // viram colunas próprias em `leads` para o upload de conversões offline.
@@ -80,7 +86,9 @@ export async function POST(request: Request) {
       company: company || null,
       status: 'new',
       source: 'website',
-      score: 50,
+      // Lead Score 0–10 (spec DALT) mapeado p/ a escala 0–100 do campo do CRM.
+      // Sem scoring (ex.: formulário simples) mantém o neutro 50.
+      score: typeof leadScore === 'number' ? leadScore * 10 : 50,
       notes: noteLines.join('\n'),
     };
 

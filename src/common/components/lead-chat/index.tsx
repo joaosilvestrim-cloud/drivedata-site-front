@@ -10,7 +10,16 @@ import { getAttribution } from '@/common/helpers/attribution';
 // externa.
 
 type Msg = { from: 'bot' | 'user'; text: string };
-type Field = 'name' | 'email' | 'phone' | 'company' | 'revenue' | 'segment' | 'message';
+type Field = 'name' | 'email' | 'phone' | 'company' | 'role' | 'revenue' | 'segment' | 'urgency' | 'message';
+
+// Pontuação do Lead Scoring (índice da opção → pontos), conforme a spec DALT.
+// Faturamento anual: 2/4/5 · Cargo: 3/2/1/0 · Urgência: 2/0 · MQL quando >= 6.
+const SCORE_POINTS: Partial<Record<Field, number[]>> = {
+  revenue: [2, 4, 5],
+  role: [3, 2, 1, 0],
+  urgency: [2, 0],
+};
+const MQL_THRESHOLD = 6;
 
 interface Step {
   field: Field;
@@ -32,8 +41,10 @@ export function LeadChat() {
       },
       { field: 'phone', prompt: () => t('leadChat.steps.phone') },
       { field: 'company', prompt: () => t('leadChat.steps.company') },
+      { field: 'role', prompt: () => t('leadChat.steps.role'), options: t('leadChat.roleOptions', { returnObjects: true }) as unknown as string[] },
       { field: 'revenue', prompt: () => t('leadChat.steps.revenue'), options: t('leadChat.revenueOptions', { returnObjects: true }) as unknown as string[] },
       { field: 'segment', prompt: () => t('leadChat.steps.segment'), options: t('leadChat.segmentOptions', { returnObjects: true }) as unknown as string[] },
+      { field: 'urgency', prompt: () => t('leadChat.steps.urgency'), options: t('leadChat.urgencyOptions', { returnObjects: true }) as unknown as string[] },
       { field: 'message', prompt: () => t('leadChat.steps.message') },
     ],
     [t],
@@ -65,6 +76,19 @@ export function LeadChat() {
   async function submit(allData: Partial<Record<Field, string>>) {
     setStatus('sending');
     setMessages((m) => [...m, { from: 'bot', text: t('leadChat.messages.sending') }]);
+
+    // Lead Score (0–10) pelos índices das opções escolhidas (independe do idioma).
+    let leadScore = 0;
+    (['revenue', 'role', 'urgency'] as Field[]).forEach((f) => {
+      const step = STEPS.find((s) => s.field === f);
+      const val = allData[f];
+      if (step?.options && val) {
+        const idx = step.options.indexOf(val);
+        if (idx >= 0) leadScore += SCORE_POINTS[f]?.[idx] ?? 0;
+      }
+    });
+    const isMQL = leadScore >= MQL_THRESHOLD;
+
     try {
       const res = await fetch('/api/lead', {
         method: 'POST',
@@ -74,9 +98,13 @@ export function LeadChat() {
           email: allData.email,
           phone: allData.phone,
           company: allData.company,
+          role: allData.role,
           revenue: allData.revenue,
           segment: allData.segment,
+          urgency: allData.urgency,
           message: allData.message,
+          leadScore,
+          mql: isMQL,
           origin: 'Site DriveData — Chat',
           page: typeof window !== 'undefined' ? window.location.pathname : '/',
           tracking: getAttribution(),
