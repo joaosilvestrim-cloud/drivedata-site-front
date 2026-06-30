@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 import { getAdminUser } from '@/server/supabase-server';
 
 // Exporta as conversões pendentes do ledger (CRM) no formato de importação
@@ -16,6 +17,12 @@ interface LedgerRow {
   value: number | null;
   currency: string | null;
   occurred_at: string;
+  leads?: { email: string | null } | null; // embed p/ LinkedIn (hash de e-mail)
+}
+
+// SHA256 do e-mail normalizado (formato exigido pelo LinkedIn p/ casar membro).
+function sha256Email(email: string): string {
+  return createHash('sha256').update(email.trim().toLowerCase()).digest('hex');
 }
 
 // Formata o timestamp (UTC) para "yyyy-MM-dd HH:mm:ss" no fuso de São Paulo,
@@ -56,12 +63,17 @@ export async function GET(req: Request) {
   const commit = url.searchParams.get('commit') === '1';
   const asJson = url.searchParams.get('format') === 'json';
 
-  // Pendentes da plataforma, com click id atribuível (sem gclid não dá p/ importar).
+  // Pendentes da plataforma, com click id atribuível. LinkedIn também traz o
+  // e-mail do lead (embed) p/ gerar o hash SHA256 de casamento de membro.
+  const selectCols =
+    platform === 'linkedin'
+      ? 'id,conversion_name,click_id,value,currency,occurred_at,leads(email)'
+      : 'id,conversion_name,click_id,value,currency,occurred_at';
   const query =
     `${SUPABASE_URL}/rest/v1/lead_conversion_events` +
     `?platform=eq.${encodeURIComponent(platform)}` +
     `&status=eq.pending&click_id=not.is.null` +
-    `&select=id,conversion_name,click_id,value,currency,occurred_at` +
+    `&select=${selectCols}` +
     `&order=occurred_at.asc`;
 
   const res = await fetch(query, { headers });
@@ -73,21 +85,41 @@ export async function GET(req: Request) {
 
   if (asJson) return Response.json({ count: rows.length, rows });
 
-  // Monta o CSV no template do Google Ads (cliques/GCLID).
-  const lines = [
-    'Parameters:TimeZone=America/Sao_Paulo',
-    'Google Click ID,Conversion Name,Conversion Time,Conversion Value,Conversion Currency',
-  ];
-  for (const r of rows) {
-    lines.push(
-      [
-        csvCell(r.click_id as string),
-        csvCell(r.conversion_name || ''),
-        fmtSaoPaulo(r.occurred_at),
-        String(r.value ?? 0),
-        r.currency || 'BRL',
-      ].join(','),
-    );
+  let lines: string[];
+  if (platform === 'linkedin') {
+    // LinkedIn: casa por li_fat_id (1st-party) e/ou e-mail com hash SHA256.
+    // Tempo em ISO 8601. Felipe mapeia as colunas no upload / ou usamos na CAPI.
+    lines = ['Conversion Name,Conversion Time,Conversion Value,Currency,li_fat_id,SHA256 Email'];
+    for (const r of rows) {
+      const email = r.leads?.email ?? '';
+      lines.push(
+        [
+          csvCell(r.conversion_name || ''),
+          r.occurred_at,
+          String(r.value ?? 0),
+          r.currency || 'BRL',
+          csvCell(r.click_id as string),
+          email ? sha256Email(email) : '',
+        ].join(','),
+      );
+    }
+  } else {
+    // Google Ads: template "Conversões a partir de cliques" (GCLID).
+    lines = [
+      'Parameters:TimeZone=America/Sao_Paulo',
+      'Google Click ID,Conversion Name,Conversion Time,Conversion Value,Conversion Currency',
+    ];
+    for (const r of rows) {
+      lines.push(
+        [
+          csvCell(r.click_id as string),
+          csvCell(r.conversion_name || ''),
+          fmtSaoPaulo(r.occurred_at),
+          String(r.value ?? 0),
+          r.currency || 'BRL',
+        ].join(','),
+      );
+    }
   }
   const csv = lines.join('\n');
 
