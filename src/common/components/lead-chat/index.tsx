@@ -3,6 +3,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getAttribution } from '@/common/helpers/attribution';
 
 // Chat de captação próprio da DriveData. Coleta os dados (mesmo fluxo do antigo
 // Typebot) e grava direto no CRM via /api/lead (origem "Chat"). Sem dependência
@@ -78,6 +79,7 @@ export function LeadChat() {
           message: allData.message,
           origin: 'Site DriveData — Chat',
           page: typeof window !== 'undefined' ? window.location.pathname : '/',
+          tracking: getAttribution(),
         }),
       });
       if (!res.ok) throw new Error('falha');

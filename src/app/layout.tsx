@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Sora } from 'next/font/google';
+import { AttributionTracker } from '../common/components/attribution-tracker';
 import { CookieConsentBanner } from '../common/components/cookie-consent';
 import { TypebotModal } from '../common/components/typebot-modal';
 import { getServerLanguage } from '../common/i18n/server';
@@ -163,6 +164,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
+        <AttributionTracker />
         <EmotionProvider>
           <I18nProvider>
             <TypebotProvider>

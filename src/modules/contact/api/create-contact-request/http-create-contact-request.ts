@@ -1,3 +1,4 @@
+import { getAttribution } from '@/common/helpers/attribution';
 import {
     CreateContactRequestParams,
     CreateContactRequestResult,
@@ -15,6 +16,7 @@ export const httpCreateContactRequest = async (
       ...params,
       origin: 'Site DriveData — Formulário de Contato',
       page: typeof window !== 'undefined' ? window.location.pathname : '/',
+      tracking: getAttribution(),
     }),
   });
 

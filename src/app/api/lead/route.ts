@@ -11,11 +11,12 @@ export async function POST(request: Request) {
           name?: string; email?: string; phone?: string; company?: string;
           message?: string; revenue?: string; segment?: string;
           origin?: string; page?: string;
+          tracking?: Record<string, string | undefined>;
         }
       | null;
     if (!body) return Response.json({ error: 'Payload inválido' }, { status: 400 });
 
-    const { name, email, phone, company, message, revenue, segment, origin, page } = body;
+    const { name, email, phone, company, message, revenue, segment, origin, page, tracking } = body;
     if (!email && !name && !phone) {
       return Response.json({ error: 'Informe ao menos nome, e-mail ou telefone.' }, { status: 422 });
     }
@@ -49,6 +50,26 @@ export async function POST(request: Request) {
     if (revenue) noteLines.push(`💰 Faturamento: ${revenue}`);
     if (segment) noteLines.push(`🏷️ Segmento: ${segment}`);
     if (message) noteLines.push(`💬 Necessidade: ${message}`);
+
+    // Atribuição de mídia paga (GCLID/UTM). Por ora gravamos nas notes; na Fase 1
+    // viram colunas próprias em `leads` para o upload de conversões offline.
+    if (tracking && typeof tracking === 'object') {
+      const t = tracking;
+      const clickIds = ['gclid', 'gbraid', 'wbraid', 'li_fat_id', 'fbclid', 'msclkid', 'ttclid']
+        .filter((k) => t[k])
+        .map((k) => `${k}=${t[k]}`);
+      const utms = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+        .filter((k) => t[k])
+        .map((k) => `${k}=${t[k]}`);
+      const attrLines: string[] = [];
+      if (clickIds.length) attrLines.push(`🔑 Click IDs: ${clickIds.join(' | ')}`);
+      if (utms.length) attrLines.push(`📈 UTM: ${utms.join(' | ')}`);
+      if (t.first_landing_page) attrLines.push(`🛬 Entrada: ${t.first_landing_page}`);
+      if (t.first_referrer) attrLines.push(`↩️ Referrer: ${t.first_referrer}`);
+      if (attrLines.length) {
+        noteLines.push('—', '🎯 Atribuição:', ...attrLines);
+      }
+    }
 
     const lead = {
       tenant_id: tenantId,

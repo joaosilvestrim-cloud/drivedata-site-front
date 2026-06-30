@@ -2,6 +2,7 @@ export const ptTranslations = {
   header: {
     navigation: {
       home: 'Início',
+      dalt: 'DALT',
       about: 'Sobre',
       solutions: 'Soluções',
       articles: 'Artigos',

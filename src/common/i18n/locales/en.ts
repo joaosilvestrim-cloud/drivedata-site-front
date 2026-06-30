@@ -2,6 +2,7 @@ export const enTranslations = {
   header: {
     navigation: {
       home: 'Home',
+      dalt: 'DALT',
       about: 'About',
       solutions: 'Solutions',
       articles: 'Articles',

@@ -2,6 +2,7 @@ export const esTranslations = {
   header: {
     navigation: {
       home: 'Inicio',
+      dalt: 'DALT',
       about: 'Sobre',
       solutions: 'Soluciones',
       articles: 'Artigos',
