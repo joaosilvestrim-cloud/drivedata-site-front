@@ -42,6 +42,7 @@ export async function POST(request: Request) {
     const parts = String(name ?? '').trim().split(/\s+/).filter(Boolean);
     const firstName = parts[0] || 'Lead';
     const lastName = parts.slice(1).join(' ') || '';
+    const t = tracking ?? {};
 
     // Origem detalhada vai nas notes (o CRM mostra no detalhe da lead).
     const noteLines = [
@@ -89,6 +90,23 @@ export async function POST(request: Request) {
       // Lead Score 0–10 (spec DALT) mapeado p/ a escala 0–100 do campo do CRM.
       // Sem scoring (ex.: formulário simples) mantém o neutro 50.
       score: typeof leadScore === 'number' ? leadScore * 10 : 50,
+      // Colunas da Fase 1 (migration 069): atribuição + score próprio do funil.
+      gclid: t.gclid ?? null,
+      gbraid: t.gbraid ?? null,
+      wbraid: t.wbraid ?? null,
+      fbclid: t.fbclid ?? null,
+      li_fat_id: t.li_fat_id ?? null,
+      msclkid: t.msclkid ?? null,
+      ttclid: t.ttclid ?? null,
+      utm_source: t.utm_source ?? null,
+      utm_medium: t.utm_medium ?? null,
+      utm_campaign: t.utm_campaign ?? null,
+      utm_content: t.utm_content ?? null,
+      utm_term: t.utm_term ?? null,
+      landing_page: t.first_landing_page ?? null,
+      referrer: t.first_referrer ?? null,
+      lead_score: typeof leadScore === 'number' ? leadScore : null,
+      is_mql: !!mql,
       notes: noteLines.join('\n'),
     };
 
@@ -104,7 +122,55 @@ export async function POST(request: Request) {
     }
 
     const created = (await iRes.json().catch(() => null)) as Array<{ id: string }> | null;
-    return Response.json({ ok: true, id: Array.isArray(created) ? created[0]?.id : undefined });
+    const leadId = Array.isArray(created) ? created[0]?.id : undefined;
+
+    // Ledger de conversões (migration 069): registra os eventos a enviar p/ as
+    // plataformas. Lead sempre; MQL se score >= 6. Só cria quando há click id
+    // atribuível. Resiliente: nunca quebra a captura da lead se algo falhar.
+    if (leadId) {
+      try {
+        const googleClick = t.gclid
+          ? { id: t.gclid, field: 'gclid' }
+          : t.gbraid
+            ? { id: t.gbraid, field: 'gbraid' }
+            : t.wbraid
+              ? { id: t.wbraid, field: 'wbraid' }
+              : null;
+        const liClick = t.li_fat_id ? { id: t.li_fat_id, field: 'li_fat_id' } : null;
+        const googleName: Record<string, string> = { lead: 'Lead', mql: 'MQL' };
+        const stages: Array<'lead' | 'mql'> = mql ? ['lead', 'mql'] : ['lead'];
+
+        const events = stages.flatMap((et) => {
+          const rows: Record<string, unknown>[] = [];
+          if (googleClick) {
+            rows.push({
+              tenant_id: tenantId, lead_id: leadId, event_type: et, platform: 'google',
+              conversion_name: googleName[et], click_id: googleClick.id, click_field: googleClick.field,
+              currency: 'BRL',
+            });
+          }
+          if (liClick) {
+            rows.push({
+              tenant_id: tenantId, lead_id: leadId, event_type: et, platform: 'linkedin',
+              click_id: liClick.id, click_field: liClick.field, currency: 'BRL',
+            });
+          }
+          return rows;
+        });
+
+        if (events.length) {
+          await fetch(`${SUPABASE_URL}/rest/v1/lead_conversion_events`, {
+            method: 'POST',
+            headers: { ...headers, Prefer: 'resolution=ignore-duplicates' },
+            body: JSON.stringify(events),
+          });
+        }
+      } catch {
+        /* ledger é best-effort; a lead já foi salva */
+      }
+    }
+
+    return Response.json({ ok: true, id: leadId });
   } catch (e) {
     return Response.json({ error: (e as Error).message }, { status: 500 });
   }
