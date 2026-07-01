@@ -3,7 +3,6 @@
 import { useTranslation } from 'react-i18next';
 import { Button } from '../button';
 import {
-  Eyebrow,
   GhostButton,
   HighlightedText,
   MainActions,
@@ -41,11 +40,6 @@ export const MainAboutSection = ({ className }: MainAboutSectionProps) => {
   return (
     <MainContainer className={className}>
       <MainContent>
-        <Eyebrow>
-          <span className="dot" />
-          {t('mainAboutSection.eyebrow', 'Sobre a DriveData')}
-        </Eyebrow>
-
         <MainTitle>
           {t('mainAboutSection.title')}{' '}
           <HighlightedText>{t('mainAboutSection.titleHighlight')}</HighlightedText>
