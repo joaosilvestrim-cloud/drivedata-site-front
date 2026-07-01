@@ -1,6 +1,7 @@
 'use client';
 
 import { Container } from '@/common/components/container';
+import { SITE_CONTACT } from '@/common/config/site';
 import { httpCreateContactRequest } from '@/modules/contact/api/create-contact-request/http-create-contact-request';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -151,7 +152,7 @@ export const ContactSection = ({ className }: ContactSectionProps) => {
                     />
                   </svg>
                 </ContactIcon>
-                <ContactText>(15) 99797-5794</ContactText>
+                <ContactText>{SITE_CONTACT.phone}</ContactText>
               </ContactItem>
 
               <ContactItem>
@@ -182,8 +183,12 @@ export const ContactSection = ({ className }: ContactSectionProps) => {
                   </svg>
                 </ContactIcon>
                 <ContactText>
-                  AL Rio Negro, Alphaville, 503,<br />
-                  06454-000, Barueri/SP
+                  {SITE_CONTACT.addressLines.map((line, i) => (
+                    <span key={i}>
+                      {line}
+                      {i < SITE_CONTACT.addressLines.length - 1 && <br />}
+                    </span>
+                  ))}
                 </ContactText>
               </ContactItem>
             </ContactDetails>

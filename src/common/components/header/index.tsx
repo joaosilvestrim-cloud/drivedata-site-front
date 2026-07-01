@@ -2,6 +2,7 @@
 
 import { Button } from '@/common/components/button';
 import { Container } from '@/common/components/container';
+import { SHOW_DALT } from '@/common/config/site';
 import { normalizeLanguageCode } from '@/common/i18n';
 import { useTypebot } from '@/common/providers/TypebotProvider';
 import { usePathname, useRouter } from 'next/navigation';
@@ -53,6 +54,11 @@ const navigationLinks: NavigationItem[] = [
   { href: '/about#clientes', labelKey: 'header.navigation.clients' },
   { href: 'https://academy.drivedata.com.br/', labelKey: 'header.navigation.trainings', external: true },
 ];
+
+// DALT só existe no Brasil — no Canadá o item é removido do menu.
+const visibleLinks: NavigationItem[] = SHOW_DALT
+  ? navigationLinks
+  : navigationLinks.filter((item) => item.href !== '/dalt');
 
 const htmlLanguageMap: Record<LanguageOption['code'], string> = {
   pt: 'pt-BR',
@@ -382,7 +388,7 @@ export const Header = ({ className }: HeaderProps) => {
             </Logo>
 
             <Navigation>
-              {navigationLinks.map((item) =>
+              {visibleLinks.map((item) =>
                 item.external ? (
                   <NavLink
                     key={item.labelKey}
@@ -465,7 +471,7 @@ export const Header = ({ className }: HeaderProps) => {
       />
 
       <MobileMenu isOpen={isMobileMenuOpen}>
-        {navigationLinks.map((item) =>
+        {visibleLinks.map((item) =>
           item.external ? (
             <MobileNavLink
               key={item.labelKey}

@@ -1,5 +1,6 @@
 import { createInstance } from 'i18next';
 import { cookies, headers } from 'next/headers';
+import { SITE_COUNTRY } from '@/common/config/site';
 import { isEnglishDefaultDomain } from './domain-default-language';
 import { AppLanguage, defaultNamespace, resources } from './resources';
 import { normalizeLanguageCode } from './utils';
@@ -55,6 +56,12 @@ const getLanguage = async (): Promise<AppLanguage> => {
 
   if (host && isEnglishDefaultDomain(host)) {
     console.log('[getServerLanguage] English default domain detected:', host);
+    return 'en';
+  }
+
+  // Projeto do Canadá (NEXT_PUBLIC_SITE_COUNTRY=CA) — cobre também a URL de preview
+  // *.vercel.app, onde o host não é drivedata.ca. Cookie do usuário ainda tem prioridade.
+  if (SITE_COUNTRY === 'CA') {
     return 'en';
   }
 

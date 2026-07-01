@@ -1,7 +1,10 @@
 // Endpoint do SITE que recebe a lead do formulário e grava direto na tabela
-// `leads` do CRM (Supabase de produção), já com o tenant Brasil — para a lead
-// aparecer no módulo Comercial. Roda só no servidor (service_role nunca vai ao
-// navegador). Não altera nada do projeto do CRM; apenas insere a linha da lead.
+// `leads` do CRM (Supabase de produção), no tenant do país deste site
+// (LEAD_TENANT_CODE: BR por padrão, CA no site do Canadá) — para a lead aparecer
+// no módulo Comercial da tenant correta. Roda só no servidor (service_role nunca
+// vai ao navegador). Não altera nada do projeto do CRM; apenas insere a lead.
+import { LEAD_TENANT_CODE } from '@/common/config/site';
+
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
@@ -34,8 +37,8 @@ export async function POST(request: Request) {
       'Content-Type': 'application/json',
     };
 
-    // Resolve o tenant Brasil (a lead precisa de tenant p/ aparecer no CRM via RLS)
-    const tRes = await fetch(`${SUPABASE_URL}/rest/v1/tenants?code=eq.BR&select=id`, { headers });
+    // Resolve o tenant do país deste site (a lead precisa de tenant p/ aparecer no CRM via RLS)
+    const tRes = await fetch(`${SUPABASE_URL}/rest/v1/tenants?code=eq.${LEAD_TENANT_CODE}&select=id`, { headers });
     const tenants = (await tRes.json().catch(() => [])) as Array<{ id: string }>;
     const tenantId = Array.isArray(tenants) && tenants[0]?.id ? tenants[0].id : null;
 
