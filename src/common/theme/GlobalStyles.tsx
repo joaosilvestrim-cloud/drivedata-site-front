@@ -60,9 +60,10 @@ export const GlobalStyles = () => (
         background-size: 60px 60px;
         mask-image: radial-gradient(ellipse 110% 70% at 50% 0%, #000 15%, transparent 92%);
       }
-      /* Seções assentam no campo (removem o preto sólido antigo) */
+      /* Seções ficam posicionadas; o "assentar no campo" é feito por seção
+         (transparência) conforme cada uma é redesenhada — evita texto escuro
+         sobre fundo escuro em seções ainda não migradas. */
       section {
-        background-color: transparent !important;
         position: relative;
       }
       /* Headings no display font, com tracking apertado */
