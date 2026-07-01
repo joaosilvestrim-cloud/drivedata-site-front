@@ -3,9 +3,22 @@ import { theme } from '../../theme';
 
 export const FooterContainer = styled.footer`
   width: 100%;
-  background-color: #000000;
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 40%);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: ${theme.spacing['3xl']} 0 ${theme.spacing.xl} 0;
+
+  /* linha de topo com brilho da marca (ciano→verde) */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(10, 150, 236, 0.6), rgba(84, 218, 137, 0.6), transparent);
+    pointer-events: none;
+  }
 
   @media (max-width: ${theme.breakpoints.md}) {
     padding: ${theme.spacing['2xl']} 0 ${theme.spacing.lg} 0;

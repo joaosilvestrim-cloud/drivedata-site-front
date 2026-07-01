@@ -3,55 +3,33 @@ import { theme } from '../../theme';
 
 export const ProcessSectionContainer = styled.section`
   width: 100%;
-  min-height: 700px;
-  padding: ${theme.spacing['4xl']} 0;
-  background-color: #000000;
+  padding: 120px 0;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 
-  /* Imagem de fundo */
+  /* glow focal da seção sobre o campo navy global */
   &::before {
     content: '';
     position: absolute;
-    top: 50px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('/businnes-graph.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     z-index: 0;
-  }
-
-  /* Overlay escuro - gradiente sutil */
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.7) 0%,
-      rgba(0, 0, 0, 0.6) 40%,
-      rgba(0, 0, 0, 0.5) 100%
-    );
-    z-index: 1;
+    width: 760px;
+    height: 760px;
+    left: 50%;
+    top: -260px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(10, 150, 236, 0.14), transparent 62%);
+    filter: blur(20px);
+    pointer-events: none;
   }
 
   @media (max-width: ${theme.breakpoints.md}) {
-    min-height: 600px;
-    padding: ${theme.spacing['4xl']} 0;
-  }
-
-  @media (max-width: ${theme.breakpoints.sm}) {
-    min-height: 500px;
-    padding: ${theme.spacing['4xl']} 0;
+    padding: 84px 0;
   }
 `;
 
 export const ProcessSectionContent = styled.div`
   position: relative;
-  z-index: 10;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,101 +44,102 @@ export const ProcessHeader = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: ${theme.spacing.lg};
+  gap: ${theme.spacing.md};
   text-align: center;
-  max-width: 900px;
+  max-width: 820px;
 `;
 
 export const ProcessTitle = styled.h2`
-  background: linear-gradient(
-    to bottom,
-    #009fff,
-    #00b0ff,
-    #00c0ff,
-    #00cffd,
-    #00dcf7,
-    #2ce3f4,
-    #45eaf1,
-    #5bf1ee,
-    #68f5f0,
-    #74f8f1,
-    #7ffcf3,
-    #8afff5
-  );
+  font-family: var(--font-sora), 'Sora', sans-serif;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.12;
+  letter-spacing: -0.8px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+
+  background: linear-gradient(120deg, #0a96ec, #54da89);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: ${theme.typography.fontWeight.medium};
-  font-size: 40px;
-
-  @media (max-width: ${theme.breakpoints.md}) {
-    font-size: 32px;
-  }
 
   @media (max-width: ${theme.breakpoints.sm}) {
-    font-size: 28px;
+    font-size: 26px;
   }
 `;
 
 export const ProcessSubtitle = styled.p`
-  font-size: 20px;
+  font-size: 16.5px;
   line-height: 1.6;
-  color: #E6E9FA;
+  color: rgba(234, 240, 251, 0.66);
   margin: 0;
-  font-weight: ${theme.typography.fontWeight.normal};
-  max-width: 700px;
-
-  @media (max-width: ${theme.breakpoints.md}) {
-    font-size: 18px;
-  }
+  max-width: 640px;
 
   @media (max-width: ${theme.breakpoints.sm}) {
-    font-size: 16px;
+    font-size: 15px;
   }
 `;
 
 export const ProcessGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${theme.spacing.xl};
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
   width: 100%;
-  max-width: 1200px;
-  margin-top: ${theme.spacing.xl};
-  padding: 0 ${theme.spacing.xl};
+  max-width: 1120px;
+  margin-top: 28px;
+  padding: 0 24px;
 
-  @media (max-width: ${theme.breakpoints.md}) {
+  @media (max-width: ${theme.breakpoints.lg}) {
     grid-template-columns: 1fr;
-    max-width: 500px;
-    margin-top: ${theme.spacing.lg};
-    padding: 0 ${theme.spacing.md};
+    max-width: 520px;
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {
-    gap: ${theme.spacing.lg};
-    padding: 0 ${theme.spacing.sm};
+    gap: 26px;
+    padding: 0 16px;
   }
 `;
 
 export const ProcessCard = styled.div`
-  background: rgba(6, 10, 19, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 24px;
-  padding: ${theme.spacing.lg};
+  position: relative;
+  background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  padding: 44px 26px 30px;
   display: flex;
   flex-direction: column;
-  gap: ${theme.spacing.sm};
-  text-align: center;
-  transition: all 0.3s ease;
-  padding-top: ${theme.spacing['2xl']};
+  gap: 10px;
+  text-align: left;
   height: 100%;
-  justify-content: flex-start;
+  clip-path: polygon(0 0, 86% 0, 100% 16%, 100% 100%, 0 100%);
+  transition: background 0.25s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    padding: 1px;
+    clip-path: polygon(0 0, 86% 0, 100% 16%, 100% 100%, 0 100%);
+    background: linear-gradient(150deg, rgba(10, 150, 236, 0.45), transparent 46%, rgba(84, 218, 137, 0.4));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    clip-path: none;
+    &::before {
+      clip-path: none;
+    }
+  }
 `;
 
 export const ProcessCardWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
   height: 100%;
   transition: transform 0.3s ease;
 
@@ -169,85 +148,55 @@ export const ProcessCardWrapper = styled.div`
   }
 
   &:hover ${ProcessCard} {
-    border-color: rgba(138, 255, 245, 0.5);
-    box-shadow: 0 12px 40px rgba(138, 255, 245, 0.15);
+    background: rgba(255, 255, 255, 0.07);
   }
 `;
 
-
 export const StepNumber = styled.div`
   position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 92px;
+  top: 14px;
+  right: 22px;
+  font-family: var(--font-sora), 'Sora', sans-serif;
+  font-size: 74px;
   line-height: 1;
-  font-weight: ${theme.typography.fontWeight.bold};
-  background: linear-gradient(
-    to bottom,
-    #009fff,
-    #00b0ff,
-    #00c0ff,
-    #00cffd,
-    #00dcf7,
-    #2ce3f4,
-    #45eaf1,
-    #5bf1ee,
-    #68f5f0,
-    #74f8f1,
-    #7ffcf3,
-    #8afff5
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  letter-spacing: -2px;
   margin: 0;
-  z-index: 1;
+  z-index: 3;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(84, 218, 137, 0.45);
+  pointer-events: none;
 
   @media (max-width: ${theme.breakpoints.sm}) {
-    font-size: 64px;
-    top: -32px;
+    font-size: 60px;
+    top: 10px;
   }
 `;
 
 export const StepTitle = styled.h3`
-  font-size: 20px;
+  font-family: var(--font-sora), 'Sora', sans-serif;
+  font-size: 18px;
   line-height: 1.3;
-  font-weight: ${theme.typography.fontWeight.semibold};
+  font-weight: 700;
   margin: 0;
-  background: linear-gradient(
-    to bottom,
-    #009fff,
-    #00b0ff,
-    #00c0ff,
-    #00cffd,
-    #00dcf7,
-    #2ce3f4,
-    #45eaf1,
-    #5bf1ee,
-    #68f5f0,
-    #74f8f1,
-    #7ffcf3,
-    #8afff5
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #fff;
+  position: relative;
+  z-index: 4;
 
   @media (max-width: ${theme.breakpoints.sm}) {
-    font-size: 18px;
+    font-size: 17px;
   }
 `;
 
 export const StepDescription = styled.p`
-  font-size: 16px;
+  font-size: 14.5px;
   line-height: 1.6;
-  color: #9CB0C2;
+  color: rgba(234, 240, 251, 0.66);
   margin: 0;
-  font-weight: ${theme.typography.fontWeight.normal};
+  position: relative;
+  z-index: 4;
 
   @media (max-width: ${theme.breakpoints.sm}) {
     font-size: 14px;
   }
 `;
-

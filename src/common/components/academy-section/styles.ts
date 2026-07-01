@@ -4,7 +4,7 @@ import { theme } from '../../theme';
 export const AcademySectionContainer = styled.section`
   width: 100%;
   padding: ${theme.spacing['2xl']} 0;
-  background-color: #000000;
+  position: relative;
 `;
 
 export const AcademyCard = styled.div`
@@ -15,14 +15,36 @@ export const AcademyCard = styled.div`
   gap: ${theme.spacing.xl};
   border-radius: 24px;
   padding: ${theme.spacing['2xl']};
-  background: linear-gradient(120deg, rgba(84, 218, 137, 0.12), rgba(10, 150, 236, 0.12));
-  border: 1px solid rgba(84, 218, 137, 0.35);
+  background:
+    radial-gradient(600px 240px at 12% 0%, rgba(84, 218, 137, 0.16), transparent 70%),
+    radial-gradient(600px 240px at 100% 120%, rgba(10, 150, 236, 0.16), transparent 70%),
+    rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(14px);
+  clip-path: polygon(0 0, 94% 0, 100% 22%, 100% 100%, 0 100%);
   overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    padding: 1px;
+    clip-path: polygon(0 0, 94% 0, 100% 22%, 100% 100%, 0 100%);
+    background: linear-gradient(130deg, rgba(84, 218, 137, 0.55), transparent 44%, rgba(10, 150, 236, 0.5));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
 
   @media (max-width: ${theme.breakpoints.md}) {
     flex-direction: column;
     align-items: flex-start;
     padding: ${theme.spacing.xl};
+    clip-path: none;
+    &::before {
+      clip-path: none;
+    }
   }
 `;
 
@@ -45,11 +67,13 @@ export const AcademyBadge = styled.span`
 `;
 
 export const AcademyTitle = styled.h2`
+  font-family: var(--font-sora), 'Sora', sans-serif;
   font-size: 32px;
-  line-height: 1.25;
+  line-height: 1.2;
+  letter-spacing: -0.6px;
   margin: 0;
   color: #ffffff;
-  font-weight: ${theme.typography.fontWeight.semibold};
+  font-weight: 800;
 
   @media (max-width: ${theme.breakpoints.sm}) {
     font-size: 26px;
@@ -57,9 +81,9 @@ export const AcademyTitle = styled.h2`
 `;
 
 export const AcademyDescription = styled.p`
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.6;
-  color: #b0b0b0;
+  color: rgba(234, 240, 251, 0.7);
   margin: 0;
 `;
 

@@ -28,17 +28,18 @@ export const HeaderContent = styled.div`
   height: 70px;
   background: linear-gradient(
     135deg,
-    rgba(4, 5, 9, 0.14) 0%,
-    rgba(255, 255, 255, 0) 100%
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 100%
   );
   border-radius: 80px;
   padding: 16px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
 
   @media (max-width: ${theme.breakpoints.lg}) {
     height: 60px;
