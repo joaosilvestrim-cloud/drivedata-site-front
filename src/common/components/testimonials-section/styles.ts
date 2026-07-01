@@ -118,7 +118,9 @@ export const TestimonialsSectionSubtitle = styled.p`
 
 export const TestimonialCardContainer = styled.div`
   position: relative;
-  background: rgba(255, 255, 255, 0.05);
+  background:
+    linear-gradient(90deg, #0a96ec, #54da89) top left / 100% 3px no-repeat,
+    rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-radius: 20px;
@@ -154,20 +156,25 @@ export const TestimonialCardContainer = styled.div`
   &::after {
     content: '\\201C';
     position: absolute;
-    top: 12px;
-    right: 24px;
+    top: 18px;
+    right: 26px;
     font-family: Georgia, serif;
-    font-size: 96px;
+    font-size: 120px;
     line-height: 1;
-    color: rgba(84, 218, 137, 0.12);
+    background: linear-gradient(160deg, rgba(84, 218, 137, 0.22), rgba(10, 150, 236, 0.14));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     pointer-events: none;
     z-index: 0;
   }
 
   &:hover {
     transform: translateY(-6px);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 28px 56px rgba(0, 0, 0, 0.45);
+    background:
+      linear-gradient(90deg, #0a96ec, #54da89) top left / 100% 3px no-repeat,
+      rgba(255, 255, 255, 0.08);
+    box-shadow: 0 28px 56px rgba(0, 0, 0, 0.45), 0 0 40px rgba(84, 218, 137, 0.12);
   }
 
   @media (max-width: ${theme.breakpoints.md}) {
