@@ -27,11 +27,25 @@ const fadeIn = keyframes`
 export const ClientsSectionContainer = styled.section`
   width: 100%;
   padding: ${theme.spacing['4xl']} 0;
-  background-color: #000000;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   max-width: 992px;
   margin: 0 auto;
+
+  /* glow focal sutil sobre o campo navy */
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    width: 620px;
+    height: 620px;
+    left: 50%;
+    top: -120px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(84, 218, 137, 0.12), transparent 62%);
+    filter: blur(20px);
+    pointer-events: none;
+  }
 
   @media (max-width: ${theme.breakpoints.md}) {
     padding: ${theme.spacing['3xl']} 0;
@@ -43,6 +57,8 @@ export const ClientsSectionContainer = styled.section`
 `;
 
 export const ClientsSectionContent = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

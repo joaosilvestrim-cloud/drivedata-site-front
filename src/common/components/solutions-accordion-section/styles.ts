@@ -4,7 +4,7 @@ import { theme } from '../../theme';
 export const SolutionsSectionContainer = styled.section`
   width: 100%;
   padding: ${theme.spacing['4xl']} 0;
-  background-color: #000000;
+  background: transparent;
   position: relative;
   overflow: visible;
 
@@ -19,10 +19,15 @@ export const SolutionsSectionContent = styled.div`
 `;
 
 export const SolutionsTitle = styled.h2`
+  font-family: var(--font-sora), 'Sora', sans-serif;
+  letter-spacing: -0.6px;
   font-size: 48px;
   line-height: 1.2;
   font-weight: ${theme.typography.fontWeight.bold};
-  color: #8AFFF5;
+  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin: 0;
   text-align: center;
 
@@ -57,8 +62,9 @@ export const SolutionsList = styled.div`
 `;
 
 export const SolutionItem = styled.div<{ isOpen: boolean; isHighlighted?: boolean }>`
-  background: linear-gradient(180deg, #1F1F1F 0%, #1A1A1A 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   padding: ${theme.spacing.lg};
   display: flex;

@@ -3,7 +3,7 @@ import { theme } from '../../theme';
 
 export const IntegrationsSectionContainer = styled.section`
   width: 100%;
-  background: linear-gradient(180deg, #0A0E1A 0%, #1A1F33 100%);
+  background: transparent;
   padding: ${theme.spacing['4xl']} 0;
   position: relative;
   overflow: hidden;
@@ -39,6 +39,8 @@ export const IntegrationsHeader = styled.div`
 `;
 
 export const IntegrationsTitle = styled.h2`
+  font-family: var(--font-sora), 'Sora', sans-serif;
+  letter-spacing: -0.6px;
   font-size: 48px;
   line-height: 1.2;
   font-weight: ${theme.typography.fontWeight.bold};
@@ -61,7 +63,7 @@ export const IntegrationsTitleHighlight = styled.span`
 export const IntegrationsDescription = styled.p`
   font-size: 18px;
   line-height: 1.6;
-  color: #C4C4C4;
+  color: rgba(234, 240, 251, 0.66);
   margin: 0;
   font-weight: ${theme.typography.fontWeight.normal};
 

@@ -4,7 +4,7 @@ import { theme } from '../../theme';
 export const FaqSectionContainer = styled.section`
   width: 100%;
   padding: ${theme.spacing['4xl']} 0;
-  background-color: #000000;
+  background: transparent;
   position: relative;
   overflow: visible;
 
@@ -41,10 +41,12 @@ export const FaqHeader = styled.div`
 `;
 
 export const FaqTitle = styled.h2`
+  font-family: var(--font-sora), 'Sora', sans-serif;
+  letter-spacing: -0.6px;
   font-size: 48px;
   line-height: 1.2;
   font-weight: ${theme.typography.fontWeight.bold};
-  color: white;
+  color: #fff;
   margin: 0;
   text-align: center;
 
@@ -58,9 +60,14 @@ export const FaqTitle = styled.h2`
 `;
 
 export const FaqSubtitle = styled.p`
+  font-family: var(--font-sora), 'Sora', sans-serif;
+  letter-spacing: -0.6px;
   font-size: 48px;
   line-height: 1.2;
-  color: #8AFFF5;
+  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin: 0;
   font-weight: ${theme.typography.fontWeight.bold};
   text-align: center;
@@ -91,8 +98,9 @@ export const FaqList = styled.div`
 `;
 
 export const FaqItem = styled.div<{ isOpen: boolean }>`
-  background: linear-gradient(180deg, #1F1F1F 0%, #1A1A1A 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   padding: ${theme.spacing.lg};
   display: flex;
@@ -137,7 +145,7 @@ export const FaqQuestion = styled.strong<{ isOpen?: boolean }>`
   flex: 1;
   font-size: 18px;
   line-height: 1.6;
-  color: white;
+  color: #fff;
   font-weight: ${props => props.isOpen ? theme.typography.fontWeight.bold : theme.typography.fontWeight.medium};
   transition: all 0.3s ease;
 
@@ -153,7 +161,7 @@ export const FaqQuestion = styled.strong<{ isOpen?: boolean }>`
 `;
 
 export const ChevronIcon = styled.div<{ isOpen: boolean }>`
-  color: #8AFFF5;
+  color: #54da89;
   transition: transform 0.3s ease;
   transform: ${props => props.isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
   flex-shrink: 0;
@@ -174,7 +182,7 @@ export const ChevronIcon = styled.div<{ isOpen: boolean }>`
 export const FaqAnswer = styled.div`
   font-size: 16px;
   line-height: 1.6;
-  color: ${theme.colors.neutral[300]};
+  color: rgba(234, 240, 251, 0.7);
   margin-top: 16px;
   opacity: 1;
   font-weight: ${theme.typography.fontWeight.normal};

@@ -8,7 +8,6 @@ import {
   DashBars,
   DashHead,
   DashKpis,
-  Eyebrow,
   FloatChip,
   GhostButton,
   GlobeCanvas,
@@ -230,11 +229,6 @@ export const MainSection = ({ className }: MainSectionProps) => {
 
       <MainContent>
         <HeroLeft>
-          <Eyebrow>
-            <span className="dot" />
-            {t('mainSection.eyebrow', 'Inteligência de Dados · BI · IA')}
-          </Eyebrow>
-
           <MainTitle>
             {t('mainSection.title')}{' '}
             <HighlightedText>{t('mainSection.titleHighlight')}</HighlightedText>

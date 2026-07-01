@@ -133,9 +133,12 @@ export const AboutUsContent = styled.div`
 `;
 
 export const AboutUsTitle = styled.h2`
+  font-family: var(--font-sora), 'Sora', sans-serif;
   font-size: ${theme.typography.fontSize['4xl'][0]};
-  line-height: 1.2;
-  font-weight: ${theme.typography.fontWeight.bold};
+  line-height: 1.15;
+  letter-spacing: -0.6px;
+  font-weight: 800;
+  color: #ffffff;
   margin: 0;
 
   @media (max-width: ${theme.breakpoints.md}) {
@@ -148,7 +151,10 @@ export const AboutUsTitle = styled.h2`
 `;
 
 export const AboutUsTitleHighlight = styled.span`
-  color: #0dd0d0;
+  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `;
 
 export const AboutUsSubtitle = styled.p`

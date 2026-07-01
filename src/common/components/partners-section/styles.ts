@@ -32,7 +32,7 @@ const fadeInPop = keyframes`
 
 export const PartnersSectionContainer = styled.section`
   width: 100%;
-  background-color: white;
+  position: relative;
   padding: ${theme.spacing['4xl']} 0;
 
   @media (max-width: ${theme.breakpoints.md}) {
@@ -85,10 +85,15 @@ export const PartnersHeader = styled.div`
 `;
 
 export const PartnersTitle = styled.h2`
-  font-size: 48px;
-  line-height: 1.2;
-  font-weight: ${theme.typography.fontWeight.bold};
-  color: #0A96EC;
+  font-family: var(--font-sora), 'Sora', sans-serif;
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.8px;
+  font-weight: 800;
+  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin: 0;
   opacity: 0;
   transform: translate3d(0, 16px, 0);
@@ -114,7 +119,7 @@ export const PartnersTitle = styled.h2`
 export const PartnersSubtitle = styled.p`
   font-size: 20px;
   line-height: 1.6;
-  color: #666;
+  color: rgba(234, 240, 251, 0.66);
   margin: 0;
   font-weight: ${theme.typography.fontWeight.normal};
   opacity: 0;
@@ -183,18 +188,23 @@ export const PartnerLogo = styled.div`
   min-height: 100px;
   width: 100%;
   cursor: pointer;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
   opacity: 0;
   transform: translate3d(0, 30px, 0) scale(0.8) rotateY(-15deg);
   will-change: opacity, transform;
-  
+  transition: box-shadow 0.3s ease;
+
   /* Quando visível, aplica a animação */
   &[data-animate='true'] {
     animation: ${fadeInPop} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
-  
+
   img {
     max-width: 100%;
-    max-height: 80px;
+    max-height: 74px;
     width: auto;
     height: auto;
     object-fit: contain !important;
@@ -204,10 +214,11 @@ export const PartnerLogo = styled.div`
   }
 
   &:hover {
-    transform: translateY(-8px) scale(1.1) rotateY(0deg) !important;
-    
+    transform: translateY(-8px) scale(1.06) rotateY(0deg) !important;
+    box-shadow: 0 16px 40px rgba(10, 150, 236, 0.28);
+
     img {
-      transform: scale(1.1);
+      transform: scale(1.08);
     }
   }
 
@@ -313,10 +324,12 @@ export const ResultsContent = styled.div`
 `;
 
 export const ResultsTitle = styled.h2`
+  font-family: var(--font-sora), 'Sora', sans-serif;
   font-size: 36px;
-  line-height: 112%;
-  font-weight: ${theme.typography.fontWeight.medium};
-  color: #040509;
+  line-height: 1.15;
+  letter-spacing: -0.6px;
+  font-weight: 800;
+  color: #fff;
   margin: 0;
   max-width: 500px;
   opacity: 0;
@@ -342,13 +355,16 @@ export const ResultsTitle = styled.h2`
 `;
 
 export const ResultsTitleBlue = styled.span`
-  color: #0A96EC;
+  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `
 
 export const ResultsDescription = styled.p`
   font-size: 20px;
   line-height: 150%;
-  color: #040509;
+  color: rgba(234, 240, 251, 0.7);
   margin: 0;
   font-weight: ${theme.typography.fontWeight.normal};
   font-family: 'Satoshi', sans-serif;

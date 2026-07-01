@@ -4,7 +4,8 @@ import { theme } from '../../theme';
 export const ContactSectionContainer = styled.section`
   width: 100%;
   padding: ${theme.spacing['2xl']} 0;
-  background-color: #000000;
+  background: transparent;
+  position: relative;
 
   @media (max-width: ${theme.breakpoints.md}) {
     padding: ${theme.spacing.xl} 0 ${theme.spacing['2xl']};
@@ -46,6 +47,8 @@ export const ContactInfo = styled.div`
 `;
 
 export const ContactTitle = styled.h2`
+  font-family: var(--font-sora), 'Sora', sans-serif;
+  letter-spacing: -0.6px;
   font-size: 48px;
   line-height: 1.2;
   font-weight: ${theme.typography.fontWeight.bold};
@@ -181,8 +184,9 @@ export const FormLabel = styled.label`
 `;
 
 export const FormInput = styled.input`
-  background: #0F1015;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   font-size: 16px;
@@ -211,9 +215,10 @@ export const FormInput = styled.input`
 `;
 
 export const FormTextarea = styled.textarea`
-  background: #0F1015;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(14px);
   padding: ${theme.spacing.md} ${theme.spacing.lg};
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   font-size: 16px;
   border-radius: 8px;
   color: white;

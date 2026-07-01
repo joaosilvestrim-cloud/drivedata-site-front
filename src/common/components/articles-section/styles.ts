@@ -28,6 +28,8 @@ export const ArticlesSectionHeader = styled.div`
 `;
 
 export const ArticlesSectionTitle = styled.h2`
+  font-family: var(--font-sora), 'Sora', sans-serif;
+  letter-spacing: -0.6px;
   font-size: ${theme.typography.fontSize['4xl'][0]};
   font-weight: ${theme.typography.fontWeight.bold};
   background: linear-gradient(153.42deg, #54DA89 30.36%, #0A96EC 132.34%);
