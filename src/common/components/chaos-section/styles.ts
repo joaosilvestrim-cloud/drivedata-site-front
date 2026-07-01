@@ -2,182 +2,54 @@ import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { theme } from '../../theme';
 
-const backgroundParallax = keyframes`
-  0% {
-    transform: scale(1.02) translate3d(0, 0, 0);
-    filter: saturate(105%);
-  }
-
-  45% {
-    transform: scale(1.06) translate3d(-1.6%, 1.4%, 0);
-    filter: saturate(112%);
-  }
-
-  75% {
-    transform: scale(1.04) translate3d(1.2%, -1.2%, 0);
-    filter: saturate(108%);
-  }
-
-  100% {
-    transform: scale(1.02) translate3d(0, 0, 0);
-    filter: saturate(105%);
-  }
-`;
-
-const lightSweep = keyframes`
-  0% {
-    background-position: 0% 50%;
-    opacity: 0.25;
-  }
-
-  45% {
-    background-position: 100% 50%;
-    opacity: 0.4;
-  }
-
-  100% {
-    background-position: 0% 50%;
-    opacity: 0.25;
-  }
-`;
-
-const riseAndFade = keyframes`
-  0% {
-    opacity: 0;
-    transform: translate3d(0, 48px, 0);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-`;
-
-const highlightPulse = keyframes`
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
+const floaty = keyframes`
+  0%, 100% { transform: translateY(-50%) translateY(0); }
+  50% { transform: translateY(-50%) translateY(-14px); }
 `;
 
 export const ChaosSectionContainer = styled.section`
   width: 100%;
-  min-height: 600px;
-  padding: ${theme.spacing['4xl']} 0;
-  background-color: #000000;
   position: relative;
   overflow: hidden;
+  padding: 120px 0;
+  background: #070c16;
 
+  /* grid sutil */
   &::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    background-image: url('/touching-future-data-analysis-technology-interface.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.8;
-    transform-origin: center;
-    will-change: transform, filter;
-    animation: ${backgroundParallax} 28s ease-in-out infinite;
-    animation-play-state: paused;
+    inset: 0;
     z-index: 0;
-
-    @media (max-width: ${theme.breakpoints.lg}) {
-      width: 100%;
-      opacity: 0.35;
-    }
+    opacity: 0.5;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 70% at 68% 50%, #000 30%, transparent 78%);
   }
-
-  &[data-visible='true']::before {
-    animation-play-state: running;
-  }
-
+  /* glow lateral */
   &::after {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 55%;
-    max-width: 660px;
-    background: linear-gradient(
-        95deg,
-        rgba(3, 10, 30, 0.4) 0%,
-        rgba(0, 0, 0, 0.75) 58%,
-        rgba(0, 0, 0, 0.95) 100%
-      ),
-      linear-gradient(120deg, rgba(0, 159, 255, 0.18), transparent 65%);
-    background-size: 220% 100%;
-    opacity: 0.22;
-    mix-blend-mode: screen;
-    animation: ${lightSweep} 18s ease-in-out infinite;
-    animation-play-state: paused;
-    z-index: 1;
-
-    @media (max-width: ${theme.breakpoints.lg}) {
-      width: 100%;
-      max-width: none;
-      background: linear-gradient(
-        180deg,
-        rgba(3, 10, 30, 0.35) 0%,
-        rgba(0, 0, 0, 0.92) 80%
-      );
-      background-size: 200% 200%;
-    }
-  }
-
-  &[data-visible='true']::after {
-    animation-play-state: running;
+    z-index: 0;
+    width: 640px;
+    height: 640px;
+    right: -160px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: radial-gradient(circle, rgba(10, 150, 236, 0.26), transparent 65%);
+    filter: blur(30px);
+    pointer-events: none;
   }
 
   @media (max-width: ${theme.breakpoints.md}) {
-    min-height: 500px;
-    padding: ${theme.spacing['3xl']} 0;
-  }
-
-  @media (max-width: ${theme.breakpoints.sm}) {
-    min-height: 400px;
-    padding: ${theme.spacing['2xl']} 0;
+    padding: 80px 0;
   }
 `;
 
 export const ChaosSectionContent = styled.div`
-  margin: 0 auto;
-  padding: 0 ${theme.spacing.lg};
   position: relative;
   z-index: 2;
-  display: flex;
-  align-items: center;
-  min-height: 600px;
-  opacity: 0;
-  transform: translate3d(0, 56px, 0);
-  animation: ${riseAndFade} 0.9s ease forwards;
-  animation-play-state: paused;
-  will-change: opacity, transform;
-
-  &[data-visible='true'] {
-    animation-play-state: running;
-  }
-
-  @media (max-width: ${theme.breakpoints.md}) {
-    min-height: 500px;
-    padding: 0 ${theme.spacing.md};
-  }
-
-  @media (max-width: ${theme.breakpoints.sm}) {
-    min-height: 400px;
-  }
+  width: 100%;
 `;
 
 export const ChaosGrid = styled.div`
@@ -186,89 +58,139 @@ export const ChaosGrid = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: ${theme.spacing['3xl']};
   align-items: center;
-  width: 100%;
 
+  /* tile angular da imagem (flutuante) */
   &::before {
     content: '';
     position: absolute;
-    inset: -12% 48% auto -20%;
-    height: 140%;
-    background: radial-gradient(
-      circle at left center,
-      rgba(138, 255, 245, 0.15) 0%,
-      rgba(138, 255, 245, 0) 60%
-    );
-    opacity: 0;
-    transition: opacity 1s ease;
-    pointer-events: none;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 46%;
+    height: 440px;
+    border-radius: 26px;
+    background: url('/touching-future-data-analysis-technology-interface.png') center/cover;
+    clip-path: polygon(0 0, 100% 0, 100% 82%, 86% 100%, 0 100%);
+    opacity: 0.55;
+    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55);
+    z-index: 0;
+    animation: ${floaty} 9s ease-in-out infinite;
   }
-
-  &[data-visible='true']::before {
-    opacity: 1;
+  /* véu sobre a imagem */
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 46%;
+    height: 440px;
+    border-radius: 26px;
+    clip-path: polygon(0 0, 100% 0, 100% 82%, 86% 100%, 0 100%);
+    background: linear-gradient(120deg, rgba(7, 12, 22, 0.15), rgba(7, 12, 22, 0.8));
+    z-index: 1;
+    pointer-events: none;
   }
 
   @media (max-width: ${theme.breakpoints.lg}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing['2xl']};
+    gap: ${theme.spacing.xl};
 
-    &::before {
-      inset: auto;
-      top: -20%;
-      left: -15%;
-      right: -15%;
-      bottom: 50%;
-      height: auto;
+    &::before,
+    &::after {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      top: 0;
+      transform: none;
+      animation: none;
+    }
+    &::after {
+      margin-top: -200px;
     }
   }
 `;
 
 export const ChaosTextContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.xl};
+  position: relative;
+  grid-column: 2;
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: 42px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 6% 100%, 0 90%);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 
-  & > * {
-    opacity: 0;
-    transform: translate3d(0, 28px, 0);
-    transition:
-      opacity 0.7s ease,
-      transform 0.7s ease;
-    will-change: opacity, transform;
-  }
-
-  &[data-visible='true'] > * {
+  &[data-visible='true'] {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: none;
   }
 
-  &[data-visible='true'] > *:nth-of-type(1) {
-    transition-delay: 140ms;
+  /* borda em gradiente acompanhando o corte */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    padding: 1px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 6% 100%, 0 90%);
+    background: linear-gradient(
+      140deg,
+      rgba(84, 218, 137, 0.55),
+      transparent 45%,
+      transparent 60%,
+      rgba(10, 150, 236, 0.55)
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  /* numeral índice decorativo */
+  &::after {
+    content: '01';
+    position: absolute;
+    top: -30px;
+    right: 22px;
+    font-family: var(--font-sora), 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 120px;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(84, 218, 137, 0.22);
+    z-index: -1;
   }
 
-  &[data-visible='true'] > *:nth-of-type(2) {
-    transition-delay: 280ms;
+  @media (max-width: ${theme.breakpoints.lg}) {
+    grid-column: 1;
   }
-
-  &[data-visible='true'] > p {
-    color: #eef2ff;
-  }
-
   @media (max-width: ${theme.breakpoints.sm}) {
-    gap: ${theme.spacing.lg};
+    padding: 28px;
   }
 `;
 
 export const ChaosTitle = styled.h2`
-  font-size: 40px;
-  line-height: 1.3;
-  font-weight: ${theme.typography.fontWeight.medium};
-  color: white;
-  margin: 0;
-  max-width: 470px;
+  font-family: var(--font-sora), 'Sora', sans-serif;
+  font-size: clamp(30px, 3.4vw, 44px);
+  line-height: 1.12;
+  letter-spacing: -1px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 18px;
+  max-width: 520px;
 
-  @media (max-width: ${theme.breakpoints.md}) {
-    font-size: 36px;
-    max-width: 100%;
+  /* barrinha de destaque (sem texto novo) */
+  &::before {
+    content: '';
+    display: block;
+    width: 46px;
+    height: 4px;
+    border-radius: 2px;
+    margin-bottom: 22px;
+    background: linear-gradient(90deg, #0a96ec, #54da89);
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {
@@ -276,31 +198,18 @@ export const ChaosTitle = styled.h2`
   }
 `;
 
-export const HighlightedText = styled.span`
-  background: linear-gradient(180deg, #8afff5 0%, #009fff 60%, #8afff5 100%);
-  background-size: 220% 220%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: ${theme.typography.fontWeight.medium};
-  animation: ${highlightPulse} 7s ease-in-out infinite;
-`;
-
 export const ChaosDescription = styled.p`
-  font-size: 20px;
-  line-height: 1.6;
-  color: #cfd6ff;
+  color: rgba(234, 240, 251, 0.72);
+  font-size: 17px;
+  line-height: 1.65;
   margin: 0;
-  font-weight: ${theme.typography.fontWeight.normal};
-  transition: color 0.6s ease;
-
-  @media (max-width: ${theme.breakpoints.md}) {
-    font-size: 18px;
-  }
-
-  @media (max-width: ${theme.breakpoints.sm}) {
-    font-size: 16px;
-  }
+  max-width: 480px;
 `;
 
-
+export const HighlightedText = styled.span`
+  font-weight: 800;
+  background: linear-gradient(120deg, #0a96ec, #54da89);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+`;

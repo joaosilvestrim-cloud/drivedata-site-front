@@ -135,15 +135,17 @@ export const ClientsHeaderContent = styled.div`
 
 
 export const ClientsTitle = styled.h2`
-  font-size: 40px;
-  line-height: 1.3;
-  font-weight: ${theme.typography.fontWeight.medium};
-  color: white;
+  font-family: var(--font-sora), 'Sora', sans-serif;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.12;
+  letter-spacing: -0.8px;
+  font-weight: 800;
+  color: #fff;
   margin: 0;
   max-width: 600px;
 
   @media (max-width: ${theme.breakpoints.md}) {
-    font-size: 32px;
+    font-size: 30px;
     max-width: 100%;
     text-align: center;
   }
@@ -154,33 +156,19 @@ export const ClientsTitle = styled.h2`
 `;
 
 export const HighlightedText = styled.span`
-  background: linear-gradient(
-    to bottom,
-    #009fff,
-    #00b0ff,
-    #00c0ff,
-    #00cffd,
-    #00dcf7,
-    #2ce3f4,
-    #45eaf1,
-    #5bf1ee,
-    #68f5f0,
-    #74f8f1,
-    #7ffcf3,
-    #8afff5
-  );
+  background: linear-gradient(120deg, #0a96ec, #54da89);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: ${theme.typography.fontWeight.medium};
+  font-weight: 800;
 `;
 
 export const HighlightedTextBlue = styled.span`
-  background: linear-gradient(180deg, #8afff5 0%, #009fff 60%, #8afff5 100%);
+  background: linear-gradient(120deg, #22d3ee, #0a96ec);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: ${theme.typography.fontWeight.medium};
+  font-weight: 800;
 `;
 
 export const ClientsSubtitle = styled.p`

@@ -29,6 +29,51 @@ export const GlobalStyles = () => (
         overflow-x: hidden;
       }
 
+      /* ═══════════ REDESIGN GLOBAL (v2) — campo de fundo + superfícies ═══════════ */
+      body {
+        background-color: #070c16 !important;
+        position: relative;
+      }
+      /* Campo de fundo fixo: mesh de glow (ciano/verde) atrás de todo o site */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
+        background:
+          radial-gradient(620px 620px at 10% 6%, rgba(10, 150, 236, 0.2), transparent 60%),
+          radial-gradient(560px 560px at 90% 24%, rgba(84, 218, 137, 0.15), transparent 60%),
+          radial-gradient(720px 720px at 50% 108%, rgba(10, 150, 236, 0.13), transparent 60%),
+          #070c16;
+      }
+      /* Grid técnico sutil sobre o campo */
+      body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.5;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+        background-size: 60px 60px;
+        mask-image: radial-gradient(ellipse 110% 70% at 50% 0%, #000 15%, transparent 92%);
+      }
+      /* Seções assentam no campo (removem o preto sólido antigo) */
+      section {
+        background-color: transparent !important;
+        position: relative;
+      }
+      /* Headings no display font, com tracking apertado */
+      h1,
+      h2,
+      h3 {
+        font-family: var(--font-sora), 'Sora', sans-serif;
+        letter-spacing: -0.6px;
+      }
+      /* ═══════════════════════════════════════════════════════════════════════════ */
+
       /* Reset para elementos específicos */
       h1,
       h2,
