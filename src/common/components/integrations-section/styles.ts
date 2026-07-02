@@ -109,8 +109,14 @@ export const IntegrationsStage = styled.div`
   aspect-ratio: 1040 / 640;
   perspective: 1400px;
 
+  /* Mobile: vira grade (o radial com pedestais absolutos se sobrepõe no celular) */
   @media (max-width: ${theme.breakpoints.sm}) {
-    aspect-ratio: 1 / 1.2;
+    aspect-ratio: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    place-items: center;
+    padding: 10px 0;
   }
 `;
 
@@ -138,6 +144,10 @@ export const IntConnectorSvg = styled.svg`
   .packet {
     fill: #7dd3fc;
     filter: url(#intGlow);
+  }
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    display: none;
   }
 `;
 
@@ -207,6 +217,10 @@ export const IntHub = styled.div`
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {
+    position: static;
+    transform: none;
+    grid-column: 1 / -1;
+    margin: 0 auto 4px;
     width: 150px;
     height: 150px;
     .brand {
@@ -223,6 +237,11 @@ export const IntNode = styled.div`
   position: absolute;
   transform: translate(-50%, -50%);
   z-index: 1;
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    position: static;
+    transform: none;
+  }
 `;
 
 // o "chip/pedestal" 3D onde o logo assenta
@@ -281,6 +300,7 @@ export const IntPedestal = styled.div`
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {
+    transform: none;
     width: 104px;
     height: 62px;
     padding: 8px 12px;
