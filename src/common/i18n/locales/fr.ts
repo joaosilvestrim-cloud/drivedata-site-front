@@ -14,6 +14,7 @@ export const frTranslations = {
     languageSelectorLabel: 'Choisir la langue',
   },
   mainSection: {
+    secondary: 'Voir les solutions',
     title: 'Les décisions basées sur l\'« intuition »',
     titleHighlight: 'freinent-elles votre croissance ?',
     button: 'Planifiez une démo et voyez-la en pratique',
@@ -142,6 +143,7 @@ export const frTranslations = {
     madeBy: 'Réalisé par',
   },
   mainAboutSection: {
+    secondary: 'Voir les solutions',
     title: 'Conseil et solutions en',
     titleHighlight: 'données et IA pour les entreprises',
     description:
@@ -184,6 +186,7 @@ export const frTranslations = {
     },
   },
   integrationsSection: {
+    hubLabel: 'Toutes vos données, au même endroit',
     title: 'Nous intégrons toutes vos données pour une',
     titleHighlight: 'vision à 360°',
     description:

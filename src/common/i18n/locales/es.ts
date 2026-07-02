@@ -14,6 +14,7 @@ export const esTranslations = {
     languageSelectorLabel: 'Seleccionar idioma',
   },
   mainSection: {
+    secondary: 'Ver soluciones',
     title: 'Las decisiones basadas en "suposiciones" están',
     titleHighlight: 'costando su crecimiento?',
     button: 'Programe una demostración y véalo en la práctica',
@@ -146,6 +147,7 @@ export const esTranslations = {
     madeBy: 'Hecho por',
   },
   mainAboutSection: {
+    secondary: 'Ver soluciones',
     title: 'Consultoría y Soluciones en',
     titleHighlight: 'Datos e IA para Negocios',
     description:
@@ -188,6 +190,7 @@ export const esTranslations = {
     },
   },
   integrationsSection: {
+    hubLabel: 'Todos tus datos, en un solo lugar',
     title: 'Integramos todos tus datos para una',
     titleHighlight: 'visión 360°',
     description:

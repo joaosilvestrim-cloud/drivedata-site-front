@@ -14,6 +14,7 @@ export const ptTranslations = {
     languageSelectorLabel: 'Selecionar idioma',
   },
   mainSection: {
+    secondary: 'Ver soluções',
     title: 'Decisões baseadas em "achismo" estão',
     titleHighlight: 'custando seu crescimento?',
     button: 'Agende uma demonstração e veja na prática',
@@ -142,6 +143,7 @@ export const ptTranslations = {
     madeBy: 'Feito por',
   },
   mainAboutSection: {
+    secondary: 'Ver soluções',
     title: 'Consultoria e Soluções em',
     titleHighlight: 'Dados e IA para Negócios',
     description:
@@ -184,6 +186,7 @@ export const ptTranslations = {
     },
   },
   integrationsSection: {
+    hubLabel: 'Todos os seus dados, num só lugar',
     title: 'Integramos todos os seus dados para uma',
     titleHighlight: 'visão 360°',
     description:

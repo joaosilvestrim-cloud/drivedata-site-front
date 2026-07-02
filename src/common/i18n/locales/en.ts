@@ -14,6 +14,7 @@ export const enTranslations = {
     languageSelectorLabel: 'Select language',
   },
   mainSection: {
+    secondary: 'See solutions',
     title: 'Decisions based on "gut feeling" are',
     titleHighlight: 'costing your growth?',
     button: 'Schedule a demo and see it in practice',
@@ -144,6 +145,7 @@ export const enTranslations = {
     madeBy: 'Made by',
   },
   mainAboutSection: {
+    secondary: 'See solutions',
     title: 'Consulting and Solutions in',
     titleHighlight: 'Data and AI for Business',
     description:
@@ -186,6 +188,7 @@ export const enTranslations = {
     },
   },
   integrationsSection: {
+    hubLabel: 'All your data, in one place',
     title: 'We integrate all your data for a',
     titleHighlight: '360° view',
     description:
