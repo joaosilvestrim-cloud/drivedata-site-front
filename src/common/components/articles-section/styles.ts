@@ -68,7 +68,10 @@ export const ArticlesGrid = styled.div`
 `;
 
 export const ArticleCardContainer = styled.article`
-  background: linear-gradient(180deg, rgba(84, 218, 137, 0.15) 0%, rgba(10, 150, 236, 0.15) 100%);
+  background: linear-gradient(180deg, rgba(84, 218, 137, 0.12) 0%, rgba(10, 150, 236, 0.12) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -127,7 +130,7 @@ export const ArticleCategory = styled.span`
 `;
 
 export const ArticleTitle = styled.h3`
-  font-family: 'Satoshi', sans-serif;
+  font-family: var(--font-sora), 'Sora', sans-serif;
   font-size: 20px;
   font-weight: ${theme.typography.fontWeight.bold};
   color: #FFFFFF;

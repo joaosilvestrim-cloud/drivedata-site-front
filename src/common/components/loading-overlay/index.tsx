@@ -27,20 +27,21 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(6, 11, 22, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
   animation: ${fadeIn} 0.2s ease-in;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 `;
 
 const Spinner = styled.div`
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(0, 122, 255, 0.1);
-  border-top-color: #007aff;
+  border: 3px solid rgba(84, 218, 137, 0.15);
+  border-top-color: #38bdf8;
   border-radius: 50%;
   animation: ${spin} 0.8s linear infinite;
 `;
