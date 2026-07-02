@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 71" width="500" height="71">
+<defs>
+<style>
+.conta-azul-text { font-family: Arial, sans-serif; font-size: 48px; font-weight: 600; letter-spacing: 1px; }
+.conta-azul-accent { font-family: Arial, sans-serif; font-size: 48px; font-weight: 700; }
+</style>
+</defs>
+
+<!-- Conta Azul Logo - Geometric shapes -->
+<!-- Left square -->
+<rect x="15" y="12" width="20" height="20" fill="#00A3E0" rx="2"/>
+<!-- Middle square -->
+<rect x="40" y="12" width="20" height="20" fill="#00A3E0" rx="2"/>
+<!-- Right square -->
+<rect x="65" y="12" width="20" height="20" fill="#00A3E0" rx="2"/>
+
+<!-- Text "Conta" -->
+<text x="100" y="45" class="conta-azul-text" fill="#333333">Conta</text>
+<!-- Text "Azul" in blue -->
+<text x="290" y="45" class="conta-azul-accent" fill="#00A3E0">Azul</text>
+</svg>

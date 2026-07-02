@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200">
+<defs>
+<style>
+.senior-text { font-family: Arial, sans-serif; font-size: 60px; font-weight: 600; }
+</style>
+</defs>
+
+<!-- Senior Logo - Stylized S with curves -->
+<!-- Top curve -->
+<path d="M 30 70 Q 50 50 70 60 Q 85 65 85 80" fill="none" stroke="#00A3E0" stroke-width="12" stroke-linecap="round"/>
+<!-- Middle section -->
+<path d="M 85 80 Q 85 100 65 105 Q 45 110 30 95" fill="none" stroke="#00A3E0" stroke-width="12" stroke-linecap="round"/>
+<!-- Bottom curve -->
+<path d="M 30 95 Q 50 85 70 95 Q 85 105 85 120" fill="none" stroke="#00A3E0" stroke-width="12" stroke-linecap="round"/>
+
+<!-- Text "Senior" -->
+<text x="130" y="115" class="senior-text" fill="#00A3E0">Senior</text>
+</svg>

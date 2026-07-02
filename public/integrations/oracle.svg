@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200">
+<defs>
+<style>
+.oracle-text { font-family: Arial, sans-serif; font-size: 72px; font-weight: 700; letter-spacing: 3px; }
+</style>
+</defs>
+
+<!-- Oracle Logo - Geometric design -->
+<!-- Left rectangle -->
+<rect x="30" y="60" width="35" height="80" fill="#0099CC" rx="4"/>
+<!-- Middle rectangle -->
+<rect x="75" y="50" width="35" height="100" fill="#0099CC" rx="4"/>
+<!-- Right rectangle -->
+<rect x="120" y="60" width="35" height="80" fill="#0099CC" rx="4"/>
+
+<!-- Text "ORACLE" -->
+<text x="170" y="115" class="oracle-text" fill="#0099CC">ORACLE</text>
+</svg>

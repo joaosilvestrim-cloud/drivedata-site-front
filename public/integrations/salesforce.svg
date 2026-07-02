@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="400" height="250">
+<defs>
+<style>
+.salesforce-text { font-family: Arial, sans-serif; font-size: 48px; font-weight: 700; }
+</style>
+</defs>
+
+<!-- Salesforce Logo - Cloud shape -->
+<!-- Cloud bubble -->
+<ellipse cx="100" cy="80" rx="55" ry="45" fill="#00A1DE"/>
+<!-- Cloud connection -->
+<circle cx="140" cy="95" r="35" fill="#00A1DE"/>
+<!-- Cloud base -->
+<ellipse cx="100" cy="110" rx="70" ry="30" fill="#00A1DE"/>
+
+<!-- Text "salesforce" -->
+<text x="50" y="180" class="salesforce-text" fill="#00A1DE">salesforce</text>
+</svg>

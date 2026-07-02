@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 204" width="412" height="204">
+<defs>
+<style>
+.sap-text { font-family: Arial, sans-serif; font-size: 120px; font-weight: 700; letter-spacing: 8px; }
+</style>
+</defs>
+
+<!-- SAP Logo - Three geometric shapes -->
+<!-- First shape (S) -->
+<path d="M 20 40 L 60 40 L 60 80 L 20 80 Q 10 60 20 40" fill="#0099CC" stroke="#0099CC" stroke-width="2"/>
+<!-- Second shape (A) -->
+<polygon points="80,40 120,120 100,120 95,100 85,100 80,120 60,120" fill="#0099CC"/>
+<!-- Third shape (P) -->
+<path d="M 140 40 L 180 40 L 180 80 Q 180 100 160 100 L 140 100 L 140 120 L 120 120 L 120 40" fill="#0099CC"/>
+
+<!-- Alternative: Simple text-based SAP logo -->
+<text x="20" y="140" class="sap-text" fill="#0099CC">SAP</text>
+</svg>

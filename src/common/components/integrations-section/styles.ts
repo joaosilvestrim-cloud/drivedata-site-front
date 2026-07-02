@@ -236,12 +236,12 @@ export const IntPedestal = styled.div`
   padding: 14px 20px;
   border-radius: 14px;
   transform: rotateX(12deg);
-  background: linear-gradient(160deg, rgba(23, 37, 58, 0.92), rgba(9, 15, 26, 0.94));
-  border: 1px solid rgba(120, 190, 255, 0.22);
+  background: linear-gradient(160deg, #ffffff, #e9f1fb);
+  border: 1px solid rgba(120, 190, 255, 0.55);
   box-shadow:
-    0 18px 40px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 0 22px rgba(10, 150, 236, 0.18);
+    0 18px 40px rgba(0, 0, 0, 0.5),
+    0 0 26px rgba(56, 189, 248, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 
   img {
@@ -250,7 +250,6 @@ export const IntPedestal = styled.div`
     width: auto;
     height: auto;
     object-fit: contain;
-    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
   }
   span {
     font-family: var(--font-sora), 'Sora', sans-serif;

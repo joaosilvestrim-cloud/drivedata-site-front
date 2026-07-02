@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 563 194" width="563" height="194">
+<defs>
+<style>
+.ga-text { font-family: Arial, sans-serif; font-size: 48px; font-weight: 500; }
+.ga-number { font-family: Arial, sans-serif; font-size: 48px; font-weight: 700; }
+</style>
+</defs>
+
+<!-- Google Analytics Logo with bars and number 4 -->
+<!-- Bar chart icon -->
+<g id="analytics-icon">
+<!-- First bar -->
+<rect x="20" y="80" width="25" height="80" fill="#FFC517" rx="3"/>
+<!-- Second bar -->
+<rect x="55" y="50" width="25" height="110" fill="#EE7406" rx="3"/>
+<!-- Third bar -->
+<rect x="90" y="30" width="25" height="130" fill="#F57E02" rx="3"/>
+</g>
+
+<!-- Text "Google Analytics 4" -->
+<text x="130" y="90" class="ga-text" fill="#757575">Google Analytics</text>
+<text x="480" y="90" class="ga-number" fill="#FFC517">4</text>
+</svg>

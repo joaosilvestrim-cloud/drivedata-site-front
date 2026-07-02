@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200">
+<defs>
+<style>
+.omie-text { font-family: Arial, sans-serif; font-size: 64px; font-weight: 700; }
+</style>
+</defs>
+
+<!-- Omie Logo - Play button design -->
+<circle cx="70" cy="100" r="50" fill="none" stroke="#0066CC" stroke-width="6"/>
+<!-- Play triangle inside circle -->
+<polygon points="55,80 55,120 90,100" fill="#0066CC"/>
+
+<!-- Text "omie" -->
+<text x="140" y="120" class="omie-text" fill="#0066CC">omie</text>
+</svg>

@@ -48,7 +48,7 @@ const NodeBody = ({ name, slug }: { name: string; slug: string }) => {
   if (failed) return <span>{name}</span>;
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={`/integrations/${slug}.png`} alt={name} onError={() => setFailed(true)} />
+    <img src={`/integrations/${slug}.svg`} alt={name} onError={() => setFailed(true)} />
   );
 };
 
