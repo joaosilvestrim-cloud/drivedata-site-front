@@ -66,20 +66,18 @@ export const PartnersMarqueeLogo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 42px;
+  height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.62;
+  opacity: 0.9;
   transition: opacity 0.35s ease, transform 0.35s ease;
 
   img {
     height: 100%;
     width: auto;
-    max-width: 132px;
+    max-width: 140px;
     object-fit: contain;
-    /* todos os logos viram silhueta branca uniforme (transparente -> branco) */
-    filter: brightness(0) invert(1);
   }
 
   &:hover {

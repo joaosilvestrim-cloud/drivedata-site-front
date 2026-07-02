@@ -49,3 +49,6 @@ next-env.d.ts
 *.Identifier
 .vercel
 .env*
+
+# pasta de trabalho de logos (fonte)
+/novo/

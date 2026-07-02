@@ -187,8 +187,6 @@ export const IntNode = styled.div`
     width: auto;
     height: auto;
     object-fit: contain;
-    /* silhueta branca uniforme — logo claro ou escuro fica sempre visivel */
-    filter: brightness(0) invert(1);
   }
 
   span {
