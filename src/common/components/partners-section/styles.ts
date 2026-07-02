@@ -66,23 +66,28 @@ export const PartnersMarqueeLogo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 46px;
+  height: 74px;
+  min-width: 150px;
+  padding: 0 26px;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.9;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 
   img {
-    height: 100%;
+    height: 48px;
     width: auto;
-    max-width: 140px;
+    max-width: 130px;
     object-fit: contain;
   }
 
   &:hover {
-    opacity: 1;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(10, 150, 236, 0.25);
   }
 `;
 
