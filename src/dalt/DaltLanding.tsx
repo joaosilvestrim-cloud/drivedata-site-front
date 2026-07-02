@@ -1,6 +1,7 @@
 'use client';
 
 import styled from '@emotion/styled';
+import Link from 'next/link';
 import { daltTheme } from './theme';
 import { HeroSection } from './sections/HeroSection';
 import { ClientsSection } from './sections/ClientsSection';
@@ -38,9 +39,72 @@ const Wrapper = styled.main`
   }
 `;
 
+const DaltNav = styled.header`
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 32px;
+  background: rgba(6, 11, 13, 0.72);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid ${daltTheme.colors.border};
+
+  @media (max-width: 640px) {
+    padding: 12px 18px;
+  }
+`;
+
+const DaltBrand = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: ${daltTheme.fonts.body};
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.3px;
+  color: ${daltTheme.colors.textPrimary};
+  text-decoration: none;
+
+  img {
+    height: 26px;
+    width: auto;
+  }
+`;
+
+const DaltBack = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: ${daltTheme.fonts.body};
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid ${daltTheme.colors.border};
+  border-radius: 999px;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    color: #00e5a0;
+    border-color: rgba(0, 229, 160, 0.5);
+    background: rgba(0, 229, 160, 0.06);
+  }
+`;
+
 export function DaltLanding() {
   return (
     <Wrapper>
+      <DaltNav>
+        <DaltBrand href="/">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/drive-data-icon.png" alt="DriveData" />
+          DriveData
+        </DaltBrand>
+        <DaltBack href="/">← Voltar ao site</DaltBack>
+      </DaltNav>
       <HeroSection />
       <ClientsSection />
       <InnovationSection />

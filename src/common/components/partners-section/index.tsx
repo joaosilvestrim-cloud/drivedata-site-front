@@ -25,43 +25,52 @@ import {
 import { PartnersSectionProps } from './types';
 
 // Lista de todos os logos de parceiros
+// Logos em /public/clientes (nomes limpos). Ordem alfabética.
 const partnerLogos = [
-  'android-chrome-512x512.png',
-  'Ativo 1 1.png',
-  'image 27993.png',
-  'image 27995.png',
-  'image 27996.png',
-  'image 27997 1.png',
-  'image 27998.png',
-  'image 27999.png',
-  'image 28002.png',
-  'image 28003.png',
-  'image 28004.png',
-  'image 28005.png',
-  'image 28008.png',
-  'image 28009-1.png',
-  'image 28009-2.png',
-  'image 28009.png',
-  'image 28010.png',
-  'image 28011.png',
-  'image 28012.png',
-  'image 28013.png',
-  'image 28014.png',
-  'image 28015.png',
-  'image 28016.png',
-  'image 28017.png',
-  'image 28018.png',
-  'image 28020.png',
-  'image 28022.png',
-  'image 28023.png',
-  'image 28043 1.png',
-  'image 28044 1.png',
-  'Logo-Eureca-preferencial-2 1.png',
-  'Logomarca-Rei-das-Canecas-_-Aplicacao-em-cores_Branco-994x1024.png',
-  'mcdonald-s-transparent-mcdonald-s-free-free-png.png',
-  'Vector.png',
-  'VISA LOGO.png'
-
+  'acm.png',
+  'assisty24h.png',
+  'bericap.png',
+  'coferly.png',
+  'combina.png',
+  'conecta-co.png',
+  'conta-azul.png',
+  'epaula.png',
+  'eureca.png',
+  'google-analytics.png',
+  'grupo-dlc.png',
+  'grupo-rote.png',
+  'hi-transportes.png',
+  'ibf.png',
+  'informaction.png',
+  'itt-industries.png',
+  'jbs.png',
+  'marajo.png',
+  'martinpel.png',
+  'martorelli-advogados.png',
+  'mccain.png',
+  'mcdonalds.png',
+  'meta.png',
+  'nova-uniao.png',
+  'obify.png',
+  'oec.png',
+  'omie.png',
+  'oracle.png',
+  'pepsico.png',
+  'salesforce.png',
+  'sankhya.png',
+  'sap.png',
+  'senior.png',
+  'shift.png',
+  'solucoes-certas.png',
+  'tambasa.png',
+  'technolog.png',
+  'tmg.png',
+  'totvs.png',
+  'tvtem.png',
+  'unilever.png',
+  'vertiv.png',
+  'viaglobal.png',
+  'visa.png',
 ];
 
 export const PartnersSection = ({ className }: PartnersSectionProps) => {
@@ -189,7 +198,7 @@ export const PartnersSection = ({ className }: PartnersSectionProps) => {
                   partnerLogos.map((logo, index) => (
                     <PartnersMarqueeLogo key={`${dup}-${logo}`} aria-hidden={dup === 1}>
                       <Image
-                        src={`/partners/${logo}`}
+                        src={`/clientes/${logo}`}
                         alt={`Parceiro ${index + 1}`}
                         width={150}
                         height={80}
