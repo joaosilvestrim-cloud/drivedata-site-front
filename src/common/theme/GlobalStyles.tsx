@@ -10,6 +10,18 @@ export const GlobalStyles = () => (
         padding: 0;
       }
 
+      /* Acessibilidade: respeita quem pede menos movimento (carrossel, fluxos, pops) */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
       html {
         font-size: 16px;
         scroll-behavior: smooth;

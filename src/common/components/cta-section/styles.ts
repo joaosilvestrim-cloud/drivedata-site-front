@@ -23,7 +23,7 @@ export const CtaSectionContent = styled.div`
   gap: ${theme.spacing.lg};
   text-align: center;
   padding: 68px 40px;
-  border-radius: 28px;
+  border-radius: 24px;
   overflow: hidden;
   background:
     radial-gradient(700px 300px at 50% -10%, rgba(84, 218, 137, 0.16), transparent 70%),
@@ -35,7 +35,7 @@ export const CtaSectionContent = styled.div`
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 28px;
+    border-radius: 24px;
     padding: 1px;
     background: linear-gradient(135deg, rgba(84, 218, 137, 0.5), transparent 45%, rgba(10, 150, 236, 0.5));
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
