@@ -169,48 +169,48 @@ export const IntNode = styled.div`
   transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  white-space: nowrap;
+  justify-content: center;
+  width: 120px;
+  height: 70px;
+  padding: 12px 18px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
   z-index: 1;
-  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
-
-  &::before {
-    content: '';
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: linear-gradient(120deg, #0a96ec, #54da89);
-    flex-shrink: 0;
-  }
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 
   img {
-    height: 20px;
+    max-height: 40px;
+    max-width: 88px;
     width: auto;
-    max-width: 104px;
+    height: auto;
     object-fit: contain;
   }
 
   span {
     font-family: var(--font-sora), 'Sora', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    color: #04121f;
+    text-align: center;
+    line-height: 1.2;
   }
 
   &:hover {
-    transform: translate(-50%, -50%) scale(1.06);
-    border-color: rgba(84, 218, 137, 0.5);
-    background: rgba(255, 255, 255, 0.09);
+    transform: translate(-50%, -50%) scale(1.08);
+    box-shadow: 0 16px 44px rgba(10, 150, 236, 0.4);
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {
-    padding: 7px 11px;
+    width: 92px;
+    height: 56px;
+    padding: 8px 12px;
+
+    img {
+      max-height: 30px;
+      max-width: 66px;
+    }
     span {
       font-size: 11px;
     }
