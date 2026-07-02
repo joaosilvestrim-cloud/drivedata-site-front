@@ -323,10 +323,22 @@ export const DashKpis = styled.div`
   margin-bottom: 16px;
 
   & .kpi {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    padding: 12px;
+    padding: 13px 12px;
+    overflow: hidden;
+  }
+  & .kpi::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #54da89, #22d3ee);
+    opacity: 0.55;
   }
   & .kpi .n {
     font-family: var(--font-sora), 'Sora', sans-serif;
@@ -349,17 +361,41 @@ export const DashKpis = styled.div`
 `;
 
 export const DashBars = styled.div`
+  position: relative;
   display: flex;
   align-items: flex-end;
   gap: 8px;
-  height: 120px;
-  padding: 10px 4px 0;
+  height: 128px;
+  padding: 14px 6px 0;
+  border-radius: 12px;
+  /* linhas de grade sutis atrás das barras */
+  background: repeating-linear-gradient(
+    to top,
+    transparent 0,
+    transparent 31px,
+    rgba(255, 255, 255, 0.05) 31px,
+    rgba(255, 255, 255, 0.05) 32px
+  );
 
   & .bar {
+    position: relative;
     flex: 1;
     border-radius: 6px 6px 0 0;
-    background: linear-gradient(120deg, #0a96ec, #54da89);
+    background: linear-gradient(180deg, #6ee7a8 0%, #0a96ec 100%);
+    box-shadow: 0 0 16px rgba(84, 218, 137, 0.32);
     animation: ${grow} 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  /* brilho na ponta de cada barra */
+  & .bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 6px 6px 0 0;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
   }
 `;
 

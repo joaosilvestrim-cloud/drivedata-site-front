@@ -176,6 +176,7 @@ export const SolutionsSectionContainer = styled.section`
   background: transparent;
   position: relative;
   overflow: hidden;
+  scroll-margin-top: 96px;
 
   &::before {
     content: '';

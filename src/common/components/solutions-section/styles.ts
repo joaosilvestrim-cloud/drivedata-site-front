@@ -6,6 +6,7 @@ export const SolutionsSectionContainer = styled.section`
   padding: 110px 0;
   position: relative;
   overflow: hidden;
+  scroll-margin-top: 96px;
 
   @media (max-width: ${theme.breakpoints.md}) {
     padding: 80px 0;
