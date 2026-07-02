@@ -1,7 +1,7 @@
 'use client';
 
 import { Container } from '@/common/components/container';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   IntConnectorSvg,
@@ -24,32 +24,48 @@ const CX = VW / 2;
 const CY = VH / 2;
 const RX = 400;
 const RY = 250;
+const HUB_R = 96; // raio do núcleo (viewBox) — as linhas saem da BORDA dele, não do centro
 
-// Plataformas integradas. Para trocar por logo, adicione o PNG em /public e
-// renderize <img> no lugar do texto — a geometria/animação já ficam prontas.
+// Para exibir o logo real, coloque o PNG (fundo transparente) em
+// /public/integrations/<slug>.png. Enquanto não existir, cai no nome em texto.
 const PLATFORMS = [
-  'Meta',
-  'Google Analytics',
-  'Oracle',
-  'SAP',
-  'TOTVS',
-  'Sankhya',
-  'Conta Azul',
-  'Senior',
-  'Omie',
-  'Salesforce',
+  { name: 'Meta', slug: 'meta' },
+  { name: 'Google Analytics', slug: 'google-analytics' },
+  { name: 'Oracle', slug: 'oracle' },
+  { name: 'SAP', slug: 'sap' },
+  { name: 'TOTVS', slug: 'totvs' },
+  { name: 'Sankhya', slug: 'sankhya' },
+  { name: 'Conta Azul', slug: 'conta-azul' },
+  { name: 'Senior', slug: 'senior' },
+  { name: 'Omie', slug: 'omie' },
+  { name: 'Salesforce', slug: 'salesforce' },
 ];
+
+// Logo com fallback automático pro nome (enquanto o PNG não estiver em /public/integrations)
+const NodeBody = ({ name, slug }: { name: string; slug: string }) => {
+  const [failed, setFailed] = useState(false);
+  if (failed) return <span>{name}</span>;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={`/integrations/${slug}.png`} alt={name} onError={() => setFailed(true)} />
+  );
+};
 
 export const IntegrationsSection = ({ className }: IntegrationsSectionProps) => {
   const { t } = useTranslation();
 
   const nodes = useMemo(() => {
     const n = PLATFORMS.length;
-    return PLATFORMS.map((name, i) => {
+    return PLATFORMS.map((p, i) => {
       const ang = -Math.PI / 2 + (i * 2 * Math.PI) / n;
       const x = CX + RX * Math.cos(ang);
       const y = CY + RY * Math.sin(ang);
-      return { name, i, x, y, leftPct: (x / VW) * 100, topPct: (y / VH) * 100 };
+      const dx = x - CX;
+      const dy = y - CY;
+      const len = Math.hypot(dx, dy) || 1;
+      const sx = CX + (dx / len) * HUB_R;
+      const sy = CY + (dy / len) * HUB_R;
+      return { ...p, i, x, y, sx, sy, leftPct: (x / VW) * 100, topPct: (y / VH) * 100 };
     });
   }, []);
 
@@ -86,13 +102,13 @@ export const IntegrationsSection = ({ className }: IntegrationsSectionProps) => 
               </defs>
 
               {nodes.map((nd) => (
-                <g key={nd.name}>
+                <g key={nd.slug}>
                   <path
                     id={`int-line-${nd.i}`}
-                    d={`M ${CX} ${CY} L ${nd.x} ${nd.y}`}
+                    d={`M ${nd.sx} ${nd.sy} L ${nd.x} ${nd.y}`}
                     className="line-base"
                   />
-                  <path d={`M ${CX} ${CY} L ${nd.x} ${nd.y}`} className="line-flow" />
+                  <path d={`M ${nd.sx} ${nd.sy} L ${nd.x} ${nd.y}`} className="line-flow" />
                   <circle className="packet" r="3.4">
                     <animateMotion dur="3.2s" repeatCount="indefinite" begin={`${nd.i * 0.32}s`}>
                       <mpath href={`#int-line-${nd.i}`} />
@@ -110,8 +126,8 @@ export const IntegrationsSection = ({ className }: IntegrationsSectionProps) => 
             </IntHub>
 
             {nodes.map((nd) => (
-              <IntNode key={nd.name} style={{ left: `${nd.leftPct}%`, top: `${nd.topPct}%` }}>
-                <span>{nd.name}</span>
+              <IntNode key={nd.slug} style={{ left: `${nd.leftPct}%`, top: `${nd.topPct}%` }}>
+                <NodeBody name={nd.name} slug={nd.slug} />
               </IntNode>
             ))}
           </IntegrationsStage>

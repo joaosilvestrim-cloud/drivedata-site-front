@@ -87,8 +87,27 @@ export const SolItem = styled.div<{ isOpen: boolean }>`
 export const SolHeaderRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   width: 100%;
+`;
+
+export const SolIcon = styled.div`
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(140deg, rgba(10, 150, 236, 0.18), rgba(84, 218, 137, 0.14));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(78%) sepia(38%) saturate(560%) hue-rotate(90deg);
+  }
 `;
 
 export const SolTitle = styled.strong<{ isOpen?: boolean }>`

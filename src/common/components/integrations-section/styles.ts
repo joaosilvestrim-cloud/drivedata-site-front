@@ -96,6 +96,7 @@ export const IntConnectorSvg = styled.svg`
   width: 100%;
   height: 100%;
   overflow: visible;
+  z-index: 0;
 
   .line-base {
     stroke: rgba(255, 255, 255, 0.09);
@@ -134,6 +135,7 @@ export const IntHub = styled.div`
   background: radial-gradient(circle at 50% 35%, rgba(10, 150, 236, 0.28), rgba(7, 12, 22, 0.9));
   border: 1px solid rgba(84, 218, 137, 0.4);
   box-shadow: 0 0 0 6px rgba(10, 150, 236, 0.06), 0 20px 60px rgba(10, 150, 236, 0.25);
+  z-index: 2;
 
   .brand {
     font-family: var(--font-sora), 'Sora', sans-serif;
@@ -175,6 +177,7 @@ export const IntNode = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   white-space: nowrap;
+  z-index: 1;
   transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 
   &::before {
@@ -184,6 +187,13 @@ export const IntNode = styled.div`
     border-radius: 50%;
     background: linear-gradient(120deg, #0a96ec, #54da89);
     flex-shrink: 0;
+  }
+
+  img {
+    height: 20px;
+    width: auto;
+    max-width: 104px;
+    object-fit: contain;
   }
 
   span {

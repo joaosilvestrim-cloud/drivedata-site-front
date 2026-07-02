@@ -9,6 +9,7 @@ import {
   SolAnswer,
   SolChevron,
   SolHeaderRow,
+  SolIcon,
   SolItem,
   SolList,
   SolTitle,
@@ -68,6 +69,11 @@ export const SolutionsAccordionSection = ({ className, solutions }: SolutionsAcc
               return (
                 <SolItem key={s.id} isOpen={isOpen} onClick={() => toggle(s.id)}>
                   <SolHeaderRow>
+                    {s.icon && (
+                      <SolIcon>
+                        <img src={s.icon} alt="" />
+                      </SolIcon>
+                    )}
                     <SolTitle isOpen={isOpen}>{s.title}</SolTitle>
                     <SolChevron isOpen={isOpen}>
                       <ChevronDown />
