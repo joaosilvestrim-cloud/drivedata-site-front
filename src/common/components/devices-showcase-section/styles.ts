@@ -61,7 +61,6 @@ export const DevicesItem = styled.div<{ contentSide: 'left' | 'right'}>`
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.045);
   backdrop-filter: blur(14px);
-  clip-path: polygon(0 0, 88% 0, 100% 14%, 100% 100%, 0 100%);
   transition: transform 0.3s ease, background 0.3s ease;
 
   &::before {
@@ -80,7 +79,6 @@ export const DevicesItem = styled.div<{ contentSide: 'left' | 'right'}>`
       linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
-    clip-path: polygon(0 0, 88% 0, 100% 14%, 100% 100%, 0 100%);
     pointer-events: none;
   }
 
@@ -108,11 +106,6 @@ export const DevicesItem = styled.div<{ contentSide: 'left' | 'right'}>`
   @media (max-width: ${theme.breakpoints.sm}) {
     gap: ${theme.spacing.lg};
     padding: ${theme.spacing.xl};
-    clip-path: none;
-
-    &::before {
-      clip-path: none;
-    }
   }
 
   img {

@@ -5,8 +5,9 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  PartnerLogo,
-  PartnersGrid,
+  PartnersMarquee,
+  PartnersMarqueeLogo,
+  PartnersMarqueeTrack,
   PartnersHeader,
   PartnersSectionContainer,
   PartnersSectionContent,
@@ -22,87 +23,6 @@ import {
   ResultsTitleBlue,
 } from './styles';
 import { PartnersSectionProps } from './types';
-
-// Componente individual para cada logo com seu próprio observer
-const PartnerLogoItem = ({ logo, index }: { logo: string; index: number }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const logoRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || !logoRef.current) {
-      return;
-    }
-
-    const element = logoRef.current;
-    let observer: IntersectionObserver | null = null;
-
-    // Verifica se já está visível
-    const checkInitialVisibility = () => {
-      const rect = element.getBoundingClientRect();
-      const windowHeight =
-        window.innerHeight || document.documentElement.clientHeight;
-
-      if (rect.top < windowHeight && rect.bottom > 0) {
-        setIsVisible(true);
-        return true;
-      }
-      return false;
-    };
-
-    // Configura o observer
-    const setupObserver = () => {
-      if (checkInitialVisibility()) {
-        return;
-      }
-
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setIsVisible(true);
-              if (observer) {
-                observer.unobserve(entry.target);
-              }
-            }
-          });
-        },
-        {
-          threshold: 0.1,
-          rootMargin: '50px 0px',
-        },
-      );
-
-      observer.observe(element);
-    };
-
-    const rafId = requestAnimationFrame(() => {
-      setupObserver();
-    });
-
-    return () => {
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId);
-      }
-      if (observer) {
-        observer.disconnect();
-      }
-    };
-  }, []);
-
-  return (
-    <PartnerLogo ref={logoRef} data-animate={isVisible} data-index={index}>
-      <Image
-        src={`/partners/${logo}`}
-        alt={`Parceiro ${index + 1}`}
-        width={150}
-        height={80}
-        loading="lazy"
-        quality={75}
-        unoptimized
-      />
-    </PartnerLogo>
-  );
-};
 
 // Lista de todos os logos de parceiros
 const partnerLogos = [
@@ -263,11 +183,25 @@ export const PartnersSection = ({ className }: PartnersSectionProps) => {
               </PartnersSubtitle>
             </PartnersHeader>
 
-            <PartnersGrid data-animate={isVisible}>
-              {partnerLogos.map((logo, index) => (
-                <PartnerLogoItem key={logo} logo={logo} index={index} />
-              ))}
-            </PartnersGrid>
+            <PartnersMarquee>
+              <PartnersMarqueeTrack className="marquee-track">
+                {[0, 1].map((dup) =>
+                  partnerLogos.map((logo, index) => (
+                    <PartnersMarqueeLogo key={`${dup}-${logo}`} aria-hidden={dup === 1}>
+                      <Image
+                        src={`/partners/${logo}`}
+                        alt={`Parceiro ${index + 1}`}
+                        width={150}
+                        height={80}
+                        loading="lazy"
+                        quality={75}
+                        unoptimized
+                      />
+                    </PartnersMarqueeLogo>
+                  )),
+                )}
+              </PartnersMarqueeTrack>
+            </PartnersMarquee>
           </div>
 
           {/* Seção de Resultados */}

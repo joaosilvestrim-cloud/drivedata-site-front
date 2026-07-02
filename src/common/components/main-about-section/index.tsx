@@ -10,12 +10,8 @@ import {
   MainContent,
   MainDescription,
   MainTitle,
-  TechPill,
-  TechRow,
 } from './styles';
 import { MainAboutSectionProps } from './types';
-
-const TECHS = ['BI', 'Analytics', 'IA', 'Engenharia de Dados'];
 
 export const MainAboutSection = ({ className }: MainAboutSectionProps) => {
   const { t } = useTranslation();
@@ -57,12 +53,6 @@ export const MainAboutSection = ({ className }: MainAboutSectionProps) => {
             {t('mainAboutSection.secondary', 'Ver soluções')}
           </GhostButton>
         </MainActions>
-
-        <TechRow>
-          {TECHS.map((tech) => (
-            <TechPill key={tech}>{tech}</TechPill>
-          ))}
-        </TechRow>
       </MainContent>
     </MainContainer>
   );

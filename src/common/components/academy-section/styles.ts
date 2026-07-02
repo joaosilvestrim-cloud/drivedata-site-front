@@ -20,7 +20,6 @@ export const AcademyCard = styled.div`
     radial-gradient(600px 240px at 100% 120%, rgba(10, 150, 236, 0.16), transparent 70%),
     rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(14px);
-  clip-path: polygon(0 0, 94% 0, 100% 22%, 100% 100%, 0 100%);
   overflow: hidden;
 
   &::before {
@@ -29,7 +28,6 @@ export const AcademyCard = styled.div`
     inset: 0;
     border-radius: 24px;
     padding: 1px;
-    clip-path: polygon(0 0, 94% 0, 100% 22%, 100% 100%, 0 100%);
     background: linear-gradient(130deg, rgba(84, 218, 137, 0.55), transparent 44%, rgba(10, 150, 236, 0.5));
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
@@ -41,10 +39,6 @@ export const AcademyCard = styled.div`
     flex-direction: column;
     align-items: flex-start;
     padding: ${theme.spacing.xl};
-    clip-path: none;
-    &::before {
-      clip-path: none;
-    }
   }
 `;
 

@@ -111,7 +111,6 @@ export const ProcessCard = styled.div`
   gap: 10px;
   text-align: left;
   height: 100%;
-  clip-path: polygon(0 0, 86% 0, 100% 16%, 100% 100%, 0 100%);
   transition: background 0.25s ease;
 
   &::before {
@@ -120,7 +119,6 @@ export const ProcessCard = styled.div`
     inset: 0;
     border-radius: 20px;
     padding: 1px;
-    clip-path: polygon(0 0, 86% 0, 100% 16%, 100% 100%, 0 100%);
     background: linear-gradient(150deg, rgba(10, 150, 236, 0.45), transparent 46%, rgba(84, 218, 137, 0.4));
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
@@ -128,12 +126,6 @@ export const ProcessCard = styled.div`
     pointer-events: none;
   }
 
-  @media (max-width: ${theme.breakpoints.sm}) {
-    clip-path: none;
-    &::before {
-      clip-path: none;
-    }
-  }
 `;
 
 export const ProcessCardWrapper = styled.div`

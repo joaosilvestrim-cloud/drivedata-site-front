@@ -71,7 +71,6 @@ export const SolutionCard = styled.div`
   backdrop-filter: blur(14px);
   border-radius: 20px;
   padding: 26px 24px 28px;
-  clip-path: polygon(0 0, 88% 0, 100% 14%, 100% 100%, 0 100%);
   overflow: hidden;
   opacity: 0;
   transform: translateY(26px);
@@ -83,7 +82,6 @@ export const SolutionCard = styled.div`
     inset: 0;
     border-radius: 20px;
     padding: 1px;
-    clip-path: polygon(0 0, 88% 0, 100% 14%, 100% 100%, 0 100%);
     background: linear-gradient(150deg, rgba(84, 218, 137, 0.4), transparent 45%, rgba(10, 150, 236, 0.35));
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
@@ -125,12 +123,6 @@ export const SolutionCard = styled.div`
     transition-delay: 250ms;
   }
 
-  @media (max-width: ${theme.breakpoints.sm}) {
-    clip-path: none;
-    &::before {
-      clip-path: none;
-    }
-  }
 `;
 
 export const IconWrapper = styled.div`

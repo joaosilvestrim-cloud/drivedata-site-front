@@ -81,10 +81,6 @@ export const Column = styled.ul<{ isPositive: boolean }>`
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 24px;
-  clip-path: ${(props) =>
-    props.isPositive
-      ? 'polygon(0 0, 90% 0, 100% 9%, 100% 100%, 0 100%)'
-      : 'polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 9%)'};
 
   /* borda em gradiente acompanhando o corte */
   &::before {
@@ -93,10 +89,6 @@ export const Column = styled.ul<{ isPositive: boolean }>`
     inset: 0;
     border-radius: 24px;
     padding: 1px;
-    clip-path: ${(props) =>
-      props.isPositive
-        ? 'polygon(0 0, 90% 0, 100% 9%, 100% 100%, 0 100%)'
-        : 'polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 9%)'};
     background: ${(props) =>
       props.isPositive
         ? 'linear-gradient(150deg, rgba(84,218,137,0.7), transparent 55%)'
@@ -127,7 +119,6 @@ export const Column = styled.ul<{ isPositive: boolean }>`
 
   @media (max-width: ${theme.breakpoints.sm}) {
     padding: 26px 22px;
-    clip-path: none;
     border-radius: 20px;
   }
 `;

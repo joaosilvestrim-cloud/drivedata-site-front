@@ -70,7 +70,6 @@ export const ChaosGrid = styled.div`
     height: 440px;
     border-radius: 26px;
     background: url('/touching-future-data-analysis-technology-interface.png') center/cover;
-    clip-path: polygon(0 0, 100% 0, 100% 82%, 86% 100%, 0 100%);
     opacity: 0.55;
     box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55);
     z-index: 0;
@@ -86,7 +85,6 @@ export const ChaosGrid = styled.div`
     width: 46%;
     height: 440px;
     border-radius: 26px;
-    clip-path: polygon(0 0, 100% 0, 100% 82%, 86% 100%, 0 100%);
     background: linear-gradient(120deg, rgba(7, 12, 22, 0.15), rgba(7, 12, 22, 0.8));
     z-index: 1;
     pointer-events: none;
@@ -119,7 +117,6 @@ export const ChaosTextContent = styled.div`
   backdrop-filter: blur(16px);
   border-radius: 24px;
   padding: 42px;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 6% 100%, 0 90%);
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.7s ease, transform 0.7s ease;
@@ -136,7 +133,6 @@ export const ChaosTextContent = styled.div`
     inset: 0;
     border-radius: 24px;
     padding: 1px;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 6% 100%, 0 90%);
     background: linear-gradient(
       140deg,
       rgba(84, 218, 137, 0.55),

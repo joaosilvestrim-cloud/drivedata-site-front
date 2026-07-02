@@ -29,6 +29,60 @@ const fadeInPop = keyframes`
   }
 `;
 
+// ── Carrossel contínuo de logos (preto e branco), estilo DALT ──
+const marquee = keyframes`
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+`;
+
+export const PartnersMarquee = styled.div`
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+
+  &:hover .marquee-track {
+    animation-play-state: paused;
+  }
+`;
+
+export const PartnersMarqueeTrack = styled.div`
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: 60px;
+  animation: ${marquee} 55s linear infinite;
+  will-change: transform;
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    gap: 40px;
+    animation-duration: 34s;
+  }
+`;
+
+export const PartnersMarqueeLogo = styled.div`
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  opacity: 0.5;
+  transition: opacity 0.35s ease;
+
+  img {
+    height: 100%;
+    width: auto;
+    max-width: 148px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
 
 export const PartnersSectionContainer = styled.section`
   width: 100%;

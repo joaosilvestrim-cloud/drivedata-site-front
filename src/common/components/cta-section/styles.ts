@@ -30,7 +30,6 @@ export const CtaSectionContent = styled.div`
     radial-gradient(700px 300px at 50% 120%, rgba(10, 150, 236, 0.16), transparent 70%),
     rgba(255, 255, 255, 0.035);
   backdrop-filter: blur(16px);
-  clip-path: polygon(0 0, 90% 0, 100% 12%, 100% 100%, 10% 100%, 0 88%);
 
   &::before {
     content: '';
@@ -38,7 +37,6 @@ export const CtaSectionContent = styled.div`
     inset: 0;
     border-radius: 28px;
     padding: 1px;
-    clip-path: polygon(0 0, 90% 0, 100% 12%, 100% 100%, 10% 100%, 0 88%);
     background: linear-gradient(135deg, rgba(84, 218, 137, 0.5), transparent 45%, rgba(10, 150, 236, 0.5));
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
@@ -54,10 +52,6 @@ export const CtaSectionContent = styled.div`
   @media (max-width: ${theme.breakpoints.sm}) {
     gap: ${theme.spacing.md};
     padding: 44px 22px;
-    clip-path: none;
-    &::before {
-      clip-path: none;
-    }
   }
 `;
 
