@@ -51,12 +51,12 @@ export const PartnersMarqueeTrack = styled.div`
   display: flex;
   width: max-content;
   align-items: center;
-  gap: 28px;
+  gap: 56px;
   animation: ${marquee} 55s linear infinite;
   will-change: transform;
 
   @media (max-width: ${theme.breakpoints.sm}) {
-    gap: 18px;
+    gap: 34px;
     animation-duration: 34s;
   }
 `;
@@ -66,25 +66,25 @@ export const PartnersMarqueeLogo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 70px;
-  min-width: 136px;
-  padding: 0 24px;
-  border-radius: 14px;
-  background: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.62;
+  transition: opacity 0.35s ease, transform 0.35s ease;
 
   img {
-    height: 44px;
+    height: 100%;
     width: auto;
-    max-width: 124px;
+    max-width: 132px;
     object-fit: contain;
+    /* todos os logos viram silhueta branca uniforme (transparente -> branco) */
+    filter: brightness(0) invert(1);
   }
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(10, 150, 236, 0.25);
+    opacity: 1;
+    transform: translateY(-2px);
   }
 `;
 

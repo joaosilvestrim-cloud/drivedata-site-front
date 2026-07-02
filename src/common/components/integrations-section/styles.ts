@@ -174,42 +174,46 @@ export const IntNode = styled.div`
   height: 78px;
   padding: 14px 18px;
   border-radius: 16px;
-  background: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
   z-index: 1;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 
   img {
-    max-height: 50px;
-    max-width: 106px;
+    max-height: 46px;
+    max-width: 104px;
     width: auto;
     height: auto;
     object-fit: contain;
+    /* silhueta branca uniforme — logo claro ou escuro fica sempre visivel */
+    filter: brightness(0) invert(1);
   }
 
   span {
     font-family: var(--font-sora), 'Sora', sans-serif;
     font-size: 13px;
     font-weight: 700;
-    color: #04121f;
+    color: #fff;
     text-align: center;
     line-height: 1.2;
   }
 
   &:hover {
     transform: translate(-50%, -50%) scale(1.08);
-    box-shadow: 0 16px 44px rgba(10, 150, 236, 0.4);
+    border-color: rgba(84, 218, 137, 0.5);
+    background: rgba(255, 255, 255, 0.08);
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {
-    width: 92px;
-    height: 56px;
+    width: 96px;
+    height: 58px;
     padding: 8px 12px;
 
     img {
       max-height: 30px;
-      max-width: 66px;
+      max-width: 68px;
     }
     span {
       font-size: 11px;
