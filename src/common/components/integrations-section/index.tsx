@@ -7,6 +7,7 @@ import {
   IntConnectorSvg,
   IntHub,
   IntNode,
+  IntPedestal,
   IntegrationsDescription,
   IntegrationsHeader,
   IntegrationsSectionContainer,
@@ -24,7 +25,7 @@ const CX = VW / 2;
 const CY = VH / 2;
 const RX = 400;
 const RY = 250;
-const HUB_R = 96; // raio do núcleo (viewBox) — as linhas saem da BORDA dele, não do centro
+const HUB_R = 112; // raio do núcleo (viewBox) — as linhas saem da BORDA dele, não do centro
 
 // Para exibir o logo real, coloque o PNG (fundo transparente) em
 // /public/integrations/<slug>.png. Enquanto não existir, cai no nome em texto.
@@ -127,7 +128,9 @@ export const IntegrationsSection = ({ className }: IntegrationsSectionProps) => 
 
             {nodes.map((nd) => (
               <IntNode key={nd.slug} style={{ left: `${nd.leftPct}%`, top: `${nd.topPct}%` }}>
-                <NodeBody name={nd.name} slug={nd.slug} />
+                <IntPedestal>
+                  <NodeBody name={nd.name} slug={nd.slug} />
+                </IntPedestal>
               </IntNode>
             ))}
           </IntegrationsStage>
