@@ -1,16 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200">
-<defs>
-<style>
-.sankhya-text { font-family: Arial, sans-serif; font-size: 56px; font-weight: 600; }
-</style>
-</defs>
-
-<!-- Sankhya Logo - Stylized S design -->
-<!-- Left wave -->
-<path d="M 40 60 Q 60 50 70 70 Q 75 85 65 95 Q 50 105 40 95" fill="#0099CC" opacity="0.9"/>
-<!-- Right wave -->
-<path d="M 80 70 Q 95 60 105 75 Q 110 90 100 105 Q 85 115 75 105" fill="#0099CC"/>
-
-<!-- Text "Sankhya" -->
-<text x="130" y="110" class="sankhya-text" fill="#0099CC">Sankhya</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100" width="300" height="100">
+  <defs>
+    <style>
+      .sankhya-text { font-family: 'Arial', sans-serif; font-size: 42px; font-weight: bold; fill: #0099CC; }
+    </style>
+  </defs>
+  <!-- Sankhya Logo - Stylized S -->
+  <path d="M 30 35 Q 50 25 50 45 Q 50 55 30 60 Q 50 65 50 75 Q 50 85 30 95" 
+        fill="none" stroke="#0099CC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="80" y="65" class="sankhya-text">Sankhya</text>
 </svg>
