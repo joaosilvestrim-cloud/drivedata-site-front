@@ -170,9 +170,9 @@ export const IntNode = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 120px;
-  height: 70px;
-  padding: 12px 18px;
+  width: 138px;
+  height: 78px;
+  padding: 14px 18px;
   border-radius: 16px;
   background: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.65);
@@ -181,8 +181,8 @@ export const IntNode = styled.div`
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 
   img {
-    max-height: 40px;
-    max-width: 88px;
+    max-height: 50px;
+    max-width: 106px;
     width: auto;
     height: auto;
     object-fit: contain;

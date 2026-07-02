@@ -70,7 +70,7 @@ export const ChaosGrid = styled.div`
     height: 440px;
     border-radius: 24px;
     background: url('/touching-future-data-analysis-technology-interface.png') center/cover;
-    opacity: 0.55;
+    opacity: 0.85;
     box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55);
     z-index: 0;
     animation: ${floaty} 9s ease-in-out infinite;
@@ -85,7 +85,9 @@ export const ChaosGrid = styled.div`
     width: 46%;
     height: 440px;
     border-radius: 24px;
-    background: linear-gradient(120deg, rgba(7, 12, 22, 0.15), rgba(7, 12, 22, 0.8));
+    background: linear-gradient(120deg, rgba(7, 12, 22, 0.02), rgba(7, 12, 22, 0.42));
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: inset 0 0 0 1px rgba(84, 218, 137, 0.08);
     z-index: 1;
     pointer-events: none;
   }
