@@ -77,25 +77,6 @@ export const IntegrationsDescription = styled.p`
   }
 `;
 
-export const IntegrationsImageWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 ${theme.spacing.lg};
-  
-  img {
-    width: 100%;
-    height: auto;
-    border-radius: ${theme.borderRadius['2xl']};
-  }
-
-  @media (max-width: ${theme.breakpoints.md}) {
-    padding: 0 ${theme.spacing.md};
-  }
-`;
-
 // ── Palco radial animado (núcleo DriveData + plataformas + conectores) ──
 export const IntegrationsStage = styled.div`
   position: relative;
