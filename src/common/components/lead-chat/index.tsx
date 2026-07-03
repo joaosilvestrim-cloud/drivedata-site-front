@@ -57,6 +57,7 @@ export function LeadChat() {
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<'asking' | 'sending' | 'done' | 'failed'>('asking');
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Saudação no idioma atual. Roda no mount e quando o idioma muda — mas só
   // enquanto ninguém respondeu ainda (stepIdx === 0), pra não apagar a conversa.
@@ -70,6 +71,14 @@ export function LeadChat() {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, status]);
+
+  // Foca o input SEM rolar a página. O autoFocus antigo fazia a home descer
+  // sozinha no primeiro acesso (o navegador rolava até o input focado).
+  useEffect(() => {
+    if (status === 'asking' && !STEPS[stepIdx]?.options) {
+      inputRef.current?.focus({ preventScroll: true });
+    }
+  }, [stepIdx, status, STEPS]);
 
   const current = STEPS[stepIdx];
 
@@ -176,7 +185,7 @@ export function LeadChat() {
               onSubmit={(e) => { e.preventDefault(); answer(input); }}
             >
               <TextInput
-                autoFocus
+                ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={t('leadChat.ui.placeholder')}

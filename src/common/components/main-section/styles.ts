@@ -50,6 +50,12 @@ export const MainContainer = styled.section`
     position: relative;
     z-index: 3;
   }
+
+  /* Mobile: fluir do topo (o min-height 100vh + center cortava o topo da hero) */
+  @media (max-width: ${theme.breakpoints.lg}) {
+    min-height: auto;
+    align-items: flex-start;
+  }
 `;
 
 export const HeroCanvas = styled.canvas`
