@@ -78,6 +78,13 @@ export const PartnersSection = ({ className }: PartnersSectionProps) => {
   const carousel = partners.some((p) => p.featured) ? partners.filter((p) => p.featured) : partners;
   const moreLogos = partners.filter((p) => !p.featured);
 
+  // Marquee robusto p/ poucos logos: repete a lista Top até encher a faixa e escala a
+  // duração pela quantidade — pace constante (não fica lento nem "estático" com poucos).
+  const MIN_PER_HALF = 12;
+  const reps = carousel.length >= MIN_PER_HALF ? 1 : Math.ceil(MIN_PER_HALF / Math.max(1, carousel.length));
+  const marqueeItems = Array.from({ length: reps }).flatMap(() => carousel);
+  const marqueeDuration = Math.max(16, Math.round(marqueeItems.length * 1.6));
+
   useEffect(() => {
     if (typeof window === 'undefined') {
       return;
@@ -193,10 +200,10 @@ export const PartnersSection = ({ className }: PartnersSectionProps) => {
             </PartnersHeader>
 
             <PartnersMarquee>
-              <PartnersMarqueeTrack className="marquee-track">
+              <PartnersMarqueeTrack className="marquee-track" style={{ animationDuration: `${marqueeDuration}s` }}>
                 {[0, 1].map((dup) =>
-                  carousel.map((p, index) => (
-                    <PartnersMarqueeLogo key={`${dup}-${p.imageUrl}`} aria-hidden={dup === 1}>
+                  marqueeItems.map((p, index) => (
+                    <PartnersMarqueeLogo key={`${dup}-${index}-${p.imageUrl}`} aria-hidden={dup === 1}>
                       <Image
                         src={p.imageUrl}
                         alt={p.name || `Parceiro ${index + 1}`}
