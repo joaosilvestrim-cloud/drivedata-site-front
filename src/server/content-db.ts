@@ -197,6 +197,20 @@ export async function getProfiles(lang: Lang = 'pt') {
   }));
 }
 
+// logos de parceiros/clientes do carrossel da home (featured = roda no carrossel)
+export async function getPartners() {
+  const rows = await query(
+    `select * from partner where disabled_at is null order by "order" asc, created_at asc`,
+  );
+  return rows.map((r: any) => ({
+    id: r.id,
+    name: r.name ?? null,
+    imageUrl: r.image_url,
+    featured: r.featured === true,
+    order: r.order,
+  }));
+}
+
 // ─────────────────────── Analytics / Observabilidade ───────────────────────
 
 // registra uma visualização de artigo (chamado por /api/track, melhor-esforço)

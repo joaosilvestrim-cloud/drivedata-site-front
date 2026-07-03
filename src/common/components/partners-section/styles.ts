@@ -92,6 +92,35 @@ export const PartnersMarqueeLogo = styled.div`
 `;
 
 
+export const SeeMoreWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+`;
+
+export const SeeMoreButton = styled.button`
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 24px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(84, 218, 137, 0.4);
+    transform: translateY(-2px);
+  }
+`;
+
 export const PartnersSectionContainer = styled.section`
   width: 100%;
   position: relative;

@@ -8,6 +8,10 @@ import {
   PartnersMarquee,
   PartnersMarqueeLogo,
   PartnersMarqueeTrack,
+  PartnersGrid,
+  PartnerLogo,
+  SeeMoreWrap,
+  SeeMoreButton,
   PartnersHeader,
   PartnersSectionContainer,
   PartnersSectionContent,
@@ -24,48 +28,55 @@ import {
 } from './styles';
 import { PartnersSectionProps } from './types';
 
-// Logos de clientes (SVG exportados do Figma) em /public/clientes.
-const partnerLogos = [
-  'Camada_1.svg',
-  'FROSTY_portal 1.svg',
-  'Group 1707489281.svg',
-  'image 27993.svg',
-  'image 27996.svg',
-  'image 27997 1.svg',
-  'image 27998.svg',
-  'image 27999.svg',
-  'image 28000.svg',
-  'image 28002.svg',
-  'image 28003.svg',
-  'image 28004.svg',
-  'image 28005.svg',
-  'image 28006.svg',
-  'image 28008.svg',
-  'image 28009.svg',
-  'image 28010.svg',
-  'image 28011.svg',
-  'image 28012.svg',
-  'image 28013.svg',
-  'image 28014.svg',
-  'image 28015.svg',
-  'image 28016.svg',
-  'image 28017.svg',
-  'image 28018.svg',
-  'image 28019.svg',
-  'image 28020.svg',
-  'image 28021.svg',
-  'image 28023.svg',
-  'image 28024.svg',
-  'image 28025.svg',
-  'layer1.svg',
-  'PEP-a33c9cf1 1.svg',
+// Fonte da verdade = tabela `partner` (admin). Enquanto o banco não responde
+// (ou está vazio), cai neste fallback com os logos de /public/clientes — nada some.
+type Partner = { imageUrl: string; name?: string | null; featured: boolean };
+
+const FEATURED_FALLBACK = new Set([
   'VISA LOGO 1.svg',
+  'PEP-a33c9cf1 1.svg',
+  'FROSTY_portal 1.svg',
+]);
+const FALLBACK_FILES = [
+  'Camada_1.svg', 'FROSTY_portal 1.svg', 'Group 1707489281.svg', 'image 27993.svg', 'image 27996.svg',
+  'image 27997 1.svg', 'image 27998.svg', 'image 27999.svg', 'image 28000.svg', 'image 28002.svg',
+  'image 28003.svg', 'image 28004.svg', 'image 28005.svg', 'image 28006.svg', 'image 28008.svg',
+  'image 28009.svg', 'image 28010.svg', 'image 28011.svg', 'image 28012.svg', 'image 28013.svg',
+  'image 28014.svg', 'image 28015.svg', 'image 28016.svg', 'image 28017.svg', 'image 28018.svg',
+  'image 28019.svg', 'image 28020.svg', 'image 28021.svg', 'image 28023.svg', 'image 28024.svg',
+  'image 28025.svg', 'layer1.svg', 'PEP-a33c9cf1 1.svg', 'VISA LOGO 1.svg',
 ];
+const FALLBACK_PARTNERS: Partner[] = FALLBACK_FILES.map((f) => ({
+  imageUrl: `/clientes/${f}`,
+  featured: FEATURED_FALLBACK.has(f),
+}));
 
 export const PartnersSection = ({ className }: PartnersSectionProps) => {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
+  const [partners, setPartners] = useState<Partner[]>(FALLBACK_PARTNERS);
+  const [showMore, setShowMore] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
+
+  // Busca os parceiros configurados no admin; mantém o fallback se falhar/vazio.
+  useEffect(() => {
+    let alive = true;
+    fetch('/api/partners')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (alive && Array.isArray(d) && d.length) {
+          setPartners(d.map((p: any) => ({ imageUrl: p.imageUrl, name: p.name, featured: !!p.featured })));
+        }
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  // Top = rodam no carrossel; se nenhum for Top, roda todos. Resto vai no "Ver mais".
+  const carousel = partners.some((p) => p.featured) ? partners.filter((p) => p.featured) : partners;
+  const moreLogos = partners.filter((p) => !p.featured);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -184,11 +195,11 @@ export const PartnersSection = ({ className }: PartnersSectionProps) => {
             <PartnersMarquee>
               <PartnersMarqueeTrack className="marquee-track">
                 {[0, 1].map((dup) =>
-                  partnerLogos.map((logo, index) => (
-                    <PartnersMarqueeLogo key={`${dup}-${logo}`} aria-hidden={dup === 1}>
+                  carousel.map((p, index) => (
+                    <PartnersMarqueeLogo key={`${dup}-${p.imageUrl}`} aria-hidden={dup === 1}>
                       <Image
-                        src={`/clientes/${logo}`}
-                        alt={`Parceiro ${index + 1}`}
+                        src={p.imageUrl}
+                        alt={p.name || `Parceiro ${index + 1}`}
                         width={150}
                         height={80}
                         loading="lazy"
@@ -200,6 +211,34 @@ export const PartnersSection = ({ className }: PartnersSectionProps) => {
                 )}
               </PartnersMarqueeTrack>
             </PartnersMarquee>
+
+            {moreLogos.length > 0 && (
+              <SeeMoreWrap>
+                <SeeMoreButton type="button" onClick={() => setShowMore((v) => !v)}>
+                  {showMore
+                    ? t('partnersSection.seeLess', { defaultValue: 'Ver menos' })
+                    : t('partnersSection.seeMore', { count: moreLogos.length, defaultValue: 'Ver mais (+{{count}})' })}
+                </SeeMoreButton>
+              </SeeMoreWrap>
+            )}
+
+            {showMore && moreLogos.length > 0 && (
+              <PartnersGrid data-animate="true">
+                {moreLogos.map((p, index) => (
+                  <PartnerLogo key={p.imageUrl} data-animate="true">
+                    <Image
+                      src={p.imageUrl}
+                      alt={p.name || `Parceiro ${index + 1}`}
+                      width={140}
+                      height={80}
+                      loading="lazy"
+                      quality={75}
+                      unoptimized
+                    />
+                  </PartnerLogo>
+                ))}
+              </PartnersGrid>
+            )}
           </div>
 
           {/* Seção de Resultados */}

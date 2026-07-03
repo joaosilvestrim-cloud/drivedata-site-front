@@ -106,6 +106,7 @@ export function EntityManager({ entity, title, description, icon = 'layers', fie
   }
 
   const listCols = fields.filter((f) => f.listCol !== false && f.type !== 'image' && f.type !== 'textarea').slice(0, 3);
+  const imageCol = fields.find((f) => f.type === 'image');
 
   return (
     <div>
@@ -119,6 +120,7 @@ export function EntityManager({ entity, title, description, icon = 'layers', fie
         <table style={T.table}>
           <thead>
             <tr>
+              {imageCol && <th style={T.th}>Imagem</th>}
               {listCols.map((c) => <th key={c.key} style={T.th}>{c.label}</th>)}
               {canPublish && <th style={T.th}>Status</th>}
               <th style={T.th}></th>
@@ -127,8 +129,20 @@ export function EntityManager({ entity, title, description, icon = 'layers', fie
           <tbody>
             {items.map((it) => (
               <tr key={it.id}>
+                {imageCol && (
+                  <td style={T.td}>
+                    {it[imageCol.key]
+                      // eslint-disable-next-line @next/next/no-img-element
+                      ? <img src={it[imageCol.key]} alt="" style={{ height: 34, maxWidth: 92, objectFit: 'contain', background: '#fff', borderRadius: 6, padding: 3, display: 'block' }} />
+                      : <span style={{ color: C.faint }}>—</span>}
+                  </td>
+                )}
                 {listCols.map((c) => (
-                  <td key={c.key} style={T.td}>{String(it[c.key] ?? '').replace(/<[^>]+>/g, '').slice(0, 60) || '—'}</td>
+                  <td key={c.key} style={T.td}>
+                    {c.type === 'bool'
+                      ? (it[c.key] ? <Badge tone="live">Sim</Badge> : <span style={{ color: C.faint }}>Não</span>)
+                      : String(it[c.key] ?? '').replace(/<[^>]+>/g, '').slice(0, 60) || '—'}
+                  </td>
                 ))}
                 {canPublish && (
                   <td style={T.td}>

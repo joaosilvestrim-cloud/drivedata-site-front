@@ -20,6 +20,7 @@ const GROUPS: { title: string; links: { href: string; label: string; icon: strin
     links: [
       { href: '/admin/solutions', label: 'Soluções', icon: 'layers' },
       { href: '/admin/testimonials', label: 'Depoimentos', icon: 'star' },
+      { href: '/admin/parceiros', label: 'Parceiros', icon: 'image' },
       { href: '/admin/faq', label: 'FAQ', icon: 'help' },
       { href: '/admin/profiles', label: 'Público-alvo', icon: 'users' },
     ],

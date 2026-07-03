@@ -87,6 +87,16 @@ export const ENTITIES: Record<string, EntityConfig> = {
       type: { col: 'type', type: 'text' },
     },
   },
+  partner: {
+    table: 'partner',
+    orderBy: '"order" asc, created_at asc',
+    fields: {
+      name: { col: 'name', type: 'text' },
+      imageUrl: { col: 'image_url', type: 'text' },
+      featured: { col: 'featured', type: 'bool' },
+      order: { col: 'order', type: 'int' },
+    },
+  },
 };
 
 // normaliza um valor i18n para objeto {pt,en,es,fr} (só com idiomas preenchidos)
