@@ -271,12 +271,12 @@ export const GhostButton = styled.button`
 /* ── Dashboard em vidro (foco visual do hero) ───────────────── */
 export const HeroDash = styled.div`
   position: relative;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(10, 16, 28, 0.55);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(84, 218, 137, 0.22);
   border-radius: 22px;
   padding: 22px;
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.55), 0 0 46px rgba(45, 212, 191, 0.15);
   animation: ${bob} 8s ease-in-out infinite;
 
   &::before {
@@ -286,11 +286,10 @@ export const HeroDash = styled.div`
     border-radius: 22px;
     padding: 1px;
     background: linear-gradient(
-      140deg,
-      rgba(84, 218, 137, 0.5),
-      transparent 42%,
-      transparent 58%,
-      rgba(10, 150, 236, 0.5)
+      135deg,
+      rgba(94, 234, 212, 0.75),
+      rgba(56, 189, 248, 0.5) 55%,
+      rgba(10, 150, 236, 0.55)
     );
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
@@ -348,14 +347,24 @@ export const DashKpis = styled.div`
   }
   & .kpi .n {
     font-family: var(--font-sora), 'Sora', sans-serif;
-    font-size: 22px;
+    font-size: 26px;
     font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1;
   }
   & .kpi .n.up {
-    color: #54da89;
+    color: #4ade80;
+    text-shadow: 0 0 22px rgba(74, 222, 128, 0.35);
   }
-  & .kpi .n.bl {
-    color: #22d3ee;
+  & .kpi .n.dn {
+    color: #f87171;
+    text-shadow: 0 0 22px rgba(248, 113, 113, 0.3);
+  }
+  & .kpi .n.si {
+    background: linear-gradient(180deg, #ffffff, #93a3b8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   & .kpi .l {
     font-size: 10px;
@@ -387,8 +396,8 @@ export const DashBars = styled.div`
     position: relative;
     flex: 1;
     border-radius: 6px 6px 0 0;
-    background: linear-gradient(180deg, #6ee7a8 0%, #0a96ec 100%);
-    box-shadow: 0 0 16px rgba(84, 218, 137, 0.32);
+    background: linear-gradient(180deg, #6ee7a8 0%, #2dd4bf 42%, #0ea5e9 100%);
+    box-shadow: 0 0 22px rgba(45, 212, 191, 0.4);
     animation: ${grow} 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
   /* brilho na ponta de cada barra */
@@ -410,12 +419,12 @@ export const FloatChip = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(11, 18, 32, 0.9);
+  background: rgba(11, 18, 32, 0.92);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
   padding: 11px 14px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
 
   &.top {
     top: -20px;
@@ -434,21 +443,25 @@ export const FloatChip = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(84, 218, 137, 0.14);
-    color: #54da89;
+    background: rgba(74, 222, 128, 0.16);
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    color: #6ee7a8;
     font-weight: 800;
     font-size: 12px;
+    box-shadow: 0 0 16px rgba(74, 222, 128, 0.18);
   }
   & .ic.bl {
-    background: rgba(10, 150, 236, 0.16);
-    color: #22d3ee;
+    background: rgba(56, 189, 248, 0.16);
+    border-color: rgba(56, 189, 248, 0.28);
+    color: #38bdf8;
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.18);
   }
   & b {
-    font-size: 12px;
+    font-size: 12.5px;
     color: #fff;
   }
   & .s {
-    color: rgba(234, 240, 251, 0.4);
+    color: rgba(234, 240, 251, 0.55);
     font-size: 10.5px;
   }
 

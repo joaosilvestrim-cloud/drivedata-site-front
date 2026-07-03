@@ -249,7 +249,7 @@ export const MainSection = ({ className }: MainSectionProps) => {
             <span className="ic">IA</span>
             <div>
               <b>Previsão de demanda</b>
-              <div className="s">acurácia 94%</div>
+              <div className="s">acurácia 96%</div>
             </div>
           </FloatChip>
 
@@ -260,15 +260,15 @@ export const MainSection = ({ className }: MainSectionProps) => {
 
           <DashKpis>
             <div className="kpi">
-              <div className="n up">+42%</div>
+              <div className="n up">+48%</div>
               <div className="l">eficiência</div>
             </div>
             <div className="kpi">
-              <div className="n bl">-31%</div>
+              <div className="n dn">-35%</div>
               <div className="l">custo op.</div>
             </div>
             <div className="kpi">
-              <div className="n">R$8,4M</div>
+              <div className="n si">R$9,2M</div>
               <div className="l">impacto</div>
             </div>
           </DashKpis>
@@ -278,7 +278,7 @@ export const MainSection = ({ className }: MainSectionProps) => {
               <div
                 key={i}
                 className="bar"
-                style={{ height: `${h}%`, opacity: 0.55 + h / 260, animationDelay: `${i * 0.08}s` }}
+                style={{ height: `${h}%`, opacity: 0.85 + h / 600, animationDelay: `${i * 0.08}s` }}
               />
             ))}
           </DashBars>
@@ -287,7 +287,7 @@ export const MainSection = ({ className }: MainSectionProps) => {
             <span className="ic bl">◲</span>
             <div>
               <b>Pipeline saudável</b>
-              <div className="s">+18% no trimestre</div>
+              <div className="s">+22% no trimestre</div>
             </div>
           </FloatChip>
         </HeroDash>
