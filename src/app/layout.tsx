@@ -129,27 +129,61 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
 
-        {/* Schema.org JSON-LD */}
+        {/* Schema.org JSON-LD — Organization + WebSite + navegação (ajuda sitelinks) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
-              '@type': 'Organization',
-              name: 'DriveData',
-              description: 'Soluções inteligentes em dados para empresas',
-              url: 'https://drivedata.com.br',
-              logo: 'https://drivedata.com.br/logo.png',
-              sameAs: [
-                'https://linkedin.com/company/drivedata',
-                'https://twitter.com/drivedata',
+              '@graph': [
+                {
+                  '@type': 'Organization',
+                  '@id': 'https://drivedata.com.br/#organization',
+                  name: 'DriveData',
+                  description:
+                    'Consultoria em BI e IA para análise de dados, apoiando a tomada de decisão e gerando resultados para empresas.',
+                  url: 'https://drivedata.com.br',
+                  logo: 'https://drivedata.com.br/logo.png',
+                  sameAs: [
+                    'https://www.linkedin.com/company/drivedatabi/',
+                    'https://www.instagram.com/_drivedata',
+                  ],
+                  contactPoint: {
+                    '@type': 'ContactPoint',
+                    telephone: '+55-15-99797-5794',
+                    contactType: 'customer service',
+                    areaServed: 'BR',
+                    availableLanguage: ['Portuguese', 'English'],
+                  },
+                  address: {
+                    '@type': 'PostalAddress',
+                    streetAddress: 'AL Rio Negro, Alphaville, 503',
+                    addressLocality: 'Barueri',
+                    addressRegion: 'SP',
+                    postalCode: '06454-000',
+                    addressCountry: 'BR',
+                  },
+                },
+                {
+                  '@type': 'WebSite',
+                  '@id': 'https://drivedata.com.br/#website',
+                  name: 'DriveData',
+                  url: 'https://drivedata.com.br',
+                  inLanguage: 'pt-BR',
+                  publisher: { '@id': 'https://drivedata.com.br/#organization' },
+                },
+                {
+                  '@type': 'ItemList',
+                  name: 'Navegação principal',
+                  itemListElement: [
+                    { '@type': 'SiteNavigationElement', position: 1, name: 'Sobre', url: 'https://drivedata.com.br/about' },
+                    { '@type': 'SiteNavigationElement', position: 2, name: 'Soluções', url: 'https://drivedata.com.br/about#solucoes' },
+                    { '@type': 'SiteNavigationElement', position: 3, name: 'Clientes', url: 'https://drivedata.com.br/about#clientes' },
+                    { '@type': 'SiteNavigationElement', position: 4, name: 'Blog', url: 'https://drivedata.com.br/article' },
+                    { '@type': 'SiteNavigationElement', position: 5, name: 'DALT', url: 'https://drivedata.com.br/dalt' },
+                  ],
+                },
               ],
-              contactPoint: {
-                '@type': 'ContactPoint',
-                telephone: '+55-11-99999-9999',
-                contactType: 'customer service',
-                availableLanguage: 'Portuguese',
-              },
             }),
           }}
         />
