@@ -24,9 +24,14 @@ const forceEnglish = isEnglishDefaultDomain(clientHostname) || SITE_COUNTRY === 
 const domainDefaultLanguage = forceEnglish ? 'en' : getDefaultLanguageByHostname(clientHostname);
 
 const detectionOptions = {
+  // `htmlTag` vem ANTES de `navigator`: o primeiro render do cliente precisa casar
+  // com o <html lang> definido pelo servidor (getServerLanguage). Se o navigator
+  // fosse consultado antes, o cliente poderia iniciar num idioma diferente do
+  // HTML do servidor → hydration mismatch (erro React #418). A troca por geo/idioma
+  // do navegador ainda ocorre DEPOIS da hidratação, sem erro.
   order: forceEnglish
     ? ['localStorage', 'cookie']
-    : ['localStorage', 'cookie', 'navigator', 'htmlTag'],
+    : ['localStorage', 'cookie', 'htmlTag', 'navigator'],
   caches: ['localStorage', 'cookie'],
   lookupLocalStorage: 'drive-data-lp:selected-language',
   lookupCookie: 'drive-data-lp:selected-language',
