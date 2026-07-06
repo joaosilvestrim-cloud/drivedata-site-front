@@ -455,8 +455,11 @@ export const Header = ({ className }: HeaderProps) => {
               </ContactButtonWrapper>
 
               <MobileMenuButton
+                type="button"
                 onClick={toggleMobileMenu}
                 isOpen={isMobileMenuOpen}
+                aria-label={isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+                aria-expanded={isMobileMenuOpen}
               >
                 <MobileMenuIcon isOpen={isMobileMenuOpen} />
               </MobileMenuButton>

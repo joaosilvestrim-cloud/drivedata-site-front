@@ -26,7 +26,14 @@ export const FloatingContact = ({ className }: FloatingContactProps) => {
   };
 
   return (
-    <FloatingContactContainer onClick={handleContactClick} className={className}>
+    <FloatingContactContainer
+      type="button"
+      onClick={handleContactClick}
+      className={className}
+      aria-label={t('previewSolutionsSection.floatingAria', {
+        defaultValue: 'Abrir chat de contato com a DriveData',
+      })}
+    >
       <FloatingAvatarWrapper>
         <FloatingAvatar backgroundImage="/tamires-avatar.png" />
         <FloatingAvatarStatus />

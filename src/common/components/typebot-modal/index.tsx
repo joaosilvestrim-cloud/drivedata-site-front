@@ -40,7 +40,7 @@ export const TypebotModal = () => {
   return (
     <TypebotModalBackdrop isOpen={isOpen} onClick={handleBackdropClick}>
       <TypebotModalContainer isOpen={isOpen}>
-        <TypebotModalCloseButton onClick={closeTypebot}>×</TypebotModalCloseButton>
+        <TypebotModalCloseButton type="button" onClick={closeTypebot} aria-label="Fechar">×</TypebotModalCloseButton>
         <TypebotWrapper>
           <LeadChat />
         </TypebotWrapper>
