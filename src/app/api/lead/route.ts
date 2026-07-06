@@ -127,6 +127,43 @@ export async function POST(request: Request) {
     const created = (await iRes.json().catch(() => null)) as Array<{ id: string }> | null;
     const leadId = Array.isArray(created) ? created[0]?.id : undefined;
 
+    // Aviso por e-mail aos usuários "eleitos" no CRM (editor de usuário → "Receber
+    // e-mail de novos leads"). A lista fica em app_state `lead_notify_recipients:<code>`.
+    // Best-effort: nunca quebra a captura da lead.
+    try {
+      const key = `lead_notify_recipients:${LEAD_TENANT_CODE}`;
+      const rRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/app_state?key=eq.${encodeURIComponent(key)}&select=data`,
+        { headers },
+      );
+      const rows = (await rRes.json().catch(() => [])) as Array<{ data?: { emails?: string[] } }>;
+      const emails = Array.isArray(rows) && Array.isArray(rows[0]?.data?.emails) ? rows[0]!.data!.emails! : [];
+      if (emails.length) {
+        const displayName = String(name ?? '').trim() || email || phone || 'sem nome';
+        const info = [
+          `<strong>${displayName}</strong>${company ? ` — ${company}` : ''}`,
+          email ? `E-mail: ${email}` : '',
+          phone ? `Telefone: ${phone}` : '',
+          typeof leadScore === 'number' ? `Lead Score: ${leadScore}/10${mql ? ' → MQL ✅' : ''}` : '',
+          page ? `Página: ${page}` : '',
+        ].filter(Boolean);
+        await fetch(`${SUPABASE_URL}/functions/v1/send-notification`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            to: emails,
+            subject: `Novo lead: ${displayName}`,
+            event: 'lead.created',
+            title: 'Novo lead no CRM',
+            text: `Um novo lead acabou de entrar pelo site:<br/><br/>${info.join('<br/>')}`,
+            useTemplate: true,
+          }),
+        });
+      }
+    } catch {
+      /* notificação é best-effort; a lead já foi salva */
+    }
+
     // Ledger de conversões (migration 069): registra os eventos a enviar p/ as
     // plataformas. Lead sempre; MQL se score >= 6. Só cria quando há click id
     // atribuível. Resiliente: nunca quebra a captura da lead se algo falhar.
