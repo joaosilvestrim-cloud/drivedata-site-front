@@ -16,26 +16,16 @@ import { getArticles, getFaqs, getSolutions, getTestimonials } from '@/server/co
 export default async function About() {
   const lang = await getLanguageSafeAsync();
 
-  let solutions: SolutionModel[] = [];
-  let testimonials: TestimonialModel[] = [];
-  let articles: FindManyArticleResult = [];
-  let faqs: FaqModel[] = [];
-
-  try {
-    solutions = (await getSolutions(lang)) as SolutionModel[];
-  } catch {}
-
-  try {
-    testimonials = (await getTestimonials(lang)) as TestimonialModel[];
-  } catch {}
-
-  try {
-    articles = (await getArticles({ limit: 3 }, lang)) as FindManyArticleResult;
-  } catch {}
-
-  try {
-    faqs = (await getFaqs(lang)) as FaqModel[];
-  } catch {}
+  // Consultas em PARALELO. Antes eram 4 awaits SEQUENCIAIS (getSolutions →
+  // getTestimonials → getArticles → getFaqs) e a latência somava, travando a
+  // navegação até tudo carregar. Com Promise.all o tempo cai para o da consulta
+  // mais lenta. Cada uma degrada para lista vazia se falhar.
+  const [solutions, testimonials, articles, faqs] = await Promise.all([
+    getSolutions(lang).then(r => r as SolutionModel[]).catch(() => [] as SolutionModel[]),
+    getTestimonials(lang).then(r => r as TestimonialModel[]).catch(() => [] as TestimonialModel[]),
+    getArticles({ limit: 3 }, lang).then(r => r as FindManyArticleResult).catch(() => [] as FindManyArticleResult),
+    getFaqs(lang).then(r => r as FaqModel[]).catch(() => [] as FaqModel[]),
+  ]);
 
   return (
     <>
