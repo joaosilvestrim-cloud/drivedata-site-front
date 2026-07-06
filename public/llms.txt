@@ -1,0 +1,19 @@
+# DriveData
+
+> Consultoria em BI e IA para análise de dados, apoiando a tomada de decisão e gerando mais resultados para empresas.
+
+DriveData é uma consultoria especializada em Business Intelligence (BI), análise de dados e Inteligência Artificial. Transformamos dados em decisões estratégicas com dashboards, automações e IA integrada — inclusive no WhatsApp — para empresas de diversos portes.
+
+## Páginas
+- [Sobre](https://drivedata.com.br/about): quem somos, soluções, clientes e depoimentos
+- [Soluções](https://drivedata.com.br/about#solucoes): serviços de BI, analytics e IA
+- [Clientes](https://drivedata.com.br/about#clientes): empresas atendidas
+- [Blog](https://drivedata.com.br/article): artigos sobre dados, BI e IA
+- [DALT](https://drivedata.com.br/dalt): diagnóstico de maturidade em dados
+- [Política de Privacidade](https://drivedata.com.br/privacy-policy): tratamento de dados conforme a LGPD
+
+## Contato
+- Telefone / WhatsApp: +55 15 99797-5794
+- LinkedIn: https://www.linkedin.com/company/drivedatabi/
+- Instagram: https://www.instagram.com/_drivedata
+- Endereço: AL Rio Negro, Alphaville, 503 — 06454-000, Barueri/SP, Brasil
