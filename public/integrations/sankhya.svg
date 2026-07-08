@@ -1,11 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100" width="300" height="100">
-  <defs>
-    <style>
-      .sankhya-text { font-family: 'Arial', sans-serif; font-size: 42px; font-weight: bold; fill: #0099CC; }
-    </style>
-  </defs>
-  <!-- Sankhya Logo - Stylized S -->
-  <path d="M 30 35 Q 50 25 50 45 Q 50 55 30 60 Q 50 65 50 75 Q 50 85 30 95" 
-        fill="none" stroke="#0099CC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="80" y="65" class="sankhya-text">Sankhya</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" role="img" aria-label="Sankhya">
+  <g fill="none" stroke="#5FBE5B" stroke-width="16" stroke-linecap="round">
+    <path d="M54 20 C 30 40, 30 80, 56 100" />
+    <path d="M82 20 C 58 40, 58 80, 84 100" />
+  </g>
+  <text x="116" y="82" font-family="Arial, Helvetica, sans-serif" font-size="70" font-weight="700" fill="#141414">Sankhya</text>
 </svg>
