@@ -1,11 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100" width="300" height="100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
   <defs>
-    <style>
-      .senior-text { font-family: 'Arial', sans-serif; font-size: 42px; font-weight: bold; fill: #00A3E0; }
-    </style>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00a651;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#008c3a;stop-opacity:1" />
+    </linearGradient>
   </defs>
-  <!-- Senior Logo - Curved S -->
-  <path d="M 25 30 Q 45 20 45 40 Q 45 50 25 55 Q 45 60 45 70 Q 45 80 25 90" 
-        fill="none" stroke="#00A3E0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="75" y="65" class="senior-text">Senior</text>
+  <rect width="200" height="100" fill="white"/>
+  <text x="100" y="60" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="url(#grad1)" text-anchor="middle">Senior</text>
 </svg>
