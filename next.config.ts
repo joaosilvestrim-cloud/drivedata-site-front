@@ -15,7 +15,11 @@ const nextConfig: NextConfig = {
 
   // Configurações de imagem para melhor performance
   images: {
-    unoptimized: true, // Desabilita otimização para evitar 429 errors
+    // Otimização LIGADA. O motivo antigo do "unoptimized" era 429 do storage
+    // Contabo, mas o Contabo só serve VÍDEOS no DALT — nenhuma <Image> passa pelo
+    // otimizador remoto. Assim as imagens locais ganham srcset responsivo +
+    // webp/avif sob demanda. As pesadas do /public já foram recomprimidas.
+    unoptimized: false,
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],

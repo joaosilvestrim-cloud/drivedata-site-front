@@ -3,6 +3,7 @@
 // Roda só no servidor. Usado tanto pelos route handlers (/api/*) quanto
 // diretamente pelos server components (sem pulo HTTP).
 import { Pool } from 'pg';
+import { normalizeArticleHtml } from './normalize-article-html';
 
 let pool: Pool | null = null;
 
@@ -74,6 +75,7 @@ function mapArticle(r: any, lang: Lang) {
     seoTitle: t(r.seo_title, lang) || t(r.title, lang),
     seoDescription: t(r.seo_description, lang) || t(r.description, lang),
     tags: Array.isArray(r.tags) ? r.tags : [],
+    faqs: Array.isArray(r.faqs) ? r.faqs : [],
     documents: Array.isArray(r.document_urls) ? r.document_urls : [],
     author: r.author ?? null,
     status: r.status ?? 'published',
@@ -131,7 +133,11 @@ export async function getArticleById(idOrSlug: string, lang: Lang = 'pt', previe
      limit 1`,
     [idOrSlug],
   );
-  return rows.length ? mapArticle(rows[0], lang) : null;
+  if (!rows.length) return null;
+  const article = mapArticle(rows[0], lang);
+  // Normaliza o HTML do corpo (h1→h2, corrige bloco-em-<p>, alt em imagens).
+  article.content = normalizeArticleHtml(article.content, article.title);
+  return article;
 }
 
 export async function getSolutions(lang: Lang = 'pt') {

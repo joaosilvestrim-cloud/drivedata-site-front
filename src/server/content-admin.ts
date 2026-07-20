@@ -37,6 +37,7 @@ export const ENTITIES: Record<string, EntityConfig> = {
       author: { col: 'author', type: 'text' },
       tags: { col: 'tags', type: 'array' },
       documents: { col: 'document_urls', type: 'json' },
+      faqs: { col: 'faqs', type: 'json' },
       scheduledAt: { col: 'scheduled_at', type: 'timestamp' },
       publishedAt: { col: 'published_at', type: 'timestamp' },
     },

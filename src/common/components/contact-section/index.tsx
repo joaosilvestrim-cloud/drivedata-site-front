@@ -3,6 +3,7 @@
 import { Container } from '@/common/components/container';
 import { SITE_CONTACT } from '@/common/config/site';
 import { httpCreateContactRequest } from '@/modules/contact/api/create-contact-request/http-create-contact-request';
+import { trackLeadConversion } from '@/common/helpers/track-conversion';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -79,6 +80,8 @@ export const ContactSection = ({ className }: ContactSectionProps) => {
     try {
       await httpCreateContactRequest(formData);
 
+      // Conversão só após o envio dar certo (evita contar tentativa/erro).
+      trackLeadConversion({ source: 'contact_form' });
       setIsSuccess(true);
       setFormData({
         name: '',
