@@ -11,7 +11,7 @@ interface ArticleCardProps {
 
 export const ArticleCard = ({ article }: ArticleCardProps) => {
   return (
-    <Link href={`/article/${article.id}`} style={{ textDecoration: 'none' }}>
+    <Link href={`/article/${article.slug || article.id}`} style={{ textDecoration: 'none' }}>
       <ArticleCardContainer>
         <ArticleThumbnail>
           {article.imageUrl && (

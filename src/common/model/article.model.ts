@@ -1,3 +1,9 @@
+/** Pergunta/resposta do FAQ de um artigo (alimenta o schema FAQPage). */
+export interface ArticleFaq {
+  q: string;
+  a: string;
+}
+
 export interface ArticleModel {
   id: string;
   slug?: string | null;
@@ -10,6 +16,7 @@ export interface ArticleModel {
   seoTitle?: string;
   seoDescription?: string;
   tags?: string[];
+  faqs?: ArticleFaq[];
   documents?: { name: string; url: string; mime?: string; size?: number }[];
   author?: string | null;
   status?: string;

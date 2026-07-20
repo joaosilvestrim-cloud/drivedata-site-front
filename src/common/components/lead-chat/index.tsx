@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getAttribution } from '@/common/helpers/attribution';
+import { trackLeadConversion } from '@/common/helpers/track-conversion';
 
 // Chat de captação próprio da DriveData. Coleta os dados (mesmo fluxo do antigo
 // Typebot) e grava direto no CRM via /api/lead (origem "Chat"). Sem dependência
@@ -122,6 +123,8 @@ export function LeadChat() {
       if (!res.ok) throw new Error('falha');
       setStatus('done');
       setMessages((m) => [...m, { from: 'bot', text: t('leadChat.messages.success') }]);
+      // Conversão só AQUI: a lead foi de fato gravada no CRM.
+      trackLeadConversion({ source: 'chat', leadScore, mql: isMQL });
     } catch {
       setStatus('failed');
       setMessages((m) => [...m, { from: 'bot', text: t('leadChat.messages.error') }]);
@@ -181,16 +184,15 @@ export function LeadChat() {
               ))}
             </Options>
           ) : (
-            <InputRow
-              onSubmit={(e) => { e.preventDefault(); answer(input); }}
-            >
+            <InputRow>
               <TextInput
                 ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); answer(input); } }}
                 placeholder={t('leadChat.ui.placeholder')}
               />
-              <SendBtn type="submit" disabled={!input.trim()}>{t('leadChat.ui.send')}</SendBtn>
+              <SendBtn type="button" onClick={() => answer(input)} disabled={!input.trim()}>{t('leadChat.ui.send')}</SendBtn>
             </InputRow>
           )}
           {error && <ErrorText>{error}</ErrorText>}
@@ -239,7 +241,7 @@ const OptionBtn = styled.button`
   padding: 9px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer; transition: .15s;
   &:hover { background: rgba(84,218,137,.2); }
 `;
-const InputRow = styled.form` display: flex; gap: 8px; `;
+const InputRow = styled.div` display: flex; gap: 8px; `;
 const TextInput = styled.input`
   flex: 1; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: #fff;
   padding: 11px 14px; border-radius: 12px; font-size: 14px; outline: none;

@@ -15,7 +15,7 @@ type Article = {
   id: string;
   title: I18n; subTitle: I18n; description: I18n; content: I18n; seoTitle: I18n; seoDescription: I18n;
   categoryId?: string; imageUrl?: string; slug?: string; author?: string;
-  tags?: string[]; documents?: DocAsset[];
+  tags?: string[]; documents?: DocAsset[]; faqs?: { q: string; a: string }[];
   status?: 'draft' | 'published' | 'scheduled'; scheduledAt?: string; publishedAt?: string;
   views?: number; createdAt?: string; disabled?: boolean;
 };
@@ -53,7 +53,7 @@ const stripHtml = (s: string) => (s || '').replace(/<[^>]+>/g, ' ').replace(/\s+
 
 function emptyForm(): Article {
   const blank: I18n = {};
-  return { id: '', title: { ...blank }, subTitle: {}, description: {}, content: {}, seoTitle: {}, seoDescription: {}, categoryId: '', imageUrl: '', slug: '', author: '', tags: [], documents: [], status: 'draft' };
+  return { id: '', title: { ...blank }, subTitle: {}, description: {}, content: {}, seoTitle: {}, seoDescription: {}, categoryId: '', imageUrl: '', slug: '', author: '', tags: [], documents: [], faqs: [], status: 'draft' };
 }
 
 export function ArticlesManager() {
@@ -241,6 +241,7 @@ export function ArticlesManager() {
         seoTitle: form.seoTitle, seoDescription: form.seoDescription,
         categoryId: form.categoryId || null, imageUrl: form.imageUrl || null, slug: form.slug || '',
         author: form.author || null, tags: form.tags || [], documents: form.documents || [],
+        faqs: (form.faqs || []).filter((f) => f.q?.trim() && f.a?.trim()),
         status: form.status || 'draft', scheduledAt: form.scheduledAt || null, publishedAt: form.publishedAt || null,
       };
       const r = await fetch(`/api/admin/article${isNew ? '' : '/' + editing!.id}`, {
@@ -471,6 +472,29 @@ export function ArticlesManager() {
                 <Textarea value={getI18n('seoDescription')} onChange={(e) => setI18n('seoDescription', e.target.value)} placeholder="Usa o resumo se vazio" />
               </Field>
               <SerpPreview title={getI18n('seoTitle') || getI18n('title')} desc={getI18n('seoDescription') || getI18n('description')} slug={form.slug || ''} />
+
+              <Field label="Perguntas frequentes (FAQ)" hint="Vira o schema FAQPage — o que mais ajuda a ser citado por IA (ChatGPT, Gemini, Claude)">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {(form.faqs || []).map((f, i) => (
+                    <div key={i} style={{ border: '1px solid rgba(255,255,255,0.12)', borderRadius: 10, padding: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                      <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                        <Input value={f.q} placeholder="Pergunta"
+                          onChange={(e) => setForm((p) => ({ ...p, faqs: (p.faqs || []).map((x, j) => j === i ? { ...x, q: e.target.value } : x) }))} />
+                        <button type="button" title="Remover"
+                          onClick={() => setForm((p) => ({ ...p, faqs: (p.faqs || []).filter((_, j) => j !== i) }))}
+                          style={{ ...chipX, flexShrink: 0, width: 30, height: 30, borderRadius: 8 }}><Icon name="x" size={13} /></button>
+                      </div>
+                      <Textarea value={f.a} placeholder="Resposta"
+                        onChange={(e) => setForm((p) => ({ ...p, faqs: (p.faqs || []).map((x, j) => j === i ? { ...x, a: e.target.value } : x) }))} />
+                    </div>
+                  ))}
+                  <button type="button"
+                    onClick={() => setForm((p) => ({ ...p, faqs: [...(p.faqs || []), { q: '', a: '' }] }))}
+                    style={{ alignSelf: 'flex-start', padding: '8px 14px', borderRadius: 8, border: '1px dashed rgba(255,255,255,0.25)', background: 'transparent', color: '#4dc3ee', cursor: 'pointer', fontSize: 13, fontWeight: 600 }}>
+                    + Adicionar pergunta
+                  </button>
+                </div>
+              </Field>
             </div>
           )}
 

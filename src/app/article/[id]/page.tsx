@@ -1,4 +1,5 @@
 import { ArticleContentSection, Header, MainArticleSection, RelatedArticlesSection } from '@/common/components';
+import { ArticleFaqSection } from '@/common/components/article-faq-section';
 import { Footer } from '@/common/components/footer';
 import { TrackView } from '@/common/components/track-view';
 import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
@@ -16,10 +17,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     if (!a) return { title: 'Artigo · DriveData' };
     const title = a.seoTitle || a.title;
     const description = a.seoDescription || a.description || undefined;
+    const canonical = `https://drivedata.com.br/article/${a.slug || a.id}`;
     return {
       title,
       description,
-      openGraph: { title, description, images: a.imageUrl ? [a.imageUrl] : [], type: 'article' },
+      alternates: { canonical },
+      openGraph: { title, description, url: canonical, images: a.imageUrl ? [a.imageUrl] : [], type: 'article' },
       twitter: { card: 'summary_large_image', title, description },
     };
   } catch {
@@ -51,12 +54,57 @@ export default async function Article({ params }: { params: Promise<{ id: string
     console.error(error);
   }
 
+  const canonical = `https://drivedata.com.br/article/${article.slug || article.id}`;
+  const articleLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${canonical}#article`,
+    headline: article.seoTitle || article.title,
+    description: article.seoDescription || article.description || undefined,
+    image: article.imageUrl ? [article.imageUrl] : undefined,
+    datePublished: article.publishedAt || article.createdAt,
+    dateModified: article.updatedAt || article.publishedAt || article.createdAt,
+    author: { '@type': 'Organization', name: article.author || 'DriveData' },
+    publisher: { '@id': 'https://drivedata.com.br/#organization' },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+    articleSection: article.category?.name || undefined,
+    inLanguage: lang === 'pt' ? 'pt-BR' : lang,
+  };
+
+  // FAQ do artigo → schema FAQPage (o crítico "FAQ com Schema" da auditoria).
+  const faqs = (article.faqs || []).filter((f) => f?.q?.trim() && f?.a?.trim());
+  const faqLd = faqs.length
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        '@id': `${canonical}#faq`,
+        mainEntity: faqs.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      }
+    : null;
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
+      />
+      {faqLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+        />
+      )}
       <TrackView articleId={article.id} lang={lang} />
       <Header />
-      <MainArticleSection article={article} />
-      <ArticleContentSection content={article.content} />
+      <main>
+        <MainArticleSection article={article} />
+        <ArticleContentSection content={article.content} />
+        <ArticleFaqSection faqs={article.faqs} />
+      </main>
       <RelatedArticlesSection articles={relatedArticles} />
       <Footer />
     </>
