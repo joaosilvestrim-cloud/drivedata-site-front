@@ -181,6 +181,8 @@ export const frTranslations = {
     button: 'Planifiez une réunion avec nous',
   },
   partnersSection: {
+    seeMore: 'Voir plus (+{{count}})',
+    seeLess: 'Voir moins',
     partnersTitle: 'Nos partenaires',
     partnersSubtitle: 'Découvrez qui fait confiance à nos services',
     resultsTitle: 'Transformer les données',
@@ -236,6 +238,7 @@ Notre objectif est d'engager les personnes grâce à la technologie, en rendant 
       '\nDriveData.\nLa technologie qui mobilise les personnes.\nL\'intelligence qui propulse les résultats.',
   },
   previewSolutionsSection: {
+    floatingAria: 'Parlez-nous de Données et IA',
     floatingBubble:
       'Vous voulez en savoir plus sur nos solutions Data et IA ?📊',
     cards: {

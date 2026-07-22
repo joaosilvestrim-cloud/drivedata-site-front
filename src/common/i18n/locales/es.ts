@@ -185,6 +185,8 @@ export const esTranslations = {
     button: 'Programe una reunión con nosotros',
   },
   partnersSection: {
+    seeMore: 'Ver más (+{{count}})',
+    seeLess: 'Ver menos',
     partnersTitle: 'Nuestros Socios',
     partnersSubtitle: 'Vea quién confía en nuestros servicios',
     resultsTitle: 'Transformando datos',
@@ -241,6 +243,7 @@ Nuestro propósito es involucrar a las personas a través de la tecnología, hac
 
   },
   previewSolutionsSection: {
+    floatingAria: 'Hable con nosotros sobre Datos e IA',
     floatingBubble:
       '¿Quieres conocer más sobre nuestras soluciones en Datos e IA?📊',
     cards: {

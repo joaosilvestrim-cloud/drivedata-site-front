@@ -183,6 +183,8 @@ export const enTranslations = {
     button: 'Schedule a meeting with us',
   },
   partnersSection: {
+    seeMore: 'See more (+{{count}})',
+    seeLess: 'See less',
     partnersTitle: 'Our Partners',
     partnersSubtitle: 'See who trusts our services',
     resultsTitle: 'Transforming data',
@@ -239,6 +241,7 @@ Our purpose is to empower people through technology, making decisions more strat
 
   },
   previewSolutionsSection: {
+    floatingAria: 'Talk to us about Data and AI',
     floatingBubble: 'Want to learn more about our Data and AI solutions?📊',
     cards: {
       mccain:

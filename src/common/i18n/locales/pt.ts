@@ -183,6 +183,8 @@ export const ptTranslations = {
     button: 'Agende uma reunião conosco',
   },
   partnersSection: {
+    seeMore: 'Ver mais (+{{count}})',
+    seeLess: 'Ver menos',
     partnersTitle: 'Nossos Parceiros',
     partnersSubtitle: 'Veja quem confia em nossos serviços',
     resultsTitle: 'Transformando dados',
@@ -238,6 +240,7 @@ Nosso propósito é engajar pessoas por meio da tecnologia, tornando decisões m
       '\nDriveData.\nTecnologia que move pessoas.\nInteligência que move resultados.',
   },
   previewSolutionsSection: {
+    floatingAria: 'Fale com a gente sobre Dados e IA',
     floatingBubble:
       'Quer conhecer mais sobre nossas soluções em Dados e IA?📊',
     cards: {
