@@ -26,27 +26,29 @@ import { MainSectionProps } from './types';
 
 const BAR_HEIGHTS = [45, 62, 50, 78, 66, 90, 72, 58];
 
+// Os rótulos vêm do i18n pela chave `k`. Antes o texto era fixo em português e
+// aparecia sem traduzir no site do Canadá (página em inglês, painel em PT).
 const TICKER = [
-  { l: 'Receita prevista', v: '+42,3%', c: 'up' },
-  { l: 'Custo operacional', v: '-31,0%', c: 'dn' },
-  { l: 'Pipeline do trimestre', v: '+18,0%', c: 'up' },
-  { l: 'Acurácia do modelo', v: '94%', c: 'b' },
-  { l: 'Fontes conectadas', v: '12', c: 'b' },
-  { l: 'Disponibilidade', v: '99,9%', c: 'b' },
+  { k: 'revenue', v: '+42,3%', c: 'up' },
+  { k: 'cost', v: '-31,0%', c: 'dn' },
+  { k: 'pipeline', v: '+18,0%', c: 'up' },
+  { k: 'accuracy', v: '94%', c: 'b' },
+  { k: 'sources', v: '12', c: 'b' },
+  { k: 'uptime', v: '99,9%', c: 'b' },
 ];
 
 // Termos de Dados e IA que aparecem e somem em volta do globo.
 const TERMS = [
-  { t: 'Machine Learning', top: '11%', left: '28%', dl: 0, du: 7, c: '#54da89' },
-  { t: 'Big Data', top: '21%', left: '60%', dl: 2, du: 8, c: '#22d3ee' },
-  { t: 'Redes Neurais', top: '39%', left: '5%', dl: 4, du: 7.5, c: '#54da89' },
-  { t: 'ETL · Pipelines', top: '56%', left: '63%', dl: 1, du: 8.5, c: '#22d3ee' },
-  { t: 'IA Generativa', top: '70%', left: '31%', dl: 3, du: 7, c: '#54da89' },
-  { t: 'Data Lake', top: '31%', left: '43%', dl: 5, du: 8, c: '#22d3ee' },
-  { t: 'Predição', top: '82%', left: '55%', dl: 2.5, du: 7.5, c: '#54da89' },
-  { t: 'Analytics', top: '7%', left: '52%', dl: 6, du: 8, c: '#22d3ee' },
-  { t: 'Governança', top: '62%', left: '14%', dl: 0.5, du: 8.5, c: '#54da89' },
-  { t: 'Deep Learning', top: '47%', left: '48%', dl: 3.5, du: 7, c: '#22d3ee' },
+  { k: 'ml', top: '11%', left: '28%', dl: 0, du: 7, c: '#54da89' },
+  { k: 'bigData', top: '21%', left: '60%', dl: 2, du: 8, c: '#22d3ee' },
+  { k: 'neural', top: '39%', left: '5%', dl: 4, du: 7.5, c: '#54da89' },
+  { k: 'etl', top: '56%', left: '63%', dl: 1, du: 8.5, c: '#22d3ee' },
+  { k: 'genai', top: '70%', left: '31%', dl: 3, du: 7, c: '#54da89' },
+  { k: 'dataLake', top: '31%', left: '43%', dl: 5, du: 8, c: '#22d3ee' },
+  { k: 'prediction', top: '82%', left: '55%', dl: 2.5, du: 7.5, c: '#54da89' },
+  { k: 'analytics', top: '7%', left: '52%', dl: 6, du: 8, c: '#22d3ee' },
+  { k: 'governance', top: '62%', left: '14%', dl: 0.5, du: 8.5, c: '#54da89' },
+  { k: 'deepLearning', top: '47%', left: '48%', dl: 3.5, du: 7, c: '#22d3ee' },
 ];
 
 export const MainSection = ({ className }: MainSectionProps) => {
@@ -222,7 +224,7 @@ export const MainSection = ({ className }: MainSectionProps) => {
               animationDuration: `${x.du}s`,
             }}
           >
-            {x.t}
+            {t(`mainSection.terms.${x.k}`)}
           </span>
         ))}
       </GlobeTerms>
@@ -248,28 +250,28 @@ export const MainSection = ({ className }: MainSectionProps) => {
           <FloatChip className="top">
             <span className="ic">IA</span>
             <div>
-              <b>Previsão de demanda</b>
-              <div className="s">acurácia 96%</div>
+              <b>{t('mainSection.chipDemandTitle')}</b>
+              <div className="s">{t('mainSection.chipDemandSub')}</div>
             </div>
           </FloatChip>
 
           <DashHead>
-            <span className="t">Cockpit Executivo · tempo real</span>
-            <span className="live">● ao vivo</span>
+            <span className="t">{t('mainSection.dashTitle')}</span>
+            <span className="live">● {t('mainSection.live')}</span>
           </DashHead>
 
           <DashKpis>
             <div className="kpi">
               <div className="n up">+48%</div>
-              <div className="l">eficiência</div>
+              <div className="l">{t('mainSection.kpiEfficiency')}</div>
             </div>
             <div className="kpi">
               <div className="n dn">-35%</div>
-              <div className="l">custo op.</div>
+              <div className="l">{t('mainSection.kpiCost')}</div>
             </div>
             <div className="kpi">
-              <div className="n si">R$9,2M</div>
-              <div className="l">impacto</div>
+              <div className="n si">{t('mainSection.kpiImpactValue')}</div>
+              <div className="l">{t('mainSection.kpiImpact')}</div>
             </div>
           </DashKpis>
 
@@ -286,8 +288,8 @@ export const MainSection = ({ className }: MainSectionProps) => {
           <FloatChip className="bot">
             <span className="ic bl">◲</span>
             <div>
-              <b>Pipeline saudável</b>
-              <div className="s">+22% no trimestre</div>
+              <b>{t('mainSection.chipPipelineTitle')}</b>
+              <div className="s">{t('mainSection.chipPipelineSub')}</div>
             </div>
           </FloatChip>
         </HeroDash>
@@ -298,7 +300,7 @@ export const MainSection = ({ className }: MainSectionProps) => {
           {[...TICKER, ...TICKER].map((it, i) => (
             <span className="it" key={i}>
               <span className="d" />
-              {it.l}{' '}
+              {t(`mainSection.ticker.${it.k}`)}{' '}
               <span className={it.c}>{it.v}</span>
             </span>
           ))}
