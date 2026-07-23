@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk } from 'next/font/google';
 import Script from 'next/script';
+import { SITE_COUNTRY } from '@/common/config/site';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -8,16 +9,36 @@ const spaceGrotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
 });
 
+// O corpo da página passa pelo i18n do cliente, mas o metadata é gerado no
+// servidor. Sem esta ramificação o Canadá ficava com título e descrição em
+// português, que é justamente o que aparece na aba e no resultado do Google.
+const META = {
+  BR: {
+    title: 'DALT DriveData — Engenharia de Dados para Grandes Operações',
+    description:
+      'Transforme desafios complexos em eficiência e resultados tangíveis com Inteligência de Negócios, Inovação, Engenharia de Dados, Desenvolvimento e IA.',
+    ogDescription:
+      'Engenharia de dados e outsourcing de alto desempenho para operações acima de R$ 50M/ano.',
+    url: 'https://drivedata.com.br/dalt',
+  },
+  CA: {
+    title: 'DALT DriveData — Data Engineering for Large Operations',
+    description:
+      'Turn complex challenges into efficiency and tangible results with Business Intelligence, Innovation, Data Engineering, Development and AI.',
+    ogDescription:
+      'High-performance data engineering and outsourcing for large-scale operations.',
+    url: 'https://drivedata.ca/dalt',
+  },
+}[SITE_COUNTRY];
+
 export const metadata: Metadata = {
-  title: 'DALT DriveData — Engenharia de Dados para Grandes Operações',
-  description:
-    'Transforme desafios complexos em eficiência e resultados tangíveis com Inteligência de Negócios, Inovação, Engenharia de Dados, Desenvolvimento e IA.',
+  title: META.title,
+  description: META.description,
   robots: { index: true, follow: true },
   openGraph: {
     title: 'DALT DriveData',
-    description:
-      'Engenharia de dados e outsourcing de alto desempenho para operações acima de R$ 50M/ano.',
-    url: 'https://drivedata.com.br/dalt',
+    description: META.ogDescription,
+    url: META.url,
     type: 'website',
   },
 };
