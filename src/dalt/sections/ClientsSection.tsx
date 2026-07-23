@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
+
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import { motion } from 'framer-motion';
@@ -89,6 +91,7 @@ const LogoItem = styled.div`
 `;
 
 export function ClientsSection() {
+  const { t } = useTranslation();
   return (
     <Section>
       <Inner>
@@ -98,7 +101,7 @@ export function ClientsSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
         >
-          <Label>Expertise validada em operações globais</Label>
+          <Label>{t('dalt.clientsLabel')}</Label>
         </motion.div>
 
         <MarqueeWrapper>

@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
+
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { GlowCard } from '../components/GlowCard';
@@ -127,14 +129,15 @@ const IconX = () => (
 );
 
 export function ForYouSection() {
+  const { t } = useTranslation();
   return (
     <Section>
       <Inner>
         <SectionReveal>
           <Header>
             <Title>
-              Tecnologia Para Quem Decide o Futuro de{' '}
-              <GradientSpan>Grandes Operações</GradientSpan>
+              {t('dalt.forYouTitle')}
+              <GradientSpan>{t('dalt.forYouHighlight')}</GradientSpan>
             </Title>
           </Header>
         </SectionReveal>
@@ -147,9 +150,9 @@ export function ForYouSection() {
             transition={{ duration: 0.85, ease: [0.25, 1, 0.5, 1] }}
           >
             <Card active>
-              <PositiveTitle>A Dalt DriveData é para você se:</PositiveTitle>
+              <PositiveTitle>{t('dalt.forYouYes')}</PositiveTitle>
               <List>
-                {forYouItems.isFor.map((item, i) => (
+                {(t('dalt.isFor', { returnObjects: true }) as unknown as string[]).map((item, i) => (
                   <ListItem key={i}>
                     <IconCheck />
                     <PositiveText>{item}</PositiveText>
@@ -166,9 +169,9 @@ export function ForYouSection() {
             transition={{ duration: 0.85, delay: 0.1, ease: [0.25, 1, 0.5, 1] }}
           >
             <Card>
-              <NegativeTitle>A Dalt DriveData NÃO é para você se:</NegativeTitle>
+              <NegativeTitle>{t('dalt.forYouNo')}</NegativeTitle>
               <List>
-                {forYouItems.isNotFor.map((item, i) => (
+                {(t('dalt.isNotFor', { returnObjects: true }) as unknown as string[]).map((item, i) => (
                   <ListItem key={i}>
                     <IconX />
                     <NegativeText>{item}</NegativeText>

@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
+
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { GlowCard } from '../components/GlowCard';
@@ -97,21 +99,25 @@ const Dot = styled.span`
 `;
 
 export function ServicesSection() {
+  const { t } = useTranslation();
   return (
     <Section>
       <Inner>
         <SectionReveal>
           <Header>
-            <Eyebrow>Serviços</Eyebrow>
+            <Eyebrow>{t('dalt.servicesEyebrow')}</Eyebrow>
             <Title>
-              Especialistas em desenvolvimento de{' '}
-              <GradientSpan>alta complexidade</GradientSpan> e Missão Crítica
+              {t('dalt.servicesTitle')}
+              <GradientSpan>{t('dalt.servicesHighlight')}</GradientSpan>{t('dalt.servicesTitleEnd')}
             </Title>
           </Header>
         </SectionReveal>
 
         <Grid>
-          {services.map((service, i) => (
+          {([
+            { title: t('dalt.service1Title'), items: t('dalt.service1Items', { returnObjects: true }) as unknown as string[] },
+            { title: t('dalt.service2Title'), items: t('dalt.service2Items', { returnObjects: true }) as unknown as string[] },
+          ]).map((service, i) => (
             <motion.div
               key={service.title}
               initial={{ opacity: 0, y: 24 }}

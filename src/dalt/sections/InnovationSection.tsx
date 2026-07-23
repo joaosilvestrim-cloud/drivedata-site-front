@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
+
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { SectionReveal } from '../components/SectionReveal';
@@ -119,18 +121,17 @@ const CardDesc = styled.p`
 `;
 
 export function InnovationSection() {
+  const { t } = useTranslation();
   return (
     <Section>
       <Inner>
         <SectionReveal>
           <Header>
             <Title>
-              Inovação e <GradientSpan>Resultado</GradientSpan>
+              {t('dalt.innovationTitle')}<GradientSpan>{t('dalt.innovationHighlight')}</GradientSpan>
             </Title>
             <Body>
-              Processos inteligentes e infraestrutura robusta desenhados para sustentar
-              estratégias de quem deseja liderar o mercado com os mais rigorosos padrões
-              globais de governança e segurança de dados.
+              {t('dalt.innovationBody')}
             </Body>
           </Header>
         </SectionReveal>
@@ -150,9 +151,9 @@ export function InnovationSection() {
                     <source src={video.videoUrl} type="video/mp4" />
                   </Video>
                 </VideoWrap>
-                <CardTag>Case de Sucesso</CardTag>
-                <CardTitle>{video.title}</CardTitle>
-                <CardDesc>{video.description}</CardDesc>
+                <CardTag>{t('dalt.innovationTag')}</CardTag>
+                <CardTitle>{(t('dalt.videoTitles', { returnObjects: true }) as unknown as string[])[i] ?? video.title}</CardTitle>
+                <CardDesc>{(t('dalt.videoDescriptions', { returnObjects: true }) as unknown as string[])[i] ?? video.description}</CardDesc>
               </VideoCard>
             </motion.div>
           ))}

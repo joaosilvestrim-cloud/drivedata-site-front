@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
+
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { daltTheme } from './theme';
@@ -95,6 +97,7 @@ const DaltBack = styled(Link)`
 `;
 
 export function DaltLanding() {
+  const { t } = useTranslation();
   return (
     <Wrapper>
       <DaltNav>
@@ -103,7 +106,7 @@ export function DaltLanding() {
           <img src="/drive-data-icon.png" alt="DriveData" />
           DriveData
         </DaltBrand>
-        <DaltBack href="/">← Voltar ao site</DaltBack>
+        <DaltBack href="/">{t('dalt.back')}</DaltBack>
       </DaltNav>
       <HeroSection />
       <ClientsSection />

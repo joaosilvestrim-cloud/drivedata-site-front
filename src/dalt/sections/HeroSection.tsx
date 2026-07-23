@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
+
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { useTypebot } from '@/common/providers/TypebotProvider';
@@ -142,6 +144,7 @@ const BottomLine = styled.div`
 `;
 
 export function HeroSection() {
+  const { t } = useTranslation();
   const { openTypebot } = useTypebot();
 
   return (
@@ -156,7 +159,7 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
         >
-          <Eyebrow>Dalt DriveData</Eyebrow>
+          <Eyebrow>{t('dalt.eyebrow')}</Eyebrow>
         </motion.div>
 
         <motion.div
@@ -165,9 +168,9 @@ export function HeroSection() {
           transition={{ duration: 0.9, delay: 0.15, ease: [0.25, 1, 0.5, 1] }}
         >
           <Headline>
-            Transformando desafios complexos em{' '}
-            <GradientSpan>eficiência e resultados</GradientSpan>{' '}
-            tangíveis
+            {t('dalt.heroTitle')}
+            <GradientSpan>{t('dalt.heroHighlight')}</GradientSpan>
+            {t('dalt.heroTitleEnd')}
           </Headline>
         </motion.div>
 
@@ -177,7 +180,7 @@ export function HeroSection() {
           transition={{ duration: 0.7, delay: 0.4, ease: [0.25, 1, 0.5, 1] }}
         >
           <Pills>
-            {heroServices.map((s) => (
+            {(t('dalt.heroServices', { returnObjects: true }) as unknown as string[]).map((s) => (
               <Pill key={s}>{s}</Pill>
             ))}
           </Pills>
@@ -189,7 +192,7 @@ export function HeroSection() {
           transition={{ duration: 0.7, delay: 0.7 }}
         >
           <CtaButton type="button" onClick={openTypebot}>
-            Fale com um especialista
+            {t('dalt.heroCta')}
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
                 d="M3 8h10M9 4l4 4-4 4"

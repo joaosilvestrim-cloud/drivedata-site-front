@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
+
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { useTypebot } from '@/common/providers/TypebotProvider';
@@ -128,6 +130,7 @@ const Copyright = styled.span`
 `;
 
 export function CtaSection() {
+  const { t } = useTranslation();
   const { openTypebot } = useTypebot();
 
   return (
@@ -136,11 +139,11 @@ export function CtaSection() {
       <Inner>
         <SectionReveal>
           <Title>
-            Pronto para transformar gargalos em{' '}
-            <GradientSpan>eficiência e ROI</GradientSpan>?
+            {t('dalt.ctaTitle')}
+            <GradientSpan>{t('dalt.ctaHighlight')}</GradientSpan>
           </Title>
           <Subtitle>
-            Converse com nossos especialistas e descubra como escalar sua operação de dados.
+            {t('dalt.ctaSubtitle')}
           </Subtitle>
         </SectionReveal>
 
@@ -151,7 +154,7 @@ export function CtaSection() {
           transition={{ duration: 0.7, delay: 0.25, ease: [0.25, 1, 0.5, 1] }}
         >
           <CtaButton type="button" onClick={openTypebot}>
-            Agendar Reunião de Viabilidade
+            {t('dalt.ctaButton')}
             <svg width="17" height="17" viewBox="0 0 16 16" fill="none">
               <path
                 d="M3 8h10M9 4l4 4-4 4"
@@ -168,8 +171,8 @@ export function CtaSection() {
       <Divider />
 
       <Footer>
-        <BrandName>Dalt DriveData</BrandName>
-        <Copyright>© {new Date().getFullYear()} Dalt DriveData. Todos os direitos reservados.</Copyright>
+        <BrandName>{t('dalt.eyebrow')}</BrandName>
+        <Copyright>© {new Date().getFullYear()} Dalt DriveData. {t('dalt.rights')}</Copyright>
       </Footer>
     </Section>
   );
