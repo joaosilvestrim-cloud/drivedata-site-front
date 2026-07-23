@@ -32,5 +32,9 @@ export const SITE_CONTACT: SiteContact = CONTACTS[SITE_COUNTRY];
 /** Código do tenant do CRM que recebe as leads deste site (BR | CA). */
 export const LEAD_TENANT_CODE: SiteCountry = SITE_COUNTRY;
 
-/** A página/menu DALT só existe no Brasil. */
-export const SHOW_DALT: boolean = SITE_COUNTRY !== 'CA';
+/**
+ * A página/menu DALT aparece nos dois países.
+ * Ficou fora do Canadá enquanto o conteúdo era só em português; agora a landing
+ * inteira passa pelo i18n (bloco `dalt` nos locales), então vale para BR e CA.
+ */
+export const SHOW_DALT = true;
