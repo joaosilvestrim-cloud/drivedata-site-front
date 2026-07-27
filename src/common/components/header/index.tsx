@@ -382,7 +382,7 @@ export const Header = ({ className }: HeaderProps) => {
   return (
     <>
       <HeaderContainer className={className} data-mounted={isMounted}>
-        <Container>
+        <Container maxWidth="2xl">
           <HeaderContent>
             <Logo>
               <LogoImage src="/logotipo-drivedata.png" alt="DriveData Logo" />

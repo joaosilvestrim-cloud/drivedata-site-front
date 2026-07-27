@@ -36,6 +36,7 @@ export const HeaderContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -52,6 +53,7 @@ export const Logo = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
+  flex-shrink: 0;
 `;
 
 export const LogoImage = styled.img`
@@ -67,7 +69,11 @@ export const LogoImage = styled.img`
 export const Navigation = styled.nav`
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 24px;
+
+  @media (max-width: 1200px) {
+    gap: 16px;
+  }
 
   @media (max-width: ${theme.breakpoints.lg}) {
     display: none;
@@ -77,8 +83,9 @@ export const Navigation = styled.nav`
 export const NavLink = styled.a<{ isActive?: boolean }>`
   color: ${(props) => (props.isActive ? '#54DA89' : 'white')};
   text-decoration: none;
-  font-size: ${theme.typography.fontSize.base[0]};
+  font-size: 15px;
   font-weight: ${theme.typography.fontWeight.medium};
+  white-space: nowrap;
   transition: color 0.2s ease-in-out;
 
   &:hover {

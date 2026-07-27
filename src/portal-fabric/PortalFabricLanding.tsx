@@ -1,8 +1,7 @@
 'use client';
 
 import styled from '@emotion/styled';
-import Link from 'next/link';
-import { useTypebot } from '@/common/providers/TypebotProvider';
+import { Header } from '@/common/components/header';
 import { portalTheme as tk } from './theme';
 import { usePortal } from './usePortal';
 import { HeroSection } from './sections/HeroSection';
@@ -30,67 +29,6 @@ const Wrapper = styled.main`
   ::-webkit-scrollbar-thumb:hover { background: ${tk.colors.borderActive}; }
 `;
 
-const Nav = styled.header`
-  position: sticky;
-  top: 0;
-  z-index: 60;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 14px 32px;
-  background: rgba(7, 12, 22, 0.82);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid ${tk.colors.border};
-
-  @media (max-width: 640px) { padding: 12px 18px; }
-`;
-
-const Brand = styled(Link)`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  flex-shrink: 0;
-
-  img { height: 26px; width: auto; }
-`;
-
-const NavLinks = styled.nav`
-  display: flex;
-  align-items: center;
-  gap: 26px;
-
-  @media (max-width: 900px) { display: none; }
-`;
-
-const NavLink = styled.a`
-  font-family: ${tk.fonts.body};
-  font-size: 14px;
-  font-weight: 600;
-  color: ${tk.colors.textSecondary};
-  text-decoration: none;
-  transition: color 0.18s ease;
-
-  &:hover { color: ${tk.colors.primary}; }
-`;
-
-const NavCta = styled.button`
-  flex-shrink: 0;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 999px;
-  background: ${tk.gradients.brand};
-  color: #06121f;
-  font-family: ${tk.fonts.heading};
-  font-size: 13.5px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover { transform: translateY(-1px); box-shadow: ${tk.shadows.glow}; }
-`;
-
 const Foot = styled.footer`
   border-top: 1px solid ${tk.colors.border};
   padding: 34px 32px;
@@ -112,23 +50,12 @@ const Foot = styled.footer`
 
 export function PortalFabricLanding() {
   const { copy } = usePortal();
-  const { openTypebot } = useTypebot();
   const year = new Date().getFullYear();
 
   return (
     <Wrapper>
-      <Nav>
-        <Brand href="/">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logotipo-drivedata.png" alt="DriveData" />
-        </Brand>
-        <NavLinks>
-          {copy.nav.map((n) => (
-            <NavLink key={n.href} href={n.href}>{n.label}</NavLink>
-          ))}
-        </NavLinks>
-        <NavCta type="button" onClick={openTypebot}>{copy.hero.ctaPrimary}</NavCta>
-      </Nav>
+      {/* Cabeçalho padrão do site (pílula flutuante, seletor de idioma, contato) */}
+      <Header />
 
       <HeroSection />
       <PillarsSection />

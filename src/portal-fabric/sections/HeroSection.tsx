@@ -9,8 +9,12 @@ import { Section, Inner, Glow } from '../components/primitives';
 import { usePortal } from '../usePortal';
 
 const HeroSection_ = styled(Section)`
-  padding-top: 96px;
+  padding-top: 138px;
   background: ${tk.gradients.heroGlow};
+
+  @media (max-width: 768px) {
+    padding-top: 104px;
+  }
 `;
 
 const Grid = styled.div`
