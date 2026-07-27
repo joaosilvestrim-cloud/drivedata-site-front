@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { portalTheme as tk } from '../theme';
-import { Section, Inner, Glow, Eyebrow, SectionTitle, Subtitle, HeadCentered, Card, Reveal } from '../components/primitives';
+import { Section, Inner, Glow, SectionTitle, Subtitle, HeadCentered, Card, Reveal } from '../components/primitives';
 import { usePortal } from '../usePortal';
 
 const SectionAlt = styled(Section)`
@@ -77,7 +77,6 @@ export function FeaturesSection() {
       <Glow y="-5%" x="40%" color="rgba(84,218,137,0.1)" />
       <Inner>
         <HeadCentered>
-          <Eyebrow>{f.eyebrow}</Eyebrow>
           <SectionTitle>{f.title}</SectionTitle>
           <Subtitle>{f.subtitle}</Subtitle>
         </HeadCentered>

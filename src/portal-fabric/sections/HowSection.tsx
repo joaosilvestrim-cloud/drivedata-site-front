@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled';
 import { portalTheme as tk } from '../theme';
-import { Section, Inner, Glow, Eyebrow, SectionTitle, Subtitle, HeadCentered, Card, Reveal } from '../components/primitives';
+import { Section, Inner, Glow, SectionTitle, Subtitle, HeadCentered, Card, Reveal } from '../components/primitives';
 import { usePortal } from '../usePortal';
 
 const SectionAlt = styled(Section)`
@@ -53,7 +53,6 @@ export function HowSection() {
       <Glow y="-10%" x="30%" />
       <Inner>
         <HeadCentered>
-          <Eyebrow>{h.eyebrow}</Eyebrow>
           <SectionTitle>{h.title}</SectionTitle>
           <Subtitle>{h.subtitle}</Subtitle>
         </HeadCentered>

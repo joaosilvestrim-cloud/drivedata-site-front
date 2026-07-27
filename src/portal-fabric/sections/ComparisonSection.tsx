@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled';
 import { portalTheme as tk } from '../theme';
-import { Section, Inner, Glow, Eyebrow, SectionTitle, HeadCentered, Reveal } from '../components/primitives';
+import { Section, Inner, Glow, SectionTitle, HeadCentered, Reveal } from '../components/primitives';
 import { usePortal } from '../usePortal';
 
 const Scroll = styled.div`
@@ -72,7 +72,6 @@ export function ComparisonSection() {
       <Glow y="-10%" x="30%" color="rgba(84,218,137,0.1)" />
       <Inner>
         <HeadCentered>
-          <Eyebrow>{c.eyebrow}</Eyebrow>
           <SectionTitle>{c.title}</SectionTitle>
         </HeadCentered>
 

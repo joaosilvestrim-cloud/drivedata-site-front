@@ -29,26 +29,6 @@ const Grid = styled.div`
   }
 `;
 
-const Eyebrow = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: ${tk.colors.accentDim};
-  border: 1px solid rgba(10, 150, 236, 0.35);
-  color: #58baf5;
-  font-family: ${tk.fonts.body};
-  font-size: 13px;
-  font-weight: 600;
-  padding: 7px 15px;
-  border-radius: 999px;
-
-  &::before {
-    content: '';
-    width: 7px; height: 7px; border-radius: 50%;
-    background: #58baf5; box-shadow: 0 0 10px #58baf5;
-  }
-`;
-
 const Title = styled.h1`
   font-family: ${tk.fonts.heading};
   font-size: clamp(32px, 5vw, 56px);
@@ -252,7 +232,6 @@ export function HeroSection() {
       <Inner>
         <Grid>
           <div>
-            <Eyebrow>{h.eyebrow}</Eyebrow>
             <Title>{h.title}</Title>
             <Sub>{h.subtitle}</Sub>
             <Actions>

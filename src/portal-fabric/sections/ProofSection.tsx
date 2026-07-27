@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled';
 import { portalTheme as tk } from '../theme';
-import { Section, Inner, Glow, Eyebrow, SectionTitle, Subtitle, HeadCentered, Reveal } from '../components/primitives';
+import { Section, Inner, Glow, SectionTitle, Subtitle, HeadCentered, Reveal } from '../components/primitives';
 import { usePortal } from '../usePortal';
 
 const SectionAlt = styled(Section)`
@@ -89,7 +89,6 @@ export function ProofSection() {
       <Glow y="-10%" x="50%" />
       <Inner>
         <HeadCentered style={{ marginBottom: 68 }}>
-          <Eyebrow>{p.eyebrow}</Eyebrow>
           <SectionTitle>{p.title}</SectionTitle>
           <Subtitle>{p.subtitle}</Subtitle>
         </HeadCentered>

@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled';
 import { portalTheme as tk } from '../theme';
-import { Section, Inner, Glow, Eyebrow, SectionTitle, Subtitle, HeadCentered, Card, Reveal } from '../components/primitives';
+import { Section, Inner, Glow, SectionTitle, Subtitle, HeadCentered, Card, Reveal } from '../components/primitives';
 import { usePortal } from '../usePortal';
 
 const Grid = styled.div`
@@ -79,7 +79,6 @@ export function PillarsSection() {
       <Glow y="0%" x="80%" color="rgba(84,218,137,0.12)" />
       <Inner>
         <HeadCentered>
-          <Eyebrow>{p.eyebrow}</Eyebrow>
           <SectionTitle>{p.title}</SectionTitle>
           <Subtitle>{p.subtitle}</Subtitle>
         </HeadCentered>

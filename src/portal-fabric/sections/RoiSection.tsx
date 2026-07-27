@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { portalTheme as tk } from '../theme';
-import { Section, Inner, Glow, Eyebrow, SectionTitle, Subtitle, HeadCentered, Card } from '../components/primitives';
+import { Section, Inner, Glow, SectionTitle, Subtitle, HeadCentered, Card } from '../components/primitives';
 import { usePortal } from '../usePortal';
 
 const Grid = styled.div`
@@ -165,7 +165,6 @@ export function RoiSection() {
       <Glow y="-10%" x="60%" />
       <Inner>
         <HeadCentered>
-          <Eyebrow>{r.eyebrow}</Eyebrow>
           <SectionTitle>{r.title}</SectionTitle>
           <Subtitle>{r.subtitle}</Subtitle>
         </HeadCentered>

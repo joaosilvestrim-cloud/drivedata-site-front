@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled';
 import { portalTheme as tk } from '../theme';
-import { Section, Inner, Glow, Eyebrow, SectionTitle, Subtitle, HeadCentered, Reveal } from '../components/primitives';
+import { Section, Inner, Glow, SectionTitle, Subtitle, HeadCentered, Reveal } from '../components/primitives';
 import { usePortal } from '../usePortal';
 
 const Stack = styled.div`
@@ -68,7 +68,6 @@ export function ArchitectureSection() {
       <Glow y="-10%" x="70%" />
       <Inner>
         <HeadCentered>
-          <Eyebrow>{a.eyebrow}</Eyebrow>
           <SectionTitle>{a.title}</SectionTitle>
           <Subtitle>{a.subtitle}</Subtitle>
         </HeadCentered>
