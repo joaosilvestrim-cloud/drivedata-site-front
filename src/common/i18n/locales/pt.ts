@@ -38,6 +38,7 @@ export const ptTranslations = {
     navigation: {
       home: 'Início',
       dalt: 'DALT',
+      portalFabric: 'Portal Fabric',
       about: 'Sobre',
       solutions: 'Soluções',
       articles: 'Artigos',

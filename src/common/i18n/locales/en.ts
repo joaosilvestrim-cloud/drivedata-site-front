@@ -38,6 +38,7 @@ export const enTranslations = {
     navigation: {
       home: 'Home',
       dalt: 'DALT',
+      portalFabric: 'Fabric Portal',
       about: 'About',
       solutions: 'Solutions',
       articles: 'Articles',

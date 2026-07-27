@@ -48,6 +48,7 @@ const languageOptions: LanguageOption[] = [
 const navigationLinks: NavigationItem[] = [
   { href: '/', labelKey: 'header.navigation.home' },
   { href: '/dalt', labelKey: 'header.navigation.dalt' },
+  { href: '/portal-fabric', labelKey: 'header.navigation.portalFabric' },
   { href: '/about', labelKey: 'header.navigation.about' },
   { href: '/about#solucoes', labelKey: 'header.navigation.solutions' },
   { href: '/about#articles', labelKey: 'header.navigation.articles' },

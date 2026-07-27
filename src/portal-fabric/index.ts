@@ -1,0 +1,1 @@
+export { PortalFabricLanding } from './PortalFabricLanding';
