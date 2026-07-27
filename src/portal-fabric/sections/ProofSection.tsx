@@ -12,40 +12,52 @@ const SectionAlt = styled(Section)`
 const Stats = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  margin-bottom: 72px;
+  gap: 8px;
+  margin-bottom: 64px;
 
-  @media (max-width: 800px) { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  @media (max-width: 800px) { grid-template-columns: repeat(2, 1fr); gap: 32px 8px; }
 `;
 
 const Stat = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
-  padding: 38px 22px;
-  min-height: 190px;
-  border-radius: ${tk.radius.lg};
-  border: 1px solid ${tk.colors.border};
-  background: ${tk.colors.bgCard};
-  backdrop-filter: blur(12px);
+  gap: 12px;
+  padding: 6px 22px;
+
+  /* divisor sutil entre as colunas (não no primeiro item de cada linha) */
+  & + &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, ${tk.colors.border}, transparent);
+  }
+  @media (max-width: 800px) {
+    & + &::before { display: none; }
+  }
 
   strong {
     display: block;
     font-family: ${tk.fonts.heading};
-    font-size: clamp(28px, 3.6vw, 40px);
+    font-size: clamp(38px, 4.6vw, 56px);
     font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1;
     background: ${tk.gradients.brand};
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
   span {
     display: block;
     font-family: ${tk.fonts.body};
-    font-size: 13px;
+    font-size: 13.5px;
     line-height: 1.5;
     color: ${tk.colors.textSecondary};
-    margin-top: 10px;
+    max-width: 210px;
   }
 `;
 
@@ -93,16 +105,16 @@ export function ProofSection() {
           <Subtitle>{p.subtitle}</Subtitle>
         </HeadCentered>
 
-        <Stats>
-          {p.stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.08}>
-              <Stat>
+        <Reveal>
+          <Stats>
+            {p.stats.map((s) => (
+              <Stat key={s.label}>
                 <strong>{s.value}</strong>
                 <span>{s.label}</span>
               </Stat>
-            </Reveal>
-          ))}
-        </Stats>
+            ))}
+          </Stats>
+        </Reveal>
 
         <CompatTitle>{p.compatTitle}</CompatTitle>
         <Chips>
