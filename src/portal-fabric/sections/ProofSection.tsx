@@ -12,15 +12,20 @@ const SectionAlt = styled(Section)`
 const Stats = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-bottom: 56px;
+  gap: 24px;
+  margin-bottom: 72px;
 
-  @media (max-width: 800px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 800px) { grid-template-columns: repeat(2, 1fr); gap: 18px; }
 `;
 
 const Stat = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 28px 16px;
+  padding: 38px 22px;
+  min-height: 190px;
   border-radius: ${tk.radius.lg};
   border: 1px solid ${tk.colors.border};
   background: ${tk.colors.bgCard};
@@ -83,7 +88,7 @@ export function ProofSection() {
     <SectionAlt>
       <Glow y="-10%" x="50%" />
       <Inner>
-        <HeadCentered>
+        <HeadCentered style={{ marginBottom: 68 }}>
           <Eyebrow>{p.eyebrow}</Eyebrow>
           <SectionTitle>{p.title}</SectionTitle>
           <Subtitle>{p.subtitle}</Subtitle>

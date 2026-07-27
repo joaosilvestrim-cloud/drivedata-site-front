@@ -64,7 +64,7 @@ export interface CountryPricing {
 
 export const PRICING: Record<'BR' | 'CA', CountryPricing> = {
   BR: {
-    currency: 'R$', locale: 'pt-BR', defaultUsers: 200, defaultLicense: 59,
+    currency: 'R$', locale: 'pt-BR', defaultUsers: 200, defaultLicense: 80,
     skus: [
       { id: 'F2',  label: 'F2',  price: 5000 },
       { id: 'F4',  label: 'F4',  price: 10000 },
