@@ -31,7 +31,7 @@ const Index = styled.span`
   display: grid; place-items: center;
   border-radius: 10px;
   background: ${tk.gradients.brand};
-  color: #06121f;
+  color: ${tk.colors.onBrand};
   font-family: ${tk.fonts.heading};
   font-weight: 800;
   font-size: 15px;

@@ -34,11 +34,11 @@ export const FaqTitle = styled.h2`
 `;
 
 export const FaqItem = styled.details`
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.12);
   border-radius: 14px;
   padding: ${theme.spacing.lg} ${theme.spacing.xl};
   margin-bottom: ${theme.spacing.md};
-  background: rgba(255, 255, 255, 0.03);
+  background: rgb(var(--dd-ink-rgb) / 0.03);
   transition: border-color 0.2s ease;
 
   &[open] {
@@ -54,7 +54,7 @@ export const FaqQ = styled.summary`
   font-family: var(--font-sora), 'Sora', sans-serif;
   font-weight: ${theme.typography.fontWeight.semibold};
   font-size: 18px;
-  color: #ffffff;
+  color: var(--dd-text);
   cursor: pointer;
   list-style: none;
   display: flex;
@@ -87,7 +87,7 @@ export const FaqA = styled.p`
   margin-top: ${theme.spacing.md};
   font-size: 16px;
   line-height: 175%;
-  color: rgba(234, 240, 251, 0.82);
+  color: rgb(var(--dd-fog-rgb) / 0.82);
 
   @media (max-width: ${theme.breakpoints.sm}) {
     font-size: 15px;

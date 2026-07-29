@@ -1,23 +1,29 @@
 /**
  * Tokens visuais da landing "Portal DriveData / Microsoft Fabric".
- * Usa a linguagem da marca DriveData (navy + vidro + Sora + gradiente verde→azul),
- * a mesma do redesign do site. Estrutura espelha src/dalt/theme.ts.
+ *
+ * Os valores apontam para as variáveis CSS definidas em common/theme/GlobalStyles.
+ * O escuro é o padrão; quando a rota marca data-theme="light" no <html>, as mesmas
+ * variáveis passam a valer claro e a página inteira acompanha sem tocar nos
+ * componentes. Gradientes de marca não mudam (o verde/azul funcionam nos dois).
  */
 
 export const portalTheme = {
   colors: {
-    bg: '#070c16',
-    bgSection: '#0a1120',
-    bgCard: 'rgba(255, 255, 255, 0.045)',
-    primary: '#54da89',       // verde da marca
+    bg: 'var(--dd-bg)',
+    bgSection: 'var(--dd-bg-section)',
+    bgCard: 'var(--dd-surface)',
+    surfaceSubtle: 'var(--dd-surface-2)',
+    surfaceStrong: 'var(--dd-surface-3)',
+    primary: 'var(--dd-primary)',
     primaryDim: 'rgba(84, 218, 137, 0.14)',
-    accent: '#0a96ec',        // azul da marca
+    accent: 'var(--dd-accent)',
     accentDim: 'rgba(10, 150, 236, 0.12)',
-    textPrimary: '#ffffff',
-    textSecondary: 'rgba(234, 240, 251, 0.66)',
-    textMuted: 'rgba(234, 240, 251, 0.4)',
-    border: 'rgba(255, 255, 255, 0.08)',
-    borderActive: 'rgba(84, 218, 137, 0.35)',
+    textPrimary: 'var(--dd-text)',
+    textSecondary: 'var(--dd-text-2)',
+    textMuted: 'var(--dd-text-muted)',
+    border: 'var(--dd-border)',
+    borderActive: 'var(--dd-border-active)',
+    onBrand: 'var(--dd-on-brand)',
   },
   gradients: {
     brand: 'linear-gradient(120deg, #0a96ec, #54da89)',

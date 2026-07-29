@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Sora } from 'next/font/google';
 import { AttributionTracker } from '../common/components/attribution-tracker';
 import { CookieConsentBanner } from '../common/components/cookie-consent';
+import { LanguageRail } from '../common/components/language-rail';
 import { TypebotModal } from '../common/components/typebot-modal';
 import { getServerLanguage } from '../common/i18n/server';
 import { EmotionProvider } from '../common/providers/EmotionProvider';
@@ -203,6 +204,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <I18nProvider>
             <TypebotProvider>
               {children}
+              <LanguageRail />
               <TypebotModal />
               <CookieConsentBanner />
             </TypebotProvider>

@@ -52,7 +52,7 @@ export const ContactTitle = styled.h2`
   font-size: 48px;
   line-height: 1.2;
   font-weight: ${theme.typography.fontWeight.bold};
-  background: linear-gradient(156.28deg, #54DA89 16.11%, #0A96EC 100.01%);
+  background: linear-gradient(156.28deg, var(--dd-grad-green) 16.11%, var(--dd-grad-blue) 100.01%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -70,7 +70,7 @@ export const ContactTitle = styled.h2`
 export const ContactDescription = styled.p`
   font-size: 18px;
   line-height: 1.6;
-  color: white;
+  color: var(--dd-text);
   margin: 0;
   font-weight: ${theme.typography.fontWeight.normal};
 
@@ -137,7 +137,7 @@ export const ContactIcon = styled.div`
 export const ContactText = styled.p`
   font-size: 16px;
   line-height: 1.6;
-  color: white;
+  color: var(--dd-text);
   margin: 0;
   font-weight: ${theme.typography.fontWeight.normal};
 
@@ -175,7 +175,7 @@ export const FormField = styled.div`
 export const FormLabel = styled.label`
   font-size: 14px;
   font-weight: ${theme.typography.fontWeight.medium};
-  color: #8AFFF5;
+  color: var(--dd-mint);
   font-family: 'Inter', sans-serif;
 
   @media (max-width: ${theme.breakpoints.sm}) {
@@ -184,24 +184,24 @@ export const FormLabel = styled.label`
 `;
 
 export const FormInput = styled.input`
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--dd-ink-rgb) / 0.05);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.14);
   border-radius: 8px;
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   font-size: 16px;
-  color: white;
+  color: var(--dd-text);
   font-family: 'Inter', sans-serif;
   transition: all 0.3s ease;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgb(var(--dd-ink-rgb) / 0.4);
   }
 
   &:focus {
     outline: none;
-    border-color: #8AFFF5;
-    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--dd-mint);
+    background: rgb(var(--dd-ink-rgb) / 0.08);
   }
 
   &:hover {
@@ -215,26 +215,26 @@ export const FormInput = styled.input`
 `;
 
 export const FormTextarea = styled.textarea`
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--dd-ink-rgb) / 0.05);
   backdrop-filter: blur(14px);
   padding: ${theme.spacing.md} ${theme.spacing.lg};
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.14);
   font-size: 16px;
   border-radius: 8px;
-  color: white;
+  color: var(--dd-text);
   font-family: 'Inter', sans-serif;
   transition: all 0.3s ease;
   resize: vertical;
   min-height: 120px;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgb(var(--dd-ink-rgb) / 0.4);
   }
 
   &:focus {
     outline: none;
-    border-color: #8AFFF5;
-    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--dd-mint);
+    background: rgb(var(--dd-ink-rgb) / 0.08);
   }
 
   &:hover {
@@ -255,7 +255,7 @@ export const FormButton = styled.button`
   padding: ${theme.spacing.md} ${theme.spacing.xl};
   font-size: 16px;
   font-weight: ${theme.typography.fontWeight.bold};
-  color: #0A0A0F;
+  color: var(--dd-on-brand);
   font-family: 'Satoshi', sans-serif;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -290,7 +290,7 @@ export const FormButton = styled.button`
 
 export const FormError = styled.span`
   font-size: 12px;
-  color: #FF6B6B;
+  color: var(--dd-danger);
   font-family: 'Inter', sans-serif;
   margin-top: ${theme.spacing.xs};
 `;
@@ -300,7 +300,7 @@ export const FormGlobalError = styled.div`
   border: 1px solid rgba(255, 107, 107, 0.3);
   border-radius: 8px;
   padding: ${theme.spacing.md};
-  color: #FF6B6B;
+  color: var(--dd-danger);
   font-size: 14px;
   text-align: center;
   font-family: 'Inter', sans-serif;
@@ -316,7 +316,7 @@ export const FormSuccess = styled.div`
   border: 1px solid rgba(84, 218, 137, 0.3);
   border-radius: 8px;
   padding: ${theme.spacing.md};
-  color: #54DA89;
+  color: var(--dd-primary);
   font-size: 14px;
   text-align: center;
   font-family: 'Inter', sans-serif;

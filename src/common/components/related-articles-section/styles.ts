@@ -14,7 +14,7 @@ export const RelatedArticlesSectionHeader = styled.div`
 export const RelatedArticlesSectionTitle = styled.h2`
   font-size: ${theme.typography.fontSize['4xl']};
   font-weight: ${theme.typography.fontWeight.bold};
-  background: linear-gradient(153.42deg, #54DA89 30.36%, #0A96EC 132.34%);
+  background: linear-gradient(153.42deg, var(--dd-grad-green) 30.36%, var(--dd-grad-blue) 132.34%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

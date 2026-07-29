@@ -1,4 +1,5 @@
 import { Footer } from '@/common/components/footer';
+import { ThemeScope } from '@/common/components/theme-scope';
 import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
 import { TargetAudienceProfileModel } from '@/common/model/target-audience-profile.model';
 import { getProfiles } from '@/server/content-db';
@@ -27,6 +28,7 @@ export default async function Home() {
 
   return (
     <>
+      <ThemeScope />
       <Header />
       <MainSection />
       <TargetAudienceSection profiles={profiles} />

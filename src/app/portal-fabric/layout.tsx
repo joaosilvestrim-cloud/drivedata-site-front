@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { SITE_COUNTRY } from '@/common/config/site';
+import { themeBootScript } from '@/common/theme/useThemeMode';
 
 // Metadata gerado no servidor, ramificado por país (o corpo passa pelo i18n do
 // cliente). Sem isso o Canadá herdaria título/descrição em português.
@@ -31,5 +32,12 @@ export const metadata: Metadata = {
 };
 
 export default function PortalFabricLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      {/* Aplica o tema salvo antes da primeira pintura, pra não piscar escuro→claro.
+          Mexe só no atributo do <html>, que o React não renderiza — sem mismatch. */}
+      <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      {children}
+    </>
+  );
 }

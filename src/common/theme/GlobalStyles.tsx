@@ -41,9 +41,126 @@ export const GlobalStyles = () => (
         overflow-x: hidden;
       }
 
+      /* ═══════════ TOKENS DE TEMA ═══════════
+         O ESCURO é o padrão (:root) e vale para o site inteiro — os valores aqui
+         são exatamente os que já estavam fixos no código, então nada muda de
+         aparência. O CLARO entra só como sobreposição, quando algum elemento
+         marca data-theme="light" (hoje: a rota /portal-fabric). Enquanto esse
+         atributo não existir, nenhuma página é afetada. */
+      :root {
+        /* Cores base como tripla RGB: o alfa é aplicado no uso, com
+           rgb(var(--dd-ink-rgb) / 0.05). Um par de tokens cobre as dezenas de
+           transparências diferentes espalhadas pelas seções, sem precisar de um
+           token por opacidade.
+             ink = o vidro que no escuro é branco e no claro vira tinta navy
+             fog = o texto secundário */
+        --dd-ink-rgb: 255 255 255;
+        --dd-bg-rgb: 7 12 22;
+        --dd-fog-rgb: 234 240 251;
+
+        --dd-bg: #070c16;
+        --dd-bg-section: #0a1120;
+        --dd-cyan: #22d3ee;
+        /* Ciano e menta aparecem como TEXTO no rodapé e nos destaques. Os tons
+           claros da marca brilham sobre navy, mas somem sobre branco, então no
+           tema claro eles fecham. */
+        --dd-danger: #f87171;
+        /* Paradas dos gradientes usados como preenchimento de TEXTO. Em botao o
+           gradiente segue vibrante; aqui ele fecha no claro pra o titulo ler. */
+        --dd-grad-blue: #0a96ec;
+        --dd-grad-green: #54da89;
+        --dd-grad-cyan: #22d3ee;
+        --dd-grad-sky: #38bdf8;
+        /* Paineis de vidro que flutuam sobre a secao (dashboard do hero, chips).
+           No escuro sao navy; no claro precisam virar vidro BRANCO, senao o texto
+           do tema claro cai escuro sobre fundo escuro. */
+        --dd-panel: rgba(10, 16, 28, 0.55);
+        --dd-panel-solid: rgba(11, 18, 32, 0.92);
+        --dd-mint: #8afff5;
+        --dd-teal: #27b1c5;
+        --dd-surface: rgba(255, 255, 255, 0.045);
+        --dd-surface-2: rgba(255, 255, 255, 0.03);
+        --dd-surface-3: rgba(255, 255, 255, 0.06);
+        --dd-text: #ffffff;
+        --dd-text-2: rgba(234, 240, 251, 0.66);
+        --dd-text-muted: rgba(234, 240, 251, 0.4);
+        --dd-border: rgba(255, 255, 255, 0.08);
+        --dd-border-active: rgba(84, 218, 137, 0.35);
+        --dd-primary: #54da89;
+        --dd-accent: #0a96ec;
+        --dd-on-brand: #06121f;
+        /* campo de fundo */
+        --dd-glow-1: rgba(10, 150, 236, 0.2);
+        --dd-glow-2: rgba(84, 218, 137, 0.15);
+        --dd-glow-3: rgba(10, 150, 236, 0.13);
+        --dd-grid-line: rgba(255, 255, 255, 0.045);
+        --dd-grid-opacity: 0.5;
+        /* header (pílula flutuante) */
+        --dd-header-bg-a: rgba(255, 255, 255, 0.08);
+        --dd-header-bg-b: rgba(255, 255, 255, 0.03);
+        --dd-header-border: rgba(255, 255, 255, 0.14);
+        --dd-header-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+        --dd-nav-text: #ffffff;
+        --dd-chip-bg: rgba(255, 255, 255, 0.1);
+        --dd-chip-bg-hover: rgba(255, 255, 255, 0.15);
+        --dd-dropdown-bg: rgba(15, 20, 30, 0.95);
+        --dd-dropdown-border: rgba(255, 255, 255, 0.12);
+      }
+
+      [data-theme='light'] {
+        /* Mesmas transparências, tinta invertida. */
+        --dd-ink-rgb: 9 24 44;
+        --dd-bg-rgb: 244 247 251;
+        --dd-fog-rgb: 12 27 48;
+
+        --dd-bg: #f4f7fb;
+        --dd-bg-section: #ffffff;
+        --dd-cyan: #0e7490;
+        --dd-danger: #b91c1c;
+        --dd-grad-blue: #0a72c4;
+        --dd-grad-green: #15803d;
+        --dd-grad-cyan: #0e7490;
+        --dd-grad-sky: #0369a1;
+        --dd-panel: rgba(255, 255, 255, 0.82);
+        --dd-panel-solid: rgba(255, 255, 255, 0.94);
+        --dd-mint: #0f766e;
+        --dd-teal: #0e7490;
+        --dd-surface: rgba(9, 24, 44, 0.04);
+        --dd-surface-2: rgba(9, 24, 44, 0.025);
+        --dd-surface-3: rgba(9, 24, 44, 0.06);
+        --dd-text: #0a1628;
+        --dd-text-2: rgba(12, 27, 48, 0.78);
+        --dd-text-muted: rgba(12, 27, 48, 0.62);
+        --dd-border: rgba(9, 24, 44, 0.1);
+        --dd-border-active: rgba(23, 168, 102, 0.45);
+        /* verde da marca não tem contraste sobre branco — no claro usamos a
+           versão fechada só para TEXTO/ícone; o gradiente de fundo segue igual. */
+        --dd-primary: #15803d;
+        --dd-accent: #0a72c4;
+        --dd-glow-1: rgba(10, 150, 236, 0.1);
+        --dd-glow-2: rgba(84, 218, 137, 0.1);
+        --dd-glow-3: rgba(10, 150, 236, 0.07);
+        --dd-grid-line: rgba(9, 24, 44, 0.05);
+        --dd-grid-opacity: 0.7;
+        /* O cabeçalho e os flutuantes seguem ESCUROS no tema claro, de propósito:
+           a marca no logotipo é escrita em branco e sumiria sobre fundo claro.
+           Não basta "não sobrescrever": os valores do escuro são branco
+           translúcido, pensados para vidro sobre fundo escuro, e sobre a página
+           clara virariam quase branco (texto branco sumindo). Por isso aqui a
+           pílula recebe navy de verdade, com o texto seguindo branco. */
+        --dd-header-bg-a: rgba(10, 22, 40, 0.94);
+        --dd-header-bg-b: rgba(10, 22, 40, 0.84);
+        --dd-header-border: rgba(255, 255, 255, 0.12);
+        --dd-header-shadow: 0 18px 50px rgba(9, 24, 44, 0.22);
+        --dd-chip-bg: rgba(255, 255, 255, 0.12);
+        --dd-chip-bg-hover: rgba(255, 255, 255, 0.2);
+        --dd-dropdown-bg: rgba(10, 22, 40, 0.96);
+        --dd-dropdown-border: rgba(255, 255, 255, 0.14);
+      }
+
       /* ═══════════ REDESIGN GLOBAL (v2) — campo de fundo + superfícies ═══════════ */
       body {
-        background-color: #070c16 !important;
+        background-color: var(--dd-bg) !important;
         position: relative;
       }
       /* Campo de fundo fixo: mesh de glow (ciano/verde) atrás de todo o site */
@@ -54,10 +171,10 @@ export const GlobalStyles = () => (
         z-index: -2;
         pointer-events: none;
         background:
-          radial-gradient(620px 620px at 10% 6%, rgba(10, 150, 236, 0.2), transparent 60%),
-          radial-gradient(560px 560px at 90% 24%, rgba(84, 218, 137, 0.15), transparent 60%),
-          radial-gradient(720px 720px at 50% 108%, rgba(10, 150, 236, 0.13), transparent 60%),
-          #070c16;
+          radial-gradient(620px 620px at 10% 6%, var(--dd-glow-1), transparent 60%),
+          radial-gradient(560px 560px at 90% 24%, var(--dd-glow-2), transparent 60%),
+          radial-gradient(720px 720px at 50% 108%, var(--dd-glow-3), transparent 60%),
+          var(--dd-bg);
       }
       /* Grid técnico sutil sobre o campo */
       body::after {
@@ -66,9 +183,9 @@ export const GlobalStyles = () => (
         inset: 0;
         z-index: -1;
         pointer-events: none;
-        opacity: 0.5;
-        background-image: linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+        opacity: var(--dd-grid-opacity);
+        background-image: linear-gradient(var(--dd-grid-line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--dd-grid-line) 1px, transparent 1px);
         background-size: 60px 60px;
         mask-image: radial-gradient(ellipse 110% 70% at 50% 0%, #000 15%, transparent 92%);
       }

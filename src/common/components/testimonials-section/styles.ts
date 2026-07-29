@@ -85,9 +85,9 @@ export const TestimonialsSectionTitle = styled.h2`
   font-size: 40px;
   font-weight: 800;
   letter-spacing: -0.6px;
-  color: #fff;
+  color: var(--dd-text);
   margin: 0 0 ${theme.spacing.md} 0;
-  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -104,7 +104,7 @@ export const TestimonialsSectionTitle = styled.h2`
 export const TestimonialsSectionSubtitle = styled.p`
   font-size: 18px;
   font-weight: ${theme.typography.fontWeight.normal};
-  color: rgba(234, 240, 251, 0.7);
+  color: rgb(var(--dd-fog-rgb) / 0.7);
   margin: 0;
 
   @media (max-width: ${theme.breakpoints.md}) {
@@ -120,7 +120,7 @@ export const TestimonialCardContainer = styled.div`
   position: relative;
   background:
     linear-gradient(90deg, #0a96ec, #54da89) top left / 100% 3px no-repeat,
-    rgba(255, 255, 255, 0.05);
+    rgb(var(--dd-ink-rgb) / 0.05);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-radius: 20px;
@@ -173,7 +173,7 @@ export const TestimonialCardContainer = styled.div`
     transform: translateY(-6px);
     background:
       linear-gradient(90deg, #0a96ec, #54da89) top left / 100% 3px no-repeat,
-      rgba(255, 255, 255, 0.08);
+      rgb(var(--dd-ink-rgb) / 0.08);
     box-shadow: 0 28px 56px rgba(0, 0, 0, 0.45), 0 0 40px rgba(84, 218, 137, 0.12);
   }
 
@@ -194,7 +194,7 @@ export const TestimonialDescription = styled.span`
   font-family: var(--font-inter), sans-serif;
   font-size: 14px;
   line-height: 1.6;
-  color: rgba(234, 240, 251, 0.82);
+  color: rgb(var(--dd-fog-rgb) / 0.82);
   margin: 0;
   position: relative;
   z-index: 1;
@@ -205,8 +205,8 @@ export const TestimonialAuthor = styled.div`
   align-items: center;
   gap: ${theme.spacing.md};
   margin-top: auto;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgb(var(--dd-ink-rgb) / 0.05);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.08);
   border-radius: 24px;
   padding: ${theme.spacing.xs};
   position: relative;
@@ -218,13 +218,13 @@ export const TestimonialAvatar = styled.div`
   height: 48px;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(10, 150, 236, 0.35), rgba(84, 218, 137, 0.35));
-  border: 2px solid rgba(255, 255, 255, 0.15);
+  border: 2px solid rgb(var(--dd-ink-rgb) / 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: ${theme.typography.fontWeight.bold};
   font-size: 18px;
-  color: #fff;
+  color: var(--dd-text);
   overflow: hidden;
   flex-shrink: 0;
 
@@ -242,14 +242,14 @@ export const TestimonialAuthorInfo = styled.div`
 
 export const TestimonialAuthorName = styled.p`
   font-weight: ${theme.typography.fontWeight.semibold};
-  color: #fff;
+  color: var(--dd-text);
   margin: 0;
   font-size: 16px;
 `;
 
 export const TestimonialAuthorRole = styled.p`
   font-size: 14px;
-  color: rgba(234, 240, 251, 0.55);
+  color: var(--dd-text-2);
   margin: 0;
 `;
 

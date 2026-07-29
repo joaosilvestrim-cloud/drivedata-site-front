@@ -40,7 +40,7 @@ export const MainContent = styled.div`
   max-width: 1216px;
   padding: 0 24px;
   text-align: center;
-  color: white;
+  color: var(--dd-text);
 
   @media (max-width: ${theme.breakpoints.md}) {
     padding: 0 ${theme.spacing.lg};
@@ -60,7 +60,7 @@ export const MainTitle = styled.h1`
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
-  background: linear-gradient(156.28deg, #54DA89 16.11%, #0A96EC 100.01%);
+  background: linear-gradient(156.28deg, var(--dd-grad-green) 16.11%, var(--dd-grad-blue) 100.01%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -80,7 +80,7 @@ export const MainSubTitle = styled.p`
   font-family: 'Satoshi', ${theme.typography.fontFamily.sans};
   font-size: 24px;
   line-height: 140%;
-  color: white;
+  color: var(--dd-text);
   margin: 0 0 ${theme.spacing['2xl']} 0;
   text-align: center;
   max-width: 700px;

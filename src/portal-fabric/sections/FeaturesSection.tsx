@@ -27,8 +27,8 @@ const Tab = styled.button<{ active: boolean }>`
   cursor: pointer;
   transition: all 0.2s ${tk.easing};
   border: 1px solid ${({ active }) => (active ? 'transparent' : tk.colors.border)};
-  background: ${({ active }) => (active ? tk.gradients.brand : 'rgba(255,255,255,0.03)')};
-  color: ${({ active }) => (active ? '#06121f' : tk.colors.textSecondary)};
+  background: ${({ active }) => (active ? tk.gradients.brand : tk.colors.surfaceSubtle)};
+  color: ${({ active }) => (active ? tk.colors.onBrand : tk.colors.textSecondary)};
 
   &:hover { border-color: ${({ active }) => (active ? 'transparent' : tk.colors.borderActive)}; }
 `;

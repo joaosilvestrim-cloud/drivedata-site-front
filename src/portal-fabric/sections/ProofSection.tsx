@@ -89,7 +89,7 @@ const Chip = styled.span`
   padding: 9px 18px;
   border-radius: 999px;
   border: 1px solid ${tk.colors.border};
-  background: rgba(255, 255, 255, 0.03);
+  background: ${tk.colors.surfaceSubtle};
 `;
 
 export function ProofSection() {

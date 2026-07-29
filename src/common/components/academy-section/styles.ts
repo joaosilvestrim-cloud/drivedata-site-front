@@ -18,7 +18,7 @@ export const AcademyCard = styled.div`
   background:
     radial-gradient(600px 240px at 12% 0%, rgba(84, 218, 137, 0.16), transparent 70%),
     radial-gradient(600px 240px at 100% 120%, rgba(10, 150, 236, 0.16), transparent 70%),
-    rgba(255, 255, 255, 0.04);
+    rgb(var(--dd-ink-rgb) / 0.04);
   backdrop-filter: blur(14px);
   overflow: hidden;
 
@@ -55,7 +55,7 @@ export const AcademyBadge = styled.span`
   gap: 8px;
   font-size: 13px;
   font-weight: ${theme.typography.fontWeight.semibold};
-  color: #54da89;
+  color: var(--dd-primary);
   text-transform: uppercase;
   letter-spacing: 1px;
 `;
@@ -66,7 +66,7 @@ export const AcademyTitle = styled.h2`
   line-height: 1.2;
   letter-spacing: -0.6px;
   margin: 0;
-  color: #ffffff;
+  color: var(--dd-text);
   font-weight: 800;
 
   @media (max-width: ${theme.breakpoints.sm}) {
@@ -77,7 +77,7 @@ export const AcademyTitle = styled.h2`
 export const AcademyDescription = styled.p`
   font-size: 17px;
   line-height: 1.6;
-  color: rgba(234, 240, 251, 0.7);
+  color: rgb(var(--dd-fog-rgb) / 0.7);
   margin: 0;
 `;
 
@@ -87,7 +87,7 @@ export const AcademyButton = styled.a`
   align-items: center;
   gap: 8px;
   background: linear-gradient(120deg, #54da89, #0a96ec);
-  color: #04121f;
+  color: var(--dd-bg-section);
   font-weight: ${theme.typography.fontWeight.bold};
   font-size: 16px;
   text-decoration: none;

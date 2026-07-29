@@ -56,7 +56,7 @@ const Mark = styled.span<{ ok?: boolean }>`
   gap: 7px;
 
   &::before {
-    content: ${({ ok }) => (ok ? "'✓'" : "'—'")};
+    content: ${({ ok }) => (ok ? "'✓'" : "'·'")};
     color: ${({ ok }) => (ok ? tk.colors.primary : tk.colors.textMuted)};
     font-weight: 800;
     flex-shrink: 0;

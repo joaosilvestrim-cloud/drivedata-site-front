@@ -59,7 +59,7 @@ export const DevicesItem = styled.div<{ contentSide: 'left' | 'right'}>`
   gap: ${theme.spacing['2xl']};
   padding: ${theme.spacing['2xl']};
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.045);
+  background: rgb(var(--dd-ink-rgb) / 0.045);
   backdrop-filter: blur(14px);
   transition: transform 0.3s ease, background 0.3s ease;
 
@@ -84,7 +84,7 @@ export const DevicesItem = styled.div<{ contentSide: 'left' | 'right'}>`
 
   &:hover {
     transform: translateY(-8px);
-    background: rgba(255, 255, 255, 0.07);
+    background: rgb(var(--dd-ink-rgb) / 0.07);
   }
 
   @media (max-width: ${theme.breakpoints.lg}) {
@@ -113,7 +113,7 @@ export const DevicesItem = styled.div<{ contentSide: 'left' | 'right'}>`
     height: auto;
     max-width: 100%;
     border-radius: 12px;
-    border: 1px solid rgba(234, 240, 251, 0.1);
+    border: 1px solid rgb(var(--dd-fog-rgb) / 0.1);
     box-shadow: 0 12px 40px rgba(7, 12, 22, 0.5);
   }
 `;
@@ -135,7 +135,7 @@ export const DevicesItemTitle = styled.h3`
   font-size: ${theme.typography.fontSize.lg[0]};
   font-weight: 800;
   letter-spacing: -0.6px;
-  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -153,7 +153,7 @@ export const DevicesItemTitle = styled.h3`
 export const DevicesItemDescription = styled.p`
   font-size: ${theme.typography.fontSize.base[0]};
   font-weight: ${theme.typography.fontWeight.normal};
-  color: rgba(234, 240, 251, 0.66);
+  color: rgb(var(--dd-fog-rgb) / 0.66);
   line-height: 1.6;
 
   @media (max-width: ${theme.breakpoints.md}) {
@@ -183,13 +183,13 @@ export const DevicesItemButton = styled.button<{ variant?: 'filled' | 'outlined'
     if (props.variant === 'outlined') {
       return `
         background-color: transparent;
-        color: #fff;
+        color: var(--dd-text);
         border: 1px solid rgba(34, 211, 238, 0.5);
 
         &:hover {
           background-color: rgba(34, 211, 238, 0.12);
-          border-color: #22d3ee;
-          color: #fff;
+          border-color: var(--dd-cyan);
+          color: var(--dd-text);
           transform: translateY(-2px);
           box-shadow: 0 8px 24px rgba(10, 150, 236, 0.25);
         }
@@ -198,7 +198,7 @@ export const DevicesItemButton = styled.button<{ variant?: 'filled' | 'outlined'
     // variant 'filled' (default)
     return `
       background: linear-gradient(120deg, #0a96ec, #54da89);
-      color: #fff;
+      color: var(--dd-text);
       border: none;
 
       &:hover {

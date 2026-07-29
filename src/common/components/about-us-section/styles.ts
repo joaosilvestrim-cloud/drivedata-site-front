@@ -76,7 +76,7 @@ export const FounderName = styled.h3`
   font-size: ${theme.typography.fontSize['3xl'][0]};
   line-height: 1.2;
   font-weight: ${theme.typography.fontWeight.bold};
-  color: #ffffff;
+  color: var(--dd-text);
   margin: 0;
 
   @media (max-width: ${theme.breakpoints.md}) {
@@ -91,7 +91,7 @@ export const FounderName = styled.h3`
 export const FounderRole = styled.p`
   font-size: ${theme.typography.fontSize.lg[0]};
   line-height: 1.4;
-  color: #0dd0d0;
+  color: var(--dd-teal);
   margin: 0;
   font-weight: ${theme.typography.fontWeight.medium};
 
@@ -103,7 +103,7 @@ export const FounderRole = styled.p`
 export const FounderBio = styled.p`
   font-size: ${theme.typography.fontSize.base[0]};
   line-height: 1.6;
-  color: #e0e0e0;
+  color: var(--dd-text-2);
   margin: 0;
 
   @media (max-width: ${theme.breakpoints.sm}) {
@@ -138,7 +138,7 @@ export const AboutUsTitle = styled.h2`
   line-height: 1.15;
   letter-spacing: -0.6px;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--dd-text);
   margin: 0;
 
   @media (max-width: ${theme.breakpoints.md}) {
@@ -151,7 +151,7 @@ export const AboutUsTitle = styled.h2`
 `;
 
 export const AboutUsTitleHighlight = styled.span`
-  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -160,7 +160,7 @@ export const AboutUsTitleHighlight = styled.span`
 export const AboutUsSubtitle = styled.p`
   font-size: ${theme.typography.fontSize.lg[0]};
   line-height: 1.5;
-  color: #ffffff;
+  color: var(--dd-text);
   margin: 0;
   font-weight: ${theme.typography.fontWeight.medium};
 
@@ -172,7 +172,7 @@ export const AboutUsSubtitle = styled.p`
 export const AboutUsDescription = styled.p`
   font-size: ${theme.typography.fontSize.base[0]};
   line-height: 1.6;
-  color: #c4c4c4;
+  color: var(--dd-text-2);
   margin: 0;
   white-space: pre-line;
 
@@ -184,7 +184,7 @@ export const AboutUsDescription = styled.p`
 export const AboutUsSlogan = styled.p`
   font-size: ${theme.typography.fontSize.base[0]};
   line-height: 1;
-  color: ${theme.colors.primary[300]};
+  color: var(--dd-accent);
   margin: 0;
   white-space: pre-line;
   font-weight: ${theme.typography.fontWeight.light};

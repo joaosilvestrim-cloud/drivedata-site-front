@@ -32,7 +32,7 @@ export const ArticlesSectionTitle = styled.h2`
   letter-spacing: -0.6px;
   font-size: ${theme.typography.fontSize['4xl'][0]};
   font-weight: ${theme.typography.fontWeight.bold};
-  background: linear-gradient(153.42deg, #54DA89 30.36%, #0A96EC 132.34%);
+  background: linear-gradient(153.42deg, var(--dd-grad-green) 30.36%, var(--dd-grad-blue) 132.34%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -71,7 +71,7 @@ export const ArticleCardContainer = styled.article`
   background: linear-gradient(180deg, rgba(84, 218, 137, 0.12) 0%, rgba(10, 150, 236, 0.12) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.1);
   border-radius: 16px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -124,7 +124,7 @@ export const ArticleCategory = styled.span`
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: ${theme.typography.fontWeight.medium};
-  color: #54DA89;
+  color: var(--dd-primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
@@ -133,7 +133,7 @@ export const ArticleTitle = styled.h3`
   font-family: var(--font-sora), 'Sora', sans-serif;
   font-size: 20px;
   font-weight: ${theme.typography.fontWeight.bold};
-  color: #FFFFFF;
+  color: var(--dd-text);
   line-height: 130%;
   margin: 0;
 
@@ -150,7 +150,7 @@ export const ArticleExcerpt = styled.p`
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: ${theme.typography.fontWeight.normal};
-  color: ${theme.colors.neutral[300]};
+  color: var(--dd-text-2);
   line-height: 150%;
   margin: 0;
 
@@ -187,6 +187,6 @@ export const ArticleAuthorName = styled.span`
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: ${theme.typography.fontWeight.medium};
-  color: #FFFFFF;
+  color: var(--dd-text);
 `;
 

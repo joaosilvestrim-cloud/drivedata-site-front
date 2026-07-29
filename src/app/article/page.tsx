@@ -1,4 +1,5 @@
 import { Header } from '@/common/components';
+import { ThemeScope } from '@/common/components/theme-scope';
 import { ArticlesSection } from '@/common/components/articles-section';
 import { Footer } from '@/common/components/footer';
 import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
@@ -18,6 +19,7 @@ export default async function Page() {
 
   return (
     <>
+      <ThemeScope />
       <Header />
       <ArticlesSection articles={articles} />
       <Footer />

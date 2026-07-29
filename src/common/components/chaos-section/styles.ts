@@ -12,7 +12,7 @@ export const ChaosSectionContainer = styled.section`
   position: relative;
   overflow: hidden;
   padding: 120px 0;
-  background: #070c16;
+  background: var(--dd-bg);
 
   /* grid sutil */
   &::before {
@@ -21,8 +21,8 @@ export const ChaosSectionContainer = styled.section`
     inset: 0;
     z-index: 0;
     opacity: 0.5;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-image: linear-gradient(rgb(var(--dd-ink-rgb) / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--dd-ink-rgb) / 0.05) 1px, transparent 1px);
     background-size: 56px 56px;
     mask-image: radial-gradient(ellipse 70% 70% at 68% 50%, #000 30%, transparent 78%);
   }
@@ -85,8 +85,8 @@ export const ChaosGrid = styled.div`
     width: 46%;
     height: 440px;
     border-radius: 24px;
-    background: linear-gradient(120deg, rgba(7, 12, 22, 0.02), rgba(7, 12, 22, 0.42));
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: linear-gradient(120deg, rgb(var(--dd-bg-rgb) / 0.02), rgb(var(--dd-bg-rgb) / 0.42));
+    border: 1px solid rgb(var(--dd-ink-rgb) / 0.14);
     box-shadow: inset 0 0 0 1px rgba(84, 218, 137, 0.08);
     z-index: 1;
     pointer-events: none;
@@ -115,7 +115,7 @@ export const ChaosTextContent = styled.div`
   position: relative;
   grid-column: 2;
   z-index: 3;
-  background: rgba(255, 255, 255, 0.045);
+  background: rgb(var(--dd-ink-rgb) / 0.045);
   backdrop-filter: blur(16px);
   border-radius: 24px;
   padding: 42px;
@@ -176,7 +176,7 @@ export const ChaosTitle = styled.h2`
   line-height: 1.12;
   letter-spacing: -1px;
   font-weight: 800;
-  color: #fff;
+  color: var(--dd-text);
   margin: 0 0 18px;
   max-width: 520px;
 
@@ -197,7 +197,7 @@ export const ChaosTitle = styled.h2`
 `;
 
 export const ChaosDescription = styled.p`
-  color: rgba(234, 240, 251, 0.72);
+  color: rgb(var(--dd-fog-rgb) / 0.72);
   font-size: 17px;
   line-height: 1.65;
   margin: 0;
@@ -206,7 +206,7 @@ export const ChaosDescription = styled.p`
 
 export const HighlightedText = styled.span`
   font-weight: 800;
-  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

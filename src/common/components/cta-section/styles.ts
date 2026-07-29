@@ -28,7 +28,7 @@ export const CtaSectionContent = styled.div`
   background:
     radial-gradient(700px 300px at 50% -10%, rgba(84, 218, 137, 0.16), transparent 70%),
     radial-gradient(700px 300px at 50% 120%, rgba(10, 150, 236, 0.16), transparent 70%),
-    rgba(255, 255, 255, 0.035);
+    rgb(var(--dd-ink-rgb) / 0.035);
   backdrop-filter: blur(16px);
 
   &::before {
@@ -57,7 +57,7 @@ export const CtaSectionContent = styled.div`
 
 export const CtaTitle = styled.h2`
   font-family: var(--font-sora), 'Sora', sans-serif;
-  background: linear-gradient(120deg, #54da89 0%, #0a96ec 100%);
+  background: linear-gradient(120deg, var(--dd-grad-green) 0%, var(--dd-grad-blue) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -80,7 +80,7 @@ export const CtaTitle = styled.h2`
 export const CtaDescription = styled.p`
   font-size: 20px;
   line-height: 1.6;
-  color: #B0B0B0;
+  color: var(--dd-text-2);
   margin: 0;
   font-weight: ${theme.typography.fontWeight.normal};
   max-width: 700px;

@@ -25,7 +25,7 @@ export const PageContent = styled.div`
 export const PageTitle = styled.h1`
   font-size: ${theme.typography.fontSize['4xl'][0]};
   font-weight: ${theme.typography.fontWeight.bold};
-  color: #0dd0d0;
+  color: var(--dd-teal);
   margin-bottom: ${theme.spacing.sm};
   line-height: 1.2;
 
@@ -40,11 +40,11 @@ export const PageTitle = styled.h1`
 
 export const PageSubtitle = styled.p`
   font-size: ${theme.typography.fontSize.sm[0]};
-  color: #c4c4c4;
+  color: var(--dd-text-2);
   margin-bottom: ${theme.spacing['2xl']};
 
   strong {
-    color: #e0e0e0;
+    color: var(--dd-text-2);
     font-weight: ${theme.typography.fontWeight.medium};
   }
 `;
@@ -60,7 +60,7 @@ export const Section = styled.div`
 export const SectionTitle = styled.h2`
   font-size: ${theme.typography.fontSize['2xl'][0]};
   font-weight: ${theme.typography.fontWeight.semibold};
-  color: #0dd0d0;
+  color: var(--dd-teal);
   margin-bottom: ${theme.spacing.lg};
   line-height: 1.3;
 
@@ -80,7 +80,7 @@ export const SubSection = styled.div`
 export const SubSectionTitle = styled.h3`
   font-size: ${theme.typography.fontSize.lg[0]};
   font-weight: ${theme.typography.fontWeight.medium};
-  color: #ffffff;
+  color: var(--dd-text);
   margin-bottom: ${theme.spacing.md};
   line-height: 1.4;
 
@@ -92,11 +92,11 @@ export const SubSectionTitle = styled.h3`
 export const Paragraph = styled.p`
   font-size: ${theme.typography.fontSize.base[0]};
   line-height: 1.7;
-  color: #c4c4c4;
+  color: var(--dd-text-2);
   margin-bottom: ${theme.spacing.md};
 
   strong {
-    color: #ffffff;
+    color: var(--dd-text);
     font-weight: ${theme.typography.fontWeight.semibold};
   }
 
@@ -122,21 +122,21 @@ export const List = styled.ul`
 export const ListItem = styled.li`
   font-size: ${theme.typography.fontSize.base[0]};
   line-height: 1.7;
-  color: #c4c4c4;
+  color: var(--dd-text-2);
   margin-bottom: ${theme.spacing.sm};
   padding-left: ${theme.spacing.lg};
   position: relative;
 
   &::before {
     content: '•';
-    color: #0dd0d0;
+    color: var(--dd-teal);
     font-weight: ${theme.typography.fontWeight.bold};
     position: absolute;
     left: 0;
   }
 
   strong {
-    color: #ffffff;
+    color: var(--dd-text);
     font-weight: ${theme.typography.fontWeight.semibold};
   }
 
@@ -154,7 +154,7 @@ export const InfoBox = styled.div`
 
   ${Paragraph} {
     margin-bottom: 0;
-    color: #e0e0e0;
+    color: var(--dd-text-2);
   }
 
   @media (max-width: ${theme.breakpoints.md}) {
@@ -167,7 +167,7 @@ export const CookieTable = styled.div`
   overflow-x: auto;
   margin-bottom: ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.md};
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.08);
 `;
 
 export const Table = styled.table`
@@ -181,14 +181,14 @@ export const TableHead = styled.thead`
 `;
 
 export const TableRow = styled.tr`
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgb(var(--dd-ink-rgb) / 0.06);
 
   &:last-child {
     border-bottom: none;
   }
 
   &:nth-of-type(even) {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgb(var(--dd-ink-rgb) / 0.02);
   }
 `;
 
@@ -196,18 +196,18 @@ export const TableHeader = styled.th`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   text-align: left;
   font-weight: ${theme.typography.fontWeight.semibold};
-  color: #0dd0d0;
+  color: var(--dd-teal);
   white-space: nowrap;
 `;
 
 export const TableCell = styled.td`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
-  color: #c4c4c4;
+  color: var(--dd-text-2);
   vertical-align: top;
 `;
 
 export const Link = styled.a`
-  color: #0dd0d0;
+  color: var(--dd-teal);
   text-decoration: none;
   font-weight: ${theme.typography.fontWeight.medium};
   transition: all 0.2s ease-in-out;
@@ -220,7 +220,7 @@ export const Link = styled.a`
 
 export const Divider = styled.hr`
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgb(var(--dd-ink-rgb) / 0.1);
   margin: ${theme.spacing['2xl']} 0;
 `;
 
@@ -231,14 +231,14 @@ export const CompanyInfo = styled.div`
 export const CompanyName = styled.h4`
   font-size: ${theme.typography.fontSize.lg[0]};
   font-weight: ${theme.typography.fontWeight.semibold};
-  color: #ffffff;
+  color: var(--dd-text);
   margin-bottom: ${theme.spacing.xs};
 `;
 
 export const CompanyDetails = styled.p`
   font-size: ${theme.typography.fontSize.sm[0]};
   line-height: 1.6;
-  color: #c4c4c4;
+  color: var(--dd-text-2);
   margin-bottom: ${theme.spacing.xs};
 
   &:last-child {

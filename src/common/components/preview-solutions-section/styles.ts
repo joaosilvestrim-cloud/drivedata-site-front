@@ -75,7 +75,7 @@ export const CardPreviewSolutionsContent = styled.div<{ gridColumns?: string }>`
 
 export const CardPreviewSolutionsTitle = styled.p`
   font-family: 'Satoshi', sans-serif;
-  color: #FFFFFF;
+  color: var(--dd-text);
   font-weight: ${theme.typography.fontWeight .normal};
   font-size: 20px;
   line-height: 120%;

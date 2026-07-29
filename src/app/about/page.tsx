@@ -1,4 +1,5 @@
 import { AboutUsSection, DevicesShowcaseSection, Header, IntegrationsSection, MainAboutSection, PartnersSection, SolutionsAccordionSection, TestimonialsSection } from '@/common/components';
+import { ThemeScope } from '@/common/components/theme-scope';
 import { ArticlesSection } from '@/common/components/articles-section';
 import { ContactSection } from '@/common/components/contact-section';
 import { FaqSection } from '@/common/components/faq-section';
@@ -64,6 +65,7 @@ export default async function About() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutLd) }}
         />
       )}
+      <ThemeScope />
       <Header />
       <MainAboutSection />
       <PartnersSection />

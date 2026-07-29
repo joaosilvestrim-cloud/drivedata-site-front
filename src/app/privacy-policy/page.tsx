@@ -275,7 +275,7 @@ export default function PrivacyPolicyPage() {
                   <tbody>
                     <TableRow>
                       <TableCell>
-                        <strong style={{ color: '#ffffff' }}>Necessários</strong>
+                        <strong style={{ color: 'var(--dd-text)' }}>Necessários</strong>
                       </TableCell>
                       <TableCell>cc_cookie</TableCell>
                       <TableCell>
@@ -286,7 +286,7 @@ export default function PrivacyPolicyPage() {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <strong style={{ color: '#ffffff' }}>Analíticos</strong>
+                        <strong style={{ color: 'var(--dd-text)' }}>Analíticos</strong>
                       </TableCell>
                       <TableCell>_ga, _ga_*</TableCell>
                       <TableCell>
@@ -298,7 +298,7 @@ export default function PrivacyPolicyPage() {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <strong style={{ color: '#ffffff' }}>Analíticos</strong>
+                        <strong style={{ color: 'var(--dd-text)' }}>Analíticos</strong>
                       </TableCell>
                       <TableCell>_gid</TableCell>
                       <TableCell>
@@ -310,7 +310,7 @@ export default function PrivacyPolicyPage() {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <strong style={{ color: '#ffffff' }}>Analíticos</strong>
+                        <strong style={{ color: 'var(--dd-text)' }}>Analíticos</strong>
                       </TableCell>
                       <TableCell>_gat</TableCell>
                       <TableCell>
@@ -321,7 +321,7 @@ export default function PrivacyPolicyPage() {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <strong style={{ color: '#ffffff' }}>Marketing</strong>
+                        <strong style={{ color: 'var(--dd-text)' }}>Marketing</strong>
                       </TableCell>
                       <TableCell>typebot-*</TableCell>
                       <TableCell>

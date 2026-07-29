@@ -15,5 +15,5 @@ export type LanguageCode = AppLanguage;
 export interface LanguageOption {
   code: LanguageCode;
   label: string;
-  flag: string;
+  flag?: string;
 }

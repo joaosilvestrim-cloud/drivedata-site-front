@@ -15,7 +15,7 @@ const corePulse = keyframes`
 
 export const IntegrationsSectionContainer = styled.section`
   width: 100%;
-  background: #060b16;
+  background: var(--dd-bg);
   padding: ${theme.spacing['4xl']} 0 calc(${theme.spacing['4xl']} + 24px);
   position: relative;
   overflow: hidden;
@@ -72,7 +72,7 @@ export const IntegrationsTitle = styled.h2`
   font-size: 48px;
   line-height: 1.2;
   font-weight: ${theme.typography.fontWeight.bold};
-  color: #FFFFFF;
+  color: var(--dd-text);
   margin: 0;
 
   @media (max-width: ${theme.breakpoints.md}) {
@@ -85,13 +85,13 @@ export const IntegrationsTitle = styled.h2`
 `;
 
 export const IntegrationsTitleHighlight = styled.span`
-  color: #0A96EC;
+  color: var(--dd-accent);
 `;
 
 export const IntegrationsDescription = styled.p`
   font-size: 18px;
   line-height: 1.6;
-  color: rgba(234, 240, 251, 0.66);
+  color: rgb(var(--dd-fog-rgb) / 0.66);
   margin: 0;
   font-weight: ${theme.typography.fontWeight.normal};
 
@@ -142,7 +142,7 @@ export const IntConnectorSvg = styled.svg`
     animation: ${flow} 3s linear infinite;
   }
   .packet {
-    fill: #7dd3fc;
+    fill: var(--dd-accent);
     filter: url(#intGlow);
   }
 
@@ -178,6 +178,7 @@ export const IntHub = styled.div`
     font-weight: 800;
     font-size: 26px;
     letter-spacing: -0.5px;
+    /* Paradas claras fixas: a esfera é escura nos dois temas. */
     background: linear-gradient(120deg, #38bdf8, #54da89);
     background-clip: text;
     -webkit-background-clip: text;
@@ -255,6 +256,8 @@ export const IntPedestal = styled.div`
   padding: 14px 20px;
   border-radius: 14px;
   transform: rotateX(12deg);
+  /* Branco fixo: o pedestal segura logo de terceiro, desenhado para fundo
+     claro. Não acompanha o tema. */
   background: linear-gradient(160deg, #ffffff, #e9f1fb);
   border: 1px solid rgba(120, 190, 255, 0.55);
   box-shadow:
@@ -274,7 +277,7 @@ export const IntPedestal = styled.div`
     font-family: var(--font-sora), 'Sora', sans-serif;
     font-size: 13px;
     font-weight: 700;
-    color: #fff;
+    color: #0a1628;
     text-align: center;
   }
 

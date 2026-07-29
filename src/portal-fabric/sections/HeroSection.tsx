@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { useTypebot } from '@/common/providers/TypebotProvider';
 import { portalTheme as tk } from '../theme';
 import { Section, Inner, Glow } from '../components/primitives';
+import { CountUp } from '../components/CountUp';
 import { usePortal } from '../usePortal';
 
 const HeroSection_ = styled(Section)`
@@ -71,7 +72,7 @@ const Primary = styled.button`
   border: none;
   border-radius: ${tk.radius.full};
   background: ${tk.gradients.brand};
-  color: #06121f;
+  color: ${tk.colors.onBrand};
   font-family: ${tk.fonts.heading};
   font-size: 15px;
   font-weight: 700;
@@ -89,7 +90,7 @@ const Ghost = styled.a`
   padding: 14px 24px;
   border-radius: ${tk.radius.full};
   border: 1px solid ${tk.colors.border};
-  background: rgba(255, 255, 255, 0.05);
+  background: ${tk.colors.surfaceStrong};
   color: ${tk.colors.textPrimary};
   font-family: ${tk.fonts.heading};
   font-size: 15px;
@@ -116,7 +117,7 @@ const Badge = styled.span`
   padding: 6px 13px;
   border-radius: 999px;
   border: 1px solid ${tk.colors.border};
-  background: rgba(255, 255, 255, 0.03);
+  background: ${tk.colors.surfaceSubtle};
 `;
 
 // ── Dashboard card ──
@@ -159,7 +160,7 @@ const Kpi = styled.div`
   text-align: center;
   padding: 14px 6px;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.03);
+  background: ${tk.colors.surfaceSubtle};
   border: 1px solid ${tk.colors.border};
 
   strong {
@@ -209,7 +210,7 @@ const BarTop = styled.div`
 const BarTrack = styled.div`
   height: 8px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
+  background: ${tk.colors.surfaceStrong};
   overflow: hidden;
 `;
 
@@ -254,7 +255,7 @@ export function HeroSection() {
             <Kpis>
               {h.kpis.map((k) => (
                 <Kpi key={k.label}>
-                  <strong>{k.value}</strong>
+                  <strong><CountUp value={k.value}/></strong>
                   <span>{k.label}</span>
                 </Kpi>
               ))}
@@ -264,7 +265,7 @@ export function HeroSection() {
                 <BarRow key={bar.label}>
                   <BarTop>
                     <span>{bar.label}</span>
-                    <em>{bar.value}% · {bar.tag}</em>
+                    <em><CountUp value={`${bar.value}%`}/> · {bar.tag}</em>
                   </BarTop>
                   <BarTrack><BarFill w={bar.value} /></BarTrack>
                 </BarRow>

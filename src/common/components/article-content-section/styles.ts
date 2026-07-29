@@ -27,7 +27,7 @@ export const ContentContainer = styled.div`
 export const ArticleContent = styled.div`
   font-size: 18px;
   line-height: 180%;
-  color: #FFFFFF;
+  color: var(--dd-text);
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-sora), 'Sora', sans-serif;
@@ -150,7 +150,7 @@ export const ArticleContent = styled.div`
     padding-left: ${theme.spacing.lg};
     margin: ${theme.spacing.xl} 0;
     font-style: italic;
-    color: rgba(234, 240, 251, 0.72);
+    color: rgb(var(--dd-fog-rgb) / 0.72);
 
     @media (max-width: ${theme.breakpoints.sm}) {
       padding-left: ${theme.spacing.md};
@@ -160,7 +160,7 @@ export const ArticleContent = styled.div`
   }
 
   code {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: rgb(var(--dd-ink-rgb) / 0.08);
     padding: 2px 6px;
     border-radius: 8px;
     font-family: 'Courier New', monospace;
@@ -173,8 +173,8 @@ export const ArticleContent = styled.div`
   }
 
   pre {
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgb(var(--dd-ink-rgb) / 0.05);
+    border: 1px solid rgb(var(--dd-ink-rgb) / 0.1);
     padding: ${theme.spacing.lg};
     border-radius: 14px;
     overflow-x: auto;
@@ -206,7 +206,7 @@ export const ArticleContent = styled.div`
 
   hr {
     border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1px solid rgb(var(--dd-ink-rgb) / 0.12);
     margin: ${theme.spacing['2xl']} 0;
 
     @media (max-width: ${theme.breakpoints.sm}) {
@@ -230,7 +230,7 @@ export const ArticleContent = styled.div`
     
     th, td {
       padding: ${theme.spacing.md};
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgb(var(--dd-ink-rgb) / 0.12);
       text-align: left;
 
       @media (max-width: ${theme.breakpoints.sm}) {
@@ -240,7 +240,7 @@ export const ArticleContent = styled.div`
     }
 
     th {
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: rgb(var(--dd-ink-rgb) / 0.05);
       font-weight: ${theme.typography.fontWeight.semibold};
 
       @media (max-width: ${theme.breakpoints.sm}) {

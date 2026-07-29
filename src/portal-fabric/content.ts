@@ -1,7 +1,7 @@
 /**
  * Copy e dados da landing "Portal DriveData / Microsoft Fabric".
  * Edite este arquivo para atualizar textos, features, comparativo e preços da
- * calculadora — sem tocar nos componentes. Copy por idioma (pt/en/fr); o país
+ * calculadora, sem tocar nos componentes. Copy por idioma (pt/en/fr); o país
  * (SITE_COUNTRY) define moeda e preços das capacidades Fabric.
  */
 
@@ -98,11 +98,11 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
     hero: {
       eyebrow: 'Powered by Microsoft Fabric',
       title: 'O portal que transforma como sua empresa consome dados',
-      subtitle: 'O Portal DriveData entrega uma camada centralizada sobre sua capacidade Microsoft Fabric — com experiência de usuário superior, governança granular e redução expressiva de custos de licenciamento.',
+      subtitle: 'O Portal DriveData entrega uma camada centralizada sobre sua capacidade Microsoft Fabric, com experiência de usuário superior, governança granular e redução expressiva de custos de licenciamento.',
       ctaPrimary: 'Agendar demonstração',
       ctaSecondary: 'Calcular economia',
       badges: ['Microsoft Fabric', 'Governança LGPD', 'Economia de Licenças'],
-      dashTitle: 'Painel de impacto — Portal DriveData',
+      dashTitle: 'Painel de impacto, Portal DriveData',
       kpis: [
         { value: '73%', label: 'Redução de custo' },
         { value: '+340', label: 'Usuários ativos' },
@@ -121,7 +121,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       items: [
         {
           tag: 'Usabilidade', title: 'Experiência centrada no usuário',
-          desc: 'Interface unificada e personalizada que facilita o consumo de relatórios Power BI para todos os perfis — do analista ao executivo.',
+          desc: 'Interface unificada e personalizada que facilita o consumo de relatórios Power BI para todos os perfis, do analista ao executivo.',
           points: [
             'Portal white-label com identidade visual da empresa',
             'Acesso single sign-on (SSO) via Microsoft Entra ID',
@@ -132,7 +132,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
         },
         {
           tag: 'Governança', title: 'Controle, auditoria e conformidade',
-          desc: 'Governança granular sobre quem acessa o quê, quando e como — com rastreabilidade completa para LGPD, auditorias internas e certificações.',
+          desc: 'Governança granular sobre quem acessa o quê, quando e como, com rastreabilidade completa para LGPD, auditorias internas e certificações.',
           points: [
             'Controle de acesso por perfil, grupo e workspace',
             'Log de auditoria completo (quem, o quê, quando)',
@@ -157,7 +157,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
     how: {
       eyebrow: 'Como funciona',
       title: 'Da capacidade Fabric ao usuário final',
-      subtitle: 'O Portal DriveData atua como camada inteligente entre a capacidade Microsoft Fabric da sua organização e os consumidores de dados — simplificando acesso, aplicando governança e reduzindo custos automaticamente.',
+      subtitle: 'O Portal DriveData atua como camada inteligente entre a capacidade Microsoft Fabric da sua organização e os consumidores de dados, simplificando acesso, aplicando governança e reduzindo custos automaticamente.',
       steps: [
         { title: 'Capacidade Fabric', desc: 'Sua capacidade Microsoft Fabric (F-SKU ou P-SKU) já contratada serve como base de processamento e renderização.' },
         { title: 'Portal DriveData', desc: 'O portal gerencia identidades, permissões, catálogo de relatórios e rastreabilidade de acessos em uma única camada.' },
@@ -194,7 +194,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
           tag: 'Governança',
           items: [
             { title: 'Controle de acesso granular (RBAC)', desc: 'Permissões por usuário, grupo, departamento ou workspace com herança de grupos do Active Directory e revisão periódica automatizada.' },
-            { title: 'Log de auditoria completo', desc: 'Registro imutável de toda atividade: quem acessou, qual relatório, horário, dispositivo e IP — exportável para SIEM ou ferramenta de compliance.' },
+            { title: 'Log de auditoria completo', desc: 'Registro imutável de toda atividade: quem acessou, qual relatório, horário, dispositivo e IP, exportável para SIEM ou ferramenta de compliance.' },
             { title: 'Segurança em nível de linha (RLS)', desc: 'Row-Level Security aplicado automaticamente com base no perfil do usuário autenticado, sem configuração manual por relatório.' },
             { title: 'Conformidade LGPD e GDPR', desc: 'Mascaramento de campos sensíveis, gestão de consentimentos, relatório de titulares e exportação de evidências para auditorias regulatórias.' },
             { title: 'Alertas de acesso e anomalias', desc: 'Notificações em tempo real para acessos fora do horário, tentativas não autorizadas, volumes incomuns de consultas ou picos de exportação.' },
@@ -261,7 +261,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
         { value: '<30d', label: 'tempo médio para implantação e go-live' },
       ],
       compatTitle: 'Compatível com',
-      compat: ['Microsoft Fabric F2–F64', 'Power BI Premium P1–P5', 'Microsoft Entra ID', 'Azure Active Directory', 'Microsoft 365', 'Power BI Embedded A-SKU'],
+      compat: ['Microsoft Fabric F2 a F64', 'Power BI Premium P1 a P5', 'Microsoft Entra ID', 'Azure Active Directory', 'Microsoft 365', 'Power BI Embedded A-SKU'],
     },
     cta: {
       title: 'Pronto para transformar como sua empresa consome dados?',
@@ -270,7 +270,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       ctaSecondary: 'Falar com consultor',
       badges: ['Microsoft Fabric', 'Power BI Embedded', 'Entra ID SSO', 'LGPD Ready'],
     },
-    footer: { tagline: 'Portal DriveData — Gestão de Capacidade Microsoft Fabric', rights: 'Todos os direitos reservados.' },
+    footer: { tagline: 'Portal DriveData, Gestão de Capacidade Microsoft Fabric', rights: 'Todos os direitos reservados.' },
   },
 
   en: {
@@ -284,11 +284,11 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
     hero: {
       eyebrow: 'Powered by Microsoft Fabric',
       title: 'The portal that transforms how your company consumes data',
-      subtitle: 'Portal DriveData delivers a centralized layer over your Microsoft Fabric capacity — with a superior user experience, granular governance and a significant cut in licensing costs.',
+      subtitle: 'Portal DriveData delivers a centralized layer over your Microsoft Fabric capacity, with a superior user experience, granular governance and a significant cut in licensing costs.',
       ctaPrimary: 'Book a demo',
       ctaSecondary: 'Calculate savings',
       badges: ['Microsoft Fabric', 'Privacy & Compliance', 'License Savings'],
-      dashTitle: 'Impact dashboard — Portal DriveData',
+      dashTitle: 'Impact dashboard, Portal DriveData',
       kpis: [
         { value: '73%', label: 'Cost reduction' },
         { value: '+340', label: 'Active users' },
@@ -307,7 +307,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       items: [
         {
           tag: 'Usability', title: 'A user-centered experience',
-          desc: 'A unified, personalized interface that makes consuming Power BI reports easy for every profile — from analyst to executive.',
+          desc: 'A unified, personalized interface that makes consuming Power BI reports easy for every profile, from analyst to executive.',
           points: [
             'White-label portal with your company’s branding',
             'Single sign-on (SSO) via Microsoft Entra ID',
@@ -318,7 +318,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
         },
         {
           tag: 'Governance', title: 'Control, audit and compliance',
-          desc: 'Granular governance over who accesses what, when and how — with full traceability for privacy law, internal audits and certifications.',
+          desc: 'Granular governance over who accesses what, when and how, with full traceability for privacy law, internal audits and certifications.',
           points: [
             'Access control by profile, group and workspace',
             'Complete audit log (who, what, when)',
@@ -343,7 +343,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
     how: {
       eyebrow: 'How it works',
       title: 'From Fabric capacity to the end user',
-      subtitle: 'Portal DriveData acts as an intelligent layer between your Microsoft Fabric capacity and data consumers — simplifying access, applying governance and reducing cost automatically.',
+      subtitle: 'Portal DriveData acts as an intelligent layer between your Microsoft Fabric capacity and data consumers, simplifying access, applying governance and reducing cost automatically.',
       steps: [
         { title: 'Fabric Capacity', desc: 'Your existing Microsoft Fabric capacity (F-SKU or P-SKU) serves as the processing and rendering base.' },
         { title: 'Portal DriveData', desc: 'The portal manages identities, permissions, the report catalog and access traceability in a single layer.' },
@@ -380,7 +380,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
           tag: 'Governance',
           items: [
             { title: 'Granular access control (RBAC)', desc: 'Permissions by user, group, department or workspace with Active Directory group inheritance and automated periodic review.' },
-            { title: 'Complete audit log', desc: 'Immutable record of every activity: who accessed which report, when, from which device and IP — exportable to SIEM or compliance tools.' },
+            { title: 'Complete audit log', desc: 'Immutable record of every activity: who accessed which report, when, from which device and IP, exportable to SIEM or compliance tools.' },
             { title: 'Row-Level Security (RLS)', desc: 'Row-Level Security applied automatically based on the authenticated user profile, with no manual per-report setup.' },
             { title: 'Law 25 & GDPR compliance', desc: 'Sensitive-field masking, consent management, data-subject reporting and evidence export for regulatory audits.' },
             { title: 'Access and anomaly alerts', desc: 'Real-time notifications for off-hours access, unauthorized attempts, unusual query volumes or export spikes.' },
@@ -447,7 +447,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
         { value: '<30d', label: 'average time to deployment and go-live' },
       ],
       compatTitle: 'Compatible with',
-      compat: ['Microsoft Fabric F2–F64', 'Power BI Premium P1–P5', 'Microsoft Entra ID', 'Azure Active Directory', 'Microsoft 365', 'Power BI Embedded A-SKU'],
+      compat: ['Microsoft Fabric F2 a F64', 'Power BI Premium P1 a P5', 'Microsoft Entra ID', 'Azure Active Directory', 'Microsoft 365', 'Power BI Embedded A-SKU'],
     },
     cta: {
       title: 'Ready to transform how your company consumes data?',
@@ -456,7 +456,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       ctaSecondary: 'Talk to a consultant',
       badges: ['Microsoft Fabric', 'Power BI Embedded', 'Entra ID SSO', 'Law 25 Ready'],
     },
-    footer: { tagline: 'Portal DriveData — Microsoft Fabric Capacity Management', rights: 'All rights reserved.' },
+    footer: { tagline: 'Portal DriveData, Microsoft Fabric Capacity Management', rights: 'All rights reserved.' },
   },
 
   fr: {
@@ -470,11 +470,11 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
     hero: {
       eyebrow: 'Propulsé par Microsoft Fabric',
       title: 'Le portail qui transforme la façon dont votre entreprise consomme les données',
-      subtitle: 'Portal DriveData offre une couche centralisée au-dessus de votre capacité Microsoft Fabric — avec une expérience utilisateur supérieure, une gouvernance granulaire et une réduction marquée des coûts de licences.',
+      subtitle: 'Portal DriveData offre une couche centralisée au-dessus de votre capacité Microsoft Fabric, avec une expérience utilisateur supérieure, une gouvernance granulaire et une réduction marquée des coûts de licences.',
       ctaPrimary: 'Planifier une démo',
       ctaSecondary: 'Calculer les économies',
       badges: ['Microsoft Fabric', 'Confidentialité & conformité', 'Économies de licences'],
-      dashTitle: 'Tableau de bord d’impact — Portal DriveData',
+      dashTitle: 'Tableau de bord d’impact, Portal DriveData',
       kpis: [
         { value: '73%', label: 'Réduction des coûts' },
         { value: '+340', label: 'Utilisateurs actifs' },
@@ -493,7 +493,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       items: [
         {
           tag: 'Convivialité', title: 'Une expérience centrée sur l’utilisateur',
-          desc: 'Une interface unifiée et personnalisée qui facilite la consommation des rapports Power BI pour tous les profils — de l’analyste au dirigeant.',
+          desc: 'Une interface unifiée et personnalisée qui facilite la consommation des rapports Power BI pour tous les profils, de l’analyste au dirigeant.',
           points: [
             'Portail en marque blanche à l’identité de l’entreprise',
             'Authentification unique (SSO) via Microsoft Entra ID',
@@ -504,7 +504,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
         },
         {
           tag: 'Gouvernance', title: 'Contrôle, audit et conformité',
-          desc: 'Une gouvernance granulaire sur qui accède à quoi, quand et comment — avec une traçabilité complète pour la loi sur la vie privée, les audits internes et les certifications.',
+          desc: 'Une gouvernance granulaire sur qui accède à quoi, quand et comment, avec une traçabilité complète pour la loi sur la vie privée, les audits internes et les certifications.',
           points: [
             'Contrôle d’accès par profil, groupe et espace de travail',
             'Journal d’audit complet (qui, quoi, quand)',
@@ -529,7 +529,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
     how: {
       eyebrow: 'Comment ça marche',
       title: 'De la capacité Fabric à l’utilisateur final',
-      subtitle: 'Portal DriveData agit comme une couche intelligente entre la capacité Microsoft Fabric de votre organisation et les consommateurs de données — simplifiant l’accès, appliquant la gouvernance et réduisant les coûts automatiquement.',
+      subtitle: 'Portal DriveData agit comme une couche intelligente entre la capacité Microsoft Fabric de votre organisation et les consommateurs de données, simplifiant l’accès, appliquant la gouvernance et réduisant les coûts automatiquement.',
       steps: [
         { title: 'Capacité Fabric', desc: 'Votre capacité Microsoft Fabric (F-SKU ou P-SKU) déjà contractée sert de base de traitement et de rendu.' },
         { title: 'Portal DriveData', desc: 'Le portail gère les identités, les permissions, le catalogue de rapports et la traçabilité des accès dans une seule couche.' },
@@ -566,7 +566,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
           tag: 'Gouvernance',
           items: [
             { title: 'Contrôle d’accès granulaire (RBAC)', desc: 'Permissions par utilisateur, groupe, service ou espace de travail avec héritage des groupes Active Directory et révision périodique automatisée.' },
-            { title: 'Journal d’audit complet', desc: 'Enregistrement immuable de toute activité : qui a consulté quel rapport, quand, depuis quel appareil et IP — exportable vers SIEM ou outil de conformité.' },
+            { title: 'Journal d’audit complet', desc: 'Enregistrement immuable de toute activité : qui a consulté quel rapport, quand, depuis quel appareil et IP, exportable vers SIEM ou outil de conformité.' },
             { title: 'Sécurité au niveau des lignes (RLS)', desc: 'Row-Level Security appliqué automatiquement selon le profil de l’utilisateur authentifié, sans configuration manuelle par rapport.' },
             { title: 'Conformité Loi 25 & RGPD', desc: 'Masquage des champs sensibles, gestion des consentements, rapports sur les personnes concernées et export de preuves pour les audits.' },
             { title: 'Alertes d’accès et d’anomalies', desc: 'Notifications en temps réel pour les accès hors horaires, tentatives non autorisées, volumes inhabituels de requêtes ou pics d’export.' },
@@ -633,7 +633,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
         { value: '<30j', label: 'délai moyen de déploiement et de mise en service' },
       ],
       compatTitle: 'Compatible avec',
-      compat: ['Microsoft Fabric F2–F64', 'Power BI Premium P1–P5', 'Microsoft Entra ID', 'Azure Active Directory', 'Microsoft 365', 'Power BI Embedded A-SKU'],
+      compat: ['Microsoft Fabric F2 a F64', 'Power BI Premium P1 a P5', 'Microsoft Entra ID', 'Azure Active Directory', 'Microsoft 365', 'Power BI Embedded A-SKU'],
     },
     cta: {
       title: 'Prêt à transformer la façon dont votre entreprise consomme les données ?',
@@ -642,6 +642,6 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       ctaSecondary: 'Parler à un conseiller',
       badges: ['Microsoft Fabric', 'Power BI Embedded', 'Entra ID SSO', 'Loi 25 Ready'],
     },
-    footer: { tagline: 'Portal DriveData — Gestion de la capacité Microsoft Fabric', rights: 'Tous droits réservés.' },
+    footer: { tagline: 'Portal DriveData, Gestion de la capacité Microsoft Fabric', rights: 'Tous droits réservés.' },
   },
 };

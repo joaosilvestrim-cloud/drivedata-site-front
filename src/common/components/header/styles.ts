@@ -28,8 +28,8 @@ export const HeaderContent = styled.div`
   height: 70px;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.03) 100%
+    var(--dd-header-bg-a) 0%,
+    var(--dd-header-bg-b) 100%
   );
   border-radius: 80px;
   padding: 16px 24px;
@@ -39,8 +39,8 @@ export const HeaderContent = styled.div`
   gap: 24px;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--dd-header-border);
+  box-shadow: var(--dd-header-shadow);
 
   @media (max-width: ${theme.breakpoints.lg}) {
     height: 60px;
@@ -81,7 +81,7 @@ export const Navigation = styled.nav`
 `;
 
 export const NavLink = styled.a<{ isActive?: boolean }>`
-  color: ${(props) => (props.isActive ? '#54DA89' : 'white')};
+  color: ${(props) => (props.isActive ? '#54DA89' : 'var(--dd-nav-text)')};
   text-decoration: none;
   font-size: 15px;
   font-weight: ${theme.typography.fontWeight.medium};
@@ -89,7 +89,7 @@ export const NavLink = styled.a<{ isActive?: boolean }>`
   transition: color 0.2s ease-in-out;
 
   &:hover {
-    color: #54da89;
+    color: var(--dd-primary);
   }
 `;
 
@@ -114,7 +114,7 @@ export const LanguageSelector = styled.button`
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--dd-chip-bg);
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
@@ -123,7 +123,7 @@ export const LanguageSelector = styled.button`
   font: inherit;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--dd-chip-bg-hover);
   }
 `;
 
@@ -135,10 +135,10 @@ export const LanguageDropdown = styled.ul`
   margin: 0;
   padding: 8px 0;
   list-style: none;
-  background: rgba(15, 20, 30, 0.95);
+  background: var(--dd-dropdown-bg);
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--dd-dropdown-border);
+  box-shadow: var(--dd-header-shadow);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   z-index: ${theme.zIndex.dropdown};
@@ -150,7 +150,7 @@ export const LanguageDropdownItem = styled.li<{ isActive?: boolean }>`
   gap: 10px;
   padding: 10px 16px;
   cursor: pointer;
-  color: white;
+  color: var(--dd-nav-text);
   font-size: ${theme.typography.fontSize.sm[0]};
   font-weight: ${theme.typography.fontWeight.medium};
   background: ${(props) =>
@@ -176,7 +176,7 @@ export const FlagIcon = styled.span`
 `;
 
 export const LanguageText = styled.span`
-  color: white;
+  color: var(--dd-nav-text);
   font-size: ${theme.typography.fontSize.sm[0]};
   font-weight: ${theme.typography.fontWeight.medium};
 `;
@@ -186,7 +186,7 @@ export const ChevronIcon = styled.div<{ isOpen?: boolean }>`
   height: 0;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-top: 4px solid white;
+  border-top: 4px solid var(--dd-nav-text);
   transition: transform 0.2s ease-in-out;
   transform: rotate(${(props) => (props.isOpen ? '180deg' : '0deg')});
 `;
@@ -195,7 +195,7 @@ export const MobileMenuButton = styled.button<{ isOpen?: boolean }>`
   display: none;
   background: none;
   border: none;
-  color: white;
+  color: var(--dd-nav-text);
   cursor: pointer;
   padding: 8px;
   z-index: ${theme.zIndex.modal + 1};
@@ -208,7 +208,7 @@ export const MobileMenuButton = styled.button<{ isOpen?: boolean }>`
 export const MobileMenuIcon = styled.div<{ isOpen?: boolean }>`
   width: 24px;
   height: 2px;
-  background: ${(props) => (props.isOpen ? 'transparent' : 'white')};
+  background: ${(props) => (props.isOpen ? 'transparent' : 'var(--dd-nav-text)')};
   position: relative;
   transition: background 0.3s ease-in-out;
 
@@ -218,7 +218,7 @@ export const MobileMenuIcon = styled.div<{ isOpen?: boolean }>`
     position: absolute;
     width: 24px;
     height: 2px;
-    background: white;
+    background: var(--dd-nav-text);
     transition: all 0.3s ease-in-out;
   }
 
@@ -260,8 +260,8 @@ export const MobileMenu = styled.div<{ isOpen: boolean }>`
   height: 100vh;
   background: linear-gradient(
     180deg,
-    rgba(15, 20, 30, 0.98) 0%,
-    rgba(10, 15, 25, 0.98) 100%
+    var(--dd-dropdown-bg) 0%,
+    var(--dd-dropdown-bg) 100%
   );
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -270,7 +270,7 @@ export const MobileMenu = styled.div<{ isOpen: boolean }>`
   transform: ${(props) =>
     props.isOpen ? 'translateX(0)' : 'translateX(100%)'};
   transition: transform 0.3s ease-in-out;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 1px solid var(--dd-dropdown-border);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -281,7 +281,7 @@ export const MobileMenu = styled.div<{ isOpen: boolean }>`
 `;
 
 export const MobileNavLink = styled.a<{ isActive?: boolean }>`
-  color: ${(props) => (props.isActive ? '#54DA89' : 'white')};
+  color: ${(props) => (props.isActive ? '#54DA89' : 'var(--dd-nav-text)')};
   text-decoration: none;
   font-size: ${theme.typography.fontSize.lg[0]};
   font-weight: ${theme.typography.fontWeight.medium};
@@ -292,7 +292,7 @@ export const MobileNavLink = styled.a<{ isActive?: boolean }>`
     props.isActive ? 'rgba(84, 218, 137, 0.1)' : 'transparent'};
 
   &:hover {
-    color: #54da89;
+    color: var(--dd-primary);
     background: rgba(84, 218, 137, 0.1);
   }
 
@@ -313,7 +313,7 @@ export const MobileLanguageSection = styled.div`
   gap: 4px;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--dd-dropdown-border);
 `;
 
 export const MobileLanguageToggle = styled.button`
@@ -327,14 +327,14 @@ export const MobileLanguageToggle = styled.button`
   border-radius: 12px;
   cursor: pointer;
   text-align: left;
-  color: white;
+  color: var(--dd-nav-text);
   font-size: ${theme.typography.fontSize.base[0]};
   font-weight: ${theme.typography.fontWeight.medium};
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--dd-chip-bg);
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--dd-chip-bg);
   }
 
   &:active {
@@ -365,7 +365,7 @@ export const MobileLanguageOption = styled.li<{ isActive?: boolean }>`
   padding: 12px 16px;
   border-radius: 12px;
   cursor: pointer;
-  color: ${(props) => (props.isActive ? '#54DA89' : 'white')};
+  color: ${(props) => (props.isActive ? '#54DA89' : 'var(--dd-nav-text)')};
   font-size: ${theme.typography.fontSize.base[0]};
   font-weight: ${theme.typography.fontWeight.medium};
   background: ${(props) =>
@@ -373,7 +373,7 @@ export const MobileLanguageOption = styled.li<{ isActive?: boolean }>`
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    color: #54da89;
+    color: var(--dd-primary);
     background: rgba(84, 218, 137, 0.1);
   }
 

@@ -65,7 +65,8 @@ export const FloatingAvatarStatus = styled.div`
 
 export const FloatingBubble = styled.div<{ isVisible: boolean }>`
   position: relative;
-  background: #FFFFFF;
+  /* Balao de conversa: branco nos dois temas, como bolha de chat. */
+  background: #ffffff;
   border-radius: 24px;
   padding: ${theme.spacing.lg} ${theme.spacing.xl};
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
@@ -89,7 +90,7 @@ export const FloatingBubble = styled.div<{ isVisible: boolean }>`
     height: 0;
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
-    border-left: 12px solid #FFFFFF;
+    border-left: 12px solid #ffffff;
     border-right: none;
   }
 `;
@@ -98,7 +99,7 @@ export const FloatingBubbleText = styled.p`
   font-family: 'Satoshi', sans-serif;
   font-size: 16px;
   font-weight: ${theme.typography.fontWeight.medium};
-  color: #0A0A0F;
+  color: #070c16;
   line-height: 140%;
   margin: 0;
 

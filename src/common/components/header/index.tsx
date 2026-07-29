@@ -2,23 +2,19 @@
 
 import { Button } from '@/common/components/button';
 import { Container } from '@/common/components/container';
+import { Flag, type FlagCode } from '@/common/components/flags';
 import { SHOW_DALT } from '@/common/config/site';
 import { normalizeLanguageCode } from '@/common/i18n';
 import { useTypebot } from '@/common/providers/TypebotProvider';
 import { usePathname, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ChevronIcon,
   ContactButtonWrapper,
-  FlagIcon,
   HeaderActions,
   HeaderContainer,
   HeaderContent,
-  LanguageDropdown,
-  LanguageDropdownItem,
-  LanguageSelector,
-  LanguageSelectorWrapper,
   LanguageText,
   Logo,
   LogoImage,
@@ -39,10 +35,10 @@ import {
 import { HeaderProps, LanguageOption, NavigationItem } from './types';
 
 const languageOptions: LanguageOption[] = [
-  { code: 'en', label: 'English', flag: '🇺🇸' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'pt', label: 'Português', flag: '🇧🇷' },
-  { code: 'es', label: 'Español', flag: '🇪🇸' },
+  { code: 'en', label: 'English' },
+  { code: 'fr', label: 'Français' },
+  { code: 'pt', label: 'Português' },
+  { code: 'es', label: 'Español' },
 ];
 
 const navigationLinks: NavigationItem[] = [
@@ -84,12 +80,10 @@ export const Header = ({ className }: HeaderProps) => {
   const [currentLanguage, setCurrentLanguage] = useState<LanguageOption>(() =>
     findLanguageOptionByLanguage(i18n.resolvedLanguage ?? i18n.language),
   );
-  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const [isMobileLanguageOpen, setIsMobileLanguageOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
-  const languageSelectorRef = useRef<HTMLDivElement | null>(null);
   const [, forceUpdate] = useState(0);
 
   // Função para obter a URL completa atual (pathname + hash)
@@ -153,31 +147,6 @@ export const Header = ({ className }: HeaderProps) => {
   }, [i18n]);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        languageSelectorRef.current &&
-        !languageSelectorRef.current.contains(event.target as Node)
-      ) {
-        setIsLanguageDropdownOpen(false);
-      }
-    };
-
-    const handleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsLanguageDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('keydown', handleEscapeKey);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleEscapeKey);
-    };
-  }, []);
-
-  useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -193,13 +162,8 @@ export const Header = ({ className }: HeaderProps) => {
   const contactButtonLabel = t('header.contactButton');
   const languageSelectorLabel = t('header.languageSelectorLabel');
 
-  const toggleLanguageDropdown = useCallback(() => {
-    setIsLanguageDropdownOpen((prevState) => !prevState);
-  }, []);
-
   const handleLanguageChange = useCallback(
     (language: LanguageOption) => {
-      setIsLanguageDropdownOpen(false);
       setIsMobileLanguageOpen(false);
       setIsMobileMenuOpen(false);
 
@@ -414,41 +378,10 @@ export const Header = ({ className }: HeaderProps) => {
             </Navigation>
 
             <HeaderActions>
-              <LanguageSelectorWrapper ref={languageSelectorRef}>
-                <LanguageSelector
-                  type="button"
-                  onClick={toggleLanguageDropdown}
-                  aria-haspopup="true"
-                  aria-expanded={isLanguageDropdownOpen}
-                  aria-label={languageSelectorLabel}
-                >
-                  <FlagIcon>{currentLanguage.flag}</FlagIcon>
-                  <LanguageText>{currentLanguage.label}</LanguageText>
-                  <ChevronIcon isOpen={isLanguageDropdownOpen} />
-                </LanguageSelector>
-
-                {isLanguageDropdownOpen && (
-                  <LanguageDropdown role="menu">
-                    {languageOptions.map((language) => (
-                      <LanguageDropdownItem
-                        key={language.code}
-                        role="menuitem"
-                        onClick={() => handleLanguageChange(language)}
-                        isActive={language.code === currentLanguage.code}
-                        aria-current={
-                          language.code === currentLanguage.code
-                            ? 'true'
-                            : undefined
-                        }
-                      >
-                        <FlagIcon>{language.flag}</FlagIcon>
-                        <LanguageText>{language.label}</LanguageText>
-                      </LanguageDropdownItem>
-                    ))}
-                  </LanguageDropdown>
-                )}
-              </LanguageSelectorWrapper>
-
+              {/* O seletor de idioma do desktop saiu daqui: o trilho flutuante
+                  (LanguageRail) já cobre essa função e os dois juntos ficavam
+                  redundantes. No mobile o trilho não aparece, então o seletor
+                  segue existindo dentro do menu, mais abaixo. */}
               <ContactButtonWrapper>
                 <Button onClick={handleContactClick}>
                   {contactButtonLabel}
@@ -508,7 +441,7 @@ export const Header = ({ className }: HeaderProps) => {
             aria-label={languageSelectorLabel}
           >
             <MobileLanguageToggleContent>
-              <FlagIcon>{currentLanguage.flag}</FlagIcon>
+              <Flag code={currentLanguage.code as FlagCode} size={18} />
               <LanguageText>{currentLanguage.label}</LanguageText>
             </MobileLanguageToggleContent>
             <ChevronIcon isOpen={isMobileLanguageOpen} />
@@ -527,7 +460,7 @@ export const Header = ({ className }: HeaderProps) => {
                 isActive={language.code === currentLanguage.code}
                 aria-selected={language.code === currentLanguage.code}
               >
-                <FlagIcon>{language.flag}</FlagIcon>
+                <Flag code={language.code as FlagCode} size={18} />
                 <LanguageText>{language.label}</LanguageText>
               </MobileLanguageOption>
             ))}

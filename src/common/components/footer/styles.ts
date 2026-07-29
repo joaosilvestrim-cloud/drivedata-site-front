@@ -4,8 +4,8 @@ import { theme } from '../../theme';
 export const FooterContainer = styled.footer`
   width: 100%;
   position: relative;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 40%);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgb(var(--dd-ink-rgb) / 0.035), rgb(var(--dd-ink-rgb) / 0) 40%);
+  border-top: 1px solid rgb(var(--dd-ink-rgb) / 0.1);
   padding: ${theme.spacing['3xl']} 0 ${theme.spacing.xl} 0;
 
   /* linha de topo com brilho da marca (ciano→verde) */
@@ -75,7 +75,7 @@ export const FooterLogo = styled.div`
 export const FooterUrl = styled.a`
   font-size: 15px;
   font-weight: ${theme.typography.fontWeight.semibold};
-  color: #8AFFF5;
+  color: var(--dd-mint);
   text-decoration: none;
   font-family: 'Inter', sans-serif;
   transition: color 0.3s ease;
@@ -83,7 +83,7 @@ export const FooterUrl = styled.a`
   margin-bottom: ${theme.spacing.sm};
 
   &:hover {
-    color: #54DA89;
+    color: var(--dd-primary);
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {
@@ -105,7 +105,7 @@ export const FooterSection = styled.div`
 export const FooterSectionTitle = styled.h3`
   font-size: 16px;
   font-weight: ${theme.typography.fontWeight.bold};
-  color: #27B1C5;
+  color: var(--dd-teal);
   margin: 0 0 ${theme.spacing.xs} 0;
   font-family: 'Satoshi', sans-serif;
   letter-spacing: 0.5px;
@@ -136,7 +136,7 @@ export const FooterLinkItem = styled.li`
 
 export const FooterLink = styled.a`
   font-size: 14px;
-  color: white;
+  color: var(--dd-text);
   text-decoration: none;
   font-family: 'Inter', sans-serif;
   transition: color 0.3s ease;
@@ -145,11 +145,11 @@ export const FooterLink = styled.a`
   gap: ${theme.spacing.xs};
 
   &:hover {
-    color: #8AFFF5;
+    color: var(--dd-mint);
   }
 
   svg {
-    color: #27B1C5;
+    color: var(--dd-teal);
     width: 16px;
     height: 16px;
   }
@@ -167,7 +167,7 @@ export const SocialLinks = styled.div`
 
 export const SocialLink = styled.a`
   font-size: 14px;
-  color: white;
+  color: var(--dd-text);
   text-decoration: none;
   font-family: 'Inter', sans-serif;
   transition: color 0.3s ease;
@@ -176,11 +176,11 @@ export const SocialLink = styled.a`
   gap: ${theme.spacing.xs};
 
   &:hover {
-    color: #8AFFF5;
+    color: var(--dd-mint);
   }
 
   svg {
-    color: #27B1C5;
+    color: var(--dd-teal);
     width: 16px;
     height: 16px;
   }
@@ -192,7 +192,7 @@ export const FooterBottom = styled.div`
   align-items: center;
   padding-top: ${theme.spacing.xl};
   margin-top: ${theme.spacing['2xl']};
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgb(var(--dd-ink-rgb) / 0.05);
 
   @media (max-width: ${theme.breakpoints.md}) {
     flex-direction: column;
@@ -210,12 +210,12 @@ export const FooterBottom = styled.div`
 
 export const FooterCopyright = styled.p`
   font-size: 14px;
-  color: ${theme.colors.neutral[400]};
+  color: var(--dd-text-2);
   margin: 0;
   font-family: 'Inter', sans-serif;
   padding-right: ${theme.spacing.lg};
   margin-right: ${theme.spacing.lg};
-  border-right: 3px solid rgba(255, 255, 255, 0.1);
+  border-right: 3px solid rgb(var(--dd-ink-rgb) / 0.1);
 
   @media (max-width: ${theme.breakpoints.md}) {
     border-right: none;
@@ -230,17 +230,17 @@ export const FooterCopyright = styled.p`
 
 export const FooterMadeBy = styled.p`
   font-size: 14px;
-  color: ${theme.colors.neutral[400]};
+  color: var(--dd-text-2);
   margin: 0;
   font-family: 'Inter', sans-serif;
 
   a {
-    color: #8AFFF5;
+    color: var(--dd-mint);
     text-decoration: none;
     transition: color 0.3s ease;
 
     &:hover {
-      color: #54DA89;
+      color: var(--dd-primary);
     }
   }
 

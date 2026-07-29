@@ -85,7 +85,7 @@ export const FaqTitle = styled.h2`
   font-size: 44px;
   line-height: 1.08;
   font-weight: 800;
-  color: #fff;
+  color: var(--dd-text);
   margin: 0;
 
   @media (max-width: ${theme.breakpoints.md}) {
@@ -102,7 +102,7 @@ export const FaqSubtitle = styled.p`
   letter-spacing: -1px;
   font-size: 44px;
   line-height: 1.08;
-  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -133,9 +133,9 @@ export const FaqList = styled.div`
 export const FaqItem = styled.div<{ isOpen: boolean }>`
   counter-increment: faq;
   position: relative;
-  background: rgba(255, 255, 255, 0.045);
+  background: rgb(var(--dd-ink-rgb) / 0.045);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.1);
   border-radius: 16px;
   padding: 22px 22px 22px 68px;
   cursor: pointer;
@@ -173,13 +173,13 @@ export const FaqItem = styled.div<{ isOpen: boolean }>`
   ${(props) =>
     props.isOpen &&
     `
-    background: rgba(255, 255, 255, 0.07);
+    background: rgb(var(--dd-ink-rgb) / 0.07);
     border-color: rgba(84, 218, 137, 0.45);
 
     &::before {
       -webkit-text-stroke: 0;
       color: transparent;
-      background: linear-gradient(120deg, #0a96ec, #54da89);
+      background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -192,7 +192,7 @@ export const FaqItem = styled.div<{ isOpen: boolean }>`
 
   &:hover {
     border-color: rgba(84, 218, 137, 0.4);
-    background: rgba(255, 255, 255, 0.07);
+    background: rgb(var(--dd-ink-rgb) / 0.07);
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {
@@ -224,7 +224,7 @@ export const FaqQuestion = styled.strong<{ isOpen?: boolean }>`
   font-size: 17px;
   line-height: 1.45;
   letter-spacing: -0.2px;
-  color: #fff;
+  color: var(--dd-text);
   font-weight: ${(props) =>
     props.isOpen
       ? theme.typography.fontWeight.bold
@@ -250,12 +250,12 @@ export const ChevronIcon = styled.div<{ isOpen: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.16);
   background: ${(props) =>
     props.isOpen
       ? 'linear-gradient(135deg, #0a96ec, #54da89)'
-      : 'rgba(255, 255, 255, 0.05)'};
-  color: ${(props) => (props.isOpen ? '#04121f' : '#54da89')};
+      : 'rgb(var(--dd-ink-rgb) / 0.05)'};
+  color: ${(props) => (props.isOpen ? 'var(--dd-bg-section)' : '#54da89')};
   transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
   transform: ${(props) => (props.isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
 
@@ -278,10 +278,10 @@ export const ChevronIcon = styled.div<{ isOpen: boolean }>`
 export const FaqAnswer = styled.div`
   font-size: 15.5px;
   line-height: 1.65;
-  color: rgba(234, 240, 251, 0.72);
+  color: rgb(var(--dd-fog-rgb) / 0.72);
   margin-top: 14px;
   padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgb(var(--dd-ink-rgb) / 0.08);
   opacity: 1;
   font-weight: ${theme.typography.fontWeight.normal};
 
@@ -310,7 +310,7 @@ export const FaqAnswer = styled.div`
   }
 
   a {
-    color: #54da89;
+    color: var(--dd-primary);
     text-decoration: underline;
   }
 

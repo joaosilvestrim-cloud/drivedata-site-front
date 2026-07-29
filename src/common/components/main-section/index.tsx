@@ -39,16 +39,16 @@ const TICKER = [
 
 // Termos de Dados e IA que aparecem e somem em volta do globo.
 const TERMS = [
-  { k: 'ml', top: '11%', left: '28%', dl: 0, du: 7, c: '#54da89' },
-  { k: 'bigData', top: '21%', left: '60%', dl: 2, du: 8, c: '#22d3ee' },
-  { k: 'neural', top: '39%', left: '5%', dl: 4, du: 7.5, c: '#54da89' },
-  { k: 'etl', top: '56%', left: '63%', dl: 1, du: 8.5, c: '#22d3ee' },
-  { k: 'genai', top: '70%', left: '31%', dl: 3, du: 7, c: '#54da89' },
-  { k: 'dataLake', top: '31%', left: '43%', dl: 5, du: 8, c: '#22d3ee' },
-  { k: 'prediction', top: '82%', left: '55%', dl: 2.5, du: 7.5, c: '#54da89' },
-  { k: 'analytics', top: '7%', left: '52%', dl: 6, du: 8, c: '#22d3ee' },
-  { k: 'governance', top: '62%', left: '14%', dl: 0.5, du: 8.5, c: '#54da89' },
-  { k: 'deepLearning', top: '47%', left: '48%', dl: 3.5, du: 7, c: '#22d3ee' },
+  { k: 'ml', top: '11%', left: '28%', dl: 0, du: 7, c: 'var(--dd-primary)' },
+  { k: 'bigData', top: '21%', left: '60%', dl: 2, du: 8, c: 'var(--dd-cyan)' },
+  { k: 'neural', top: '39%', left: '5%', dl: 4, du: 7.5, c: 'var(--dd-primary)' },
+  { k: 'etl', top: '56%', left: '63%', dl: 1, du: 8.5, c: 'var(--dd-cyan)' },
+  { k: 'genai', top: '70%', left: '31%', dl: 3, du: 7, c: 'var(--dd-primary)' },
+  { k: 'dataLake', top: '31%', left: '43%', dl: 5, du: 8, c: 'var(--dd-cyan)' },
+  { k: 'prediction', top: '82%', left: '55%', dl: 2.5, du: 7.5, c: 'var(--dd-primary)' },
+  { k: 'analytics', top: '7%', left: '52%', dl: 6, du: 8, c: 'var(--dd-cyan)' },
+  { k: 'governance', top: '62%', left: '14%', dl: 0.5, du: 8.5, c: 'var(--dd-primary)' },
+  { k: 'deepLearning', top: '47%', left: '48%', dl: 3.5, du: 7, c: 'var(--dd-cyan)' },
 ];
 
 export const MainSection = ({ className }: MainSectionProps) => {
@@ -86,6 +86,8 @@ export const MainSection = ({ className }: MainSectionProps) => {
     window.addEventListener('resize', resize);
 
     const draw = () => {
+
+      const light = isLightTheme();
       ctx.clearRect(0, 0, W, H);
       for (let i = 0; i < pts.length; i++) {
         const p = pts[i];
@@ -97,7 +99,7 @@ export const MainSection = ({ className }: MainSectionProps) => {
           const q = pts[j];
           const d = Math.hypot(p.x - q.x, p.y - q.y);
           if (d < 130) {
-            ctx.strokeStyle = `rgba(84,218,137,${0.11 * (1 - d / 130)})`;
+            ctx.strokeStyle = lineInk(light, 0.11 * (1 - d / 130));
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
@@ -105,7 +107,7 @@ export const MainSection = ({ className }: MainSectionProps) => {
             ctx.stroke();
           }
         }
-        ctx.fillStyle = 'rgba(34,211,238,.45)';
+        ctx.fillStyle = dotInk(light, 0.45);
         ctx.beginPath();
         ctx.arc(p.x, p.y, 1.4, 0, Math.PI * 2);
         ctx.fill();
@@ -161,6 +163,8 @@ export const MainSection = ({ className }: MainSectionProps) => {
     let raf = 0;
 
     const draw = () => {
+
+      const light = isLightTheme();
       ctx.clearRect(0, 0, size, size);
       angle += 0.0022;
       const cosA = Math.cos(angle);
@@ -179,7 +183,7 @@ export const MainSection = ({ className }: MainSectionProps) => {
         const b = proj[edges[e][1]];
         const d = (a.d + b.d) / 2;
         if (d < 0.32) continue;
-        ctx.strokeStyle = `rgba(84,218,137,${0.14 * d})`;
+        ctx.strokeStyle = lineInk(light, 0.14 * d);
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(a.sx, a.sy);
@@ -188,7 +192,7 @@ export const MainSection = ({ className }: MainSectionProps) => {
       }
       for (let i = 0; i < N; i++) {
         const a = proj[i];
-        ctx.fillStyle = `rgba(34,211,238,${0.22 + a.d * 0.6})`;
+        ctx.fillStyle = dotInk(light, 0.22 + a.d * 0.6);
         ctx.beginPath();
         ctx.arc(a.sx, a.sy, 0.7 + a.d * 1.8, 0, Math.PI * 2);
         ctx.fill();
@@ -309,3 +313,17 @@ export const MainSection = ({ className }: MainSectionProps) => {
     </MainContainer>
   );
 };
+
+// A constelação e o globo são pintados em canvas, onde variável CSS não chega.
+// Estas funções devolvem o traço certo para o tema em uso: no claro o verde e o
+// ciano fecham, senão o desenho sumiria sobre o fundo branco.
+const isLightTheme = () =>
+  typeof document !== 'undefined' &&
+  document.documentElement.getAttribute('data-theme') === 'light';
+
+const lineInk = (light: boolean, alpha: number) =>
+  light ? `rgba(13,110,80,${alpha})` : `rgba(84,218,137,${alpha})`;
+
+const dotInk = (light: boolean, alpha: number) =>
+  light ? `rgba(14,116,144,${alpha})` : `rgba(34,211,238,${alpha})`;
+

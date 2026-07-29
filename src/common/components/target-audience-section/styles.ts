@@ -27,7 +27,7 @@ export const TargetAudienceTitle = styled.h2`
   letter-spacing: -0.8px;
   font-weight: 800;
   text-align: center;
-  color: #fff;
+  color: var(--dd-text);
   max-width: 620px;
   margin: 0 auto 56px;
 
@@ -38,7 +38,7 @@ export const TargetAudienceTitle = styled.h2`
 `;
 
 export const HighlightedWord = styled.span`
-  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -46,7 +46,7 @@ export const HighlightedWord = styled.span`
 `;
 
 export const HighlightedWordBlue = styled.span`
-  background: linear-gradient(120deg, #22d3ee, #0a96ec);
+  background: linear-gradient(120deg, var(--dd-grad-cyan), var(--dd-grad-blue));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -76,8 +76,8 @@ export const Column = styled.ul<{ isPositive: boolean }>`
   gap: 4px;
   background: ${(props) =>
     props.isPositive
-      ? 'linear-gradient(180deg, rgba(84,218,137,0.07), rgba(255,255,255,0.03))'
-      : 'linear-gradient(180deg, rgba(238,13,76,0.06), rgba(255,255,255,0.03))'};
+      ? 'linear-gradient(180deg, rgba(84,218,137,0.07), rgb(var(--dd-ink-rgb) / 0.03))'
+      : 'linear-gradient(180deg, rgba(238,13,76,0.06), rgb(var(--dd-ink-rgb) / 0.03))'};
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 24px;
@@ -144,7 +144,7 @@ export const Item = styled.li`
     pointer-events: none;
   }
   &:hover {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgb(var(--dd-ink-rgb) / 0.03);
   }
 
   &:nth-of-type(2) {
@@ -171,7 +171,7 @@ export const Item = styled.li`
     right: 8px;
     bottom: 0;
     height: 1px;
-    background: rgba(255, 255, 255, 0.07);
+    background: rgb(var(--dd-ink-rgb) / 0.07);
   }
   &:last-child::after,
   &[data-placeholder='true']::after {
@@ -184,14 +184,14 @@ export const ColumnContentTitle = styled.div`
   flex-direction: column;
   padding: 0 8px 18px;
   margin-bottom: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  border-bottom: 1px solid rgb(var(--dd-ink-rgb) / 0.09);
 `;
 
 export const ColumnTitle = styled.h3<{ isPositive: boolean }>`
   font-family: var(--font-sora), 'Sora', sans-serif;
   font-size: 22px;
   font-weight: 700;
-  color: #fff;
+  color: var(--dd-text);
   text-align: left;
   line-height: 1.25;
   letter-spacing: -0.4px;
@@ -202,7 +202,7 @@ export const ColumnTitle = styled.h3<{ isPositive: boolean }>`
 `;
 
 export const HighlightedBrand = styled.span<{ isPositive: boolean }>`
-  color: ${(props) => (props.isPositive ? '#54da89' : '#ff5c7a')};
+  color: ${(props) => (props.isPositive ? 'var(--dd-primary)' : 'var(--dd-danger)')};
   font-weight: 800;
 `;
 
@@ -215,15 +215,15 @@ export const Circle = styled.div`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgb(var(--dd-ink-rgb) / 0.05);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.12);
 `;
 
 export const ItemIcon = styled.span<{ isPositive: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${(props) => (props.isPositive ? '#54da89' : '#ff5c7a')};
+  color: ${(props) => (props.isPositive ? 'var(--dd-primary)' : 'var(--dd-danger)')};
   font-size: 18px;
   font-weight: 800;
 `;
@@ -245,7 +245,7 @@ export const ItemTitle = styled.h4<{ isPositive: boolean }>`
 export const ItemDescription = styled.p`
   font-size: 14.5px;
   line-height: 1.6;
-  color: rgba(234, 240, 251, 0.7);
+  color: rgb(var(--dd-fog-rgb) / 0.7);
   margin: 0;
 
   p {

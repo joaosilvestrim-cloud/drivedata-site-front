@@ -45,7 +45,7 @@ const Primary = styled.button`
   border: none;
   border-radius: ${tk.radius.full};
   background: ${tk.gradients.brand};
-  color: #06121f;
+  color: ${tk.colors.onBrand};
   font-family: ${tk.fonts.heading};
   font-size: 15px;
   font-weight: 700;
@@ -63,7 +63,7 @@ const Ghost = styled.button`
   padding: 15px 28px;
   border-radius: ${tk.radius.full};
   border: 1px solid ${tk.colors.border};
-  background: rgba(255, 255, 255, 0.05);
+  background: ${tk.colors.surfaceStrong};
   color: ${tk.colors.textPrimary};
   font-family: ${tk.fonts.heading};
   font-size: 15px;
@@ -90,7 +90,7 @@ const Badge = styled.span`
   padding: 7px 15px;
   border-radius: 999px;
   border: 1px solid ${tk.colors.border};
-  background: rgba(255, 255, 255, 0.03);
+  background: ${tk.colors.surfaceSubtle};
 `;
 
 export function CtaSection() {

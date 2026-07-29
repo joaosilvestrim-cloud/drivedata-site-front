@@ -73,6 +73,8 @@ export const PartnersMarqueeLogo = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 14px;
+  /* Branco fixo: o card segura logos de terceiros, desenhados para fundo
+     branco. Nao acompanha o tema. */
   background: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.6);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
@@ -104,9 +106,9 @@ export const SeeMoreButton = styled.button`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #fff;
+  background: rgb(var(--dd-ink-rgb) / 0.06);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.18);
+  color: var(--dd-text);
   font-size: 14px;
   font-weight: 600;
   padding: 11px 24px;
@@ -115,7 +117,7 @@ export const SeeMoreButton = styled.button`
   transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgb(var(--dd-ink-rgb) / 0.12);
     border-color: rgba(84, 218, 137, 0.4);
     transform: translateY(-2px);
   }
@@ -181,7 +183,7 @@ export const PartnersTitle = styled.h2`
   line-height: 1.15;
   letter-spacing: -0.8px;
   font-weight: 800;
-  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -210,7 +212,7 @@ export const PartnersTitle = styled.h2`
 export const PartnersSubtitle = styled.p`
   font-size: 20px;
   line-height: 1.6;
-  color: rgba(234, 240, 251, 0.66);
+  color: rgb(var(--dd-fog-rgb) / 0.66);
   margin: 0;
   font-weight: ${theme.typography.fontWeight.normal};
   opacity: 0;
@@ -280,8 +282,8 @@ export const PartnerLogo = styled.div`
   width: 100%;
   cursor: pointer;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgb(var(--dd-ink-rgb) / 0.92);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.14);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
   opacity: 0;
   transform: translate3d(0, 30px, 0) scale(0.8) rotateY(-15deg);
@@ -420,7 +422,7 @@ export const ResultsTitle = styled.h2`
   line-height: 1.15;
   letter-spacing: -0.6px;
   font-weight: 800;
-  color: #fff;
+  color: var(--dd-text);
   margin: 0;
   max-width: 500px;
   opacity: 0;
@@ -446,7 +448,7 @@ export const ResultsTitle = styled.h2`
 `;
 
 export const ResultsTitleBlue = styled.span`
-  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -455,7 +457,7 @@ export const ResultsTitleBlue = styled.span`
 export const ResultsDescription = styled.p`
   font-size: 20px;
   line-height: 150%;
-  color: rgba(234, 240, 251, 0.7);
+  color: rgb(var(--dd-fog-rgb) / 0.7);
   margin: 0;
   font-weight: ${theme.typography.fontWeight.normal};
   font-family: 'Satoshi', sans-serif;
@@ -520,7 +522,7 @@ export const ResultsButtons = styled.div`
 
 export const ResultButton = styled.div`
   background: #0A96EC;
-  color: white;
+  color: var(--dd-text);
   padding: ${theme.spacing.md} ${theme.spacing.xl};
   border-radius: 140px;
   font-size: 20px;

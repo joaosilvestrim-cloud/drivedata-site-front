@@ -21,7 +21,7 @@ export const StyledButton = styled.button<{
   border-radius: 69px;
 
   /* Border branca com 8% de opacidade */
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.08);
 
   /* Background blur */
   backdrop-filter: blur(4px);
@@ -60,7 +60,7 @@ export const StyledButton = styled.button<{
       case 'secondary':
         return `
           background: linear-gradient(90deg, ${theme.colors.secondary[600]} 0%, ${theme.colors.secondary[700]} 100%);
-          color: white;
+          color: #ffffff;
           &:hover:not(:disabled) {
             background: linear-gradient(90deg, ${theme.colors.secondary[700]} 0%, ${theme.colors.secondary[800]} 100%);
             transform: translateY(-1px);
@@ -73,7 +73,7 @@ export const StyledButton = styled.button<{
           border: 2px solid ${theme.colors.primary[600]};
           &:hover:not(:disabled) {
             background: ${theme.colors.primary[600]};
-            color: white;
+            color: #ffffff;
             transform: translateY(-1px);
           }
         `;

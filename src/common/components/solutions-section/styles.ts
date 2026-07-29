@@ -25,7 +25,7 @@ export const SolutionsTitle = styled.h2`
   line-height: 1.12;
   letter-spacing: -0.8px;
   font-weight: 800;
-  color: #fff;
+  color: var(--dd-text);
   max-width: 680px;
   margin: 0 auto 14px;
 
@@ -35,7 +35,7 @@ export const SolutionsTitle = styled.h2`
 `;
 
 export const HighlightedText = styled.span`
-  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -43,7 +43,7 @@ export const HighlightedText = styled.span`
 `;
 
 export const SolutionsDescription = styled.p`
-  color: rgba(234, 240, 251, 0.66);
+  color: rgb(var(--dd-fog-rgb) / 0.66);
   font-size: 16.5px;
   line-height: 1.6;
   max-width: 560px;
@@ -68,7 +68,7 @@ export const SolutionsGrid = styled.div`
 export const SolutionCard = styled.div`
   position: relative;
   text-align: left;
-  background: rgba(255, 255, 255, 0.045);
+  background: rgb(var(--dd-ink-rgb) / 0.045);
   backdrop-filter: blur(14px);
   border-radius: 20px;
   padding: 26px 24px 28px;
@@ -109,7 +109,7 @@ export const SolutionCard = styled.div`
   }
   &:hover {
     transform: translateY(-8px);
-    background: rgba(255, 255, 255, 0.07);
+    background: rgb(var(--dd-ink-rgb) / 0.07);
   }
   &:hover::after {
     opacity: 1;
@@ -135,7 +135,7 @@ export const IconWrapper = styled.div`
   justify-content: center;
   margin-bottom: 20px;
   background: linear-gradient(140deg, rgba(10, 150, 236, 0.18), rgba(84, 218, 137, 0.14));
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.12);
   box-shadow: 0 10px 24px rgba(10, 150, 236, 0.18);
 
   img {
@@ -147,7 +147,7 @@ export const CardTitle = styled.h3`
   font-family: var(--font-sora), 'Sora', sans-serif;
   font-size: 17.5px;
   font-weight: 700;
-  color: #fff;
+  color: var(--dd-text);
   margin-bottom: 9px;
   line-height: 1.25;
 `;
@@ -155,7 +155,7 @@ export const CardTitle = styled.h3`
 export const CardDescription = styled.p`
   font-size: 14px;
   line-height: 1.6;
-  color: rgba(234, 240, 251, 0.66);
+  color: rgb(var(--dd-fog-rgb) / 0.66);
   margin: 0;
 `;
 

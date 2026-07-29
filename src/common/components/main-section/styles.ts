@@ -117,7 +117,7 @@ export const Ticker = styled.div`
   left: 0;
   right: 0;
   z-index: 4;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgb(var(--dd-ink-rgb) / 0.08);
   background: rgba(7, 12, 22, 0.45);
   backdrop-filter: blur(8px);
   overflow: hidden;
@@ -136,7 +136,7 @@ export const Ticker = styled.div`
     align-items: center;
     gap: 10px;
     font-size: 13px;
-    color: rgba(234, 240, 251, 0.72);
+    color: rgb(var(--dd-fog-rgb) / 0.72);
     white-space: nowrap;
   }
   & .it .d {
@@ -147,15 +147,15 @@ export const Ticker = styled.div`
     box-shadow: 0 0 8px #54da89;
   }
   & .it b {
-    color: #fff;
+    color: var(--dd-text);
     font-weight: 600;
   }
   & .it .up {
-    color: #54da89;
+    color: var(--dd-primary);
     font-weight: 700;
   }
   & .it .dn {
-    color: #22d3ee;
+    color: var(--dd-cyan);
     font-weight: 700;
   }
 `;
@@ -179,7 +179,7 @@ export const MainContent = styled.div`
 `;
 
 export const HeroLeft = styled.div`
-  color: #fff;
+  color: var(--dd-text);
 
   @media (max-width: ${theme.breakpoints.lg}) {
     display: flex;
@@ -194,7 +194,7 @@ export const Eyebrow = styled.div`
   gap: 8px;
   background: rgba(84, 218, 137, 0.1);
   border: 1px solid rgba(84, 218, 137, 0.3);
-  color: #54da89;
+  color: var(--dd-primary);
   font-size: 13px;
   font-weight: 600;
   padding: 7px 15px;
@@ -228,7 +228,7 @@ export const MainTitle = styled.h1`
 
 export const HighlightedText = styled.span`
   font-weight: 800;
-  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -253,9 +253,9 @@ export const MainActions = styled.div`
 export const GhostButton = styled.button`
   font-family: inherit;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #fff;
+  background: rgb(var(--dd-ink-rgb) / 0.07);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.22);
+  color: var(--dd-text);
   font-size: 16px;
   font-weight: 600;
   padding: 15px 26px;
@@ -263,7 +263,7 @@ export const GhostButton = styled.button`
   transition: background 0.2s, transform 0.2s;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.13);
+    background: rgb(var(--dd-ink-rgb) / 0.13);
     transform: translateY(-2px);
   }
 `;
@@ -271,7 +271,7 @@ export const GhostButton = styled.button`
 /* ── Dashboard em vidro (foco visual do hero) ───────────────── */
 export const HeroDash = styled.div`
   position: relative;
-  background: rgba(10, 16, 28, 0.55);
+  background: var(--dd-panel);
   backdrop-filter: blur(18px);
   border: 1px solid rgba(84, 218, 137, 0.22);
   border-radius: 22px;
@@ -313,11 +313,11 @@ export const DashHead = styled.div`
   & .t {
     font-size: 13px;
     font-weight: 600;
-    color: rgba(234, 240, 251, 0.62);
+    color: var(--dd-text-2);
   }
   & .live {
     font-size: 10.5px;
-    color: #54da89;
+    color: var(--dd-primary);
   }
 `;
 
@@ -329,8 +329,8 @@ export const DashKpis = styled.div`
 
   & .kpi {
     position: relative;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgb(var(--dd-ink-rgb) / 0.05);
+    border: 1px solid rgb(var(--dd-ink-rgb) / 0.1);
     border-radius: 12px;
     padding: 13px 12px;
     overflow: hidden;
@@ -353,22 +353,22 @@ export const DashKpis = styled.div`
     line-height: 1;
   }
   & .kpi .n.up {
-    color: #4ade80;
+    color: var(--dd-primary);
     text-shadow: 0 0 22px rgba(74, 222, 128, 0.35);
   }
   & .kpi .n.dn {
-    color: #f87171;
+    color: var(--dd-danger);
     text-shadow: 0 0 22px rgba(248, 113, 113, 0.3);
   }
   & .kpi .n.si {
-    background: linear-gradient(180deg, #ffffff, #93a3b8);
+    background: linear-gradient(180deg, var(--dd-text), #93a3b8);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   & .kpi .l {
     font-size: 10px;
-    color: rgba(234, 240, 251, 0.4);
+    color: var(--dd-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-top: 3px;
@@ -388,8 +388,8 @@ export const DashBars = styled.div`
     to top,
     transparent 0,
     transparent 31px,
-    rgba(255, 255, 255, 0.05) 31px,
-    rgba(255, 255, 255, 0.05) 32px
+    rgb(var(--dd-ink-rgb) / 0.05) 31px,
+    rgb(var(--dd-ink-rgb) / 0.05) 32px
   );
 
   & .bar {
@@ -409,8 +409,8 @@ export const DashBars = styled.div`
     right: 0;
     height: 3px;
     border-radius: 6px 6px 0 0;
-    background: rgba(255, 255, 255, 0.7);
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    background: rgb(var(--dd-ink-rgb) / 0.7);
+    box-shadow: 0 0 8px rgb(var(--dd-ink-rgb) / 0.5);
   }
 `;
 
@@ -419,9 +419,9 @@ export const FloatChip = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(11, 18, 32, 0.92);
+  background: var(--dd-panel-solid);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.12);
   border-radius: 16px;
   padding: 11px 14px;
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
@@ -445,7 +445,7 @@ export const FloatChip = styled.div`
     justify-content: center;
     background: rgba(74, 222, 128, 0.16);
     border: 1px solid rgba(74, 222, 128, 0.25);
-    color: #6ee7a8;
+    color: var(--dd-primary);
     font-weight: 800;
     font-size: 12px;
     box-shadow: 0 0 16px rgba(74, 222, 128, 0.18);
@@ -453,15 +453,15 @@ export const FloatChip = styled.div`
   & .ic.bl {
     background: rgba(56, 189, 248, 0.16);
     border-color: rgba(56, 189, 248, 0.28);
-    color: #38bdf8;
+    color: var(--dd-accent);
     box-shadow: 0 0 16px rgba(56, 189, 248, 0.18);
   }
   & b {
     font-size: 12.5px;
-    color: #fff;
+    color: var(--dd-text);
   }
   & .s {
-    color: rgba(234, 240, 251, 0.55);
+    color: var(--dd-text-2);
     font-size: 10.5px;
   }
 

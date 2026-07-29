@@ -156,7 +156,7 @@ export const ClientsTitle = styled.h2`
   line-height: 1.12;
   letter-spacing: -0.8px;
   font-weight: 800;
-  color: #fff;
+  color: var(--dd-text);
   margin: 0;
   max-width: 600px;
 
@@ -172,7 +172,7 @@ export const ClientsTitle = styled.h2`
 `;
 
 export const HighlightedText = styled.span`
-  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -180,7 +180,7 @@ export const HighlightedText = styled.span`
 `;
 
 export const HighlightedTextBlue = styled.span`
-  background: linear-gradient(120deg, #22d3ee, #0a96ec);
+  background: linear-gradient(120deg, var(--dd-grad-cyan), var(--dd-grad-blue));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -190,7 +190,7 @@ export const HighlightedTextBlue = styled.span`
 export const ClientsSubtitle = styled.p`
   font-size: 20px;
   line-height: 1.6;
-  color: #B0B0B0;
+  color: var(--dd-text-2);
   margin: 0;
   font-weight: ${theme.typography.fontWeight.semibold};
   text-align: left;
@@ -350,7 +350,7 @@ export const ClientBadge = styled.div`
   svg {
     width: 24px;
     height: 24px;
-    color: white;
+    color: var(--dd-text);
   }
 `;
 

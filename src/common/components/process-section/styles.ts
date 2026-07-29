@@ -55,10 +55,10 @@ export const ProcessTitle = styled.h2`
   line-height: 1.12;
   letter-spacing: -0.8px;
   font-weight: 800;
-  color: #fff;
+  color: var(--dd-text);
   margin: 0;
 
-  background: linear-gradient(120deg, #0a96ec, #54da89);
+  background: linear-gradient(120deg, var(--dd-grad-blue), var(--dd-grad-green));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -71,7 +71,7 @@ export const ProcessTitle = styled.h2`
 export const ProcessSubtitle = styled.p`
   font-size: 16.5px;
   line-height: 1.6;
-  color: rgba(234, 240, 251, 0.66);
+  color: rgb(var(--dd-fog-rgb) / 0.66);
   margin: 0;
   max-width: 640px;
 
@@ -102,7 +102,7 @@ export const ProcessGrid = styled.div`
 
 export const ProcessCard = styled.div`
   position: relative;
-  background: rgba(255, 255, 255, 0.045);
+  background: rgb(var(--dd-ink-rgb) / 0.045);
   backdrop-filter: blur(14px);
   border-radius: 20px;
   padding: 44px 26px 30px;
@@ -140,7 +140,7 @@ export const ProcessCardWrapper = styled.div`
   }
 
   &:hover ${ProcessCard} {
-    background: rgba(255, 255, 255, 0.07);
+    background: rgb(var(--dd-ink-rgb) / 0.07);
   }
 `;
 
@@ -171,7 +171,7 @@ export const StepTitle = styled.h3`
   line-height: 1.3;
   font-weight: 700;
   margin: 0;
-  color: #fff;
+  color: var(--dd-text);
   position: relative;
   z-index: 4;
 
@@ -183,7 +183,7 @@ export const StepTitle = styled.h3`
 export const StepDescription = styled.p`
   font-size: 14.5px;
   line-height: 1.6;
-  color: rgba(234, 240, 251, 0.66);
+  color: rgb(var(--dd-fog-rgb) / 0.66);
   margin: 0;
   position: relative;
   z-index: 4;

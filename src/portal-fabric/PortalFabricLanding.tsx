@@ -2,6 +2,7 @@
 
 import styled from '@emotion/styled';
 import { Header } from '@/common/components/header';
+import { useScopedTheme } from '@/common/theme/useThemeMode';
 import { portalTheme as tk } from './theme';
 import { usePortal } from './usePortal';
 import { HeroSection } from './sections/HeroSection';
@@ -51,6 +52,10 @@ const Foot = styled.footer`
 export function PortalFabricLanding() {
   const { copy } = usePortal();
   const year = new Date().getFullYear();
+
+  // Tema claro vale só enquanto esta rota estiver aberta — ao sair, volta ao
+  // escuro, que é o padrão das páginas ainda não migradas.
+  useScopedTheme();
 
   return (
     <Wrapper>

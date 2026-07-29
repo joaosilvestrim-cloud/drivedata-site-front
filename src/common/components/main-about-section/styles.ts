@@ -27,7 +27,7 @@ export const MainContainer = styled.section`
     url('/main-about-new.jpg');
   background-size: cover;
   background-position: 70% 18%;
-  background-color: #070c16;
+  background-color: var(--dd-on-brand);
 
   /* glows focais */
   &::before {
@@ -49,8 +49,8 @@ export const MainContainer = styled.section`
     z-index: 1;
     pointer-events: none;
     opacity: 0.5;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-image: linear-gradient(rgb(var(--dd-ink-rgb) / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--dd-ink-rgb) / 0.04) 1px, transparent 1px);
     background-size: 58px 58px;
     mask-image: radial-gradient(ellipse 90% 60% at 50% 30%, #000 20%, transparent 88%);
   }
@@ -68,7 +68,7 @@ export const MainContent = styled.div`
   max-width: 900px;
   padding: 0 24px;
   text-align: center;
-  color: white;
+  color: #ffffff;
 
   > * {
     animation: ${fadeUp} 0.6s ease both;
@@ -93,7 +93,7 @@ export const Eyebrow = styled.div`
   gap: 8px;
   background: rgba(84, 218, 137, 0.1);
   border: 1px solid rgba(84, 218, 137, 0.3);
-  color: #54da89;
+  color: var(--dd-primary);
   font-size: 13px;
   font-weight: 600;
   padding: 7px 15px;
@@ -118,7 +118,7 @@ export const MainTitle = styled.h1`
   font-weight: 800;
   margin: 0 auto ${theme.spacing.lg};
   max-width: 820px;
-  color: #fff;
+  color: #ffffff;
 
   @media (max-width: ${theme.breakpoints.sm}) {
     font-size: 32px;
@@ -129,7 +129,7 @@ export const MainTitle = styled.h1`
 
 export const HighlightedText = styled.span`
   font-weight: 800;
-  background: linear-gradient(120deg, #54da89 0%, #0a96ec 100%);
+  background: linear-gradient(120deg, var(--dd-grad-green) 0%, var(--dd-grad-blue) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -165,9 +165,9 @@ export const MainActions = styled.div`
 export const GhostButton = styled.button`
   font-family: inherit;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #fff;
+  background: rgb(var(--dd-ink-rgb) / 0.07);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.22);
+  color: #ffffff;
   font-size: 16px;
   font-weight: 600;
   padding: 15px 26px;
@@ -175,7 +175,7 @@ export const GhostButton = styled.button`
   transition: background 0.2s, transform 0.2s;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.13);
+    background: rgb(var(--dd-ink-rgb) / 0.13);
     transform: translateY(-2px);
   }
 
@@ -199,8 +199,8 @@ export const TechPill = styled.span`
   font-size: 12.5px;
   font-weight: 600;
   color: rgba(234, 240, 251, 0.7);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgb(var(--dd-ink-rgb) / 0.05);
+  border: 1px solid rgb(var(--dd-ink-rgb) / 0.12);
   padding: 7px 14px;
   border-radius: 999px;
   backdrop-filter: blur(6px);
