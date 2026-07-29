@@ -205,7 +205,7 @@ export const TestimonialAuthor = styled.div`
   align-items: center;
   gap: ${theme.spacing.md};
   margin-top: auto;
-  background: rgb(var(--dd-ink-rgb) / 0.05);
+  background: var(--dd-surf-2);
   border: 1px solid rgb(var(--dd-ink-rgb) / 0.08);
   border-radius: 24px;
   padding: ${theme.spacing.xs};

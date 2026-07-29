@@ -18,7 +18,7 @@ export const SolList = styled.div`
 export const SolItem = styled.div<{ isOpen: boolean }>`
   counter-increment: sol;
   position: relative;
-  background: rgb(var(--dd-ink-rgb) / 0.045);
+  background: var(--dd-surf-1);
   backdrop-filter: blur(14px);
   border: 1px solid rgb(var(--dd-ink-rgb) / 0.1);
   border-radius: 16px;
@@ -37,7 +37,7 @@ export const SolItem = styled.div<{ isOpen: boolean }>`
     font-weight: 800;
     letter-spacing: -0.5px;
     color: transparent;
-    -webkit-text-stroke: 1.2px rgba(84, 218, 137, 0.5);
+    -webkit-text-stroke: 1.2px var(--dd-num-stroke);
     transition: all 0.3s ease;
   }
 
@@ -56,7 +56,7 @@ export const SolItem = styled.div<{ isOpen: boolean }>`
   ${(props) =>
     props.isOpen &&
     `
-    background: rgb(var(--dd-ink-rgb) / 0.07);
+    background: var(--dd-surf-2);
     border-color: rgba(84, 218, 137, 0.45);
     &::before {
       -webkit-text-stroke: 0;
@@ -70,7 +70,7 @@ export const SolItem = styled.div<{ isOpen: boolean }>`
 
   &:hover {
     border-color: rgba(84, 218, 137, 0.4);
-    background: rgb(var(--dd-ink-rgb) / 0.07);
+    background: var(--dd-surf-2);
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {

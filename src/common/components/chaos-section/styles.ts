@@ -115,7 +115,7 @@ export const ChaosTextContent = styled.div`
   position: relative;
   grid-column: 2;
   z-index: 3;
-  background: rgb(var(--dd-ink-rgb) / 0.045);
+  background: var(--dd-surf-1);
   backdrop-filter: blur(16px);
   border-radius: 24px;
   padding: 42px;

@@ -188,7 +188,7 @@ export const TableRow = styled.tr`
   }
 
   &:nth-of-type(even) {
-    background: rgb(var(--dd-ink-rgb) / 0.02);
+    background: var(--dd-surf-1);
   }
 `;
 

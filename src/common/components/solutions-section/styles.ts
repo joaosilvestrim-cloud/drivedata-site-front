@@ -68,7 +68,7 @@ export const SolutionsGrid = styled.div`
 export const SolutionCard = styled.div`
   position: relative;
   text-align: left;
-  background: rgb(var(--dd-ink-rgb) / 0.045);
+  background: var(--dd-surf-1);
   backdrop-filter: blur(14px);
   border-radius: 20px;
   padding: 26px 24px 28px;
@@ -109,7 +109,7 @@ export const SolutionCard = styled.div`
   }
   &:hover {
     transform: translateY(-8px);
-    background: rgb(var(--dd-ink-rgb) / 0.07);
+    background: var(--dd-surf-2);
   }
   &:hover::after {
     opacity: 1;

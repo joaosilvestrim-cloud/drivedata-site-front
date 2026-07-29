@@ -133,7 +133,7 @@ export const FaqList = styled.div`
 export const FaqItem = styled.div<{ isOpen: boolean }>`
   counter-increment: faq;
   position: relative;
-  background: rgb(var(--dd-ink-rgb) / 0.045);
+  background: var(--dd-surf-1);
   backdrop-filter: blur(14px);
   border: 1px solid rgb(var(--dd-ink-rgb) / 0.1);
   border-radius: 16px;
@@ -173,7 +173,7 @@ export const FaqItem = styled.div<{ isOpen: boolean }>`
   ${(props) =>
     props.isOpen &&
     `
-    background: rgb(var(--dd-ink-rgb) / 0.07);
+    background: var(--dd-surf-2);
     border-color: rgba(84, 218, 137, 0.45);
 
     &::before {
@@ -192,7 +192,7 @@ export const FaqItem = styled.div<{ isOpen: boolean }>`
 
   &:hover {
     border-color: rgba(84, 218, 137, 0.4);
-    background: rgb(var(--dd-ink-rgb) / 0.07);
+    background: var(--dd-surf-2);
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {

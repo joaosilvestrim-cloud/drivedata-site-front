@@ -58,6 +58,15 @@ export const GlobalStyles = () => (
         --dd-bg-rgb: 7 12 22;
         --dd-fog-rgb: 234 240 251;
 
+        /* Superfície de cartão. No escuro é vidro branco sobre a página escura;
+           no claro é branco sobre a página cinza. Nos DOIS casos o cartão é mais
+           claro que o fundo, que é o que faz ele saltar. */
+        /* Contorno do numerador: verde vivo no escuro, fechado no claro. */
+        --dd-num-stroke: rgba(84, 218, 137, 0.5);
+        --dd-surf-1: rgba(255, 255, 255, 0.045);
+        --dd-surf-2: rgba(255, 255, 255, 0.07);
+        --dd-surf-3: rgba(255, 255, 255, 0.12);
+
         --dd-bg: #070c16;
         --dd-bg-section: #0a1120;
         --dd-cyan: #22d3ee;
@@ -113,7 +122,14 @@ export const GlobalStyles = () => (
         --dd-bg-rgb: 244 247 251;
         --dd-fog-rgb: 12 27 48;
 
-        --dd-bg: #f4f7fb;
+        --dd-num-stroke: rgba(21, 128, 61, 0.65);
+        --dd-surf-1: #ffffff;
+        --dd-surf-2: #ffffff;
+        --dd-surf-3: #e8eef6;
+
+        /* Página um pouco mais cinza que o branco puro, para o cartão branco
+           ter contra o que saltar. */
+        --dd-bg: #eef2f7;
         --dd-bg-section: #ffffff;
         --dd-cyan: #0e7490;
         --dd-danger: #b91c1c;

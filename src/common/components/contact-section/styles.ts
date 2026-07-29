@@ -184,7 +184,7 @@ export const FormLabel = styled.label`
 `;
 
 export const FormInput = styled.input`
-  background: rgb(var(--dd-ink-rgb) / 0.05);
+  background: var(--dd-surf-2);
   backdrop-filter: blur(14px);
   border: 1px solid rgb(var(--dd-ink-rgb) / 0.14);
   border-radius: 8px;
@@ -201,7 +201,7 @@ export const FormInput = styled.input`
   &:focus {
     outline: none;
     border-color: var(--dd-mint);
-    background: rgb(var(--dd-ink-rgb) / 0.08);
+    background: var(--dd-surf-2);
   }
 
   &:hover {
@@ -215,7 +215,7 @@ export const FormInput = styled.input`
 `;
 
 export const FormTextarea = styled.textarea`
-  background: rgb(var(--dd-ink-rgb) / 0.05);
+  background: var(--dd-surf-2);
   backdrop-filter: blur(14px);
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   border: 1px solid rgb(var(--dd-ink-rgb) / 0.14);
@@ -234,7 +234,7 @@ export const FormTextarea = styled.textarea`
   &:focus {
     outline: none;
     border-color: var(--dd-mint);
-    background: rgb(var(--dd-ink-rgb) / 0.08);
+    background: var(--dd-surf-2);
   }
 
   &:hover {

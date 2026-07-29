@@ -144,7 +144,7 @@ export const Item = styled.li`
     pointer-events: none;
   }
   &:hover {
-    background: rgb(var(--dd-ink-rgb) / 0.03);
+    background: var(--dd-surf-1);
   }
 
   &:nth-of-type(2) {
@@ -171,7 +171,7 @@ export const Item = styled.li`
     right: 8px;
     bottom: 0;
     height: 1px;
-    background: rgb(var(--dd-ink-rgb) / 0.07);
+    background: var(--dd-surf-2);
   }
   &:last-child::after,
   &[data-placeholder='true']::after {
@@ -215,7 +215,7 @@ export const Circle = styled.div`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background: rgb(var(--dd-ink-rgb) / 0.05);
+  background: var(--dd-surf-2);
   border: 1px solid rgb(var(--dd-ink-rgb) / 0.12);
 `;
 

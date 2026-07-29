@@ -102,7 +102,7 @@ export const ProcessGrid = styled.div`
 
 export const ProcessCard = styled.div`
   position: relative;
-  background: rgb(var(--dd-ink-rgb) / 0.045);
+  background: var(--dd-surf-1);
   backdrop-filter: blur(14px);
   border-radius: 20px;
   padding: 44px 26px 30px;
@@ -140,7 +140,7 @@ export const ProcessCardWrapper = styled.div`
   }
 
   &:hover ${ProcessCard} {
-    background: rgb(var(--dd-ink-rgb) / 0.07);
+    background: var(--dd-surf-2);
   }
 `;
 

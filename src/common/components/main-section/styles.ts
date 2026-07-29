@@ -253,7 +253,7 @@ export const MainActions = styled.div`
 export const GhostButton = styled.button`
   font-family: inherit;
   cursor: pointer;
-  background: rgb(var(--dd-ink-rgb) / 0.07);
+  background: var(--dd-surf-2);
   border: 1px solid rgb(var(--dd-ink-rgb) / 0.22);
   color: var(--dd-text);
   font-size: 16px;
@@ -263,7 +263,7 @@ export const GhostButton = styled.button`
   transition: background 0.2s, transform 0.2s;
 
   &:hover {
-    background: rgb(var(--dd-ink-rgb) / 0.13);
+    background: var(--dd-surf-3);
     transform: translateY(-2px);
   }
 `;
@@ -329,7 +329,7 @@ export const DashKpis = styled.div`
 
   & .kpi {
     position: relative;
-    background: rgb(var(--dd-ink-rgb) / 0.05);
+    background: var(--dd-surf-2);
     border: 1px solid rgb(var(--dd-ink-rgb) / 0.1);
     border-radius: 12px;
     padding: 13px 12px;
@@ -409,7 +409,7 @@ export const DashBars = styled.div`
     right: 0;
     height: 3px;
     border-radius: 6px 6px 0 0;
-    background: rgb(var(--dd-ink-rgb) / 0.7);
+    background: var(--dd-surf-3);
     box-shadow: 0 0 8px rgb(var(--dd-ink-rgb) / 0.5);
   }
 `;

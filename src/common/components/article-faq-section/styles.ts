@@ -38,7 +38,7 @@ export const FaqItem = styled.details`
   border-radius: 14px;
   padding: ${theme.spacing.lg} ${theme.spacing.xl};
   margin-bottom: ${theme.spacing.md};
-  background: rgb(var(--dd-ink-rgb) / 0.03);
+  background: var(--dd-surf-1);
   transition: border-color 0.2s ease;
 
   &[open] {

@@ -165,7 +165,7 @@ export const MainActions = styled.div`
 export const GhostButton = styled.button`
   font-family: inherit;
   cursor: pointer;
-  background: rgb(var(--dd-ink-rgb) / 0.07);
+  background: var(--dd-surf-2);
   border: 1px solid rgb(var(--dd-ink-rgb) / 0.22);
   color: #ffffff;
   font-size: 16px;
@@ -175,7 +175,7 @@ export const GhostButton = styled.button`
   transition: background 0.2s, transform 0.2s;
 
   &:hover {
-    background: rgb(var(--dd-ink-rgb) / 0.13);
+    background: var(--dd-surf-3);
     transform: translateY(-2px);
   }
 
@@ -199,7 +199,7 @@ export const TechPill = styled.span`
   font-size: 12.5px;
   font-weight: 600;
   color: rgba(234, 240, 251, 0.7);
-  background: rgb(var(--dd-ink-rgb) / 0.05);
+  background: var(--dd-surf-2);
   border: 1px solid rgb(var(--dd-ink-rgb) / 0.12);
   padding: 7px 14px;
   border-radius: 999px;

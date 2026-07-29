@@ -106,7 +106,7 @@ export const SeeMoreButton = styled.button`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgb(var(--dd-ink-rgb) / 0.06);
+  background: var(--dd-surf-2);
   border: 1px solid rgb(var(--dd-ink-rgb) / 0.18);
   color: var(--dd-text);
   font-size: 14px;
@@ -117,7 +117,7 @@ export const SeeMoreButton = styled.button`
   transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 
   &:hover {
-    background: rgb(var(--dd-ink-rgb) / 0.12);
+    background: var(--dd-surf-3);
     border-color: rgba(84, 218, 137, 0.4);
     transform: translateY(-2px);
   }
@@ -282,7 +282,7 @@ export const PartnerLogo = styled.div`
   width: 100%;
   cursor: pointer;
   border-radius: 16px;
-  background: rgb(var(--dd-ink-rgb) / 0.92);
+  background: var(--dd-surf-3);
   border: 1px solid rgb(var(--dd-ink-rgb) / 0.14);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
   opacity: 0;

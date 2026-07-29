@@ -104,7 +104,7 @@ const Btn = styled.button<{ isActive: boolean }>`
     font-family: var(--font-inter), sans-serif;
     font-size: 12px;
     font-weight: 600;
-    color: var(--dd-text);
+    color: #ffffff;
     background: var(--dd-dropdown-bg, rgba(10, 16, 28, 0.94));
     border: 1px solid var(--dd-dropdown-border, rgb(var(--dd-ink-rgb) / 0.12));
     border-radius: 8px;
@@ -124,7 +124,8 @@ const Divider = styled.span`
 
 const ThemeBtn = styled(Btn)`
   font-size: 15px;
-  color: var(--dd-text-2, rgb(var(--dd-fog-rgb) / 0.66));
+  /* A pílula é navy nos dois temas, então o ícone é claro fixo. */
+  color: rgba(234, 240, 251, 0.8);
 `;
 
 export function LanguageRail() {

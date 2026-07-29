@@ -59,7 +59,7 @@ export const DevicesItem = styled.div<{ contentSide: 'left' | 'right'}>`
   gap: ${theme.spacing['2xl']};
   padding: ${theme.spacing['2xl']};
   border-radius: 24px;
-  background: rgb(var(--dd-ink-rgb) / 0.045);
+  background: var(--dd-surf-1);
   backdrop-filter: blur(14px);
   transition: transform 0.3s ease, background 0.3s ease;
 
@@ -84,7 +84,7 @@ export const DevicesItem = styled.div<{ contentSide: 'left' | 'right'}>`
 
   &:hover {
     transform: translateY(-8px);
-    background: rgb(var(--dd-ink-rgb) / 0.07);
+    background: var(--dd-surf-2);
   }
 
   @media (max-width: ${theme.breakpoints.lg}) {

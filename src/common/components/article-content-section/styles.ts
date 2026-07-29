@@ -160,7 +160,7 @@ export const ArticleContent = styled.div`
   }
 
   code {
-    background-color: rgb(var(--dd-ink-rgb) / 0.08);
+    background-color: var(--dd-surf-2);
     padding: 2px 6px;
     border-radius: 8px;
     font-family: 'Courier New', monospace;
@@ -173,7 +173,7 @@ export const ArticleContent = styled.div`
   }
 
   pre {
-    background-color: rgb(var(--dd-ink-rgb) / 0.05);
+    background-color: var(--dd-surf-2);
     border: 1px solid rgb(var(--dd-ink-rgb) / 0.1);
     padding: ${theme.spacing.lg};
     border-radius: 14px;
@@ -240,7 +240,7 @@ export const ArticleContent = styled.div`
     }
 
     th {
-      background-color: rgb(var(--dd-ink-rgb) / 0.05);
+      background-color: var(--dd-surf-2);
       font-weight: ${theme.typography.fontWeight.semibold};
 
       @media (max-width: ${theme.breakpoints.sm}) {
