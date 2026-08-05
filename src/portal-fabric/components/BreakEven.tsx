@@ -43,15 +43,25 @@ const Legend = styled.div`
   i { width: 14px; height: 2px; border-radius: 2px; display: inline-block; }
 `;
 
+interface BreakEvenLabels {
+  equilibrium: string  // "equilíbrio: {n} usuários"
+  you: string
+  users: string        // "{n} usuários"
+  licenses: string     // "Licenças individuais ({price}/usuário)"
+  capacity: string
+}
 interface Props {
   users: number
   licensePrice: number
   capacityCost: number
   breakEvenUsers: number
   fmt: (n: number) => string
+  labels: BreakEvenLabels
 }
+const tpl = (s: string, vars: Record<string, string | number>) =>
+  s.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ''))
 
-export function BreakEven({ users, licensePrice, capacityCost, breakEvenUsers, fmt }: Props) {
+export function BreakEven({ users, licensePrice, capacityCost, breakEvenUsers, fmt, labels }: Props) {
   // Janela do eixo X: cobre o ponto de equilíbrio e a posição atual com folga.
   const maxUsers = Math.max(users * 1.6, breakEvenUsers * 2, 40)
   const maxCost  = Math.max(maxUsers * licensePrice, capacityCost * 1.4, 1)
@@ -113,7 +123,7 @@ export function BreakEven({ users, licensePrice, capacityCost, breakEvenUsers, f
             <circle className="be-node" cx={crossX} cy={capY} r="5" strokeWidth="2"/>
             <text className="be-label" x={crossX} y={PAD_T - 2} textAnchor="middle"
               fontSize="10.5" fontFamily="system-ui, sans-serif">
-              equilíbrio: {breakEvenUsers} usuários
+              {tpl(labels.equilibrium, { n: breakEvenUsers })}
             </text>
           </>
         )}
@@ -123,19 +133,19 @@ export function BreakEven({ users, licensePrice, capacityCost, breakEvenUsers, f
           cx={meX} cy={meY} r="6" strokeWidth="2.5"/>
         <text className="be-me-label" x={Math.min(meX, W - 60)} y={Math.max(meY - 13, PAD_T + 10)}
           textAnchor="middle" fontSize="11" fontWeight="700" fontFamily="system-ui, sans-serif">
-          você
+          {labels.you}
         </text>
 
         {/* eixo X */}
         <text className="be-label" x={PAD_L} y={H - 8} fontSize="10" fontFamily="system-ui, sans-serif">0</text>
         <text className="be-label" x={W - 8} y={H - 8} textAnchor="end" fontSize="10" fontFamily="system-ui, sans-serif">
-          {Math.round(maxUsers)} usuários
+          {tpl(labels.users, { n: Math.round(maxUsers) })}
         </text>
       </svg>
 
       <Legend>
-        <span><i style={{ background: '#f87171' }}/> Licenças individuais ({fmt(licensePrice)}/usuário)</span>
-        <span><i style={{ background: tk.colors.primary }}/> Capacidade Fabric (fixa)</span>
+        <span><i style={{ background: '#f87171' }}/> {tpl(labels.licenses, { price: fmt(licensePrice) })}</span>
+        <span><i style={{ background: tk.colors.primary }}/> {labels.capacity}</span>
       </Legend>
     </Wrap>
   )

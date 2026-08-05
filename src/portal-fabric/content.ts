@@ -38,6 +38,28 @@ export interface PortalCopy {
     simTitle: string; usersLabel: string; licenseLabel: string; skuLabel: string;
     currentLabel: string; portalLabel: string; monthlyLabel: string; annualLabel: string;
     note: string;
+    // Calculadora gamificada (todas as frases interpoladas usam {chaves}).
+    calc: {
+      levelPrefix: string;
+      levels: { none: string; balance: string; good: string; high: string; max: string };
+      monthlyDiff: string; savingsLine: string; negativeNote: string;
+      nextGoal: string; maxLevel: string;
+      scenarioTitle: string; usersHint: string;
+      licenseTodayLabel: string; licenseHint: string;
+      skuFieldLabel: string; skuHints: { F2: string; F4: string; F8: string; F16: string; F32: string; F64: string };
+      skuRecommended: string; skuOther: string;
+      regionLabel: string; base: string;
+      billingLabel: string; billingReserved: string; billingPayg: string;
+      billingReservedHint: string; billingPaygHint: string;
+      scheduleLabel: string; scheduleLabels: { '24x7': string; comercial: string; reduzida: string };
+      schedulePerMonth: string; scheduleHint: string;
+      breakEvenTitle: string; rowToday: string; rowPortal: string;
+      youSave: string; difference: string; breakEvenNote: string;
+      eqUserZero: string; eqLicenses: string; eqMonths: string; eqCapacity: string;
+      footBase: string; footRegionExtra: string; footReserved: string; footPayg: string; footConv: string;
+      cta: string;
+      beEquilibrium: string; beYou: string; beUsers: string; beLicenses: string; beCapacity: string;
+    };
   };
   compare: {
     eyebrow: string; title: string; colTraditional: string; colPortal: string;
@@ -231,6 +253,50 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       monthlyLabel: 'Economia mensal estimada',
       annualLabel: 'Economia anual',
       note: 'Valores de referência para simulação. A economia real depende do SKU, do volume de uso e do contrato Microsoft vigente.',
+      calc: {
+        levelPrefix: 'Nível',
+        levels: { none: 'Ainda não compensa', balance: 'Empate técnico', good: 'Economia real', high: 'Economia alta', max: 'Economia máxima' },
+        monthlyDiff: 'Diferença mensal',
+        savingsLine: '{pct}% de redução · {annual} por ano',
+        negativeNote: 'Neste cenário a capacidade ainda custa mais que as licenças.',
+        nextGoal: 'Mais {n} usuário{s} e você chega em {level}',
+        maxLevel: 'Você está no nível máximo de economia',
+        scenarioTitle: 'Seu cenário',
+        usersHint: 'Quantas pessoas só consomem relatórios (não criam).',
+        licenseTodayLabel: 'Licença que você paga hoje',
+        licenseHint: '{cur} por usuário/mês. Preço de mercado do seu país, dá pra ajustar pelo seu contrato.',
+        skuFieldLabel: 'Capacidade Fabric (SKU)',
+        skuHints: { F2: 'times pequenos, poucos relatórios', F4: 'operação enxuta', F8: 'o mais comum em médias empresas', F16: 'muitos relatórios e refresh pesado', F32: 'operação grande', F64: 'porte enterprise' },
+        skuRecommended: '★ Recomendado para {n} usuários, {hint}.',
+        skuOther: '★ Para {n} usuários, o mais comum é o {rec}. O dimensionamento final depende do seu uso real.',
+        regionLabel: 'Região do Azure',
+        base: 'base',
+        billingLabel: 'Forma de contratação',
+        billingReserved: 'Reserva 1 ano', billingPayg: 'Pago pelo uso',
+        billingReservedHint: 'Compromisso de 1 ano, ligada 24/7, com ~41% de desconto.',
+        billingPaygHint: 'Sem compromisso e pode pausar, você paga só as horas ligadas.',
+        scheduleLabel: 'Capacidade ligada',
+        scheduleLabels: { '24x7': 'Ligada 24/7', comercial: 'Horário comercial (12h)', reduzida: 'Jornada (8h úteis)' },
+        schedulePerMonth: '{label}, {hours}h/mês',
+        scheduleHint: 'Pausar a capacidade fora do expediente derruba bastante a conta.',
+        breakEvenTitle: 'Ponto de equilíbrio',
+        rowToday: 'Hoje · {n} × {price}',
+        rowPortal: 'Portal DriveData · {sku} em {region}',
+        youSave: 'Você economiza', difference: 'Diferença',
+        breakEvenNote: 'A capacidade custa o mesmo com 10 ou 10.000 usuários. Acima de {n} usuários ela já sai mais barata que as licenças.',
+        eqUserZero: 'é quanto custa cada novo usuário no portal. Hoje, cada um custa {price}/mês.',
+        eqLicenses: 'licenças {kind} por um ano inteiro é o que sua economia anual paga.',
+        eqMonths: '{n} meses',
+        eqCapacity: 'de capacidade {sku} saem de graça com o que você economiza em um ano.',
+        footBase: 'Base do cálculo: capacidade Fabric a US$ {x} por CU/hora em East US',
+        footRegionExtra: ' (+{p}% em {region})',
+        footReserved: ' reserva de 1 ano com ~41% de desconto',
+        footPayg: ' {hours}h ligadas no mês',
+        footConv: ' convertida a {fx} por dólar. ',
+        cta: 'Quero validar esse cenário com um especialista →',
+        beEquilibrium: 'equilíbrio: {n} usuários', beYou: 'você', beUsers: '{n} usuários',
+        beLicenses: 'Licenças individuais ({price}/usuário)', beCapacity: 'Capacidade Fabric (fixa)',
+      },
     },
     compare: {
       eyebrow: 'Comparativo',
@@ -417,6 +483,50 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       monthlyLabel: 'Estimated monthly savings',
       annualLabel: 'Annual savings',
       note: 'Reference values for simulation. Real savings depend on the SKU, usage volume and your current Microsoft agreement.',
+      calc: {
+        levelPrefix: 'Level',
+        levels: { none: 'Not worth it yet', balance: 'Break-even', good: 'Real savings', high: 'High savings', max: 'Maximum savings' },
+        monthlyDiff: 'Monthly difference',
+        savingsLine: '{pct}% off · {annual} per year',
+        negativeNote: 'In this scenario the capacity still costs more than the licenses.',
+        nextGoal: '{n} more user{s} and you reach {level}',
+        maxLevel: 'You are at the maximum savings level',
+        scenarioTitle: 'Your scenario',
+        usersHint: 'How many people only consume reports (do not create).',
+        licenseTodayLabel: 'License you pay today',
+        licenseHint: '{cur} per user/month. Market price for your country, adjust it to your contract.',
+        skuFieldLabel: 'Fabric capacity (SKU)',
+        skuHints: { F2: 'small teams, few reports', F4: 'lean operation', F8: 'the most common in mid-size companies', F16: 'many reports and heavy refresh', F32: 'large operation', F64: 'enterprise scale' },
+        skuRecommended: '★ Recommended for {n} users, {hint}.',
+        skuOther: '★ For {n} users, the most common is {rec}. Final sizing depends on your real usage.',
+        regionLabel: 'Azure region',
+        base: 'base',
+        billingLabel: 'Billing model',
+        billingReserved: '1-year reserved', billingPayg: 'Pay as you go',
+        billingReservedHint: '1-year commitment, on 24/7, ~41% discount.',
+        billingPaygHint: 'No commitment and you can pause, you pay only for the hours it runs.',
+        scheduleLabel: 'Capacity uptime',
+        scheduleLabels: { '24x7': 'On 24/7', comercial: 'Business hours (12h)', reduzida: 'Workday (8 business hours)' },
+        schedulePerMonth: '{label}, {hours}h/month',
+        scheduleHint: 'Pausing the capacity after hours cuts the bill a lot.',
+        breakEvenTitle: 'Break-even',
+        rowToday: 'Today · {n} × {price}',
+        rowPortal: 'DriveData Portal · {sku} in {region}',
+        youSave: 'You save', difference: 'Difference',
+        breakEvenNote: 'The capacity costs the same with 10 or 10,000 users. Above {n} users it is already cheaper than the licenses.',
+        eqUserZero: 'is what each new user costs in the portal. Today, each one costs {price}/month.',
+        eqLicenses: '{kind} licenses for a full year is what your annual savings pay for.',
+        eqMonths: '{n} months',
+        eqCapacity: 'of {sku} capacity are free with what you save in a year.',
+        footBase: 'Calculation basis: Fabric capacity at US$ {x} per CU/hour in East US',
+        footRegionExtra: ' (+{p}% in {region})',
+        footReserved: ' 1-year reserved with ~41% discount',
+        footPayg: ' {hours}h running per month',
+        footConv: ' converted at {fx} per dollar. ',
+        cta: 'I want to validate this scenario with a specialist →',
+        beEquilibrium: 'break-even: {n} users', beYou: 'you', beUsers: '{n} users',
+        beLicenses: 'Individual licenses ({price}/user)', beCapacity: 'Fabric capacity (fixed)',
+      },
     },
     compare: {
       eyebrow: 'Comparison',
@@ -603,6 +713,50 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       monthlyLabel: 'Économies mensuelles estimées',
       annualLabel: 'Économies annuelles',
       note: 'Valeurs de référence pour la simulation. Les économies réelles dépendent du SKU, du volume d’usage et de votre entente Microsoft en vigueur.',
+      calc: {
+        levelPrefix: 'Niveau',
+        levels: { none: 'Pas encore rentable', balance: 'Seuil atteint', good: 'Économies réelles', high: 'Économies élevées', max: 'Économies maximales' },
+        monthlyDiff: 'Différence mensuelle',
+        savingsLine: '{pct} % de réduction · {annual} par an',
+        negativeNote: 'Dans ce scénario, la capacité coûte encore plus que les licences.',
+        nextGoal: '{n} utilisateur{s} de plus et vous atteignez {level}',
+        maxLevel: 'Vous êtes au niveau d’économies maximal',
+        scenarioTitle: 'Votre scénario',
+        usersHint: 'Combien de personnes consomment seulement des rapports (sans en créer).',
+        licenseTodayLabel: 'Licence que vous payez aujourd’hui',
+        licenseHint: '{cur} par utilisateur/mois. Prix du marché de votre pays, ajustable selon votre contrat.',
+        skuFieldLabel: 'Capacité Fabric (SKU)',
+        skuHints: { F2: 'petites équipes, peu de rapports', F4: 'opération allégée', F8: 'le plus courant dans les moyennes entreprises', F16: 'beaucoup de rapports et rafraîchissement intensif', F32: 'grande opération', F64: 'échelle entreprise' },
+        skuRecommended: '★ Recommandé pour {n} utilisateurs, {hint}.',
+        skuOther: '★ Pour {n} utilisateurs, le plus courant est {rec}. Le dimensionnement final dépend de votre usage réel.',
+        regionLabel: 'Région Azure',
+        base: 'base',
+        billingLabel: 'Mode de facturation',
+        billingReserved: 'Réservé 1 an', billingPayg: 'Paiement à l’usage',
+        billingReservedHint: 'Engagement d’un an, actif 24/7, avec ~41 % de remise.',
+        billingPaygHint: 'Sans engagement et avec pause possible, vous payez seulement les heures actives.',
+        scheduleLabel: 'Capacité active',
+        scheduleLabels: { '24x7': 'Actif 24/7', comercial: 'Heures ouvrables (12h)', reduzida: 'Journée (8h ouvrées)' },
+        schedulePerMonth: '{label}, {hours} h/mois',
+        scheduleHint: 'Mettre la capacité en pause hors des heures réduit fortement la facture.',
+        breakEvenTitle: 'Seuil de rentabilité',
+        rowToday: 'Aujourd’hui · {n} × {price}',
+        rowPortal: 'Portal DriveData · {sku} en {region}',
+        youSave: 'Vous économisez', difference: 'Différence',
+        breakEvenNote: 'La capacité coûte le même prix avec 10 ou 10 000 utilisateurs. Au-delà de {n} utilisateurs, elle est déjà moins chère que les licences.',
+        eqUserZero: 'c’est ce que coûte chaque nouvel utilisateur dans le portail. Aujourd’hui, chacun coûte {price}/mois.',
+        eqLicenses: 'licences {kind} pour une année entière, c’est ce que financent vos économies annuelles.',
+        eqMonths: '{n} mois',
+        eqCapacity: 'de capacité {sku} sont gratuits avec ce que vous économisez en un an.',
+        footBase: 'Base du calcul : capacité Fabric à US$ {x} par CU/heure en East US',
+        footRegionExtra: ' (+{p} % en {region})',
+        footReserved: ' réservé 1 an avec ~41 % de remise',
+        footPayg: ' {hours} h actives par mois',
+        footConv: ' convertie à {fx} par dollar. ',
+        cta: 'Je veux valider ce scénario avec un spécialiste →',
+        beEquilibrium: 'seuil : {n} utilisateurs', beYou: 'vous', beUsers: '{n} utilisateurs',
+        beLicenses: 'Licences individuelles ({price}/utilisateur)', beCapacity: 'Capacité Fabric (fixe)',
+      },
     },
     compare: {
       eyebrow: 'Comparatif',

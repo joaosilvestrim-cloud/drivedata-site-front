@@ -431,6 +431,9 @@ export function RoiSection() {
   const { copy } = usePortal()
   const { openTypebot } = useTypebot()
   const r = copy.roi
+  const c = r.calc
+  const tpl = (s: string, vars: Record<string, string | number>) =>
+    s.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ''))
   const cfg = COUNTRY[SITE_COUNTRY as Country] ?? COUNTRY.BR
 
   const [users, setUsers]       = useState(cfg.defaultUsers)
@@ -496,7 +499,7 @@ export function RoiSection() {
         {/* Placar */}
         <Board accent={accent}>
           <LevelPill accent={accent} celebrate={celebrate}>
-            Nível {Math.max(level.idx, 0)} · {level.label}
+            {c.levelPrefix} {Math.max(level.idx, 0)} · {c.levels[level.key as keyof typeof c.levels]}
           </LevelPill>
 
           <Meter>
@@ -505,36 +508,35 @@ export function RoiSection() {
             ))}
           </Meter>
 
-          <BigLabel>{positive ? r.monthlyLabel : 'Diferença mensal'}</BigLabel>
+          <BigLabel>{positive ? r.monthlyLabel : c.monthlyDiff}</BigLabel>
           <Big accent={accent}>
             {positive ? fmt(shown) : `− ${fmt(Math.abs(sim.savings))}`}
           </Big>
           <SubLine>
-            {positive ? (
-              <>
-                <strong>{Math.round(sim.savingsPct)}%</strong> de redução ·{' '}
-                <strong>{fmt(sim.annualSavings)}</strong> por ano
-              </>
-            ) : (
-              <>Neste cenário a capacidade ainda custa mais que as licenças.</>
-            )}
+            {positive
+              ? tpl(c.savingsLine, { pct: Math.round(sim.savingsPct), annual: fmt(sim.annualSavings) })
+              : c.negativeNote}
           </SubLine>
 
           {next && (
             <NextGoal>
-              <span style={{ color: accentOf(next.level) }}>▲</span>
-              Mais <b>{next.users}</b> usuário{next.users !== 1 ? 's' : ''} e você chega em <b>{next.level.label}</b>
+              <span style={{ color: accentOf(next.level) }}>▲</span>{' '}
+              {tpl(c.nextGoal, {
+                n: next.users,
+                s: next.users !== 1 ? 's' : '',
+                level: c.levels[next.level.key as keyof typeof c.levels],
+              })}
             </NextGoal>
           )}
           {!next && positive && (
-            <NextGoal><span style={{ color: accent }}>★</span> Você está no nível máximo de economia</NextGoal>
+            <NextGoal><span style={{ color: accent }}>★</span> {c.maxLevel}</NextGoal>
           )}
         </Board>
 
         <Grid>
           {/* Controles */}
           <Panel>
-            <PanelTitle>Seu cenário</PanelTitle>
+            <PanelTitle>{c.scenarioTitle}</PanelTitle>
 
             <Field>
               <FLabel htmlFor="pf-users">
@@ -542,11 +544,11 @@ export function RoiSection() {
               </FLabel>
               <Range id="pf-users" type="range" min={10} max={3000} step={10}
                 value={users} onChange={e => setUsers(Number(e.target.value))}/>
-              <Hint>Quantas pessoas só consomem relatórios (não criam).</Hint>
+              <Hint>{c.usersHint}</Hint>
             </Field>
 
             <Field>
-              <FLabel>Licença que você paga hoje</FLabel>
+              <FLabel>{c.licenseTodayLabel}</FLabel>
               <Segmented>
                 <SegBtn isOn={licenseKind === 'pro'} onClick={() => switchKind('pro')}>Power BI Pro</SegBtn>
                 <SegBtn isOn={licenseKind === 'ppu'} onClick={() => switchKind('ppu')}>Premium (PPU)</SegBtn>
@@ -555,83 +557,80 @@ export function RoiSection() {
                 <NumInput type="number" min={0} step={1} value={licensePrice}
                   onChange={e => setLic(Math.max(0, Number(e.target.value) || 0))}/>
               </div>
-              <Hint>{cfg.currency} por usuário/mês. Preço de mercado do seu país, dá pra ajustar pelo seu contrato.</Hint>
+              <Hint>{tpl(c.licenseHint, { cur: cfg.currency })}</Hint>
             </Field>
 
             <Field>
-              <FLabel>Capacidade Fabric (SKU)</FLabel>
+              <FLabel>{c.skuFieldLabel}</FLabel>
               <SkuRow>
                 {SKUS.map(s => (
                   <SkuBtn key={s.id} isOn={skuId === s.id} rec={rec.id === s.id}
-                    onClick={() => setSku(s.id)} title={s.hint}>
+                    onClick={() => setSku(s.id)} title={c.skuHints[s.id as keyof typeof c.skuHints]}>
                     {s.id}
                   </SkuBtn>
                 ))}
               </SkuRow>
               <Hint>
                 {rec.id === skuId
-                  ? <>★ Recomendado para {users} usuários, {sku.hint}.</>
-                  : <>★ Para {users} usuários, o mais comum é o <strong style={{ color: tk.colors.primary }}>{rec.id}</strong>. O dimensionamento final depende do seu uso real.</>}
+                  ? tpl(c.skuRecommended, { n: users, hint: c.skuHints[sku.id as keyof typeof c.skuHints] })
+                  : <>{tpl(c.skuOther, { n: users, rec: rec.id })}</>}
               </Hint>
             </Field>
 
             <Field>
-              <FLabel>Região do Azure</FLabel>
+              <FLabel>{c.regionLabel}</FLabel>
               <Select value={regionId} onChange={e => setRegion(e.target.value)}>
                 {REGIONS.map(x => (
                   <option key={x.id} value={x.id}>
-                    {x.label}{x.mult === 1 ? ' · base' : ` · +${Math.round((x.mult - 1) * 100)}%`}
+                    {x.label}{x.mult === 1 ? ` · ${c.base}` : ` · +${Math.round((x.mult - 1) * 100)}%`}
                   </option>
                 ))}
               </Select>
             </Field>
 
             <Field>
-              <FLabel>Forma de contratação</FLabel>
+              <FLabel>{c.billingLabel}</FLabel>
               <Segmented>
-                <SegBtn isOn={billing === 'reserved'} onClick={() => setBilling('reserved')}>Reserva 1 ano</SegBtn>
-                <SegBtn isOn={billing === 'payg'} onClick={() => setBilling('payg')}>Pago pelo uso</SegBtn>
+                <SegBtn isOn={billing === 'reserved'} onClick={() => setBilling('reserved')}>{c.billingReserved}</SegBtn>
+                <SegBtn isOn={billing === 'payg'} onClick={() => setBilling('payg')}>{c.billingPayg}</SegBtn>
               </Segmented>
-              <Hint>
-                {billing === 'reserved'
-                  ? 'Compromisso de 1 ano, ligada 24/7, com ~41% de desconto.'
-                  : 'Sem compromisso e pode pausar, você paga só as horas ligadas.'}
-              </Hint>
+              <Hint>{billing === 'reserved' ? c.billingReservedHint : c.billingPaygHint}</Hint>
             </Field>
 
             {billing === 'payg' && (
               <Field>
-                <FLabel>Capacidade ligada</FLabel>
+                <FLabel>{c.scheduleLabel}</FLabel>
                 <Select value={scheduleId} onChange={e => setSched(e.target.value)}>
-                  {SCHEDULES.map(s => <option key={s.id} value={s.id}>{s.label}, {s.hours}h/mês</option>)}
+                  {SCHEDULES.map(s => <option key={s.id} value={s.id}>{tpl(c.schedulePerMonth, { label: c.scheduleLabels[s.id as keyof typeof c.scheduleLabels], hours: s.hours })}</option>)}
                 </Select>
-                <Hint>Pausar a capacidade fora do expediente derruba bastante a conta.</Hint>
+                <Hint>{c.scheduleHint}</Hint>
               </Field>
             )}
           </Panel>
 
           {/* Resultado + gráfico */}
           <Panel>
-            <PanelTitle>Ponto de equilíbrio</PanelTitle>
+            <PanelTitle>{c.breakEvenTitle}</PanelTitle>
             <BreakEven
               users={users}
               licensePrice={licensePrice}
               capacityCost={sim.capacityCost}
               breakEvenUsers={sim.breakEvenUsers}
               fmt={fmt}
+              labels={{ equilibrium: c.beEquilibrium, you: c.beYou, users: c.beUsers, licenses: c.beLicenses, capacity: c.beCapacity }}
             />
 
             <Rows>
               <Row>
-                Hoje · {users} × {fmt(licensePrice)}
+                {tpl(c.rowToday, { n: users, price: fmt(licensePrice) })}
                 <b>{fmt(sim.licenseCost)}</b>
               </Row>
               <Row>
-                Portal DriveData · {sku.id} em {region.label}
+                {tpl(c.rowPortal, { sku: sku.id, region: region.label })}
                 <b>{fmt(sim.capacityCost)}</b>
               </Row>
               <Row strong>
-                {positive ? 'Você economiza' : 'Diferença'}
+                {positive ? c.youSave : c.difference}
                 <b style={{ color: accent }}>
                   {positive ? fmt(sim.savings) : `− ${fmt(Math.abs(sim.savings))}`}
                 </b>
@@ -639,8 +638,7 @@ export function RoiSection() {
             </Rows>
 
             <Hint style={{ marginTop: 14 }}>
-              A capacidade custa o mesmo com 10 ou 10.000 usuários. Acima de{' '}
-              <strong style={{ color: tk.colors.primary }}>{sim.breakEvenUsers} usuários</strong> ela já sai mais barata que as licenças.
+              {tpl(c.breakEvenNote, { n: sim.breakEvenUsers })}
             </Hint>
           </Panel>
         </Grid>
@@ -650,29 +648,29 @@ export function RoiSection() {
           <Cards>
             <EqCard>
               <strong>{cfg.currency} 0</strong>
-              <span>é quanto custa cada novo usuário no portal. Hoje, cada um custa {fmt(licensePrice)}/mês.</span>
+              <span>{tpl(c.eqUserZero, { price: fmt(licensePrice) })}</span>
             </EqCard>
             <EqCard>
               <strong>{proYear}</strong>
-              <span>licenças {licenseKind === 'pro' ? 'Pro' : 'PPU'} por um ano inteiro é o que sua economia anual paga.</span>
+              <span>{tpl(c.eqLicenses, { kind: licenseKind === 'pro' ? 'Pro' : 'PPU' })}</span>
             </EqCard>
             <EqCard>
-              <strong>{capMonths} meses</strong>
-              <span>de capacidade {sku.id} saem de graça com o que você economiza em um ano.</span>
+              <strong>{tpl(c.eqMonths, { n: capMonths })}</strong>
+              <span>{tpl(c.eqCapacity, { sku: sku.id })}</span>
             </EqCard>
           </Cards>
         )}
 
         <Foot>
-          Base do cálculo: capacidade Fabric a US$ {USD_PER_CU_HOUR.toFixed(2)} por CU/hora em East US
-          {region.mult !== 1 && <> (+{Math.round((region.mult - 1) * 100)}% em {region.label})</>},
-          {billing === 'reserved' ? ' reserva de 1 ano com ~41% de desconto' : ` ${SCHEDULES.find(s => s.id === scheduleId)?.hours}h ligadas no mês`},
-          convertida a {cfg.fxLabel} por dólar. {r.note}
+          {tpl(c.footBase, { x: USD_PER_CU_HOUR.toFixed(2) })}
+          {region.mult !== 1 && tpl(c.footRegionExtra, { p: Math.round((region.mult - 1) * 100), region: region.label })},
+          {billing === 'reserved' ? c.footReserved : tpl(c.footPayg, { hours: SCHEDULES.find(s => s.id === scheduleId)?.hours ?? '' })},
+          {tpl(c.footConv, { fx: cfg.fxLabel })}{r.note}
         </Foot>
 
         <CtaWrap>
           <Cta type="button" onClick={openTypebot}>
-            Quero validar esse cenário com um especialista →
+            {c.cta}
           </Cta>
         </CtaWrap>
       </Inner>
