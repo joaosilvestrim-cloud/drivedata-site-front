@@ -33,6 +33,14 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      // Capas de artigo enviadas pelo admin do blog vão para o Supabase Storage.
+      // Sem liberar o host aqui, o <Image> otimizado quebra e mostra o alt.
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
     ],
   },
 
