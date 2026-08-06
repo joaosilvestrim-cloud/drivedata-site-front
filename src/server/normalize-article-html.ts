@@ -27,6 +27,17 @@ export function normalizeArticleHtml(html: string, fallbackAlt = ''): string {
     return html; // conteúdo estranho: não arrisca, devolve como veio
   }
 
+  // 0) Limpa estilo embutido do HTML colado (Word/Docs/IA). Larguras fixas,
+  //    white-space, float, position, cores e fontes coladas quebram o layout,
+  //    ex.: texto vazando para fora do container de 800px. O artigo deve seguir
+  //    a tipografia do site, então removemos style + atributos de dimensão de
+  //    TODAS as tags. A imagem é tratada pelo CSS (max-width:100%).
+  root.querySelectorAll('*').forEach((el) => {
+    ['style', 'width', 'height', 'align', 'valign', 'bgcolor', 'face', 'color', 'class', 'dir'].forEach((attr) => {
+      if (el.hasAttribute(attr)) el.removeAttribute(attr);
+    });
+  });
+
   // 1) h1 do corpo → h2 (o título da página é o único h1)
   root.querySelectorAll('h1').forEach((el) => {
     el.rawTagName = 'h2';

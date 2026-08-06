@@ -30,16 +30,14 @@ const LANGS = [
 const TRANSLATE_TARGETS = ['en', 'es', 'fr'];
 const I18N_KEYS = ['title', 'subTitle', 'description', 'content', 'seoTitle', 'seoDescription'] as const;
 
-const QUILL_MODULES = {
-  toolbar: [
-    [{ header: [1, 2, 3, false] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ list: 'ordered' }, { list: 'bullet' }],
-    ['blockquote', 'link', 'image'],
-    [{ align: [] }],
-    ['clean'],
-  ],
-};
+const QUILL_TOOLBAR = [
+  [{ header: [1, 2, 3, false] }],
+  ['bold', 'italic', 'underline', 'strike'],
+  [{ list: 'ordered' }, { list: 'bullet' }],
+  ['blockquote', 'link', 'image'],
+  [{ align: [] }],
+  ['clean'],
+];
 
 const slugify = (s: string) =>
   (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
@@ -75,6 +73,42 @@ export function ArticlesManager() {
   const [slugTouched, setSlugTouched] = useState(false);
   const [transEnabled, setTransEnabled] = useState(false);
   const [showMedia, setShowMedia] = useState(false);
+
+  // Handler de imagem do editor: em vez de embutir base64 gigante no corpo
+  // (padrão do Quill, que não salva direito), sobe a imagem pro storage e
+  // insere a URL pública.
+  const quillModules = useMemo(
+    () => ({
+      toolbar: {
+        container: QUILL_TOOLBAR,
+        handlers: {
+          image() {
+            const quill = (this as unknown as { quill: { getSelection: (f?: boolean) => { index: number } | null; insertEmbed: (i: number, t: string, v: string, s?: string) => void; setSelection: (i: number) => void } }).quill;
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = async () => {
+              const file = input.files?.[0];
+              if (!file) return;
+              setUploading(true);
+              try {
+                const asset = await uploadAsset(file);
+                const range = quill.getSelection(true) || { index: 0 };
+                quill.insertEmbed(range.index, 'image', asset.url, 'user');
+                quill.setSelection(range.index + 1);
+              } catch (e) {
+                setError('Upload da imagem falhou: ' + (e as Error).message);
+              } finally {
+                setUploading(false);
+              }
+            };
+            input.click();
+          },
+        },
+      },
+    }),
+    [],
+  );
   const [preview, setPreview] = useState(false);
 
   async function load() {
@@ -454,7 +488,7 @@ export function ArticlesManager() {
               <Field label="Resumo (aparece nos cards)" action={transAction('description')}><Textarea value={getI18n('description')} onChange={(e) => setI18n('description', e.target.value)} /></Field>
               <Field label="Conteúdo" action={transAction('content')}>
                 <div style={{ background: '#fff', borderRadius: 10, color: '#111', overflow: 'hidden' }}>
-                  <ReactQuill theme="snow" modules={QUILL_MODULES} value={getI18n('content')} onChange={(v: string) => setI18n('content', v)} />
+                  <ReactQuill theme="snow" modules={quillModules} value={getI18n('content')} onChange={(v: string) => setI18n('content', v)} />
                 </div>
               </Field>
             </div>

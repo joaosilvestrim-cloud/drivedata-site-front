@@ -28,6 +28,15 @@ export const ArticleContent = styled.div`
   font-size: 18px;
   line-height: 180%;
   color: var(--dd-text);
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+
+  /* Blindagem: nenhum filho pode estourar a largura do container, mesmo que o
+     HTML colado traga largura fixa. Complementa a limpeza feita no servidor. */
+  * {
+    max-width: 100%;
+  }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-sora), 'Sora', sans-serif;
