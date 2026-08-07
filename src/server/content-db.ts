@@ -217,6 +217,22 @@ export async function getPartners() {
   }));
 }
 
+// URL do vídeo (YouTube) da landing /portal-fabric — o mais recente publicado.
+// Melhor-esforço: se a tabela não existir ou o banco falhar, devolve null e a
+// seção de vídeo some da página (sem quebrar a landing).
+export async function getPortalFabricVideoUrl(): Promise<string | null> {
+  try {
+    const rows = await query<{ video_url: string }>(
+      `select video_url from portal_fabric_video
+        where disabled_at is null and video_url is not null and btrim(video_url) <> ''
+        order by created_at desc limit 1`,
+    );
+    return rows[0]?.video_url ?? null;
+  } catch {
+    return null;
+  }
+}
+
 // ─────────────────────── Analytics / Observabilidade ───────────────────────
 
 // registra uma visualização de artigo (chamado por /api/track, melhor-esforço)

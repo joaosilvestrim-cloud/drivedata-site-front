@@ -6,6 +6,7 @@ import { useScopedTheme } from '@/common/theme/useThemeMode';
 import { portalTheme as tk } from './theme';
 import { usePortal } from './usePortal';
 import { HeroSection } from './sections/HeroSection';
+import { VideoSection } from './sections/VideoSection';
 import { PillarsSection } from './sections/PillarsSection';
 import { HowSection } from './sections/HowSection';
 import { ArchitectureSection } from './sections/ArchitectureSection';
@@ -49,7 +50,7 @@ const Foot = styled.footer`
   a:hover { color: ${tk.colors.primary}; }
 `;
 
-export function PortalFabricLanding() {
+export function PortalFabricLanding({ videoUrl }: { videoUrl?: string | null }) {
   const { copy } = usePortal();
   const year = new Date().getFullYear();
 
@@ -65,6 +66,7 @@ export function PortalFabricLanding() {
       <HeroSection />
       <PillarsSection />
       <HowSection />
+      <VideoSection url={videoUrl} />
       <ArchitectureSection />
       <FeaturesSection />
       <RoiSection />

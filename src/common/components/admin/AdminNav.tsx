@@ -23,6 +23,7 @@ const GROUPS: { title: string; links: { href: string; label: string; icon: strin
       { href: '/admin/parceiros', label: 'Parceiros', icon: 'image' },
       { href: '/admin/faq', label: 'FAQ', icon: 'help' },
       { href: '/admin/profiles', label: 'Público-alvo', icon: 'users' },
+      { href: '/admin/portal-fabric-video', label: 'Vídeo Portal Fabric', icon: 'play' },
     ],
   },
   {

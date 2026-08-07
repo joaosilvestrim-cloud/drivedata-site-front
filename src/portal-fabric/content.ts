@@ -70,6 +70,7 @@ export interface PortalCopy {
     stats: { value: string; label: string }[];
     compatTitle: string; compat: string[];
   };
+  video: { eyebrow: string; title: string; subtitle: string };
   cta: { title: string; subtitle: string; ctaPrimary: string; ctaSecondary: string; badges: string[] };
   footer: { tagline: string; rights: string };
 }
@@ -329,6 +330,11 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       compatTitle: 'Compatível com',
       compat: ['Microsoft Fabric F2 a F64', 'Power BI Premium P1 a P5', 'Microsoft Entra ID', 'Azure Active Directory', 'Microsoft 365', 'Power BI Embedded A-SKU'],
     },
+    video: {
+      eyebrow: 'Demonstração',
+      title: 'Veja o Portal em ação',
+      subtitle: 'Um tour rápido pelo Portal DriveData rodando sobre a capacidade Microsoft Fabric: governança, relatórios embarcados e controle de custos na prática.',
+    },
     cta: {
       title: 'Pronto para transformar como sua empresa consome dados?',
       subtitle: 'Agende uma demonstração gratuita do Portal DriveData e veja na prática como a capacidade Microsoft Fabric pode reduzir seus custos de licenciamento e elevar a governança de BI da sua organização.',
@@ -559,6 +565,11 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       compatTitle: 'Compatible with',
       compat: ['Microsoft Fabric F2 a F64', 'Power BI Premium P1 a P5', 'Microsoft Entra ID', 'Azure Active Directory', 'Microsoft 365', 'Power BI Embedded A-SKU'],
     },
+    video: {
+      eyebrow: 'Demo',
+      title: 'See the Portal in action',
+      subtitle: 'A quick tour of the DriveData Portal running on Microsoft Fabric capacity: governance, embedded reports and cost control in practice.',
+    },
     cta: {
       title: 'Ready to transform how your company consumes data?',
       subtitle: 'Book a free demo of Portal DriveData and see in practice how Microsoft Fabric capacity can cut your licensing costs and raise your BI governance.',
@@ -788,6 +799,11 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       ],
       compatTitle: 'Compatible avec',
       compat: ['Microsoft Fabric F2 a F64', 'Power BI Premium P1 a P5', 'Microsoft Entra ID', 'Azure Active Directory', 'Microsoft 365', 'Power BI Embedded A-SKU'],
+    },
+    video: {
+      eyebrow: 'Démo',
+      title: 'Le Portail en action',
+      subtitle: 'Un aperçu rapide du Portail DriveData fonctionnant sur la capacité Microsoft Fabric : gouvernance, rapports intégrés et maîtrise des coûts en pratique.',
     },
     cta: {
       title: 'Prêt à transformer la façon dont votre entreprise consomme les données ?',

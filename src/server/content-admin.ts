@@ -98,6 +98,13 @@ export const ENTITIES: Record<string, EntityConfig> = {
       order: { col: 'order', type: 'int' },
     },
   },
+  'portal-fabric-video': {
+    table: 'portal_fabric_video',
+    orderBy: 'created_at desc',
+    fields: {
+      videoUrl: { col: 'video_url', type: 'text' },
+    },
+  },
 };
 
 // normaliza um valor i18n para objeto {pt,en,es,fr} (só com idiomas preenchidos)
