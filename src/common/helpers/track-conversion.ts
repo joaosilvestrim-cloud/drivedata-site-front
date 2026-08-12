@@ -3,7 +3,7 @@
 // clique do chat (cada mensagem era um <form>), inflando a conversão. Agora o
 // Google Ads deve usar este evento dedicado `lead_form_submit` como gatilho.
 export function trackLeadConversion(data: {
-  source: 'chat' | 'contact_form';
+  source: 'chat' | 'contact_form' | 'schedule' | 'whatsapp' | 'email';
   leadScore?: number;
   mql?: boolean;
 }) {
