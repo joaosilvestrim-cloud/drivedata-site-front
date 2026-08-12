@@ -9,16 +9,17 @@ import { BOOKING_URL } from '../booking';
 // Moldura de vidro com anel de gradiente da marca em volta do agendador do Bookings.
 // O interior (iframe da Microsoft) é claro e não pode ser estilizado; a moldura
 // suaviza o contraste e dá cara de widget intencional na página escura.
+// Moldura justa ao formulário do Bookings (~560px), borda rente ao iframe e cantos
+// arredondados clipando o branco. O anel de gradiente fica por cima da borda.
 const Frame = styled.div`
   position: relative;
-  max-width: 820px;
+  max-width: 560px;
   margin: 0 auto;
-  padding: 10px;
   border-radius: ${tk.radius.lg};
+  overflow: hidden;
   border: 1px solid ${tk.colors.border};
-  background: ${tk.colors.bgCard};
-  backdrop-filter: blur(14px);
   box-shadow: ${tk.shadows.card};
+  background: #fff;
 
   &::before {
     content: '';
@@ -31,6 +32,7 @@ const Frame = styled.div`
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
+    z-index: 1;
   }
 
   iframe {
@@ -38,7 +40,6 @@ const Frame = styled.div`
     width: 100%;
     height: 760px;
     border: 0;
-    border-radius: 14px;
     background: #fff;
     @media (max-width: 640px) { height: 880px; }
   }
