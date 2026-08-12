@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled';
 import { portalTheme as tk } from '../theme';
-import { Section, Inner, Glow, Eyebrow, SectionTitle, Subtitle, HeadCentered, Card, Reveal } from '../components/primitives';
+import { Section, Inner, Glow, SectionTitle, Subtitle, HeadCentered, Card, Reveal } from '../components/primitives';
 import { usePortal } from '../usePortal';
 import { openBooking } from '../booking';
 
@@ -12,20 +12,6 @@ const Grid = styled.div`
   gap: 20px;
   align-items: start;
   @media (max-width: 900px) { grid-template-columns: 1fr; }
-`;
-
-const TimeBadge = styled.div`
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-  padding: 10px 16px;
-  border-radius: 999px;
-  border: 1px solid ${tk.colors.borderActive};
-  background: ${tk.colors.primaryDim};
-  margin-bottom: 20px;
-
-  span.l { font-family: ${tk.fonts.body}; font-size: 12px; font-weight: 600; color: ${tk.colors.textSecondary}; text-transform: uppercase; letter-spacing: 0.06em; }
-  span.v { font-family: ${tk.fonts.heading}; font-size: 16px; font-weight: 800; color: ${tk.colors.primary}; }
 `;
 
 const BlockTitle = styled.p`
@@ -142,7 +128,6 @@ export function InstallSection() {
       <Glow y="-8%" x="50%" />
       <Inner>
         <HeadCentered>
-          <Eyebrow>{i.eyebrow}</Eyebrow>
           <SectionTitle>{i.title}</SectionTitle>
           <Subtitle>{i.subtitle}</Subtitle>
         </HeadCentered>
@@ -150,7 +135,6 @@ export function InstallSection() {
         <Reveal>
           <Grid>
             <Card>
-              <TimeBadge><span className="l">{i.timeLabel}</span><span className="v">{i.timeValue}</span></TimeBadge>
               <BlockTitle style={{ marginTop: 0 }}>{i.modesTitle}</BlockTitle>
               <Modes>
                 {i.modes.map(m => (

@@ -3,8 +3,15 @@
 // todos os botões "Agendar" da landing de uma vez.
 export const BOOKING_URL = 'https://outlook.office.com/book/DemonstraoPortalFabric2@drivedata.com.br/';
 
-/** Abre a agenda do Bookings numa aba nova. */
+/**
+ * Leva o usuário ao agendamento. Prioriza a agenda embutida na própria página
+ * (seção #agenda); se não existir, abre o Bookings numa aba nova.
+ */
 export function openBooking() {
+  if (typeof document !== 'undefined') {
+    const el = document.getElementById('agenda');
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+  }
   if (typeof window !== 'undefined') {
     window.open(BOOKING_URL, '_blank', 'noopener,noreferrer');
   }

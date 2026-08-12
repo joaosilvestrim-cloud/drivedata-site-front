@@ -80,6 +80,7 @@ export interface PortalCopy {
     cta: string;
   };
   faq: { eyebrow: string; title: string; subtitle: string; items: { q: string; a: string }[] };
+  schedule: { title: string; subtitle: string };
   cta: { title: string; subtitle: string; ctaPrimary: string; ctaSecondary: string; badges: string[] };
   footer: { tagline: string; rights: string };
 }
@@ -382,6 +383,10 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
         { q: 'Com quais capacidades funciona?', a: 'Com Microsoft Fabric (F2 a F64), Power BI Premium e Power BI Embedded.' },
       ],
     },
+    schedule: {
+      title: 'Agende sua demonstração',
+      subtitle: 'Escolha o melhor horário abaixo. O convite cai direto na sua agenda e na nossa.',
+    },
     cta: {
       title: 'Pronto para transformar como sua empresa consome dados?',
       subtitle: 'Agende uma demonstração gratuita do Portal DriveData e veja na prática como a capacidade Microsoft Fabric pode reduzir seus custos de licenciamento e elevar a governança de BI da sua organização.',
@@ -655,6 +660,10 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
         { q: 'Which capacities does it work with?', a: 'With Microsoft Fabric (F2 to F64), Power BI Premium and Power BI Embedded.' },
       ],
     },
+    schedule: {
+      title: 'Book your demo',
+      subtitle: 'Pick the best time below. The invite lands straight in your calendar and ours.',
+    },
     cta: {
       title: 'Ready to transform how your company consumes data?',
       subtitle: 'Book a free demo of Portal DriveData and see in practice how Microsoft Fabric capacity can cut your licensing costs and raise your BI governance.',
@@ -927,6 +936,10 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
         { q: 'Y a-t-il du support après l’installation ?', a: 'Oui. Vous bénéficiez du support de DriveData pour les évolutions, ajustements et nouveaux besoins.' },
         { q: 'Avec quelles capacités cela fonctionne-t-il ?', a: 'Avec Microsoft Fabric (F2 à F64), Power BI Premium et Power BI Embedded.' },
       ],
+    },
+    schedule: {
+      title: 'Réservez votre démo',
+      subtitle: 'Choisissez le meilleur créneau ci-dessous. L’invitation arrive directement dans votre agenda et le nôtre.',
     },
     cta: {
       title: 'Prêt à transformer la façon dont votre entreprise consomme les données ?',

@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled';
 import { portalTheme as tk } from '../theme';
-import { Section, Inner, Glow, Eyebrow, SectionTitle, Subtitle, HeadCentered, Reveal } from '../components/primitives';
+import { Section, Inner, Glow, SectionTitle, Subtitle, HeadCentered, Reveal } from '../components/primitives';
 import { usePortal } from '../usePortal';
 
 // Moldura 16:9 com anel de gradiente da marca (mesmo estilo dos cards).
@@ -74,7 +74,6 @@ export function VideoSection({ url }: { url?: string | null }) {
       <Glow y="-10%" x="50%" />
       <Inner>
         <HeadCentered>
-          <Eyebrow>{v.eyebrow}</Eyebrow>
           <SectionTitle>{v.title}</SectionTitle>
           <Subtitle>{v.subtitle}</Subtitle>
         </HeadCentered>
