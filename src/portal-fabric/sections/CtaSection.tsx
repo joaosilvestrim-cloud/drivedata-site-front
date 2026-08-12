@@ -3,6 +3,7 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { useTypebot } from '@/common/providers/TypebotProvider';
+import { openBooking } from '../booking';
 import { portalTheme as tk } from '../theme';
 import { Section, Inner, Glow } from '../components/primitives';
 import { usePortal } from '../usePortal';
@@ -111,7 +112,7 @@ export function CtaSection() {
           <Title>{c.title}</Title>
           <Sub>{c.subtitle}</Sub>
           <Actions>
-            <Primary type="button" onClick={openTypebot}>{c.ctaPrimary}</Primary>
+            <Primary type="button" onClick={openBooking}>{c.ctaPrimary}</Primary>
             <Ghost type="button" onClick={openTypebot}>{c.ctaSecondary}</Ghost>
           </Actions>
           <Badges>

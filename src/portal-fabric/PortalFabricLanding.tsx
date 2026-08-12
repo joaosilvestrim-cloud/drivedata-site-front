@@ -14,6 +14,8 @@ import { FeaturesSection } from './sections/FeaturesSection';
 import { RoiSection } from './sections/RoiSection';
 import { ComparisonSection } from './sections/ComparisonSection';
 import { ProofSection } from './sections/ProofSection';
+import { InstallSection } from './sections/InstallSection';
+import { FaqSection } from './sections/FaqSection';
 import { CtaSection } from './sections/CtaSection';
 
 const Wrapper = styled.main`
@@ -72,6 +74,8 @@ export function PortalFabricLanding({ videoUrl }: { videoUrl?: string | null }) 
       <RoiSection />
       <ComparisonSection />
       <ProofSection />
+      <InstallSection />
+      <FaqSection />
       <CtaSection />
 
       <Foot>

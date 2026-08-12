@@ -3,7 +3,7 @@
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import { motion } from 'framer-motion';
-import { useTypebot } from '@/common/providers/TypebotProvider';
+import { openBooking } from '../booking';
 import { portalTheme as tk } from '../theme';
 import { Section, Inner, Glow } from '../components/primitives';
 import { CountUp } from '../components/CountUp';
@@ -224,7 +224,6 @@ const BarFill = styled.div<{ w: number }>`
 
 export function HeroSection() {
   const { copy } = usePortal();
-  const { openTypebot } = useTypebot();
   const h = copy.hero;
 
   return (
@@ -236,7 +235,7 @@ export function HeroSection() {
             <Title>{h.title}</Title>
             <Sub>{h.subtitle}</Sub>
             <Actions>
-              <Primary type="button" onClick={openTypebot}>
+              <Primary type="button" onClick={openBooking}>
                 {h.ctaPrimary}
               </Primary>
               <Ghost href="#roi">{h.ctaSecondary} →</Ghost>

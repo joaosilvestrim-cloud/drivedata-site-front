@@ -71,6 +71,15 @@ export interface PortalCopy {
     compatTitle: string; compat: string[];
   };
   video: { eyebrow: string; title: string; subtitle: string };
+  install: {
+    eyebrow: string; title: string; subtitle: string;
+    timeLabel: string; timeValue: string;
+    modesTitle: string; modes: { title: string; desc: string }[];
+    prereqTitle: string; prereqs: string[];
+    stepsTitle: string; steps: { title: string; desc: string }[];
+    cta: string;
+  };
+  faq: { eyebrow: string; title: string; subtitle: string; items: { q: string; a: string }[] };
   cta: { title: string; subtitle: string; ctaPrimary: string; ctaSecondary: string; badges: string[] };
   footer: { tagline: string; rights: string };
 }
@@ -335,6 +344,44 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       title: 'Veja o Portal em ação',
       subtitle: 'Um tour rápido pelo Portal DriveData rodando sobre a capacidade Microsoft Fabric: governança, relatórios embarcados e controle de custos na prática.',
     },
+    install: {
+      eyebrow: 'Implantação',
+      title: 'Rápido de instalar, do nosso jeito',
+      subtitle: 'A instalação é feita no seu próprio ambiente Microsoft, com o nosso time ao seu lado. Nada é instalado na máquina dos usuários.',
+      timeLabel: 'Tempo médio', timeValue: '1 a 2 dias úteis',
+      modesTitle: 'Como instalamos',
+      modes: [
+        { title: 'Assistida', desc: 'Nosso time conduz a instalação de ponta a ponta, junto com o seu TI.' },
+        { title: 'Guiada', desc: 'Você instala seguindo nossa documentação passo a passo, com suporte quando precisar.' },
+      ],
+      prereqTitle: 'Pré-requisitos',
+      prereqs: [
+        'Tenant Microsoft / Azure ativo',
+        'Permissão de administrador global (Global Admin)',
+        'Workspace do Power BI publicado',
+        'Licença Power BI Pro, Premium, Fabric ou Embedded',
+      ],
+      stepsTitle: 'O que configuramos',
+      steps: [
+        { title: 'Registro de aplicação (Entra ID)', desc: 'Criamos o app e o service principal que conectam o portal ao seu Power BI com segurança.' },
+        { title: 'Capacidade Fabric', desc: 'Associação da capacidade (F2 a F64) ao workspace que vai servir os relatórios.' },
+        { title: 'Admin do Power BI', desc: 'Ativação das permissões de embedding e associação do workspace ao grupo de acesso.' },
+        { title: 'Portal no ar', desc: 'Publicação do portal com controle de acesso por usuário, pronto para uso.' },
+      ],
+      cta: 'Agendar a instalação',
+    },
+    faq: {
+      eyebrow: 'Dúvidas frequentes',
+      title: 'Perguntas frequentes',
+      subtitle: 'O que as empresas mais perguntam antes de começar.',
+      items: [
+        { q: 'É legal e está dentro das regras da Microsoft?', a: 'Sim. O portal usa o modelo oficial App Owns Data do Power BI Embedded, dentro dos termos de licenciamento da Microsoft.' },
+        { q: 'Preciso instalar algo na minha máquina?', a: 'Não. Tudo roda no seu ambiente Microsoft e no navegador. Não há software para instalar no computador dos usuários.' },
+        { q: 'Quanto tempo leva a instalação?', a: 'Em média de 1 a 2 dias úteis, dependendo do seu ambiente. Nosso time acompanha todo o processo.' },
+        { q: 'Tem suporte depois de instalado?', a: 'Sim. Você conta com o suporte da DriveData para evolução, ajustes e novas necessidades.' },
+        { q: 'Com quais capacidades funciona?', a: 'Com Microsoft Fabric (F2 a F64), Power BI Premium e Power BI Embedded.' },
+      ],
+    },
     cta: {
       title: 'Pronto para transformar como sua empresa consome dados?',
       subtitle: 'Agende uma demonstração gratuita do Portal DriveData e veja na prática como a capacidade Microsoft Fabric pode reduzir seus custos de licenciamento e elevar a governança de BI da sua organização.',
@@ -570,6 +617,44 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       title: 'See the Portal in action',
       subtitle: 'A quick tour of the DriveData Portal running on Microsoft Fabric capacity: governance, embedded reports and cost control in practice.',
     },
+    install: {
+      eyebrow: 'Deployment',
+      title: 'Quick to install, done our way',
+      subtitle: 'Installation runs in your own Microsoft environment, with our team by your side. Nothing is installed on end users’ machines.',
+      timeLabel: 'Average time', timeValue: '1 to 2 business days',
+      modesTitle: 'How we install',
+      modes: [
+        { title: 'Assisted', desc: 'Our team runs the installation end to end, together with your IT.' },
+        { title: 'Guided', desc: 'You install it following our step-by-step documentation, with support whenever you need.' },
+      ],
+      prereqTitle: 'Prerequisites',
+      prereqs: [
+        'Active Microsoft / Azure tenant',
+        'Global Admin permission',
+        'Published Power BI workspace',
+        'Power BI Pro, Premium, Fabric or Embedded license',
+      ],
+      stepsTitle: 'What we set up',
+      steps: [
+        { title: 'App registration (Entra ID)', desc: 'We create the app and service principal that securely connect the portal to your Power BI.' },
+        { title: 'Fabric capacity', desc: 'Assigning the capacity (F2 to F64) to the workspace that will serve the reports.' },
+        { title: 'Power BI Admin', desc: 'Enabling the embedding settings and linking the workspace to the access group.' },
+        { title: 'Portal live', desc: 'Publishing the portal with per-user access control, ready to use.' },
+      ],
+      cta: 'Schedule the installation',
+    },
+    faq: {
+      eyebrow: 'FAQ',
+      title: 'Frequently asked questions',
+      subtitle: 'What companies most often ask before getting started.',
+      items: [
+        { q: 'Is it legal and within Microsoft’s rules?', a: 'Yes. The portal uses Power BI Embedded’s official App Owns Data model, within Microsoft’s licensing terms.' },
+        { q: 'Do I need to install anything on my machine?', a: 'No. Everything runs in your Microsoft environment and in the browser. There is no software to install on users’ computers.' },
+        { q: 'How long does the installation take?', a: 'On average 1 to 2 business days, depending on your environment. Our team supports the whole process.' },
+        { q: 'Is there support after installation?', a: 'Yes. You have DriveData’s support for evolution, adjustments and new needs.' },
+        { q: 'Which capacities does it work with?', a: 'With Microsoft Fabric (F2 to F64), Power BI Premium and Power BI Embedded.' },
+      ],
+    },
     cta: {
       title: 'Ready to transform how your company consumes data?',
       subtitle: 'Book a free demo of Portal DriveData and see in practice how Microsoft Fabric capacity can cut your licensing costs and raise your BI governance.',
@@ -804,6 +889,44 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       eyebrow: 'Démo',
       title: 'Le Portail en action',
       subtitle: 'Un aperçu rapide du Portail DriveData fonctionnant sur la capacité Microsoft Fabric : gouvernance, rapports intégrés et maîtrise des coûts en pratique.',
+    },
+    install: {
+      eyebrow: 'Déploiement',
+      title: 'Rapide à installer, à notre façon',
+      subtitle: 'L’installation se fait dans votre propre environnement Microsoft, avec notre équipe à vos côtés. Rien n’est installé sur les postes des utilisateurs.',
+      timeLabel: 'Durée moyenne', timeValue: '1 à 2 jours ouvrés',
+      modesTitle: 'Comment nous installons',
+      modes: [
+        { title: 'Assistée', desc: 'Notre équipe mène l’installation de bout en bout, avec votre service informatique.' },
+        { title: 'Guidée', desc: 'Vous installez en suivant notre documentation pas à pas, avec du support au besoin.' },
+      ],
+      prereqTitle: 'Prérequis',
+      prereqs: [
+        'Locataire (tenant) Microsoft / Azure actif',
+        'Autorisation d’administrateur global (Global Admin)',
+        'Espace de travail Power BI publié',
+        'Licence Power BI Pro, Premium, Fabric ou Embedded',
+      ],
+      stepsTitle: 'Ce que nous configurons',
+      steps: [
+        { title: 'Enregistrement d’application (Entra ID)', desc: 'Nous créons l’application et le service principal qui relient le portail à votre Power BI en toute sécurité.' },
+        { title: 'Capacité Fabric', desc: 'Association de la capacité (F2 à F64) à l’espace de travail qui servira les rapports.' },
+        { title: 'Admin Power BI', desc: 'Activation des paramètres d’intégration et liaison de l’espace de travail au groupe d’accès.' },
+        { title: 'Portail en ligne', desc: 'Publication du portail avec contrôle d’accès par utilisateur, prêt à l’emploi.' },
+      ],
+      cta: 'Planifier l’installation',
+    },
+    faq: {
+      eyebrow: 'FAQ',
+      title: 'Questions fréquentes',
+      subtitle: 'Ce que les entreprises demandent le plus avant de commencer.',
+      items: [
+        { q: 'Est-ce légal et conforme aux règles de Microsoft ?', a: 'Oui. Le portail utilise le modèle officiel App Owns Data de Power BI Embedded, dans le cadre des conditions de licence de Microsoft.' },
+        { q: 'Dois-je installer quelque chose sur mon poste ?', a: 'Non. Tout fonctionne dans votre environnement Microsoft et dans le navigateur. Aucun logiciel à installer sur les postes des utilisateurs.' },
+        { q: 'Combien de temps prend l’installation ?', a: 'En moyenne 1 à 2 jours ouvrés, selon votre environnement. Notre équipe accompagne tout le processus.' },
+        { q: 'Y a-t-il du support après l’installation ?', a: 'Oui. Vous bénéficiez du support de DriveData pour les évolutions, ajustements et nouveaux besoins.' },
+        { q: 'Avec quelles capacités cela fonctionne-t-il ?', a: 'Avec Microsoft Fabric (F2 à F64), Power BI Premium et Power BI Embedded.' },
+      ],
     },
     cta: {
       title: 'Prêt à transformer la façon dont votre entreprise consomme les données ?',
