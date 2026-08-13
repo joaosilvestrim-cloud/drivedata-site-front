@@ -311,14 +311,67 @@ export async function getDashboardStats(lang: Lang = 'pt') {
                 where created_at >= now() - interval '90 days' group by 1 order by 2 desc limit 8`),
     pool.query(`select id, title, scheduled_at from article where status='scheduled' order by scheduled_at asc limit 10`),
   ]);
+
+  // ── Métricas extras (audiência, origem do tráfego, idiomas, páginas, tendência) ──
+  const [sessions30, prev30, byChannel, byLang, topPages, byWeekday] = await Promise.all([
+    pool.query(`select count(distinct session_id)::int n from article_view
+                where created_at >= now() - interval '30 days' and session_id is not null`),
+    pool.query(`select count(*)::int n from article_view
+                where created_at >= now() - interval '60 days' and created_at < now() - interval '30 days'`),
+    pool.query(`select ${CHANNEL_CASE} as channel, count(*)::int n
+                from article_view where created_at >= now() - interval '30 days'
+                group by 1 order by 2 desc`),
+    pool.query(`select coalesce(nullif(lang,''),'??') lang, count(*)::int n from article_view
+                where created_at >= now() - interval '30 days' group by 1 order by 2 desc`),
+    pool.query(`select coalesce(nullif(path,''),'/') path, count(*)::int n from article_view
+                where created_at >= now() - interval '30 days' group by 1 order by 2 desc limit 8`),
+    pool.query(`select extract(dow from created_at)::int dow, count(*)::int n from article_view
+                where created_at >= now() - interval '90 days' group by 1 order by 1`),
+  ]);
+
   return {
     counts: counts.rows[0],
-    views: { total: viewsTotal.rows[0].n, last30: views30.rows[0].n },
+    views: { total: viewsTotal.rows[0].n, last30: views30.rows[0].n, prev30: prev30.rows[0].n, sessions30: sessions30.rows[0].n },
     viewsByDay: viewsByDay.rows,
     topArticles: topArticles.rows.map((r: any) => ({ id: r.id, title: t(r.title, lang), views: r.views })),
     byCountry: byCountry.rows,
     byReferrer: byReferrer.rows,
+    byChannel: byChannel.rows,
+    byLang: byLang.rows,
+    topPages: topPages.rows,
+    byWeekday: byWeekday.rows,
     scheduled: scheduled.rows.map((r: any) => ({ id: r.id, title: t(r.title, lang), scheduledAt: r.scheduled_at })),
+  };
+}
+
+// Categoriza o referrer_host em canais de aquisição (usado no dashboard e no detalhe do dia).
+const CHANNEL_CASE = `case
+  when referrer_host is null or referrer_host = '' then 'Direto'
+  when referrer_host ~* '(google|bing|duckduckgo|yahoo|ecosia|search|syndicatedsearch)' then 'Busca orgânica'
+  when referrer_host ~* '(linkedin|lnkd|facebook|fb\\.|instagram|twitter|t\\.co|youtube|tiktok|whatsapp)' then 'Social'
+  when referrer_host ~* '(chatgpt|openai|perplexity|gemini|bard|claude|copilot)' then 'IA'
+  when referrer_host ~* '(teams|onecdn|office|outlook|sharepoint|vercel)' then 'Interno / Compartilhado'
+  else 'Referência'
+end`;
+
+// Detalhe de um dia específico (para o clique no gráfico): total, sessões, páginas, países, canais.
+export async function getDayStats(day: string) {
+  const pool = getPool();
+  const d = /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : new Date(day).toISOString().slice(0, 10);
+  const where = `created_at >= $1::date and created_at < ($1::date + interval '1 day')`;
+  const [totals, pages, countries, channels] = await Promise.all([
+    pool.query(`select count(*)::int views, count(distinct session_id)::int sessions from article_view where ${where}`, [d]),
+    pool.query(`select coalesce(nullif(path,''),'/') path, count(*)::int n from article_view where ${where} group by 1 order by 2 desc limit 6`, [d]),
+    pool.query(`select coalesce(country,'??') country, count(*)::int n from article_view where ${where} group by 1 order by 2 desc limit 6`, [d]),
+    pool.query(`select ${CHANNEL_CASE} as channel, count(*)::int n from article_view where ${where} group by 1 order by 2 desc`, [d]),
+  ]);
+  return {
+    day: d,
+    views: totals.rows[0]?.views ?? 0,
+    sessions: totals.rows[0]?.sessions ?? 0,
+    pages: pages.rows,
+    countries: countries.rows,
+    channels: channels.rows,
   };
 }
 
