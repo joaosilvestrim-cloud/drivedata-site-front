@@ -12,6 +12,8 @@ type Stats = {
   counts: Record<string, number>;
 };
 const fmt = (n: number) => new Intl.NumberFormat('pt-BR').format(n || 0);
+// Parse local seguro para 'YYYY-MM-DD' (evita o deslize de 1 dia por fuso do new Date()).
+const parseDay = (s: string) => new Date(/^\d{4}-\d{2}-\d{2}$/.test(s) ? `${s}T00:00:00` : s);
 const FLAG: Record<string, string> = { BR: '🇧🇷', US: '🇺🇸', PT: '🇵🇹', FR: '🇫🇷', CA: '🇨🇦', ES: '🇪🇸', GB: '🇬🇧', DE: '🇩🇪', '??': '🌐' };
 
 export function AnalyticsClient() {
@@ -32,24 +34,40 @@ export function AnalyticsClient() {
       <PageHeader title="Analytics" subtitle="Audiência do site nos últimos períodos." icon="chart" />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px,1fr))', gap: 14, marginBottom: 16 }}>
-        <Mini label="Visitas totais" value={fmt(s.views.total)} />
-        <Mini label="Últimos 30 dias" value={fmt(s.views.last30)} />
-        <Mini label="Média diária (30d)" value={fmt(avg)} />
-        <Mini label="Artigos publicados" value={fmt(s.counts?.published || 0)} />
+        <Mini label="Visitas totais" value={fmt(s.views.total)} hint="Todas as visitas de página registradas desde o início do rastreamento." />
+        <Mini label="Últimos 30 dias" value={fmt(s.views.last30)} hint="Visitas de página nos últimos 30 dias." />
+        <Mini label="Média diária (30d)" value={fmt(avg)} hint="Média de visitas por dia no período de 30 dias." />
+        <Mini label="Artigos publicados" value={fmt(s.counts?.published || 0)} hint="Artigos ativos e visíveis no blog." />
       </div>
 
       <Card style={{ marginBottom: 16 }}>
-        <h3 style={h3}>Visitas por dia (30 dias)</h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12 }}>
+          <h3 style={h3}>Visitas por dia (30 dias)</h3>
+          {(s.viewsByDay || []).length > 0 && (
+            <span style={{ fontSize: 11.5, color: C.faint }}>pico: {fmt(max)}/dia</span>
+          )}
+        </div>
         {(s.viewsByDay || []).length === 0 ? (
           <div style={{ color: C.faint, padding: 16 }}>Ainda sem visitas registradas. O rastreamento começa assim que o site recebe acessos.</div>
         ) : (
-          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 200, paddingTop: 10 }}>
-            {s.viewsByDay.map((d) => (
-              <div key={d.day} title={`${new Date(d.day).toLocaleDateString('pt-BR')}: ${d.n} visitas`} style={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                <div style={{ height: `${(d.n / max) * 100}%`, minHeight: d.n ? 4 : 0, background: C.gradient, borderRadius: 4 }} />
-              </div>
-            ))}
-          </div>
+          <>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 200, paddingTop: 10 }}>
+              {s.viewsByDay.map((d) => (
+                <div key={d.day} title={`${parseDay(d.day).toLocaleDateString('pt-BR')}: ${d.n} visitas`} style={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                  <div style={{ height: `${(d.n / max) * 100}%`, minHeight: d.n ? 4 : 0, background: C.gradient, borderRadius: 4 }} />
+                </div>
+              ))}
+            </div>
+            {/* Eixo X: dia do mês de cada barra */}
+            <div style={{ display: 'flex', gap: 3, marginTop: 6, borderTop: `1px solid ${C.border}`, paddingTop: 6 }}>
+              {s.viewsByDay.map((d) => (
+                <div key={d.day} style={{ flex: 1, textAlign: 'center', fontSize: 9.5, color: C.faint, fontVariantNumeric: 'tabular-nums' }}>
+                  {parseDay(d.day).getDate()}
+                </div>
+              ))}
+            </div>
+            <div style={{ textAlign: 'center', fontSize: 10.5, color: C.faint, marginTop: 4 }}>Dia do mês</div>
+          </>
         )}
       </Card>
 
@@ -85,11 +103,12 @@ export function AnalyticsClient() {
   );
 }
 
-function Mini({ label, value }: { label: string; value: string }) {
+function Mini({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
     <Card>
       <div style={{ color: C.muted, fontSize: 12.5 }}>{label}</div>
       <div style={{ fontSize: 28, fontWeight: 800, marginTop: 6 }}>{value}</div>
+      {hint && <div style={{ color: C.faint, fontSize: 11, marginTop: 6, lineHeight: 1.4 }}>{hint}</div>}
     </Card>
   );
 }
