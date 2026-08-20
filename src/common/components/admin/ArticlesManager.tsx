@@ -6,8 +6,26 @@ import { useEffect, useMemo, useState } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
 import { C, Card, Button, Badge, Icon, Modal, Field, Input, Textarea, Select, PageHeader, ErrorBar, Spinner, table as T } from './ui';
 import { MediaPicker } from './MediaPicker';
+import { VideoInsertModal, type VideoInsert } from './VideoInsertModal';
 
-const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
+// Registra os blots de vídeo (MP4 + YouTube) no Quill ao carregar o editor no
+// cliente, antes de renderizar.
+const ReactQuill = dynamic(
+  async () => {
+    const mod = await import('react-quill-new');
+    const { registerVideoBlots } = await import('./quill-video');
+    registerVideoBlots((mod as unknown as { Quill: unknown }).Quill);
+    return mod.default;
+  },
+  { ssr: false },
+);
+
+type QuillLike = {
+  getSelection: (f?: boolean) => { index: number } | null;
+  getLength: () => number;
+  insertEmbed: (i: number, t: string, v: string, s?: string) => void;
+  setSelection: (i: number) => void;
+};
 
 type I18n = Record<string, string>;
 type DocAsset = { name: string; url: string; mime?: string; size?: number };
@@ -34,7 +52,7 @@ const QUILL_TOOLBAR = [
   [{ header: [1, 2, 3, false] }],
   ['bold', 'italic', 'underline', 'strike'],
   [{ list: 'ordered' }, { list: 'bullet' }],
-  ['blockquote', 'link', 'image'],
+  ['blockquote', 'link', 'image', 'video'],
   [{ align: [] }],
   ['clean'],
 ];
@@ -73,17 +91,21 @@ export function ArticlesManager() {
   const [slugTouched, setSlugTouched] = useState(false);
   const [transEnabled, setTransEnabled] = useState(false);
   const [showMedia, setShowMedia] = useState(false);
+  // Editor de vídeo: guarda a instância do Quill + posição do cursor enquanto o
+  // modal de inserção de vídeo está aberto.
+  const [videoCtx, setVideoCtx] = useState<{ quill: QuillLike; range: number } | null>(null);
 
   // Handler de imagem do editor: em vez de embutir base64 gigante no corpo
   // (padrão do Quill, que não salva direito), sobe a imagem pro storage e
-  // insere a URL pública.
+  // insere a URL pública. O handler de vídeo abre o modal de inserção (YouTube
+  // ou upload de MP4), guardando a posição do cursor.
   const quillModules = useMemo(
     () => ({
       toolbar: {
         container: QUILL_TOOLBAR,
         handlers: {
           image() {
-            const quill = (this as unknown as { quill: { getSelection: (f?: boolean) => { index: number } | null; insertEmbed: (i: number, t: string, v: string, s?: string) => void; setSelection: (i: number) => void } }).quill;
+            const quill = (this as unknown as { quill: QuillLike }).quill;
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = 'image/*';
@@ -104,11 +126,25 @@ export function ArticlesManager() {
             };
             input.click();
           },
+          video() {
+            const quill = (this as unknown as { quill: QuillLike }).quill;
+            const sel = quill.getSelection(true);
+            setVideoCtx({ quill, range: sel ? sel.index : quill.getLength() });
+          },
         },
       },
     }),
     [],
   );
+
+  function insertVideo(v: VideoInsert) {
+    if (!videoCtx) return;
+    const { quill, range } = videoCtx;
+    const blot = v.type === 'youtube' ? 'video' : 'dvvideo';
+    quill.insertEmbed(range, blot, v.src, 'user');
+    quill.setSelection(range + 1);
+    setVideoCtx(null);
+  }
   const [preview, setPreview] = useState(false);
 
   async function load() {
@@ -488,6 +524,19 @@ export function ArticlesManager() {
               <Field label="Resumo (aparece nos cards)" action={transAction('description')}><Textarea value={getI18n('description')} onChange={(e) => setI18n('description', e.target.value)} /></Field>
               <Field label="Conteúdo" action={transAction('content')}>
                 <div style={{ background: '#fff', borderRadius: 10, color: '#111', overflow: 'hidden' }}>
+                  {/* Prévia dos vídeos dentro do editor (o blot não usa a classe
+                      ql-video, então definimos o tamanho aqui). */}
+                  <style>{`
+                    .ql-editor iframe, .ql-editor video {
+                      display: block;
+                      width: 100%;
+                      max-width: 100%;
+                      margin: 12px 0;
+                      border-radius: 8px;
+                    }
+                    .ql-editor iframe { aspect-ratio: 16 / 9; border: 0; }
+                    .ql-editor video { height: auto; background: #000; }
+                  `}</style>
                   <ReactQuill theme="snow" modules={quillModules} value={getI18n('content')} onChange={(v: string) => setI18n('content', v)} />
                 </div>
               </Field>
@@ -612,6 +661,10 @@ export function ArticlesManager() {
 
       {showMedia && (
         <MediaPicker kind="image" onClose={() => setShowMedia(false)} onPick={(url) => { setForm((p) => ({ ...p, imageUrl: url })); setShowMedia(false); }} />
+      )}
+
+      {videoCtx && (
+        <VideoInsertModal onClose={() => setVideoCtx(null)} onInsert={insertVideo} />
       )}
 
       {preview && editing && (

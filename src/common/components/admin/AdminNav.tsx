@@ -1,6 +1,7 @@
 'use client';
 
 import { supabaseBrowser } from '@/common/supabase/browser';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { C, Icon } from './ui';
@@ -50,7 +51,7 @@ export function AdminNav({ email }: { email?: string }) {
   return (
     <aside style={S.aside}>
       <div style={S.brand}>
-        <span style={S.logoMark}>D</span>
+        <Image src="/drive-data-icon.png" alt="DriveData" width={34} height={34} priority style={S.logoMark} />
         <div>
           <div style={{ fontSize: 18, fontWeight: 800, lineHeight: 1 }}>
             Drive<span style={{ background: C.gradient, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>Data</span>
@@ -99,7 +100,7 @@ const S: Record<string, React.CSSProperties> = {
     padding: '20px 14px', display: 'flex', flexDirection: 'column', gap: 18, position: 'sticky', top: 0, alignSelf: 'flex-start',
   },
   brand: { display: 'flex', alignItems: 'center', gap: 11, padding: '4px 8px 14px', borderBottom: `1px solid ${C.border}` },
-  logoMark: { width: 34, height: 34, borderRadius: 10, background: C.gradient, color: '#06121f', fontWeight: 900, fontSize: 19, display: 'flex', alignItems: 'center', justifyContent: 'center' },
+  logoMark: { width: 34, height: 34, objectFit: 'contain', flexShrink: 0 },
   groupTitle: { fontSize: 10.5, color: C.faint, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, padding: '0 10px 6px' },
   link: { display: 'flex', alignItems: 'center', gap: 11, color: C.muted, textDecoration: 'none', padding: '9px 11px', borderRadius: 9, fontSize: 13.5, fontWeight: 500 },
   linkActive: { background: 'rgba(10,150,236,.13)', color: C.text, fontWeight: 600 },

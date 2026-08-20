@@ -9,10 +9,10 @@ export async function GET(req: Request) {
   if (!(await getAdminUser())) return Response.json({ error: 'não autorizado' }, { status: 401 });
   try {
     const url = new URL(req.url);
-    const kind = url.searchParams.get('kind'); // 'image' | 'document' | null
+    const kind = url.searchParams.get('kind'); // 'image' | 'video' | 'document' | null
     const params: any[] = [];
     let sql = `select id, url, path, file_name, mime_type, size_bytes, kind, width, height, created_at from media_asset`;
-    if (kind === 'image' || kind === 'document') {
+    if (kind === 'image' || kind === 'video' || kind === 'document') {
       params.push(kind);
       sql += ` where kind = $${params.length}`;
     }

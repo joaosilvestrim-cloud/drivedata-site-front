@@ -213,6 +213,38 @@ export const ArticleContent = styled.div`
     }
   }
 
+  /* Vídeos do corpo: YouTube (iframe) em proporção 16:9 e MP4 hospedado
+     (video) ajustando a altura pela proporção nativa. Responsivos em qualquer
+     largura. O dimensionamento vem daqui porque o normalizador do servidor
+     remove width/height das tags. */
+  iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: 8px;
+    margin: ${theme.spacing.xl} 0;
+    display: block;
+
+    @media (max-width: ${theme.breakpoints.sm}) {
+      margin: ${theme.spacing.lg} 0;
+      border-radius: 6px;
+    }
+  }
+
+  video {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: ${theme.spacing.xl} 0;
+    display: block;
+    background: #000;
+
+    @media (max-width: ${theme.breakpoints.sm}) {
+      margin: ${theme.spacing.lg} 0;
+      border-radius: 6px;
+    }
+  }
+
   hr {
     border: none;
     border-top: 1px solid rgb(var(--dd-ink-rgb) / 0.12);
