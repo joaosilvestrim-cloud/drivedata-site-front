@@ -96,6 +96,11 @@ export async function getArticles(
   opts: { search?: string | null; limit?: number | null; tag?: string | null; categoryId?: string | null } = {},
   lang: Lang = 'pt',
 ) {
+  // Auto-publica na hora os agendados cujo horário já passou — não espera o cron
+  // diário. Best-effort, não bloqueia a listagem (o artigo já aparece via
+  // PUBLIC_WHERE de qualquer forma; isto acerta o status para 'published').
+  void publishDueScheduled().catch(() => {});
+
   const params: any[] = [];
   let sql = `select a.*, row_to_json(c.*) as category
              from article a
