@@ -22,12 +22,15 @@ const DEEPL_SOURCE: Record<string, string> = { pt: 'PT', en: 'EN', fr: 'FR', es:
 
 const CHUNK_BUDGET = 90_000; // bytes por requisição (folga sob os limites dos provedores)
 
-type Provider = 'google' | 'deepl' | 'libre' | null;
+type Provider = 'groq' | 'google' | 'deepl' | 'libre' | null;
 function provider(): Provider {
   const forced = (process.env.TRANSLATE_PROVIDER || '').toLowerCase();
+  if (forced === 'groq' && process.env.GROQ_API_KEY) return 'groq';
   if (forced === 'google' && process.env.GOOGLE_TRANSLATE_API_KEY) return 'google';
   if (forced === 'deepl' && process.env.DEEPL_API_KEY) return 'deepl';
   if (forced === 'libre' && process.env.LIBRETRANSLATE_URL) return 'libre';
+  // Sem TRANSLATE_PROVIDER: Groq (LLM) é o preferido quando há chave.
+  if (process.env.GROQ_API_KEY) return 'groq';
   if (process.env.GOOGLE_TRANSLATE_API_KEY) return 'google';
   if (process.env.DEEPL_API_KEY) return 'deepl';
   if (process.env.LIBRETRANSLATE_URL) return 'libre';
@@ -61,6 +64,42 @@ function hardSplit(s: string, budget: number): string[] {
 }
 
 // ───────── provedores ─────────
+const LANG_NAME: Record<string, string> = { pt: 'português (Brasil)', en: 'inglês', es: 'espanhol', fr: 'francês' };
+// Groq (LLM, OpenAI-compatível). Traduz preservando o HTML — só o texto visível.
+const GROQ_MODEL = process.env.GROQ_MODEL || 'openai/gpt-oss-120b';
+async function groqTranslate(texts: string[], from: string, to: string): Promise<string[]> {
+  const key = process.env.GROQ_API_KEY!;
+  const src = LANG_NAME[from] ?? from, tgt = LANG_NAME[to] ?? to;
+  const sys = `Você é um tradutor profissional. Traduza o texto de ${src} para ${tgt}. `
+    + `Se houver HTML, preserve EXATAMENTE todas as tags, atributos e estrutura; traduza apenas o texto visível ao leitor `
+    + `(e os atributos alt/title quando existirem). Não adicione, remova ou reordene tags. `
+    + `Não envolva a saída em blocos de código. Responda SOMENTE com o texto/HTML traduzido, sem comentários.`;
+  const out: string[] = [];
+  for (const q of texts) {
+    if (!q || !q.trim()) { out.push(q ?? ''); continue; }
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', Authorization: `Bearer ${key}` },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        temperature: 0,
+        max_tokens: 8000,
+        messages: [{ role: 'system', content: sys }, { role: 'user', content: q }],
+      }),
+    });
+    if (!res.ok) {
+      const t = await res.text().catch(() => '');
+      throw new Error(`Groq ${res.status}: ${t.slice(0, 200)}`);
+    }
+    const data = await res.json();
+    let text = (data?.choices?.[0]?.message?.content ?? '') as string;
+    // Remove cercas de código que o modelo às vezes adiciona por reflexo.
+    text = text.replace(/^\s*```(?:html)?\s*/i, '').replace(/\s*```\s*$/i, '').trim();
+    out.push(text);
+  }
+  return out;
+}
+
 async function googleTranslate(texts: string[], from: string, to: string): Promise<string[]> {
   const key = process.env.GOOGLE_TRANSLATE_API_KEY!;
   const res = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${encodeURIComponent(key)}`, {
@@ -124,6 +163,7 @@ async function libreTranslate(texts: string[], from: string, to: string): Promis
 
 async function translateChunk(texts: string[], from: string, to: string): Promise<string[]> {
   const p = provider();
+  if (p === 'groq') return groqTranslate(texts, from, to);
   if (p === 'google') return googleTranslate(texts, from, to);
   if (p === 'libre') return libreTranslate(texts, from, to);
   return deeplTranslate(texts, from, to);
@@ -138,7 +178,7 @@ async function translateOneField(text: string, from: string, to: string): Promis
 }
 
 export async function translateFields(fields: TranslatableFields, from: string, to: string): Promise<TranslatableFields> {
-  if (!hasTranslationProvider()) throw new Error('Tradução indisponível: configure GOOGLE_TRANSLATE_API_KEY, DEEPL_API_KEY ou LIBRETRANSLATE_URL.');
+  if (!hasTranslationProvider()) throw new Error('Tradução indisponível: configure GROQ_API_KEY, GOOGLE_TRANSLATE_API_KEY, DEEPL_API_KEY ou LIBRETRANSLATE_URL.');
   const keys = (Object.keys(fields) as (keyof TranslatableFields)[]).filter(
     (k) => typeof fields[k] === 'string' && (fields[k] as string).trim().length > 0,
   );
