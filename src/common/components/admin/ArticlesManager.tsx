@@ -537,7 +537,13 @@ export function ArticlesManager() {
                     .ql-editor iframe { aspect-ratio: 16 / 9; border: 0; }
                     .ql-editor video { height: auto; background: #000; }
                   `}</style>
-                  <ReactQuill theme="snow" modules={quillModules} value={getI18n('content')} onChange={(v: string) => setI18n('content', v)} />
+                  {/* key={lang}: cada idioma tem sua PRÓPRIA instância do editor.
+                      Sem isso, trocar de aba de idioma trocava o `value` na mesma
+                      instância e o Quill disparava um onChange (às vezes vazio) que
+                      gravava '' no idioma atual — apagando o que foi escrito. A guarda
+                      `v !== atual` ignora o onChange-eco da montagem. */}
+                  <ReactQuill key={lang} theme="snow" modules={quillModules} value={getI18n('content')}
+                    onChange={(v: string) => { if (v !== getI18n('content')) setI18n('content', v); }} />
                 </div>
               </Field>
             </div>
