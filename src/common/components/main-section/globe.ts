@@ -100,14 +100,17 @@ export function startGlobe(canvas: HTMLCanvasElement): GlobeHandle {
     ),
   ];
 
-  // ── Rotas (arcos com pulso) ──────────────────────────────────────────────
+  // ── Hubs, rotas (arcos com pulso) e sinais ──────────────────────────────
   const rand = rng(20260915);
+  // Seis nós-concentradores espalhados pela esfera: as rotas partem deles,
+  // então a rede converge em pontos em vez de virar linhas soltas.
+  const HUBS = Array.from({ length: 6 }, (_, k) => Math.round(((k + 0.5) * N) / 6));
   const ROUTES = 7;
   type Route = { a: number; b: number; t: number; speed: number; ripple: number };
   const pickPair = (): [number, number] => {
     for (;;) {
-      const a = Math.floor(rand() * N);
-      const b = Math.floor(rand() * N);
+      const a = HUBS[Math.floor(rand() * HUBS.length)];
+      const b = rand() < 0.3 ? HUBS[Math.floor(rand() * HUBS.length)] : Math.floor(rand() * N);
       const d = nodes[a][0] * nodes[b][0] + nodes[a][1] * nodes[b][1] + nodes[a][2] * nodes[b][2];
       // Nem vizinhos (arco curto demais) nem antípodas (arco passa por trás).
       if (a !== b && d < 0.55 && d > -0.6) return [a, b];
@@ -117,6 +120,14 @@ export function startGlobe(canvas: HTMLCanvasElement): GlobeHandle {
     const [a, b] = pickPair();
     return { a, b, t: i / ROUTES, speed: 0.22 + rand() * 0.16, ripple: 0 };
   });
+  // Sinais: um nó acende por um instante (evento de dado chegando), com uma
+  // pausa aleatória entre um e outro.
+  type Signal = { node: number; t: number; wait: number };
+  const signals: Signal[] = Array.from({ length: 4 }, (_, i) => ({
+    node: Math.floor(rand() * N),
+    t: 1,
+    wait: i * 0.4,
+  }));
 
   // ── Estado da câmera / loop ──────────────────────────────────────────────
   let width = 0;
@@ -124,6 +135,7 @@ export function startGlobe(canvas: HTMLCanvasElement): GlobeHandle {
   let raf = 0;
   let prev = 0;
   let yaw = 0;
+  let time = 0;
   let visible = true;
   let disposed = false;
   const pointer = { x: 0, y: 0 };
@@ -142,6 +154,19 @@ export function startGlobe(canvas: HTMLCanvasElement): GlobeHandle {
 
     if (moving) {
       yaw += dt * 0.11;
+      time += dt;
+      for (const s of signals) {
+        if (s.wait > 0) {
+          s.wait -= dt;
+          continue;
+        }
+        s.t += dt / 1.4;
+        if (s.t >= 1) {
+          s.t = 0;
+          s.node = Math.floor(rand() * N);
+          s.wait = 0.3 + rand() * 1.2;
+        }
+      }
       for (const r of routes) {
         r.t += dt * r.speed;
         r.ripple = Math.max(0, r.ripple - dt * 0.9);
@@ -164,7 +189,9 @@ export function startGlobe(canvas: HTMLCanvasElement): GlobeHandle {
     const cy = height / 2;
     const cosY = Math.cos(yaw + eased.x * 0.35);
     const sinY = Math.sin(yaw + eased.x * 0.35);
-    const tilt = 0.42 + eased.y * 0.25;
+    // Respiração: a inclinação oscila devagar, então o globo parece vivo
+    // mesmo sem o mouse por perto.
+    const tilt = 0.42 + eased.y * 0.25 + Math.sin(time * 0.35) * 0.05;
     const cosT = Math.cos(tilt);
     const sinT = Math.sin(tilt);
 
@@ -228,6 +255,33 @@ export function startGlobe(canvas: HTMLCanvasElement): GlobeHandle {
       ctx.fillStyle = `rgba(${c.dot},${0.2 + p.d * 0.65})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, (0.7 + p.d * 1.9) * p.s, 0, TAU);
+      ctx.fill();
+    }
+
+    // Hubs: anel fino em volta dos concentradores.
+    for (const h of HUBS) {
+      const p = proj[h];
+      if (p.d < 0.4) continue;
+      ctx.strokeStyle = `rgba(${c.dot},${0.55 * p.d})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 4.5 * p.s, 0, TAU);
+      ctx.stroke();
+    }
+
+    // Sinais: anel que se expande e some, com o nó aceso no centro.
+    for (const s of signals) {
+      if (s.wait > 0 || s.t >= 1) continue;
+      const p = proj[s.node];
+      if (p.d < 0.4) continue;
+      ctx.strokeStyle = `rgba(${c.pulse},${(1 - s.t) * 0.55})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, (R * 0.012 + s.t * R * 0.07) * p.s, 0, TAU);
+      ctx.stroke();
+      ctx.fillStyle = `rgba(${c.pulse},${(1 - s.t) * 0.9})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2.2 * p.s, 0, TAU);
       ctx.fill();
     }
 

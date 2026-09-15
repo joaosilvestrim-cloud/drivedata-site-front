@@ -68,9 +68,11 @@ export const HeroCanvas = styled.canvas`
 export const GlobeStage = styled.div`
   position: absolute;
   right: -6%;
-  top: 50%;
+  top: 52%;
   transform: translateY(-50%);
-  width: clamp(640px, 60vw, 980px);
+  /* Limitado também pela altura: em telas largas e baixas o globo não
+     encosta no cabeçalho nem no ticker. */
+  width: min(clamp(600px, 58vw, 900px), calc(100vh - 110px));
   aspect-ratio: 1;
   z-index: 1;
   pointer-events: none;
