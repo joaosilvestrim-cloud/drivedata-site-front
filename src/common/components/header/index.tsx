@@ -7,7 +7,7 @@ import { SHOW_DALT } from '@/common/config/site';
 import { normalizeLanguageCode } from '@/common/i18n';
 import { useTypebot } from '@/common/providers/TypebotProvider';
 import { usePathname, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ChevronIcon,
@@ -28,9 +28,16 @@ import {
   MobileMenuButton,
   MobileMenuContactButton,
   MobileMenuIcon,
+  MobileNavGroup,
   MobileNavLink,
+  MobileNavSubLink,
+  NavDropdown,
   Navigation,
   NavLink,
+  NavMenu,
+  NavMenuDivider,
+  NavMenuItem,
+  NavTrigger,
 } from './styles';
 import { HeaderProps, LanguageOption, NavigationItem } from './types';
 
@@ -41,21 +48,30 @@ const languageOptions: LanguageOption[] = [
   { code: 'es', label: 'Español' },
 ];
 
+// DALT e Portal Fabric moram dentro de "Soluções" como submenu; o último item
+// leva à lista completa na página Sobre.
+const solutionsMenu: NavigationItem[] = [
+  { href: '/dalt', labelKey: 'header.navigation.dalt', descriptionKey: 'header.solutionsMenu.dalt' },
+  { href: '/portal-fabric', labelKey: 'header.navigation.portalFabric', descriptionKey: 'header.solutionsMenu.portalFabric' },
+  { href: '/about#solucoes', labelKey: 'header.navigation.allSolutions', summary: true },
+];
+
 const navigationLinks: NavigationItem[] = [
   { href: '/', labelKey: 'header.navigation.home' },
-  { href: '/dalt', labelKey: 'header.navigation.dalt' },
-  { href: '/portal-fabric', labelKey: 'header.navigation.portalFabric' },
+  { href: '/about#solucoes', labelKey: 'header.navigation.solutions', children: solutionsMenu },
   { href: '/about', labelKey: 'header.navigation.about' },
-  { href: '/about#solucoes', labelKey: 'header.navigation.solutions' },
   { href: '/about#articles', labelKey: 'header.navigation.articles' },
   { href: '/about#clientes', labelKey: 'header.navigation.clients' },
   { href: 'https://academy.drivedata.com.br/', labelKey: 'header.navigation.trainings', external: true },
 ];
 
-// DALT só existe no Brasil — no Canadá o item é removido do menu.
-const visibleLinks: NavigationItem[] = SHOW_DALT
-  ? navigationLinks
-  : navigationLinks.filter((item) => item.href !== '/dalt');
+// Quando DALT está desligado (ver config/site), some também de dentro do submenu.
+const withoutDalt = (items: NavigationItem[]): NavigationItem[] =>
+  items
+    .filter((item) => SHOW_DALT || item.href !== '/dalt')
+    .map((item) => (item.children ? { ...item, children: withoutDalt(item.children) } : item));
+
+const visibleLinks: NavigationItem[] = withoutDalt(navigationLinks);
 
 const htmlLanguageMap: Record<LanguageOption['code'], string> = {
   pt: 'pt-BR',
@@ -85,6 +101,27 @@ export const Header = ({ className }: HeaderProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
   const [, forceUpdate] = useState(0);
+  // Submenu aberto no desktop (chave = labelKey do item pai).
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement>(null);
+
+  // Fecha o submenu ao trocar de rota e ao clicar/tocar fora da navegação.
+  useEffect(() => {
+    setOpenMenu(null);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!openMenu) {
+      return;
+    }
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!navRef.current?.contains(event.target as Node)) {
+        setOpenMenu(null);
+      }
+    };
+    document.addEventListener('pointerdown', handlePointerDown);
+    return () => document.removeEventListener('pointerdown', handlePointerDown);
+  }, [openMenu]);
 
   // Função para obter a URL completa atual (pathname + hash)
   const getCurrentFullPath = useCallback(() => {
@@ -339,22 +376,102 @@ export const Header = ({ className }: HeaderProps) => {
     [getCurrentFullPath],
   );
 
+  // O gatilho "Soluções" acende quando qualquer página do submenu está ativa.
+  const isSubmenuActive = useCallback(
+    (item: NavigationItem) =>
+      isLinkActive(item.href) ||
+      (item.children ?? []).some((child) => isLinkActive(child.href)),
+    [isLinkActive],
+  );
+
   const toggleMobileMenu = useCallback(() => {
     setIsMobileMenuOpen((prevState) => !prevState);
   }, []);
 
   return (
     <>
-      <HeaderContainer className={className} data-mounted={isMounted}>
+      <HeaderContainer className={className} data-mounted={isMounted} data-menu-open={isMobileMenuOpen}>
         <Container maxWidth="2xl">
           <HeaderContent>
             <Logo>
               <LogoImage src="/logotipo-drivedata.png" alt="DriveData Logo" />
             </Logo>
 
-            <Navigation>
+            <Navigation ref={navRef}>
               {visibleLinks.map((item) =>
-                item.external ? (
+                item.children ? (
+                  <NavDropdown
+                    key={item.labelKey}
+                    onMouseEnter={() => setOpenMenu(item.labelKey)}
+                    onMouseLeave={() => setOpenMenu(null)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Escape') {
+                        setOpenMenu(null);
+                      }
+                    }}
+                    onBlur={(e) => {
+                      // Tab para fora do bloco fecha o painel.
+                      if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+                        setOpenMenu(null);
+                      }
+                    }}
+                  >
+                    <NavTrigger
+                      type="button"
+                      isActive={isSubmenuActive(item)}
+                      isOpen={openMenu === item.labelKey}
+                      aria-haspopup="menu"
+                      aria-expanded={openMenu === item.labelKey}
+                      onClick={() =>
+                        setOpenMenu((prev) => (prev === item.labelKey ? null : item.labelKey))
+                      }
+                    >
+                      {t(item.labelKey)}
+                      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+                        <path
+                          d="M2 3.5 5 6.5 8 3.5"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </NavTrigger>
+                    <NavMenu
+                      role="menu"
+                      aria-label={t(item.labelKey)}
+                      isOpen={openMenu === item.labelKey}
+                    >
+                      {item.children.map((child) => (
+                        <Fragment key={child.labelKey}>
+                          {child.summary && <NavMenuDivider role="separator" />}
+                          <NavMenuItem
+                            role="menuitem"
+                            href={child.href}
+                            tabIndex={openMenu === item.labelKey ? 0 : -1}
+                            isActive={isLinkActive(child.href)}
+                            data-summary={child.summary ? 'true' : undefined}
+                            onClick={(e) => {
+                              setOpenMenu(null);
+                              handleNavClick(e, child.href);
+                            }}
+                          >
+                            <span className="title">{t(child.labelKey)}</span>
+                            {child.descriptionKey && (
+                              <span className="desc">{t(child.descriptionKey)}</span>
+                            )}
+                            {child.summary && (
+                              <span className="arrow" aria-hidden="true">
+                                →
+                              </span>
+                            )}
+                          </NavMenuItem>
+                        </Fragment>
+                      ))}
+                    </NavMenu>
+                  </NavDropdown>
+                ) : item.external ? (
                   <NavLink
                     key={item.labelKey}
                     href={item.href}
@@ -409,7 +526,21 @@ export const Header = ({ className }: HeaderProps) => {
 
       <MobileMenu isOpen={isMobileMenuOpen}>
         {visibleLinks.map((item) =>
-          item.external ? (
+          item.children ? (
+            <MobileNavGroup key={item.labelKey}>
+              <span className="label">{t(item.labelKey)}</span>
+              {item.children.map((child) => (
+                <MobileNavSubLink
+                  key={child.labelKey}
+                  href={child.href}
+                  onClick={(e) => handleNavClick(e, child.href)}
+                  isActive={isLinkActive(child.href)}
+                >
+                  {t(child.labelKey)}
+                </MobileNavSubLink>
+              ))}
+            </MobileNavGroup>
+          ) : item.external ? (
             <MobileNavLink
               key={item.labelKey}
               href={item.href}

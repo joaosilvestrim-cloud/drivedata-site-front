@@ -2,8 +2,6 @@ import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { theme } from '../../theme';
 
-const grow = keyframes`from { height: 0 !important; opacity: 0; }`;
-const bob = keyframes`0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); }`;
 const marquee = keyframes`from { transform: translateX(0); } to { transform: translateX(-50%); }`;
 const termFade = keyframes`
   0% { opacity: 0; transform: translateY(8px) scale(0.94); }
@@ -65,17 +63,23 @@ export const HeroCanvas = styled.canvas`
   pointer-events: none;
 `;
 
-/* Globo/rede 3D girando (atrás do dashboard, à direita) */
-export const GlobeCanvas = styled.canvas`
+/* Palco do globo: quadrado grande à direita, sangrando a borda. É o foco
+   visual do hero (o painel de dashboard que ficava por cima saiu). */
+export const GlobeStage = styled.div`
   position: absolute;
-  right: -3%;
+  right: -6%;
   top: 50%;
   transform: translateY(-50%);
-  width: 620px;
-  height: 620px;
+  width: clamp(640px, 60vw, 980px);
+  aspect-ratio: 1;
   z-index: 1;
-  opacity: 0.9;
   pointer-events: none;
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
 
   @media (max-width: ${theme.breakpoints.lg}) {
     display: none;
@@ -85,13 +89,8 @@ export const GlobeCanvas = styled.canvas`
 /* Termos de Dados e IA aparecendo/sumindo em volta do globo */
 export const GlobeTerms = styled.div`
   position: absolute;
-  right: -3%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 620px;
-  height: 620px;
+  inset: 0;
   z-index: 2;
-  pointer-events: none;
 
   & span {
     position: absolute;
@@ -103,10 +102,6 @@ export const GlobeTerms = styled.div`
     opacity: 0;
     text-shadow: 0 0 14px currentColor;
     animation: ${termFade} linear infinite;
-  }
-
-  @media (max-width: ${theme.breakpoints.lg}) {
-    display: none;
   }
 `;
 
@@ -160,19 +155,18 @@ export const Ticker = styled.div`
   }
 `;
 
+/* Texto à esquerda; a coluna da direita fica livre para o globo passar atrás. */
 export const MainContent = styled.div`
   width: 100%;
   max-width: 1216px;
   margin: 0 auto;
   padding: 130px 24px 60px;
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 56px;
+  grid-template-columns: minmax(0, 640px) 1fr;
   align-items: center;
 
   @media (max-width: ${theme.breakpoints.lg}) {
     grid-template-columns: 1fr;
-    gap: 44px;
     text-align: center;
     padding-top: 120px;
   }
@@ -185,29 +179,6 @@ export const HeroLeft = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-`;
-
-export const Eyebrow = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(84, 218, 137, 0.1);
-  border: 1px solid rgba(84, 218, 137, 0.3);
-  color: var(--dd-primary);
-  font-size: 13px;
-  font-weight: 600;
-  padding: 7px 15px;
-  border-radius: 999px;
-  margin-bottom: 26px;
-  backdrop-filter: blur(6px);
-
-  & .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #54da89;
-    box-shadow: 0 0 10px #54da89;
   }
 `;
 
@@ -265,207 +236,5 @@ export const GhostButton = styled.button`
   &:hover {
     background: var(--dd-surf-3);
     transform: translateY(-2px);
-  }
-`;
-
-/* ── Dashboard em vidro (foco visual do hero) ───────────────── */
-export const HeroDash = styled.div`
-  position: relative;
-  background: var(--dd-panel);
-  backdrop-filter: blur(18px);
-  border: 1px solid rgba(84, 218, 137, 0.22);
-  border-radius: 22px;
-  padding: 22px;
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.55), 0 0 46px rgba(45, 212, 191, 0.15);
-  animation: ${bob} 8s ease-in-out infinite;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 22px;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      rgba(94, 234, 212, 0.75),
-      rgba(56, 189, 248, 0.5) 55%,
-      rgba(10, 150, 236, 0.55)
-    );
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-
-  @media (max-width: ${theme.breakpoints.lg}) {
-    max-width: 460px;
-    margin: 0 auto;
-    animation: none;
-  }
-`;
-
-export const DashHead = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-
-  & .t {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--dd-text-2);
-  }
-  & .live {
-    font-size: 10.5px;
-    color: var(--dd-primary);
-  }
-`;
-
-export const DashKpis = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 16px;
-
-  & .kpi {
-    position: relative;
-    background: var(--dd-surf-2);
-    border: 1px solid rgb(var(--dd-ink-rgb) / 0.1);
-    border-radius: 12px;
-    padding: 13px 12px;
-    overflow: hidden;
-  }
-  & .kpi::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #54da89, #22d3ee);
-    opacity: 0.55;
-  }
-  & .kpi .n {
-    font-family: var(--font-sora), 'Sora', sans-serif;
-    font-size: 26px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    line-height: 1;
-  }
-  & .kpi .n.up {
-    color: var(--dd-primary);
-    text-shadow: 0 0 22px rgba(74, 222, 128, 0.35);
-  }
-  & .kpi .n.dn {
-    color: var(--dd-danger);
-    text-shadow: 0 0 22px rgba(248, 113, 113, 0.3);
-  }
-  & .kpi .n.si {
-    background: linear-gradient(180deg, var(--dd-text), #93a3b8);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  & .kpi .l {
-    font-size: 10px;
-    color: var(--dd-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 3px;
-  }
-`;
-
-export const DashBars = styled.div`
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  height: 128px;
-  padding: 14px 6px 0;
-  border-radius: 12px;
-  /* linhas de grade sutis atrás das barras */
-  background: repeating-linear-gradient(
-    to top,
-    transparent 0,
-    transparent 31px,
-    rgb(var(--dd-ink-rgb) / 0.05) 31px,
-    rgb(var(--dd-ink-rgb) / 0.05) 32px
-  );
-
-  & .bar {
-    position: relative;
-    flex: 1;
-    border-radius: 6px 6px 0 0;
-    background: linear-gradient(180deg, #6ee7a8 0%, #2dd4bf 42%, #0ea5e9 100%);
-    box-shadow: 0 0 22px rgba(45, 212, 191, 0.4);
-    animation: ${grow} 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  }
-  /* brilho na ponta de cada barra */
-  & .bar::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    border-radius: 6px 6px 0 0;
-    background: var(--dd-surf-3);
-    box-shadow: 0 0 8px rgb(var(--dd-ink-rgb) / 0.5);
-  }
-`;
-
-export const FloatChip = styled.div`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--dd-panel-solid);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgb(var(--dd-ink-rgb) / 0.12);
-  border-radius: 16px;
-  padding: 11px 14px;
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
-
-  &.top {
-    top: -20px;
-    right: 22px;
-    animation: ${bob} 5s ease-in-out infinite;
-  }
-  &.bot {
-    bottom: -22px;
-    left: -16px;
-    animation: ${bob} 5s ease-in-out infinite 0.8s;
-  }
-  & .ic {
-    width: 32px;
-    height: 32px;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(74, 222, 128, 0.16);
-    border: 1px solid rgba(74, 222, 128, 0.25);
-    color: var(--dd-primary);
-    font-weight: 800;
-    font-size: 12px;
-    box-shadow: 0 0 16px rgba(74, 222, 128, 0.18);
-  }
-  & .ic.bl {
-    background: rgba(56, 189, 248, 0.16);
-    border-color: rgba(56, 189, 248, 0.28);
-    color: var(--dd-accent);
-    box-shadow: 0 0 16px rgba(56, 189, 248, 0.18);
-  }
-  & b {
-    font-size: 12.5px;
-    color: var(--dd-text);
-  }
-  & .s {
-    color: var(--dd-text-2);
-    font-size: 10.5px;
-  }
-
-  @media (max-width: ${theme.breakpoints.lg}) {
-    display: none;
   }
 `;

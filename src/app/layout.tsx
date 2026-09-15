@@ -203,7 +203,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <AttributionTracker />
         <ContactTracker />
         <EmotionProvider>
-          <I18nProvider>
+          <I18nProvider initialLanguage={language}>
             <TypebotProvider>
               {children}
               <LanguageRail />

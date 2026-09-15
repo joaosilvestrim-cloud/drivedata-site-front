@@ -4,16 +4,12 @@ import { useTypebot } from '@/common/providers/TypebotProvider';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../button';
+import { startGlobe, type GlobeHandle } from './globe';
 import {
-  DashBars,
-  DashHead,
-  DashKpis,
-  FloatChip,
   GhostButton,
-  GlobeCanvas,
+  GlobeStage,
   GlobeTerms,
   HeroCanvas,
-  HeroDash,
   HeroLeft,
   HighlightedText,
   MainActions,
@@ -23,8 +19,6 @@ import {
   Ticker,
 } from './styles';
 import { MainSectionProps } from './types';
-
-const BAR_HEIGHTS = [45, 62, 50, 78, 66, 90, 72, 58];
 
 // Os rótulos vêm do i18n pela chave `k`. Antes o texto era fixo em português e
 // aparecia sem traduzir no site do Canadá (página em inglês, painel em PT).
@@ -56,6 +50,7 @@ export const MainSection = ({ className }: MainSectionProps) => {
   const { openTypebot } = useTypebot();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const globeRef = useRef<HTMLCanvasElement>(null);
+  const globe = useRef<GlobeHandle | null>(null);
 
   // Constelação animada de fundo do hero.
   useEffect(() => {
@@ -86,7 +81,6 @@ export const MainSection = ({ className }: MainSectionProps) => {
     window.addEventListener('resize', resize);
 
     const draw = () => {
-
       const light = isLightTheme();
       ctx.clearRect(0, 0, W, H);
       for (let i = 0; i < pts.length; i++) {
@@ -122,86 +116,15 @@ export const MainSection = ({ className }: MainSectionProps) => {
     };
   }, []);
 
-  // Globo/rede 3D girando (data-sphere).
+  // Globo de dados (motor em ./globe.ts).
   useEffect(() => {
     const c = globeRef.current;
     if (!c) return;
-    const ctx = c.getContext('2d');
-    if (!ctx) return;
-
-    const N = 200;
-    const gold = Math.PI * (3 - Math.sqrt(5));
-    const base: [number, number, number][] = [];
-    for (let i = 0; i < N; i++) {
-      const y = 1 - (i / (N - 1)) * 2;
-      const r = Math.sqrt(Math.max(0, 1 - y * y));
-      const th = gold * i;
-      base.push([Math.cos(th) * r, y, Math.sin(th) * r]);
-    }
-    const edges: [number, number][] = [];
-    for (let i = 0; i < N; i++) {
-      for (let j = i + 1; j < N; j++) {
-        const a = base[i];
-        const b = base[j];
-        const dx = a[0] - b[0];
-        const dy = a[1] - b[1];
-        const dz = a[2] - b[2];
-        if (dx * dx + dy * dy + dz * dz < 0.16) edges.push([i, j]);
-      }
-    }
-
-    const size = 620;
-    c.width = size;
-    c.height = size;
-    const R = size * 0.38;
-    const cx = size / 2;
-    const cy = size / 2;
-    const tilt = 0.42;
-    const cosT = Math.cos(tilt);
-    const sinT = Math.sin(tilt);
-    let angle = 0;
-    let raf = 0;
-
-    const draw = () => {
-
-      const light = isLightTheme();
-      ctx.clearRect(0, 0, size, size);
-      angle += 0.0022;
-      const cosA = Math.cos(angle);
-      const sinA = Math.sin(angle);
-      const proj: { sx: number; sy: number; d: number }[] = new Array(N);
-      for (let i = 0; i < N; i++) {
-        const p = base[i];
-        const x1 = p[0] * cosA - p[2] * sinA;
-        const z1 = p[0] * sinA + p[2] * cosA;
-        const y2 = p[1] * cosT - z1 * sinT;
-        const z2 = p[1] * sinT + z1 * cosT;
-        proj[i] = { sx: cx + x1 * R, sy: cy + y2 * R, d: (z2 + 1) / 2 };
-      }
-      for (let e = 0; e < edges.length; e++) {
-        const a = proj[edges[e][0]];
-        const b = proj[edges[e][1]];
-        const d = (a.d + b.d) / 2;
-        if (d < 0.32) continue;
-        ctx.strokeStyle = lineInk(light, 0.14 * d);
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(a.sx, a.sy);
-        ctx.lineTo(b.sx, b.sy);
-        ctx.stroke();
-      }
-      for (let i = 0; i < N; i++) {
-        const a = proj[i];
-        ctx.fillStyle = dotInk(light, 0.22 + a.d * 0.6);
-        ctx.beginPath();
-        ctx.arc(a.sx, a.sy, 0.7 + a.d * 1.8, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      raf = requestAnimationFrame(draw);
+    globe.current = startGlobe(c);
+    return () => {
+      globe.current?.stop();
+      globe.current = null;
     };
-    draw();
-
-    return () => cancelAnimationFrame(raf);
   }, []);
 
   const handleDemoClick = () => {
@@ -213,25 +136,39 @@ export const MainSection = ({ className }: MainSectionProps) => {
   };
 
   return (
-    <MainContainer className={className}>
+    <MainContainer
+      className={className}
+      onPointerMove={(event) => {
+        // Parallax só com mouse; no toque o globo segue sozinho.
+        if (event.pointerType !== 'mouse') return;
+        globe.current?.setPointer(
+          event.clientX / window.innerWidth - 0.5,
+          event.clientY / window.innerHeight - 0.5,
+        );
+      }}
+      onPointerLeave={() => globe.current?.setPointer(0, 0)}
+    >
       <HeroCanvas ref={canvasRef} />
-      <GlobeCanvas ref={globeRef} />
-      <GlobeTerms>
-        {TERMS.map((x, i) => (
-          <span
-            key={i}
-            style={{
-              top: x.top,
-              left: x.left,
-              color: x.c,
-              animationDelay: `${x.dl}s`,
-              animationDuration: `${x.du}s`,
-            }}
-          >
-            {t(`mainSection.terms.${x.k}`)}
-          </span>
-        ))}
-      </GlobeTerms>
+
+      <GlobeStage aria-hidden="true">
+        <canvas ref={globeRef} />
+        <GlobeTerms>
+          {TERMS.map((x, i) => (
+            <span
+              key={i}
+              style={{
+                top: x.top,
+                left: x.left,
+                color: x.c,
+                animationDelay: `${x.dl}s`,
+                animationDuration: `${x.du}s`,
+              }}
+            >
+              {t(`mainSection.terms.${x.k}`)}
+            </span>
+          ))}
+        </GlobeTerms>
+      </GlobeStage>
 
       <MainContent>
         <HeroLeft>
@@ -249,54 +186,6 @@ export const MainSection = ({ className }: MainSectionProps) => {
             </GhostButton>
           </MainActions>
         </HeroLeft>
-
-        <HeroDash>
-          <FloatChip className="top">
-            <span className="ic">IA</span>
-            <div>
-              <b>{t('mainSection.chipDemandTitle')}</b>
-              <div className="s">{t('mainSection.chipDemandSub')}</div>
-            </div>
-          </FloatChip>
-
-          <DashHead>
-            <span className="t">{t('mainSection.dashTitle')}</span>
-            <span className="live">● {t('mainSection.live')}</span>
-          </DashHead>
-
-          <DashKpis>
-            <div className="kpi">
-              <div className="n up">+48%</div>
-              <div className="l">{t('mainSection.kpiEfficiency')}</div>
-            </div>
-            <div className="kpi">
-              <div className="n dn">-35%</div>
-              <div className="l">{t('mainSection.kpiCost')}</div>
-            </div>
-            <div className="kpi">
-              <div className="n si">{t('mainSection.kpiImpactValue')}</div>
-              <div className="l">{t('mainSection.kpiImpact')}</div>
-            </div>
-          </DashKpis>
-
-          <DashBars>
-            {BAR_HEIGHTS.map((h, i) => (
-              <div
-                key={i}
-                className="bar"
-                style={{ height: `${h}%`, opacity: 0.85 + h / 600, animationDelay: `${i * 0.08}s` }}
-              />
-            ))}
-          </DashBars>
-
-          <FloatChip className="bot">
-            <span className="ic bl">◲</span>
-            <div>
-              <b>{t('mainSection.chipPipelineTitle')}</b>
-              <div className="s">{t('mainSection.chipPipelineSub')}</div>
-            </div>
-          </FloatChip>
-        </HeroDash>
       </MainContent>
 
       <Ticker>
@@ -314,8 +203,8 @@ export const MainSection = ({ className }: MainSectionProps) => {
   );
 };
 
-// A constelação e o globo são pintados em canvas, onde variável CSS não chega.
-// Estas funções devolvem o traço certo para o tema em uso: no claro o verde e o
+// A constelação é pintada em canvas, onde variável CSS não chega. Estas
+// funções devolvem o traço certo para o tema em uso: no claro o verde e o
 // ciano fecham, senão o desenho sumiria sobre o fundo branco.
 const isLightTheme = () =>
   typeof document !== 'undefined' &&
@@ -326,4 +215,3 @@ const lineInk = (light: boolean, alpha: number) =>
 
 const dotInk = (light: boolean, alpha: number) =>
   light ? `rgba(14,116,144,${alpha})` : `rgba(34,211,238,${alpha})`;
-

@@ -18,6 +18,10 @@ export const HeaderContainer = styled.header`
     visibility: visible;
   }
 
+  &[data-menu-open='true'] {
+    z-index: ${theme.zIndex.modal + 1};
+  }
+
   @media (max-width: ${theme.breakpoints.lg}) {
     top: 16px;
   }
@@ -253,11 +257,13 @@ export const MobileMenuBackdrop = styled.div<{ isOpen: boolean }>`
 `;
 
 export const MobileMenu = styled.div<{ isOpen: boolean }>`
+  visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
   position: fixed;
   top: 0;
   right: 0;
   width: 280px;
-  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
   background: linear-gradient(
     180deg,
     var(--dd-dropdown-bg) 0%,
@@ -267,9 +273,8 @@ export const MobileMenu = styled.div<{ isOpen: boolean }>`
   -webkit-backdrop-filter: blur(20px);
   padding: 100px 24px 24px;
   z-index: ${theme.zIndex.modal};
-  transform: ${(props) =>
-    props.isOpen ? 'translateX(0)' : 'translateX(100%)'};
-  transition: transform 0.3s ease-in-out;
+  opacity: ${(props) => (props.isOpen ? 1 : 0)};
+  transition: opacity 0.2s ease-in-out;
   border-left: 1px solid var(--dd-dropdown-border);
   display: flex;
   flex-direction: column;
@@ -389,4 +394,185 @@ export const MobileMenuContactButton = styled.div`
   button {
     width: 100%;
   }
+`;
+
+/* ── Submenu "Soluções" (desktop) ──────────────────────────────────────────
+   Painel discreto no mesmo vidro escuro do seletor de idioma. O destaque de
+   hover é um traço vertical na cor da marca, sem brilho. O painel é sempre
+   escuro nos dois temas (var --dd-dropdown-bg), então os tons de texto aqui
+   são fixos em branco translúcido em vez de --dd-text-*. */
+export const NavDropdown = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
+export const NavTrigger = styled.button<{ isActive?: boolean; isOpen?: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 15px;
+  font-weight: ${theme.typography.fontWeight.medium};
+  color: ${(props) => (props.isActive ? '#54DA89' : 'var(--dd-nav-text)')};
+  white-space: nowrap;
+  transition: color 0.2s ease-in-out;
+
+  svg {
+    transition: transform 0.2s ease-in-out;
+    transform: rotate(${(props) => (props.isOpen ? '180deg' : '0deg')});
+  }
+
+  &:hover {
+    color: var(--dd-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--dd-primary);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+`;
+
+export const NavMenu = styled.div<{ isOpen: boolean }>`
+  position: absolute;
+  top: calc(100% + 28px);
+  left: 50%;
+  min-width: 320px;
+  padding: 8px;
+  background: var(--dd-dropdown-bg);
+  border: 1px solid var(--dd-dropdown-border);
+  border-radius: 16px;
+  box-shadow: var(--dd-header-shadow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: ${theme.zIndex.dropdown};
+  opacity: ${(props) => (props.isOpen ? 1 : 0)};
+  visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
+  transform: translate(-50%, ${(props) => (props.isOpen ? '0' : '-6px')});
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0.18s;
+
+  /* Ponte invisível entre o gatilho e o painel: o mouse atravessa o vão sem fechar. */
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -28px;
+    height: 28px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    transform: translate(-50%, 0);
+  }
+`;
+
+export const NavMenuItem = styled.a<{ isActive?: boolean }>`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 11px 14px 11px 18px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--dd-nav-text);
+  transition: background-color 0.15s ease;
+
+  .title {
+    font-size: 14px;
+    font-weight: ${theme.typography.fontWeight.semibold};
+    color: ${(props) => (props.isActive ? '#54DA89' : 'inherit')};
+  }
+
+  .desc {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  /* Traço da marca: só no hover/foco. */
+  &::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 12px;
+    bottom: 12px;
+    width: 2px;
+    border-radius: 2px;
+    background: var(--dd-primary);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(255, 255, 255, 0.06);
+    outline: none;
+  }
+
+  &:hover::before,
+  &:focus-visible::before {
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--dd-primary);
+  }
+
+  /* "Todas as soluções": linha única, mais leve, com seta. */
+  &[data-summary='true'] {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 10px;
+
+    .title {
+      font-size: 13.5px;
+      font-weight: ${theme.typography.fontWeight.medium};
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .arrow {
+      color: rgba(255, 255, 255, 0.55);
+      transition: transform 0.15s ease, color 0.15s ease;
+    }
+
+    &:hover .arrow {
+      color: var(--dd-primary);
+      transform: translateX(2px);
+    }
+  }
+`;
+
+export const NavMenuDivider = styled.div`
+  height: 1px;
+  margin: 6px 8px;
+  background: var(--dd-dropdown-border);
+`;
+
+/* ── Submenu no menu mobile: rótulo + itens recuados ── */
+export const MobileNavGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .label {
+    padding: 16px 16px 6px;
+    font-size: 13px;
+    font-weight: ${theme.typography.fontWeight.medium};
+    color: rgba(255, 255, 255, 0.5);
+  }
+`;
+
+export const MobileNavSubLink = styled(MobileNavLink)`
+  padding: 12px 16px 12px 28px;
+  font-size: ${theme.typography.fontSize.base[0]};
 `;

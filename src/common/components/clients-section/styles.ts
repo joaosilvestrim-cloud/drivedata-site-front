@@ -37,7 +37,7 @@ export const ClientsSectionContainer = styled.section`
     content: '';
     position: absolute;
     z-index: 0;
-    width: 620px;
+    width: min(620px, 100%);
     height: 620px;
     left: 50%;
     top: -120px;
@@ -353,4 +353,3 @@ export const ClientBadge = styled.div`
     color: var(--dd-text);
   }
 `;
-
