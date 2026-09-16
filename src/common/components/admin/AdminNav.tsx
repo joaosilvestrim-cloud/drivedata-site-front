@@ -28,6 +28,13 @@ const GROUPS: { title: string; links: { href: string; label: string; icon: strin
     ],
   },
   {
+    title: 'Carreiras',
+    links: [
+      { href: '/admin/vagas', label: 'Vagas', icon: 'briefcase' },
+      { href: '/admin/candidaturas', label: 'Candidaturas', icon: 'users' },
+    ],
+  },
+  {
     title: 'Operação',
     links: [
       { href: '/admin/analytics', label: 'Analytics', icon: 'chart' },

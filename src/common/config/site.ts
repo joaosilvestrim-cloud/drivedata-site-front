@@ -38,3 +38,6 @@ export const LEAD_TENANT_CODE: SiteCountry = SITE_COUNTRY;
  * inteira passa pelo i18n (bloco `dalt` nos locales), então vale para BR e CA.
  */
 export const SHOW_DALT = true;
+
+/** Origem pública do site deste país: links canônicos, OG e compartilhamento. */
+export const SITE_BASE_URL = SITE_COUNTRY === 'CA' ? 'https://drivedata.ca' : 'https://drivedata.com.br';

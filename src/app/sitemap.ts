@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { SHOW_DALT } from '@/common/config/site';
 import { getArticles } from '@/server/content-db';
+import { listOpenJobs } from '@/server/jobs';
 
 // Sitemap do site. Ajuda o Google (e as IAs) a descobrir/priorizar as páginas
 // reais e os artigos do blog — antes os artigos ficavam de fora, então o
@@ -18,6 +19,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/article`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${BASE}/privacy-policy`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
   ];
+  entries.push({ url: `${BASE}/vagas`, lastModified: now, changeFrequency: 'daily', priority: 0.7 });
+
   // A página DALT só existe no Brasil.
   if (SHOW_DALT) {
     entries.push({ url: `${BASE}/dalt`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 });
@@ -38,6 +41,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   } catch {
     /* sitemap ainda vale com as páginas fixas */
+  }
+
+  // Vagas abertas (o Google for Jobs lê o JobPosting de cada página).
+  try {
+    for (const j of await listOpenJobs()) {
+      entries.push({
+        url: `${BASE}/vagas/${j.slug}`,
+        lastModified: new Date(j.updatedAt),
+        changeFrequency: 'weekly',
+        priority: 0.6,
+      });
+    }
+  } catch {
+    /* sitemap ainda vale sem as vagas */
   }
 
   return entries;
