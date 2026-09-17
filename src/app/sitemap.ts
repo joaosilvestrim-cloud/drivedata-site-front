@@ -20,6 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/privacy-policy`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
   ];
   entries.push({ url: `${BASE}/vagas`, lastModified: now, changeFrequency: 'daily', priority: 0.7 });
+  entries.push({ url: `${BASE}/parceiros`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 });
 
   // A página DALT só existe no Brasil.
   if (SHOW_DALT) {

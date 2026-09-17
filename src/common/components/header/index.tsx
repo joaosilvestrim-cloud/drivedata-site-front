@@ -63,6 +63,7 @@ const navigationLinks: NavigationItem[] = [
   { href: '/about#articles', labelKey: 'header.navigation.articles' },
   { href: '/about#clientes', labelKey: 'header.navigation.clients' },
   { href: '/vagas', labelKey: 'header.navigation.jobs' },
+  { href: '/parceiros', labelKey: 'header.navigation.partners' },
   { href: 'https://academy.drivedata.com.br/', labelKey: 'header.navigation.trainings', external: true },
 ];
 

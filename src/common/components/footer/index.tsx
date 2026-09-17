@@ -146,6 +146,33 @@ export const Footer = ({ className }: FooterProps) => {
                 </FooterLink>
               </FooterLinkItem>
               <FooterLinkItem>
+                <FooterLink href="/parceiros">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1 1"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1-1"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  {t('footer.partners')}
+                </FooterLink>
+              </FooterLinkItem>
+              <FooterLinkItem>
                 <FooterLink href="/about#contato">
                   <svg
                     width="16"

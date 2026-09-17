@@ -35,6 +35,10 @@ const GROUPS: { title: string; links: { href: string; label: string; icon: strin
     ],
   },
   {
+    title: 'Parcerias',
+    links: [{ href: '/admin/parcerias', label: 'Solicitações', icon: 'link' }],
+  },
+  {
     title: 'Operação',
     links: [
       { href: '/admin/analytics', label: 'Analytics', icon: 'chart' },
