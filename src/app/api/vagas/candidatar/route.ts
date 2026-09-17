@@ -9,11 +9,15 @@ export const runtime = 'nodejs';
 
 const BUCKET = 'job-cvs';
 const MAX_BYTES = 5 * 1024 * 1024;
-const ALLOWED_MIME = new Set([
-  'application/pdf',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-]);
+// O bucket job-cvs só aceita estes três tipos (ver migration 006). O navegador
+// nem sempre informa o tipo, então resolvemos pela extensão: o que sobe para o
+// storage é sempre um tipo que o bucket aceita, senão ele recusa o arquivo.
+const MIME_BY_EXT: Record<string, string> = {
+  pdf: 'application/pdf',
+  doc: 'application/msword',
+  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+};
+const ALLOWED_MIME = new Set(Object.values(MIME_BY_EXT));
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 // Limite simples por IP (por instância): 5 envios a cada 10 minutos.
@@ -61,8 +65,9 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Anexe seu currículo em PDF ou Word (até 5 MB).' }, { status: 422 });
     }
     const ext = (cv.name.split('.').pop() || '').toLowerCase();
-    const okType = ALLOWED_MIME.has(cv.type) || ['pdf', 'doc', 'docx'].includes(ext);
-    if (!okType || cv.size > MAX_BYTES) {
+    // Tipo que vamos gravar: o do navegador quando o bucket aceita, senão o da extensão.
+    const contentType = ALLOWED_MIME.has(cv.type) ? cv.type : MIME_BY_EXT[ext];
+    if (!contentType || cv.size > MAX_BYTES) {
       return Response.json({ error: 'O currículo precisa ser PDF ou Word, com até 5 MB.' }, { status: 422 });
     }
 
@@ -74,7 +79,7 @@ export async function POST(req: Request) {
     const path = `cv/${job.id}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext || 'pdf'}`;
     const bytes = Buffer.from(await cv.arrayBuffer());
     const { error: upErr } = await sb.storage.from(BUCKET).upload(path, bytes, {
-      contentType: cv.type || 'application/octet-stream',
+      contentType,
       upsert: false,
     });
     if (upErr) {
@@ -82,22 +87,28 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Não conseguimos receber o currículo. Tente novamente em instantes.' }, { status: 500 });
     }
 
-    await createApplication({
-      jobId: job.id,
-      name,
-      email,
-      phone: str(form.get('phone'), 40) || null,
-      linkedinUrl: url(str(form.get('linkedin'), 300)) || null,
-      portfolioUrl: url(str(form.get('portfolio'), 300)) || null,
-      message: str(form.get('message'), 3000) || null,
-      cvPath: path,
-      cvName: cv.name.slice(0, 200),
-      cvMime: cv.type || null,
-      cvSize: cv.size,
-      source: str(form.get('source'), 120) || null,
-      page: str(form.get('page'), 300) || null,
-      consent: true,
-    });
+    try {
+      await createApplication({
+        jobId: job.id,
+        name,
+        email,
+        phone: str(form.get('phone'), 40) || null,
+        linkedinUrl: url(str(form.get('linkedin'), 300)) || null,
+        portfolioUrl: url(str(form.get('portfolio'), 300)) || null,
+        message: str(form.get('message'), 3000) || null,
+        cvPath: path,
+        cvName: cv.name.slice(0, 200),
+        cvMime: contentType,
+        cvSize: cv.size,
+        source: str(form.get('source'), 120) || null,
+        page: str(form.get('page'), 300) || null,
+        consent: true,
+      });
+    } catch (e) {
+      // Sem a linha no banco o arquivo fica órfão no bucket: desfaz o upload.
+      await sb.storage.from(BUCKET).remove([path]).catch(() => {});
+      throw e;
+    }
 
     return Response.json({ ok: true });
   } catch (e) {
