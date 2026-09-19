@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk } from 'next/font/google';
 import Script from 'next/script';
-import { SITE_COUNTRY } from '@/common/config/site';
+import { SITE_BASE_URL, SITE_COUNTRY } from '@/common/config/site';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -19,7 +19,6 @@ const META = {
       'Transforme desafios complexos em eficiência e resultados tangíveis com Inteligência de Negócios, Inovação, Engenharia de Dados, Desenvolvimento e IA.',
     ogDescription:
       'Engenharia de dados e outsourcing de alto desempenho para operações acima de R$ 50M/ano.',
-    url: 'https://drivedata.com.br/dalt',
   },
   CA: {
     title: 'DALT DriveData — Data Engineering for Large Operations',
@@ -27,7 +26,6 @@ const META = {
       'Turn complex challenges into efficiency and tangible results with Business Intelligence, Innovation, Data Engineering, Development and AI.',
     ogDescription:
       'High-performance data engineering and outsourcing for large-scale operations.',
-    url: 'https://drivedata.ca/dalt',
   },
 }[SITE_COUNTRY];
 
@@ -35,11 +33,14 @@ export const metadata: Metadata = {
   title: META.title,
   description: META.description,
   robots: { index: true, follow: true },
+  alternates: { canonical: `${SITE_BASE_URL}/dalt` },
   openGraph: {
     title: 'DALT DriveData',
     description: META.ogDescription,
-    url: META.url,
+    url: `${SITE_BASE_URL}/dalt`,
     type: 'website',
+    siteName: 'DriveData',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'DALT DriveData' }],
   },
 };
 

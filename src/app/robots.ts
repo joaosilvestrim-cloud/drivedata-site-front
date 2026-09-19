@@ -1,7 +1,8 @@
 import type { MetadataRoute } from 'next';
+import { SITE_BASE_URL } from '@/common/config/site';
 
 // Libera o rastreio das páginas públicas, bloqueia áreas internas e aponta o sitemap.
-const BASE = 'https://drivedata.com.br';
+const BASE = SITE_BASE_URL;
 
 export default function robots(): MetadataRoute.Robots {
   return {

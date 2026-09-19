@@ -9,6 +9,7 @@ import { getServerLanguage } from '../common/i18n/server';
 import { EmotionProvider } from '../common/providers/EmotionProvider';
 import { I18nProvider } from '../common/providers/I18nProvider';
 import { TypebotProvider } from '../common/providers/TypebotProvider';
+import { SITE_BASE_URL } from '../common/config/site';
 import {
   generateMetadata as generateSEOMetadata,
   getSEOConfigByLanguage,
@@ -140,12 +141,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               '@graph': [
                 {
                   '@type': 'Organization',
-                  '@id': 'https://drivedata.com.br/#organization',
+                  '@id': `${SITE_BASE_URL}/#organization`,
                   name: 'DriveData',
                   description:
                     'Consultoria em BI e IA para análise de dados, apoiando a tomada de decisão e gerando resultados para empresas.',
-                  url: 'https://drivedata.com.br',
-                  logo: 'https://drivedata.com.br/logo.png',
+                  url: SITE_BASE_URL,
+                  logo: `${SITE_BASE_URL}/logo.png`,
                   sameAs: [
                     'https://www.linkedin.com/company/drivedatabi/',
                     'https://www.instagram.com/_drivedata',
@@ -168,21 +169,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 },
                 {
                   '@type': 'WebSite',
-                  '@id': 'https://drivedata.com.br/#website',
+                  '@id': `${SITE_BASE_URL}/#website`,
                   name: 'DriveData',
-                  url: 'https://drivedata.com.br',
+                  url: SITE_BASE_URL,
                   inLanguage: 'pt-BR',
-                  publisher: { '@id': 'https://drivedata.com.br/#organization' },
+                  publisher: { '@id': `${SITE_BASE_URL}/#organization` },
                 },
                 {
                   '@type': 'ItemList',
                   name: 'Navegação principal',
                   itemListElement: [
-                    { '@type': 'SiteNavigationElement', position: 1, name: 'Sobre', url: 'https://drivedata.com.br/about' },
-                    { '@type': 'SiteNavigationElement', position: 2, name: 'Soluções', url: 'https://drivedata.com.br/about#solucoes' },
-                    { '@type': 'SiteNavigationElement', position: 3, name: 'Clientes', url: 'https://drivedata.com.br/about#clientes' },
-                    { '@type': 'SiteNavigationElement', position: 4, name: 'Blog', url: 'https://drivedata.com.br/article' },
-                    { '@type': 'SiteNavigationElement', position: 5, name: 'DALT', url: 'https://drivedata.com.br/dalt' },
+                    { '@type': 'SiteNavigationElement', position: 1, name: 'Sobre', url: `${SITE_BASE_URL}/about` },
+                    { '@type': 'SiteNavigationElement', position: 2, name: 'Soluções', url: `${SITE_BASE_URL}/about#solucoes` },
+                    { '@type': 'SiteNavigationElement', position: 3, name: 'Clientes', url: `${SITE_BASE_URL}/about#clientes` },
+                    { '@type': 'SiteNavigationElement', position: 4, name: 'Blog', url: `${SITE_BASE_URL}/article` },
+                    { '@type': 'SiteNavigationElement', position: 5, name: 'DALT', url: `${SITE_BASE_URL}/dalt` },
                   ],
                 },
               ],

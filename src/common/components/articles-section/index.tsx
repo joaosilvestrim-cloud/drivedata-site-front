@@ -8,7 +8,7 @@ import { ArticleCard } from "./article-card";
 import { ArticlesGrid, ArticlesSectionContainer, ArticlesSectionHeader, ArticlesSectionTitle } from "./styles";
 import { ArticlesSectionProps } from "./types";
 
-export const ArticlesSection = ({ articles, className }: ArticlesSectionProps) => {
+export const ArticlesSection = ({ articles, className, titleAs = 'h2' }: ArticlesSectionProps) => {
   const { t } = useTranslation();
   const { data: dynamicArticles, isLoading } = useArticles(articles, { limit: 3 });
 
@@ -18,7 +18,7 @@ export const ArticlesSection = ({ articles, className }: ArticlesSectionProps) =
         <LoadingOverlay isLoading={isLoading} />
         <Container>
           <ArticlesSectionHeader>
-            <ArticlesSectionTitle>{t('articlesSection.title')}</ArticlesSectionTitle>
+            <ArticlesSectionTitle as={titleAs}>{t('articlesSection.title')}</ArticlesSectionTitle>
           </ArticlesSectionHeader>
           <ArticlesGrid>
             {dynamicArticles.map((article) => (

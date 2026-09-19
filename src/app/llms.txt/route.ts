@@ -4,11 +4,12 @@
 // artigos), então acompanha o que é publicado. Resiliente: se o banco falhar,
 // ainda entrega o mapa base.
 import { getArticles, getSolutions } from '@/server/content-db';
+import { SITE_BASE_URL } from '@/common/config/site';
 
 export const runtime = 'nodejs';
 export const revalidate = 3600; // 1h
 
-const BASE = 'https://drivedata.com.br';
+const BASE = SITE_BASE_URL;
 
 export async function GET() {
   const lines: string[] = [

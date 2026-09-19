@@ -7,6 +7,7 @@ import { ArticleCategoryModel } from '@/common/model/article-category.model';
 import { ArticleModel } from '@/common/model/article.model';
 import { FindManyArticleResult } from '@/modules/article/types/find-many-article-case';
 import { getArticleById, getArticles } from '@/server/content-db';
+import { SITE_BASE_URL } from '@/common/config/site';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     if (!a) return { title: 'Artigo · DriveData' };
     const title = a.seoTitle || a.title;
     const description = a.seoDescription || a.description || undefined;
-    const canonical = `https://drivedata.com.br/article/${a.slug || a.id}`;
+    const canonical = `${SITE_BASE_URL}/article/${a.slug || a.id}`;
     return {
       title,
       description,
@@ -54,7 +55,7 @@ export default async function Article({ params }: { params: Promise<{ id: string
     console.error(error);
   }
 
-  const canonical = `https://drivedata.com.br/article/${article.slug || article.id}`;
+  const canonical = `${SITE_BASE_URL}/article/${article.slug || article.id}`;
   const articleLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -65,7 +66,7 @@ export default async function Article({ params }: { params: Promise<{ id: string
     datePublished: article.publishedAt || article.createdAt,
     dateModified: article.updatedAt || article.publishedAt || article.createdAt,
     author: { '@type': 'Organization', name: article.author || 'DriveData' },
-    publisher: { '@id': 'https://drivedata.com.br/#organization' },
+    publisher: { '@id': `${SITE_BASE_URL}/#organization` },
     mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
     articleSection: article.category?.name || undefined,
     inLanguage: lang === 'pt' ? 'pt-BR' : lang,

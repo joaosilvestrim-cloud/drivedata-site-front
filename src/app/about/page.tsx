@@ -12,6 +12,24 @@ import { SolutionModel } from '@/common/model/solution.model';
 import { TestimonialModel } from '@/common/model/testimonial.model';
 import { FindManyArticleResult } from '@/modules/article/types/find-many-article-case';
 import { getArticles, getFaqs, getSolutions, getTestimonials } from '@/server/content-db';
+import { SITE_BASE_URL, SITE_COUNTRY } from '@/common/config/site';
+import { pageMetadata } from '@/common/seo';
+
+export const metadata = pageMetadata(
+  SITE_COUNTRY === 'CA'
+    ? {
+        path: '/about',
+        title: 'About DriveData · BI, Data Engineering and AI',
+        description:
+          'Meet DriveData: Business Intelligence, data engineering, Microsoft Fabric and AI consulting for mid-size and large operations. Solutions, clients and case studies.',
+      }
+    : {
+        path: '/about',
+        title: 'Sobre a DriveData · BI, Engenharia de Dados e IA',
+        description:
+          'Conheça a DriveData: consultoria em Business Intelligence, engenharia de dados, Microsoft Fabric e IA para operações de médio e grande porte. Soluções, clientes e cases.',
+      },
+);
 
 
 export default async function About() {
@@ -39,7 +57,7 @@ export default async function About() {
       '@type': 'Service',
       name: s.title,
       description: plain(s.content).slice(0, 300) || undefined,
-      provider: { '@id': 'https://drivedata.com.br/#organization' },
+      provider: { '@id': `${SITE_BASE_URL}/#organization` },
       areaServed: 'BR',
       serviceType: s.title,
     });
@@ -47,7 +65,7 @@ export default async function About() {
   if (faqs.length) {
     graph.push({
       '@type': 'FAQPage',
-      '@id': 'https://drivedata.com.br/about#faq',
+      '@id': `${SITE_BASE_URL}/about#faq`,
       mainEntity: faqs.map((f) => ({
         '@type': 'Question',
         name: f.title,

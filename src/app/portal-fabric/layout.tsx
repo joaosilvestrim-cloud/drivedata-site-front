@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_COUNTRY } from '@/common/config/site';
+import { SITE_BASE_URL, SITE_COUNTRY } from '@/common/config/site';
 import { themeBootScript } from '@/common/theme/useThemeMode';
 
 // Metadata gerado no servidor, ramificado por país (o corpo passa pelo i18n do
@@ -9,13 +9,11 @@ const META = {
     title: 'Portal DriveData — Microsoft Fabric | Usabilidade · Governança · Economia',
     description:
       'Camada centralizada sobre sua capacidade Microsoft Fabric: experiência de usuário superior, governança granular LGPD e redução expressiva de custos de licenciamento Power BI.',
-    url: 'https://drivedata.com.br/portal-fabric',
   },
   CA: {
     title: 'Portal DriveData — Microsoft Fabric | Usability · Governance · Savings',
     description:
       'A centralized layer over your Microsoft Fabric capacity: superior user experience, granular governance (Law 25 / PIPEDA) and a significant cut in Power BI licensing costs.',
-    url: 'https://drivedata.ca/portal-fabric',
   },
 }[SITE_COUNTRY];
 
@@ -23,11 +21,14 @@ export const metadata: Metadata = {
   title: META.title,
   description: META.description,
   robots: { index: true, follow: true },
+  alternates: { canonical: `${SITE_BASE_URL}/portal-fabric` },
   openGraph: {
     title: 'Portal DriveData — Microsoft Fabric',
     description: META.description,
-    url: META.url,
+    url: `${SITE_BASE_URL}/portal-fabric`,
     type: 'website',
+    siteName: 'DriveData',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Portal DriveData — Microsoft Fabric' }],
   },
 };
 

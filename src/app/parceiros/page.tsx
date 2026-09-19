@@ -13,7 +13,14 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: `${SITE_BASE_URL}/parceiros` },
-  openGraph: { title, description, url: `${SITE_BASE_URL}/parceiros`, type: 'website', siteName: 'DriveData' },
+  openGraph: {
+    title,
+    description,
+    url: `${SITE_BASE_URL}/parceiros`,
+    type: 'website',
+    siteName: 'DriveData',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: title }],
+  },
   twitter: { card: 'summary_large_image', title, description },
 };
 

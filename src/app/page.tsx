@@ -1,5 +1,7 @@
 import { Footer } from '@/common/components/footer';
 import { ThemeScope } from '@/common/components/theme-scope';
+import { SITE_BASE_URL } from '@/common/config/site';
+import type { Metadata } from 'next';
 import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
 import { TargetAudienceProfileModel } from '@/common/model/target-audience-profile.model';
 import { getProfiles } from '@/server/content-db';
@@ -15,6 +17,11 @@ import {
   TargetAudienceSection
 } from '../common/components';
 
+// Título e descrição vêm do layout raiz (por idioma). Aqui só o canonical, que o
+// layout não define mais para não vazar a home para as outras páginas.
+export const metadata: Metadata = {
+  alternates: { canonical: SITE_BASE_URL },
+};
 
 export default async function Home() {
   let profiles: TargetAudienceProfileModel[] = [];

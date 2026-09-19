@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { SHOW_DALT } from '@/common/config/site';
+import { SHOW_DALT, SITE_BASE_URL } from '@/common/config/site';
 import { getArticles } from '@/server/content-db';
 import { listOpenJobs } from '@/server/jobs';
 
@@ -7,7 +7,7 @@ import { listOpenJobs } from '@/server/jobs';
 // reais e os artigos do blog — antes os artigos ficavam de fora, então o
 // crawler mal os encontrava. Agora cada artigo publicado entra com URL amigável
 // (slug quando existe, senão o id) e a data de atualização.
-const BASE = 'https://drivedata.com.br';
+const BASE = SITE_BASE_URL;
 
 export const revalidate = 3600; // regenera de hora em hora
 
@@ -21,6 +21,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
   entries.push({ url: `${BASE}/vagas`, lastModified: now, changeFrequency: 'daily', priority: 0.7 });
   entries.push({ url: `${BASE}/parceiros`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 });
+  // Landing do Portal sobre Microsoft Fabric (BR e CA). Estava fora do sitemap.
+  entries.push({ url: `${BASE}/portal-fabric`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 });
 
   // A página DALT só existe no Brasil.
   if (SHOW_DALT) {

@@ -5,6 +5,24 @@ import { Footer } from '@/common/components/footer';
 import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
 import { FindManyArticleResult } from '@/modules/article/types/find-many-article-case';
 import { getArticles } from '@/server/content-db';
+import { SITE_COUNTRY } from '@/common/config/site';
+import { pageMetadata } from '@/common/seo';
+
+export const metadata = pageMetadata(
+  SITE_COUNTRY === 'CA'
+    ? {
+        path: '/article',
+        title: 'DriveData Blog · Data, BI and AI in practice',
+        description:
+          'Articles on Business Intelligence, Microsoft Fabric, data engineering and applied AI for logistics, retail, finance and operations.',
+      }
+    : {
+        path: '/article',
+        title: 'Blog DriveData · Dados, BI e IA na prática',
+        description:
+          'Artigos sobre Business Intelligence, Microsoft Fabric, engenharia de dados e IA aplicada a logística, varejo, finanças e operações.',
+      },
+);
 
 
 export default async function Page() {
@@ -21,7 +39,8 @@ export default async function Page() {
     <>
       <ThemeScope />
       <Header />
-      <ArticlesSection articles={articles} />
+      {/* Aqui a seção é a página inteira, então o título vira o H1. */}
+      <ArticlesSection articles={articles} titleAs="h1" />
       <Footer />
     </>
   );

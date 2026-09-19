@@ -39,5 +39,13 @@ export const LEAD_TENANT_CODE: SiteCountry = SITE_COUNTRY;
  */
 export const SHOW_DALT = true;
 
-/** Origem pública do site deste país: links canônicos, OG e compartilhamento. */
-export const SITE_BASE_URL = SITE_COUNTRY === 'CA' ? 'https://drivedata.ca' : 'https://drivedata.com.br';
+/**
+ * Origem pública do site deste país: canonical, sitemap, robots, OG e JSON-LD.
+ * FONTE ÚNICA — não escreva o domínio na mão em outro lugar.
+ *
+ * Com www porque é o endereço que a Vercel serve: o domínio sem www responde 308
+ * para o com www (vale para .com.br e .ca). Apontar canonical/sitemap para o sem
+ * www fazia todo canonical cair num redirecionamento, e o Search Console acusa
+ * sinais conflitantes.
+ */
+export const SITE_BASE_URL = SITE_COUNTRY === 'CA' ? 'https://www.drivedata.ca' : 'https://www.drivedata.com.br';
