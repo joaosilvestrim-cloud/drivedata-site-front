@@ -116,6 +116,19 @@ export const generateMetadata = (config: SEOConfig): Metadata => {
   };
 };
 
+// Os dois sites servem as mesmas rotas: o .com.br em português e o .ca em
+// inglês. O hreflang liga as duas versões para o Google mostrar a certa em cada
+// país (e não tratar uma como cópia da outra). x-default = Brasil.
+// ES e FR ficam de fora de propósito: são escolhidos por cookie na mesma URL,
+// então não existe endereço próprio para o Google indexar.
+const BR_URL = 'https://www.drivedata.com.br';
+const CA_URL = 'https://www.drivedata.ca';
+
+export const hreflang = (path: string): Record<string, string> => {
+  const p = path === '/' ? '' : path;
+  return { 'pt-BR': `${BR_URL}${p}`, 'en-CA': `${CA_URL}${p}`, 'x-default': `${BR_URL}${p}` };
+};
+
 /**
  * Metadata de uma página: título, descrição, canonical próprio e imagem de
  * compartilhamento. Toda página indexável deve usar isto (ver o comentário do
@@ -131,13 +144,18 @@ export const pageMetadata = (cfg: {
   description: string;
   image?: string;
   type?: 'website' | 'article';
+  /** false quando a página só existe em português (ex.: vagas). */
+  languages?: boolean;
 }): Metadata => {
   const url = `${SITE_BASE_URL}${cfg.path === '/' ? '' : cfg.path}`;
   const image = cfg.image ?? '/og-image.jpg';
   return {
     title: cfg.title,
     description: cfg.description,
-    alternates: { canonical: url || SITE_BASE_URL },
+    alternates: {
+      canonical: url || SITE_BASE_URL,
+      ...(cfg.languages === false ? {} : { languages: hreflang(cfg.path) }),
+    },
     openGraph: {
       title: cfg.title,
       description: cfg.description,

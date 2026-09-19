@@ -115,7 +115,140 @@ export function SystemClient() {
           </div>
         )}
       </Card>
+
+      <ArticleMaintenance />
     </div>
+  );
+}
+
+type Scan = {
+  articles: number;
+  images: { id: string; title: string; count: number; bytes: number; cover: boolean }[];
+  imagesBytes: number;
+  slugs: { id: string; title: string; from: string; to: string }[];
+};
+
+const mb = (b: number) => `${(b / 1024 / 1024).toFixed(1)} MB`;
+
+// Correções dos artigos já gravados. Primeiro lista o que mudaria; só altera no clique.
+function ArticleMaintenance() {
+  const [scan, setScan] = useState<Scan | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setBusy('scan');
+    try {
+      const r = await fetch('/api/admin/maintenance/articles');
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error);
+      setScan(j);
+    } catch (e) {
+      setMsg((e as Error).message);
+    } finally {
+      setBusy(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const run = async (action: 'images' | 'slugs') => {
+    const text =
+      action === 'images'
+        ? 'Mover as imagens coladas nos artigos para o storage? O texto dos artigos não muda.'
+        : 'Trocar os slugs listados? Os endereços antigos passam a redirecionar para os novos.';
+    if (!confirm(text)) return;
+    setBusy(action);
+    setMsg(null);
+    try {
+      const r = await fetch('/api/admin/maintenance/articles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error);
+      setMsg(
+        action === 'images'
+          ? `${j.uploaded} imagens movidas em ${j.articles} artigos (${mb(j.bytes)} a menos no HTML).`
+          : `${j.changed} slugs corrigidos. Os antigos redirecionam com 301.`,
+      );
+      await load();
+    } catch (e) {
+      setMsg((e as Error).message);
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  return (
+    <Card style={{ marginTop: 16 }}>
+      <h3 style={h3}><Icon name="article" size={15} /> Manutenção dos artigos</h3>
+      {!scan ? (
+        busy === 'scan' ? <Spinner /> : <p style={{ fontSize: 13, color: C.muted }}>{msg ?? 'Sem dados.'}</p>
+      ) : (
+        <div style={{ display: 'grid', gap: 18 }}>
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+              <div>
+                <div style={{ fontSize: 13.5, fontWeight: 600 }}>Imagens dentro do texto</div>
+                <div style={{ fontSize: 12.5, color: C.muted, marginTop: 2 }}>
+                  {scan.images.length
+                    ? `${scan.images.reduce((s, i) => s + i.count + (i.cover ? 1 : 0), 0)} imagens em ${scan.images.length} artigos pesam ${mb(scan.imagesBytes)} no HTML.`
+                    : 'Nenhuma. Todas as imagens estão no storage.'}
+                </div>
+              </div>
+              {scan.images.length > 0 && (
+                <Button variant="primary" icon="upload" disabled={!!busy} onClick={() => run('images')}>
+                  {busy === 'images' ? 'Movendo…' : 'Mover para o storage'}
+                </Button>
+              )}
+            </div>
+            {scan.images.length > 0 && (
+              <ul style={{ margin: '10px 0 0', paddingLeft: 18, fontSize: 12.5, color: C.muted }}>
+                {scan.images.map((i) => (
+                  <li key={i.id}>{i.title}: {i.count} {i.count === 1 ? 'imagem' : 'imagens'}{i.cover ? ' + capa' : ''}, {mb(i.bytes)}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 14 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+              <div>
+                <div style={{ fontSize: 13.5, fontWeight: 600 }}>Endereços quebrados por acento</div>
+                <div style={{ fontSize: 12.5, color: C.muted, marginTop: 2 }}>
+                  {scan.slugs.length ? `${scan.slugs.length} artigos com slug como "efici-ncia".` : 'Nenhum.'}
+                </div>
+              </div>
+              {scan.slugs.length > 0 && (
+                <Button variant="primary" icon="link" disabled={!!busy} onClick={() => run('slugs')}>
+                  {busy === 'slugs' ? 'Corrigindo…' : 'Corrigir endereços'}
+                </Button>
+              )}
+            </div>
+            {scan.slugs.length > 0 && (
+              <div style={{ marginTop: 10, overflowX: 'auto' }}>
+                <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
+                  <tbody>
+                    {scan.slugs.map((s) => (
+                      <tr key={s.id} style={{ borderTop: `1px solid ${C.border}` }}>
+                        <td style={{ padding: '6px 8px 6px 0', color: C.muted, fontFamily: 'monospace' }}>{s.from}</td>
+                        <td style={{ padding: '6px 8px', color: C.muted }}>→</td>
+                        <td style={{ padding: '6px 0', fontFamily: 'monospace' }}>{s.to}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+          {msg && <p style={{ fontSize: 13, margin: 0 }}>{msg}</p>}
+        </div>
+      )}
+    </Card>
   );
 }
 

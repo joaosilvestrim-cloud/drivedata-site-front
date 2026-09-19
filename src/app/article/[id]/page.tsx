@@ -6,9 +6,11 @@ import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
 import { ArticleCategoryModel } from '@/common/model/article-category.model';
 import { ArticleModel } from '@/common/model/article.model';
 import { FindManyArticleResult } from '@/modules/article/types/find-many-article-case';
-import { getArticleById, getArticles } from '@/server/content-db';
+import { getArticleById, getArticleRedirect, getArticles } from '@/server/content-db';
 import { SITE_BASE_URL } from '@/common/config/site';
+import { hreflang } from '@/common/seo';
 import type { Metadata } from 'next';
+import { notFound, permanentRedirect } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   try {
@@ -18,11 +20,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     if (!a) return { title: 'Artigo · DriveData' };
     const title = a.seoTitle || a.title;
     const description = a.seoDescription || a.description || undefined;
-    const canonical = `${SITE_BASE_URL}/article/${a.slug || a.id}`;
+    const path = `/article/${a.slug || a.id}`;
+    const canonical = `${SITE_BASE_URL}${path}`;
     return {
       title,
       description,
-      alternates: { canonical },
+      // hreflang só quando o artigo tem inglês de verdade; senão o .ca serviria
+      // o texto em português e o Google veria duas cópias.
+      alternates: { canonical, ...(a.hasEn ? { languages: hreflang(path) } : {}) },
       openGraph: { title, description, url: canonical, images: a.imageUrl ? [a.imageUrl] : [], type: 'article' },
       twitter: { card: 'summary_large_image', title, description },
     };
@@ -41,11 +46,17 @@ export default async function Article({ params }: { params: Promise<{ id: string
   try {
     article = (await getArticleById(id, lang)) as (ArticleModel & { category: ArticleCategoryModel }) | null;
   } catch (error) {
+    // banco fora: deixa o erro subir (500) em vez de responder 404, que o Google
+    // entenderia como página removida
     console.error(error);
+    throw error;
   }
 
   if (!article) {
-    return null;
+    // slug antigo (trocado no admin ou corrigido): 301 para o endereço atual
+    const target = await getArticleRedirect(decodeURIComponent(id));
+    if (target) permanentRedirect(`/article/${target}`);
+    notFound();
   }
 
   try {

@@ -13,6 +13,7 @@ export interface ArticleModel {
   subTitle?: string;
   description?: string;
   content: string;
+  hasEn?: boolean;
   seoTitle?: string;
   seoDescription?: string;
   tags?: string[];

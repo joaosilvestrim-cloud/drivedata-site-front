@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Space_Grotesk } from 'next/font/google';
 import Script from 'next/script';
 import { SITE_BASE_URL, SITE_COUNTRY } from '@/common/config/site';
+import { hreflang } from '@/common/seo';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
   title: META.title,
   description: META.description,
   robots: { index: true, follow: true },
-  alternates: { canonical: `${SITE_BASE_URL}/dalt` },
+  alternates: { canonical: `${SITE_BASE_URL}/dalt`, languages: hreflang('/dalt') },
   openGraph: {
     title: 'DALT DriveData',
     description: META.ogDescription,

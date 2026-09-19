@@ -3,6 +3,7 @@
 //
 // O artigo tem tratamento especial (slug, status, agendamento, SEO, tags,
 // documentos) — ver buildArticleExtras() e os tipos de campo abaixo.
+import { externalizeI18nImages } from './inline-images';
 import { getPool } from '@/server/content-db';
 
 type FieldType = 'i18n' | 'text' | 'int' | 'bool' | 'json' | 'array' | 'timestamp' | 'slug';
@@ -164,17 +165,21 @@ function mergeI18n(existingVal: any, incoming: any): string | null {
 }
 
 export function slugify(s: string): string {
-  return (s || '')
+  const full = (s || '')
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 80);
+    .replace(/^-+|-+$/g, '');
+  if (full.length <= 80) return full;
+  // corta no fim de uma palavra, não no meio dela
+  const cut = full.slice(0, 81);
+  const lastDash = cut.lastIndexOf('-');
+  return (lastDash > 40 ? cut.slice(0, lastDash) : full.slice(0, 80)).replace(/-+$/g, '');
 }
 
 // garante slug único na tabela article (acrescenta -2, -3… se já existir)
-async function uniqueSlug(base: string, ignoreId?: string): Promise<string> {
+export async function uniqueSlug(base: string, ignoreId?: string): Promise<string> {
   const root = slugify(base) || 'artigo';
   let candidate = root;
   let n = 1;
@@ -244,6 +249,9 @@ async function applyArticleStatus(body: Record<string, any>, sets: string[], par
 export async function adminCreate(entity: string, body: Record<string, any>) {
   const cfg = ENTITIES[entity];
   if (!cfg) throw new Error('entidade inválida');
+  if (cfg.table === 'article' && body.content != null) {
+    body = { ...body, content: (await externalizeI18nImages(body.content)).value };
+  }
   const cols: string[] = [];
   const ph: string[] = [];
   const params: any[] = [];
@@ -299,6 +307,10 @@ export async function adminUpdate(entity: string, id: string, body: Record<strin
   const existing = await getPool()
     .query(`select * from ${cfg.table} where id = $1`, [id])
     .then((r) => r.rows[0]);
+  if (cfg.table === 'article' && body.content != null) {
+    body = { ...body, content: (await externalizeI18nImages(body.content)).value };
+  }
+  let newSlug: string | null = null;
 
   const sets: string[] = [];
   const params: any[] = [];
@@ -306,7 +318,10 @@ export async function adminUpdate(entity: string, id: string, body: Record<strin
     if (!(key in body)) continue;
     if (cfg.table === 'article' && (key === 'status' || key === 'publishedAt' || key === 'scheduledAt')) continue;
     let val = f.type === 'i18n' ? mergeI18n(existing?.[f.col], body[key]) : coerce(f.type, body[key]);
-    if (f.type === 'slug') val = await uniqueSlug((val as string) || ptOf(normI18n(body.title)) || existing?.slug || '', id);
+    if (f.type === 'slug') {
+      val = await uniqueSlug((val as string) || ptOf(normI18n(body.title)) || existing?.slug || '', id);
+      newSlug = val as string;
+    }
     params.push(val);
     sets.push(`"${f.col}" = $${params.length}`);
   }
@@ -334,7 +349,27 @@ export async function adminUpdate(entity: string, id: string, body: Record<strin
   params.push(id);
   const sql = `update ${cfg.table} set ${sets.join(', ')} where id = $${params.length} returning id`;
   const r = await getPool().query(sql, params);
+  if (cfg.table === 'article' && existing?.slug && newSlug && newSlug !== existing.slug) {
+    await rememberOldSlug(existing.slug, id, newSlug);
+  }
   return r.rows[0];
+}
+
+// Slug trocado: guarda o antigo para /article/<antigo> responder 301 para o novo
+// (links no LinkedIn e no Google continuam valendo). Melhor-esforço: se a
+// migration 008 ainda não rodou, o save do artigo não pode quebrar por isso.
+export async function rememberOldSlug(oldSlug: string, articleId: string, newSlug: string) {
+  try {
+    await getPool().query(
+      `insert into article_slug_redirect (old_slug, article_id) values ($1, $2)
+       on conflict (old_slug) do update set article_id = excluded.article_id`,
+      [oldSlug, articleId],
+    );
+    // o slug novo não pode continuar apontando para outro lugar
+    await getPool().query(`delete from article_slug_redirect where old_slug = $1`, [newSlug]);
+  } catch (e) {
+    console.error('article_slug_redirect', (e as Error).message);
+  }
 }
 
 export async function adminRemove(entity: string, id: string) {

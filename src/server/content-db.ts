@@ -72,6 +72,8 @@ function mapArticle(r: any, lang: Lang) {
     subTitle: t(r.sub_title, lang) || null,
     description: t(r.description, lang),
     content: t(r.content, lang),
+    // tem versão em inglês de verdade? (decide o hreflang pt-BR ↔ en-CA)
+    hasEn: !!(r.content && typeof r.content === 'object' && r.content.en),
     seoTitle: t(r.seo_title, lang) || t(r.title, lang),
     seoDescription: t(r.seo_description, lang) || t(r.description, lang),
     tags: Array.isArray(r.tags) ? r.tags : [],
@@ -92,6 +94,14 @@ function mapArticle(r: any, lang: Lang) {
 
 // ───────── getters de conteúdo (usados por server components e /api/*) ─────────
 
+const LIST_COLUMNS = [
+  'id', 'slug', 'category_id', 'image_url', 'title', 'sub_title', 'description', 'seo_title',
+  'seo_description', 'tags', 'faqs', 'document_urls', 'author', 'status', 'published_at',
+  'scheduled_at', 'views_count', 'whitelabel_id', 'created_at', 'updated_at', 'disabled_at',
+]
+  .map((c) => `a.${c}`)
+  .join(', ');
+
 export async function getArticles(
   opts: { search?: string | null; limit?: number | null; tag?: string | null; categoryId?: string | null } = {},
   lang: Lang = 'pt',
@@ -102,7 +112,9 @@ export async function getArticles(
   void publishDueScheduled().catch(() => {});
 
   const params: any[] = [];
-  let sql = `select a.*, row_to_json(c.*) as category
+  // Sem a coluna content: listagem e cards não usam o corpo, e ele era o que
+  // pesava (imagens base64 coladas no editor chegaram a 11 MB na /article).
+  let sql = `select ${LIST_COLUMNS}, row_to_json(c.*) as category
              from article a
              left join article_category c on c.id = a.category_id
              where ${PUBLIC_WHERE}`;
@@ -143,6 +155,21 @@ export async function getArticleById(idOrSlug: string, lang: Lang = 'pt', previe
   // Normaliza o HTML do corpo (h1→h2, corrige bloco-em-<p>, alt em imagens).
   article.content = normalizeArticleHtml(article.content, article.title);
   return article;
+}
+
+// Slug antigo de artigo → slug atual (ou id), para responder 301. Null se não houver.
+export async function getArticleRedirect(oldSlug: string): Promise<string | null> {
+  try {
+    const rows = await query<{ slug: string | null; id: string }>(
+      `select a.slug, a.id from article_slug_redirect r
+         join article a on a.id = r.article_id
+        where r.old_slug = $1 limit 1`,
+      [oldSlug],
+    );
+    return rows[0] ? rows[0].slug || rows[0].id : null;
+  } catch {
+    return null; // migration 008 ainda não rodou
+  }
 }
 
 export async function getSolutions(lang: Lang = 'pt') {

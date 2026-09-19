@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { SITE_BASE_URL, SITE_COUNTRY } from '@/common/config/site';
+import { hreflang } from '@/common/seo';
 import { themeBootScript } from '@/common/theme/useThemeMode';
 
 // Metadata gerado no servidor, ramificado por país (o corpo passa pelo i18n do
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: META.title,
   description: META.description,
   robots: { index: true, follow: true },
-  alternates: { canonical: `${SITE_BASE_URL}/portal-fabric` },
+  alternates: { canonical: `${SITE_BASE_URL}/portal-fabric`, languages: hreflang('/portal-fabric') },
   openGraph: {
     title: 'Portal DriveData — Microsoft Fabric',
     description: META.description,
