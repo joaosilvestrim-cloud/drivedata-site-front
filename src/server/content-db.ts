@@ -3,6 +3,7 @@
 // Roda só no servidor. Usado tanto pelos route handlers (/api/*) quanto
 // diretamente pelos server components (sem pulo HTTP).
 import { Pool } from 'pg';
+import { SITE_COUNTRY } from '@/common/config/site';
 import { normalizeArticleHtml } from './normalize-article-html';
 
 let pool: Pool | null = null;
@@ -235,16 +236,24 @@ export async function getProfiles(lang: Lang = 'pt') {
   }));
 }
 
-// logos de parceiros/clientes do carrossel da home (featured = roda no carrossel)
+// logos de parceiros/clientes do carrossel da home (featured = roda no carrossel).
+// Os dois sites leem o mesmo banco, então o logo pode ser marcado para um país:
+// country null aparece nos dois, 'BR' só no .com.br e 'CA' só no .ca.
 export async function getPartners() {
-  const rows = await query(
-    `select * from partner where disabled_at is null order by "order" asc, created_at asc`,
-  );
+  // O select vazio do admin grava '', que vale o mesmo que null: aparece nos dois.
+  const withCountry = `select * from partner
+      where disabled_at is null
+        and (country is null or country = '' or country = $1)
+      order by "order" asc, created_at asc`;
+  const legacy = `select * from partner where disabled_at is null order by "order" asc, created_at asc`;
+  // Antes da migration 009 a coluna não existe: não deixa o carrossel cair por isso.
+  const rows = await query(withCountry, [SITE_COUNTRY]).catch(() => query(legacy));
   return rows.map((r: any) => ({
     id: r.id,
     name: r.name ?? null,
     imageUrl: r.image_url,
     featured: r.featured === true,
+    country: r.country ?? null,
     order: r.order,
   }));
 }

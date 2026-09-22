@@ -96,6 +96,7 @@ export const ENTITIES: Record<string, EntityConfig> = {
       name: { col: 'name', type: 'text' },
       imageUrl: { col: 'image_url', type: 'text' },
       featured: { col: 'featured', type: 'bool' },
+      country: { col: 'country', type: 'text' },
       order: { col: 'order', type: 'int' },
     },
   },
