@@ -11,7 +11,7 @@ import { FaqModel } from '@/common/model/faq.model';
 import { SolutionModel } from '@/common/model/solution.model';
 import { TestimonialModel } from '@/common/model/testimonial.model';
 import { FindManyArticleResult } from '@/modules/article/types/find-many-article-case';
-import { getArticles, getFaqs, getSolutions, getTestimonials } from '@/server/content-db';
+import { getArticles, getFaqs, getPartners, getSolutions, getTestimonials } from '@/server/content-db';
 import { SITE_BASE_URL, SITE_COUNTRY } from '@/common/config/site';
 import { pageMetadata } from '@/common/seo';
 
@@ -39,11 +39,16 @@ export default async function About() {
   // getTestimonials → getArticles → getFaqs) e a latência somava, travando a
   // navegação até tudo carregar. Com Promise.all o tempo cai para o da consulta
   // mais lenta. Cada uma degrada para lista vazia se falhar.
-  const [solutions, testimonials, articles, faqs] = await Promise.all([
+  const [solutions, testimonials, articles, faqs, partners] = await Promise.all([
     getSolutions(lang).then(r => r as SolutionModel[]).catch(() => [] as SolutionModel[]),
     getTestimonials(lang).then(r => r as TestimonialModel[]).catch(() => [] as TestimonialModel[]),
     getArticles({ limit: 3 }, lang).then(r => r as FindManyArticleResult).catch(() => [] as FindManyArticleResult),
     getFaqs(lang).then(r => r as FaqModel[]).catch(() => [] as FaqModel[]),
+    // Logos do carrossel: vêm do servidor já filtrados por país. Antes a seção
+    // buscava sozinha no cliente e, com a hidratação quebrada, o efeito nunca
+    // rodava: a página ficava presa na lista de reserva do código.
+    getPartners().then(r => r.map(p => ({ imageUrl: p.imageUrl as string, name: p.name, featured: p.featured })))
+      .catch(() => [] as { imageUrl: string; name: string | null; featured: boolean }[]),
   ]);
 
   // Texto puro a partir de HTML (respostas do FAQ e conteúdo das soluções).
@@ -86,7 +91,7 @@ export default async function About() {
       <ThemeScope />
       <Header />
       <MainAboutSection />
-      <PartnersSection />
+      <PartnersSection partners={partners} />
       <SolutionsAccordionSection solutions={solutions} />
       <DevicesShowcaseSection />
       <IntegrationsSection />

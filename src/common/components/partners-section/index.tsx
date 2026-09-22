@@ -26,11 +26,11 @@ import {
   ResultsTitle,
   ResultsTitleBlue,
 } from './styles';
-import { PartnersSectionProps } from './types';
+import { PartnerItem, PartnersSectionProps } from './types';
 
 // Fonte da verdade = tabela `partner` (admin). Enquanto o banco não responde
 // (ou está vazio), cai neste fallback com os logos de /public/clientes — nada some.
-type Partner = { imageUrl: string; name?: string | null; featured: boolean };
+type Partner = PartnerItem;
 
 const FEATURED_FALLBACK = new Set([
   'VISA LOGO 1.svg',
@@ -51,15 +51,20 @@ const FALLBACK_PARTNERS: Partner[] = FALLBACK_FILES.map((f) => ({
   featured: FEATURED_FALLBACK.has(f),
 }));
 
-export const PartnersSection = ({ className }: PartnersSectionProps) => {
+export const PartnersSection = ({ className, partners: initialPartners }: PartnersSectionProps) => {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
-  const [partners, setPartners] = useState<Partner[]>(FALLBACK_PARTNERS);
+  // A lista chega pronta do servidor. O fetch abaixo continua como rede de
+  // segurança para quem renderiza a seção sem passar a lista.
+  const [partners, setPartners] = useState<Partner[]>(
+    initialPartners?.length ? initialPartners : FALLBACK_PARTNERS,
+  );
   const [showMore, setShowMore] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
 
   // Busca os parceiros configurados no admin; mantém o fallback se falhar/vazio.
   useEffect(() => {
+    if (initialPartners?.length) return;
     let alive = true;
     fetch('/api/partners')
       .then((r) => (r.ok ? r.json() : null))
@@ -72,7 +77,7 @@ export const PartnersSection = ({ className }: PartnersSectionProps) => {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [initialPartners]);
 
   // Top = rodam no carrossel; se nenhum for Top, roda todos. Resto vai no "Ver mais".
   const carousel = partners.some((p) => p.featured) ? partners.filter((p) => p.featured) : partners;
