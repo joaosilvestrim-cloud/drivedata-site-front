@@ -56,6 +56,55 @@ async function expectOk(res: Response): Promise<void> {
   if (!res.ok) throw new Error(`${res.status} ${await res.text().catch(() => '')}`.slice(0, 400));
 }
 
+// Perfil do talento lido do currículo (resumo, competências, experiência...).
+export interface CrmTalentProfile {
+  name?: string | null;
+  headline?: string | null;
+  location?: string | null;
+  seniority?: string | null;
+  area?: string | null;
+  summary?: string | null;
+  tags?: string[];
+  languages?: string[];
+  experience?: Array<{ period: string; role: string; org: string; focus?: string }>;
+  education?: Array<{ period: string; degree: string; school: string }>;
+  certifications?: Array<{ name: string; issuer?: string; year?: string }>;
+}
+
+const PROFILE_FIELDS = ['headline', 'location', 'seniority', 'area', 'summary', 'tags', 'languages', 'experience', 'education', 'certifications'] as const;
+const isEmpty = (v: unknown) => v == null || v === '' || (Array.isArray(v) && v.length === 0);
+
+/**
+ * Preenche o perfil do talento (achado pelo e-mail) no ERP. Só preenche campos
+ * vazios, para não sobrescrever o que alguém já editou. O nome só é corrigido
+ * em talento que veio do site.
+ */
+export async function updateCrmTalentProfile(emailRaw: string, p: CrmTalentProfile): Promise<{ ok: true; fields: string[] } | { ok: false; error: string }> {
+  const env = crmEnv();
+  if (!env) return { ok: false, error: 'Integração com o ERP não configurada.' };
+  const rest = `${env.url}/rest/v1`;
+  try {
+    const email = emailRaw.trim().toLowerCase();
+    const found = await json<Array<Record<string, unknown>>>(
+      await fetch(`${rest}/talents?email=ilike.${encodeURIComponent(email)}&select=id,name,source,${PROFILE_FIELDS.join(',')}&limit=1`, { headers: env.headers }),
+    );
+    const cur = found[0];
+    if (!cur) return { ok: false, error: 'talento não encontrado' };
+    const patch: Record<string, unknown> = {};
+    for (const f of PROFILE_FIELDS) {
+      const v = p[f];
+      if (!isEmpty(v) && isEmpty(cur[f])) patch[f] = v;
+    }
+    if (p.name && cur.source === 'site' && p.name !== cur.name) patch.name = p.name;
+    if (Object.keys(patch).length) {
+      await expectOk(await fetch(`${rest}/talents?id=eq.${cur.id}`, { method: 'PATCH', headers: { ...env.headers, Prefer: 'return=minimal' }, body: JSON.stringify(patch) }));
+    }
+    return { ok: true, fields: Object.keys(patch) };
+  } catch (e) {
+    return { ok: false, error: (e as Error).message };
+  }
+}
+
 /** Card mais alto na coluna = maior nota. Sem nota vai para o topo (precisa de triagem). */
 const orderFor = (t?: CrmTriage | null) => (t ? 1000 - Math.round(t.score * 10) : 0);
 
