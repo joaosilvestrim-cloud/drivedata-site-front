@@ -69,9 +69,10 @@ export interface CrmTalentProfile {
   experience?: Array<{ period: string; role: string; org: string; focus?: string }>;
   education?: Array<{ period: string; degree: string; school: string }>;
   certifications?: Array<{ name: string; issuer?: string; year?: string }>;
+  tier?: 'verde' | 'laranja' | 'cinza' | null;
 }
 
-const PROFILE_FIELDS = ['headline', 'location', 'seniority', 'area', 'summary', 'tags', 'languages', 'experience', 'education', 'certifications'] as const;
+const PROFILE_FIELDS = ['headline', 'location', 'seniority', 'area', 'summary', 'tags', 'languages', 'experience', 'education', 'certifications', 'tier'] as const;
 const isEmpty = (v: unknown) => v == null || v === '' || (Array.isArray(v) && v.length === 0);
 
 /**

@@ -26,6 +26,7 @@ function readProfile(v: unknown): CrmTalentProfile | null {
     headline: str(p.headline, 120),
     location: str(p.location, 120),
     seniority: seniority && SENIORITY.has(seniority) ? seniority : null,
+    tier: p.tier === 'verde' || p.tier === 'laranja' || p.tier === 'cinza' ? p.tier : null,
     area: str(p.area, 60),
     summary: str(p.summary, 1200),
     tags: strs(p.tags, 60, 15),
