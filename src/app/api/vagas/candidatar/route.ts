@@ -4,6 +4,8 @@
 import { createApplication, getOpenJobBySlug } from '@/server/jobs';
 import { logError } from '@/server/content-db';
 import { createClient } from '@supabase/supabase-js';
+import { after } from 'next/server';
+import { pushApplicationToCrm } from '@/server/crm-hiring';
 
 export const runtime = 'nodejs';
 
@@ -87,8 +89,9 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Não conseguimos receber o currículo. Tente novamente em instantes.' }, { status: 500 });
     }
 
+    let applicationId: string;
     try {
-      await createApplication({
+      ({ id: applicationId } = await createApplication({
         jobId: job.id,
         name,
         email,
@@ -103,12 +106,32 @@ export async function POST(req: Request) {
         source: str(form.get('source'), 120) || null,
         page: str(form.get('page'), 300) || null,
         consent: true,
-      });
+      }));
     } catch (e) {
       // Sem a linha no banco o arquivo fica órfão no bucket: desfaz o upload.
       await sb.storage.from(BUCKET).remove([path]).catch(() => {});
       throw e;
     }
+
+    // Leva a candidatura para o Processo Seletivo do ERP depois de responder ao
+    // candidato. Falha aqui não perde nada: a candidatura já está salva no site e a
+    // carga pelo admin (/api/admin/applications/crm) reenvia as que faltarem.
+    after(async () => {
+      const r = await pushApplicationToCrm({
+        applicationId,
+        jobTitle: job.title,
+        jobSlug: job.slug,
+        name,
+        email,
+        phone: str(form.get('phone'), 40) || null,
+        linkedinUrl: url(str(form.get('linkedin'), 300)) || null,
+        portfolioUrl: url(str(form.get('portfolio'), 300)) || null,
+        message: str(form.get('message'), 3000) || null,
+        appliedAt: new Date().toISOString(),
+        cv: { bytes, name: cv.name.slice(0, 200), mime: contentType },
+      });
+      if (!r.ok) await logError({ source: 'api/vagas/candidatar → ERP', message: r.error }).catch(() => {});
+    });
 
     return Response.json({ ok: true });
   } catch (e) {

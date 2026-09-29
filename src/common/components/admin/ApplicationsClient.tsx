@@ -103,6 +103,11 @@ export function ApplicationsClient() {
       />
       {error && <ErrorBar>{error}</ErrorBar>}
 
+      <div style={{ border: `1px solid ${C.border}`, borderRadius: 12, padding: '12px 16px', marginBottom: 16, fontSize: 13, color: C.text, lineHeight: 1.5 }}>
+        Cada candidatura também entra no <b>Processo Seletivo do ERP</b> (etapa Triagem), com o currículo.
+        A triagem e as próximas etapas seguem por lá: esta tela fica como registro do que chegou pelo site.
+      </div>
+
       <div style={{ display: 'flex', gap: 14, marginBottom: 16, color: C.muted, fontSize: 13 }}>
         <span><b style={{ color: C.text, fontSize: 18 }}>{items.length}</b> candidatura{items.length === 1 ? '' : 's'}</span>
         <span><b style={{ color: C.green, fontSize: 18 }}>{novas}</b> nova{novas === 1 ? '' : 's'}</span>
