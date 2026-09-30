@@ -69,7 +69,7 @@ export function MediaManager() {
         subtitle={`${items.length} arquivo(s) · ${fmtBytes(totalBytes)} em uso`}
         icon="image"
         actions={
-          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: C.gradient, color: '#06121f', borderRadius: 10, padding: '9px 14px', fontSize: 13.5, fontWeight: 700, cursor: 'pointer' }}>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: C.green, color: C.onGreen, borderRadius: 999, padding: '10px 18px', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
             <Icon name="upload" size={16} /> {uploading ? 'Enviando…' : 'Enviar arquivos'}
             <input type="file" multiple hidden onChange={(e) => e.target.files && onUpload(e.target.files)} />
           </label>
@@ -78,7 +78,7 @@ export function MediaManager() {
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
         {[['', 'Tudo'], ['image', 'Imagens'], ['document', 'Documentos']].map(([v, l]) => (
-          <button key={v} onClick={() => setKind(v)} style={{ background: kind === v ? 'rgba(10,150,236,.15)' : 'rgba(255,255,255,.04)', border: `1px solid ${kind === v ? 'rgba(10,150,236,.4)' : C.border}`, color: kind === v ? C.text : C.muted, padding: '7px 14px', borderRadius: 9, fontSize: 13, cursor: 'pointer', fontWeight: 600 }}>{l}</button>
+          <button key={v} onClick={() => setKind(v)} style={{ background: kind === v ? 'rgba(90,169,255,.15)' : 'rgba(255,255,255,.04)', border: `1px solid ${kind === v ? 'rgba(90,169,255,.4)' : C.border}`, color: kind === v ? C.text : C.muted, padding: '7px 14px', borderRadius: 9, fontSize: 13, cursor: 'pointer', fontWeight: 600 }}>{l}</button>
         ))}
       </div>
 

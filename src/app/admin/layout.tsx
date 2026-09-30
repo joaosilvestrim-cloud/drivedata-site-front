@@ -12,9 +12,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   }
 
   return (
-    <div style={{ display: 'flex', background: '#070c16', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, Segoe UI, sans-serif', color: '#eaf0fb' }}>
+    <div style={{ display: 'flex', background: '#0a1322', minHeight: '100vh', fontFamily: "var(--font-inter), 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif", color: '#e8eef8' }}>
       <AdminNav email={user.email ?? undefined} />
-      <main style={{ flex: 1, minWidth: 0, padding: '30px 36px', color: '#eaf0fb' }}>
+      <main style={{ flex: 1, minWidth: 0, padding: '32px 40px', color: '#e8eef8' }}>
         <div style={{ maxWidth: 1180, margin: '0 auto' }}>{children}</div>
       </main>
     </div>

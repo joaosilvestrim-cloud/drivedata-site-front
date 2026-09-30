@@ -10,7 +10,7 @@ function StepsCard({ title, steps }: { title: string; steps: string[] }) {
       <ol style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 9 }}>
         {steps.map((s, i) => (
           <li key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-            <span style={{ flexShrink: 0, width: 20, height: 20, borderRadius: '50%', background: C.gradient, color: '#06121f', fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{i + 1}</span>
+            <span style={{ flexShrink: 0, width: 20, height: 20, borderRadius: '50%', background: C.gradient, color: '#0a1628', fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{i + 1}</span>
             <span style={{ fontSize: 12.5, color: C.muted, lineHeight: 1.55 }}>{s}</span>
           </li>
         ))}
@@ -100,7 +100,7 @@ export function ConversionsClient() {
       />
 
       {/* Introdução pra quem opera (marketing) */}
-      <div style={{ background: 'rgba(10,150,236,.10)', border: `1px solid rgba(10,150,236,.25)`, borderRadius: C.radius, padding: 16, marginBottom: 16 }}>
+      <div style={{ background: 'rgba(90,169,255,.10)', border: `1px solid rgba(90,169,255,.25)`, borderRadius: C.radius, padding: 16, marginBottom: 16 }}>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8 }}>
           <Icon name="help" size={18} color={C.blue} />
           <strong style={{ fontSize: 14 }}>Para que serve esta página</strong>
@@ -130,7 +130,7 @@ export function ConversionsClient() {
             return (
               <Card key={p}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 10 }}>
-                  <span style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(10,150,236,.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.green }}>
+                  <span style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(90,169,255,.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.green }}>
                     <Icon name={m.icon} size={19} />
                   </span>
                   <div style={{ fontSize: 16, fontWeight: 700 }}>{m.label}</div>

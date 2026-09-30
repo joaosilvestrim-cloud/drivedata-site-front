@@ -101,7 +101,7 @@ export function VideoInsertModal({
     textAlign: 'center',
     border: `1px solid ${mode === m ? 'transparent' : C.border}`,
     background: mode === m ? C.gradient : 'transparent',
-    color: mode === m ? '#06121f' : C.muted,
+    color: mode === m ? '#0a1628' : C.muted,
   });
 
   const busy = uploading;

@@ -40,7 +40,7 @@ export function MediaPicker({ kind = 'image', onPick, onClose }: { kind?: 'image
 
   return (
     <Modal title="Biblioteca de mídia" width={760} onClose={onClose}>
-      <label style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: C.gradient, color: '#06121f', borderRadius: 10, padding: '9px 14px', fontSize: 13.5, fontWeight: 700, cursor: 'pointer', marginBottom: 16 }}>
+      <label style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: C.green, color: C.onGreen, borderRadius: 999, padding: '10px 18px', fontSize: 14, fontWeight: 600, cursor: 'pointer', marginBottom: 16 }}>
         <Icon name="upload" size={15} /> {uploading ? 'Enviando…' : 'Enviar novo'}
         <input type="file" accept={kind === 'image' ? 'image/*' : undefined} hidden onChange={(e) => e.target.files?.[0] && onUpload(e.target.files[0])} />
       </label>

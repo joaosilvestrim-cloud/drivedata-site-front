@@ -16,7 +16,7 @@ const TONE: Record<Status, { color: string; bg: string; icon: string }> = {
   ok: { color: C.green, bg: 'rgba(84,218,137,.14)', icon: 'check' },
   error: { color: C.danger, bg: C.dangerBg, icon: 'x' },
   warn: { color: C.warn, bg: 'rgba(246,196,85,.14)', icon: 'alert' },
-  info: { color: '#6cc4ff', bg: 'rgba(10,150,236,.14)', icon: 'doc' },
+  info: { color: '#8ec5ff', bg: 'rgba(90,169,255,.14)', icon: 'doc' },
 };
 
 export function IntegrationsClient() {
@@ -49,7 +49,7 @@ export function IntegrationsClient() {
         actions={<Button variant="ghost" icon="refresh" onClick={() => void load()}>Revalidar</Button>}
       />
 
-      <div style={{ background: 'rgba(10,150,236,.10)', border: `1px solid rgba(10,150,236,.25)`, borderRadius: C.radius, padding: 16, marginBottom: 16 }}>
+      <div style={{ background: 'rgba(90,169,255,.10)', border: `1px solid rgba(90,169,255,.25)`, borderRadius: C.radius, padding: 16, marginBottom: 16 }}>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8 }}>
           <Icon name="help" size={18} color={C.blue} />
           <strong style={{ fontSize: 14 }}>O que é esta página</strong>
@@ -95,7 +95,7 @@ export function IntegrationsClient() {
                     <div style={{ fontSize: 13.5, fontWeight: 600 }}>{c.label}</div>
                     <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{c.detail}</div>
                   </div>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: t.color, textTransform: 'uppercase', letterSpacing: 0.5 }}>{c.status}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: t.color, letterSpacing: 0.5 }}>{c.status}</span>
                 </div>
               );
             })}
@@ -139,8 +139,8 @@ function Pill({ color, label }: { color: string; label: string }) {
 function Stat({ label, value, color }: { label: string; value: number; color?: string }) {
   return (
     <Card pad={14}>
-      <div style={{ fontSize: 24, fontWeight: 800, color: color ?? C.text }}>{value}</div>
-      <div style={{ fontSize: 11.5, color: C.faint, textTransform: 'uppercase', letterSpacing: 0.4, marginTop: 2 }}>{label}</div>
+      <div style={{ fontSize: 26, fontWeight: 800, color: color ?? C.text, fontFamily: C.display, letterSpacing: '-0.04em' }}>{value}</div>
+      <div style={{ fontSize: 11.5, color: C.faint, letterSpacing: 0.4, marginTop: 2 }}>{label}</div>
     </Card>
   );
 }

@@ -62,12 +62,9 @@ export function AdminNav({ email }: { email?: string }) {
   return (
     <aside style={S.aside}>
       <div style={S.brand}>
-        <Image src="/drive-data-icon.png" alt="DriveData" width={34} height={34} priority style={S.logoMark} />
         <div>
-          <div style={{ fontSize: 18, fontWeight: 800, lineHeight: 1 }}>
-            Drive<span style={{ background: C.gradient, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>Data</span>
-          </div>
-          <div style={{ fontSize: 10.5, color: C.faint, marginTop: 3, letterSpacing: 1, textTransform: 'uppercase' }}>Console</div>
+          <Image src="/logotipo-drivedata.webp" alt="DriveData" width={134} height={32} priority style={S.logoMark} />
+          <div style={{ fontSize: 12.5, color: C.faint, marginTop: 8 }}>Console do site</div>
         </div>
       </div>
 
@@ -111,12 +108,12 @@ const S: Record<string, React.CSSProperties> = {
     padding: '20px 14px', display: 'flex', flexDirection: 'column', gap: 18, position: 'sticky', top: 0, alignSelf: 'flex-start',
   },
   brand: { display: 'flex', alignItems: 'center', gap: 11, padding: '4px 8px 14px', borderBottom: `1px solid ${C.border}` },
-  logoMark: { width: 34, height: 34, objectFit: 'contain', flexShrink: 0 },
-  groupTitle: { fontSize: 10.5, color: C.faint, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, padding: '0 10px 6px' },
-  link: { display: 'flex', alignItems: 'center', gap: 11, color: C.muted, textDecoration: 'none', padding: '9px 11px', borderRadius: 9, fontSize: 13.5, fontWeight: 500 },
-  linkActive: { background: 'rgba(10,150,236,.13)', color: C.text, fontWeight: 600 },
+  logoMark: { width: 'auto', height: 32, objectFit: 'contain', display: 'block' },
+  groupTitle: { fontSize: 12.5, color: C.faint, fontWeight: 600, padding: '0 14px 6px' },
+  link: { display: 'flex', alignItems: 'center', gap: 11, color: C.muted, textDecoration: 'none', padding: '9px 14px', borderRadius: 999, fontSize: 14, fontWeight: 500 },
+  linkActive: { background: 'rgba(84,218,137,.12)', color: C.text, fontWeight: 600 },
   footer: { marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8, paddingTop: 12, borderTop: `1px solid ${C.border}` },
   email: { fontSize: 11, color: C.faint, wordBreak: 'break-all', padding: '0 4px' },
-  logout: { flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: 'rgba(255,255,255,.05)', border: `1px solid ${C.borderStrong}`, color: C.text, borderRadius: 9, padding: '8px', cursor: 'pointer', fontSize: 12.5 },
-  viewsite: { flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, color: C.muted, fontSize: 12.5, textDecoration: 'none', border: `1px solid ${C.borderStrong}`, borderRadius: 9, padding: '8px' },
+  logout: { flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: 'transparent', border: `1px solid ${C.borderStrong}`, color: C.text, borderRadius: 999, padding: '9px', cursor: 'pointer', fontSize: 13, fontFamily: 'inherit' },
+  viewsite: { flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, color: C.muted, fontSize: 12.5, textDecoration: 'none', border: `1px solid ${C.borderStrong}`, borderRadius: 999, padding: '9px' },
 };

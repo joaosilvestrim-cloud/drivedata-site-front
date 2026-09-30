@@ -110,14 +110,14 @@ export function AnalyticsClient() {
       {selDay && (
         <Card style={{ marginBottom: 16, borderColor: C.green }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-            <h3 style={{ ...h3, margin: 0 }}>📅 Detalhe de {parseDay(selDay).toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' })}</h3>
+            <h3 style={{ ...h3, margin: 0 }}><Icon name="calendar" size={15} /> Detalhe de {parseDay(selDay).toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' })}</h3>
             <button onClick={() => { setSelDay(null); setDay(null); }} style={{ background: 'none', border: `1px solid ${C.border}`, color: C.muted, borderRadius: 8, padding: '5px 12px', fontSize: 12, cursor: 'pointer' }}>Fechar</button>
           </div>
           {dayLoading || !day ? <Spinner /> : (
             <>
               <div style={{ display: 'flex', gap: 24, marginBottom: 16 }}>
-                <div><div style={{ color: C.muted, fontSize: 12 }}>Visitas</div><div style={{ fontSize: 24, fontWeight: 800 }}>{fmt(day.views)}</div></div>
-                <div><div style={{ color: C.muted, fontSize: 12 }}>Sessões</div><div style={{ fontSize: 24, fontWeight: 800 }}>{fmt(day.sessions)}</div></div>
+                <div><div style={{ color: C.muted, fontSize: 12 }}>Visitas</div><div style={{ fontSize: 24, fontWeight: 800, fontFamily: C.display, letterSpacing: '-0.04em' }}>{fmt(day.views)}</div></div>
+                <div><div style={{ color: C.muted, fontSize: 12 }}>Sessões</div><div style={{ fontSize: 24, fontWeight: 800, fontFamily: C.display, letterSpacing: '-0.04em' }}>{fmt(day.sessions)}</div></div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
                 <div><h4 style={h4}>Páginas</h4><BarList items={(day.pages || []).map((p) => ({ label: p.path, n: p.n }))} /></div>
@@ -148,7 +148,7 @@ export function AnalyticsClient() {
         </Card>
 
         <Card>
-          <h3 style={h3}>🧭 Origem do tráfego</h3>
+          <h3 style={h3}><Icon name="chart" size={15} /> Origem do tráfego</h3>
           <BarList pct items={(s.byChannel || []).map((x) => ({ label: `${CHANNEL_EMOJI[x.channel] || '🌐'} ${x.channel}`, n: x.n }))} />
         </Card>
 
@@ -160,7 +160,7 @@ export function AnalyticsClient() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.3fr', gap: 16 }}>
         <Card>
-          <h3 style={h3}>🌎 Idiomas</h3>
+          <h3 style={h3}><Icon name="translate" size={15} /> Idiomas</h3>
           <BarList pct items={(s.byLang || []).map((x) => ({ label: `${(LANG_META[x.lang] || LANG_META['??']).flag} ${(LANG_META[x.lang] || LANG_META['??']).name}`, n: x.n }))} />
         </Card>
 
@@ -170,7 +170,7 @@ export function AnalyticsClient() {
         </Card>
 
         <Card>
-          <h3 style={h3}>📄 Páginas mais vistas</h3>
+          <h3 style={h3}><Icon name="doc" size={15} /> Páginas mais vistas</h3>
           <BarList items={(s.topPages || []).map((x) => ({ label: x.path, n: x.n }))} />
         </Card>
       </div>
@@ -184,7 +184,7 @@ function Mini({ label, value, hint, trend }: { label: string; value: string; hin
     <Card>
       <div style={{ color: C.muted, fontSize: 12.5 }}>{label}</div>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginTop: 6 }}>
-        <div style={{ fontSize: 28, fontWeight: 800 }}>{value}</div>
+        <div style={{ fontSize: 30, fontWeight: 800, fontFamily: C.display, letterSpacing: '-0.04em' }}>{value}</div>
         {typeof trend === 'number' && (
           <span style={{ fontSize: 12.5, fontWeight: 700, color: up ? C.green : '#f87171' }}>{up ? '▲' : '▼'} {Math.abs(trend)}%</span>
         )}
@@ -216,5 +216,5 @@ function BarList({ items, pct = false }: { items: { label: string; n: number }[]
 }
 
 const Empty = () => <div style={{ color: C.faint, fontSize: 13, padding: '10px 0' }}>Sem dados ainda.</div>;
-const h3: React.CSSProperties = { fontSize: 14, fontWeight: 700, margin: '0 0 14px', display: 'flex', alignItems: 'center', gap: 8 };
-const h4: React.CSSProperties = { fontSize: 12, fontWeight: 700, margin: '0 0 10px', color: C.muted, textTransform: 'uppercase', letterSpacing: '.04em' };
+const h3: React.CSSProperties = { fontSize: 16, fontWeight: 700, margin: '0 0 14px', display: 'flex', alignItems: 'center', gap: 8, fontFamily: C.display, letterSpacing: '-0.02em' };
+const h4: React.CSSProperties = { fontSize: 12, fontWeight: 700, margin: '0 0 10px', color: C.muted, letterSpacing: '.04em' };

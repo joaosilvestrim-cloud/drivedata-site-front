@@ -86,7 +86,7 @@ export function DashboardClient() {
       {alerts.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 18 }}>
           {alerts.map((a, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13, padding: '10px 14px', borderRadius: 11, background: a.tone === 'danger' ? C.dangerBg : 'rgba(10,150,236,.1)', color: a.tone === 'danger' ? C.danger : '#7cc6ff', border: `1px solid ${a.tone === 'danger' ? 'rgba(255,80,80,.25)' : 'rgba(10,150,236,.25)'}` }}>
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13, padding: '10px 14px', borderRadius: 11, background: a.tone === 'danger' ? C.dangerBg : 'rgba(90,169,255,.1)', color: a.tone === 'danger' ? C.danger : '#7cc6ff', border: `1px solid ${a.tone === 'danger' ? 'rgba(255,80,80,.25)' : 'rgba(90,169,255,.25)'}` }}>
               <Icon name="alert" size={15} /> {a.text}
             </div>
           ))}
@@ -183,7 +183,7 @@ function Stat({ icon, label, value, sub, href }: { icon: string; label: string; 
           <span style={{ color: C.muted, fontSize: 12.5 }}>{label}</span>
           <span style={{ color: C.green }}><Icon name={icon} size={18} /></span>
         </div>
-        <div style={{ fontSize: 30, fontWeight: 800, marginTop: 8, color: C.text }}>{value}</div>
+        <div style={{ fontSize: 34, fontWeight: 800, marginTop: 8, color: C.text, fontFamily: C.display, letterSpacing: '-0.04em', lineHeight: 1 }}>{value}</div>
         {sub && <div style={{ fontSize: 11.5, color: C.faint, marginTop: 3 }}>{sub}</div>}
       </Card>
     </Link>
@@ -193,7 +193,7 @@ function Stat({ icon, label, value, sub, href }: { icon: string; label: string; 
 function CardTitle({ icon, title, right }: { icon: string; title: string; right?: React.ReactNode }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 700 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 16, fontWeight: 700, fontFamily: C.display, letterSpacing: '-0.02em' }}>
         <span style={{ color: C.green }}><Icon name={icon} size={16} /></span> {title}
       </div>
       {right}

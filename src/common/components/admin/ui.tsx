@@ -3,23 +3,29 @@
 import React from 'react';
 
 // ───────────────────────── Design tokens (identidade DriveData) ─────────────────────────
+// A mesma do site, na versão escura: azul-marinho nas superfícies, verde como
+// destaque único (botão principal, barras, estado ativo), títulos em Sora.
+// `gradient` virou o verde sólido: o nome ficou para não mexer em quem usa.
 export const C = {
-  bg: '#070c16',
-  panel: '#0d1526',
-  panel2: '#0b1220',
-  panelHover: '#111b30',
-  border: 'rgba(255,255,255,.08)',
-  borderStrong: 'rgba(255,255,255,.16)',
-  text: '#eaf0fb',
-  muted: 'rgba(234,240,251,.62)',
-  faint: 'rgba(234,240,251,.40)',
-  blue: '#0a96ec',
+  bg: '#0a1322',
+  panel: '#111d31',
+  panel2: '#0d182a',
+  panelHover: '#16253d',
+  border: 'rgba(234,240,251,.08)',
+  borderStrong: 'rgba(234,240,251,.16)',
+  text: '#e8eef8',
+  muted: 'rgba(234,240,251,.68)',
+  faint: 'rgba(234,240,251,.44)',
+  blue: '#5aa9ff',
   green: '#54da89',
-  gradient: 'linear-gradient(120deg,#0a96ec,#54da89)',
-  danger: '#ff7a7a',
-  dangerBg: 'rgba(255,80,80,.12)',
+  gradient: '#54da89',
+  onGreen: '#0a1628',
+  danger: '#ff8f80',
+  dangerBg: 'rgba(255,143,128,.12)',
   warn: '#f6c455',
-  radius: 14,
+  radius: 20,
+  display: "var(--font-sora), 'Sora', ui-sans-serif, system-ui, sans-serif",
+  font: "var(--font-inter), 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif",
 };
 
 // ───────────────────────── Ícones (SVG inline, stroke currentColor) ─────────────────────────
@@ -56,6 +62,7 @@ const PATHS: Record<string, React.ReactNode> = {
   refresh: <><path d="M21 12a9 9 0 1 1-3-6.7L21 7" /><path d="M21 3v4h-4" /></>,
   briefcase: <><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12h18" /></>,
   link: <><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1 1" /><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1-1" /></>,
+  play: <><circle cx="12" cy="12" r="9" /><path d="M10 8.5l5.5 3.5-5.5 3.5z" /></>,
 };
 
 export function Icon({ name, size = 18, color = 'currentColor', strokeWidth = 1.7, style }: { name: string; size?: number; color?: string; strokeWidth?: number; style?: React.CSSProperties }) {
@@ -74,13 +81,14 @@ export function Card({ children, style, pad = 18 }: { children: React.ReactNode;
 type BtnVariant = 'primary' | 'ghost' | 'danger' | 'subtle';
 export function Button({ variant = 'ghost', children, icon, style, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: BtnVariant; icon?: string }) {
   const base: React.CSSProperties = {
-    display: 'inline-flex', alignItems: 'center', gap: 7, borderRadius: 10, padding: '9px 14px',
-    fontSize: 13.5, fontWeight: 600, cursor: 'pointer', border: '1px solid transparent', transition: 'all .15s', lineHeight: 1,
+    display: 'inline-flex', alignItems: 'center', gap: 7, borderRadius: 999, padding: '10px 18px',
+    fontSize: 14, fontWeight: 600, cursor: 'pointer', border: '1px solid transparent', transition: 'all .15s', lineHeight: 1,
+    fontFamily: 'inherit',
   };
   const variants: Record<BtnVariant, React.CSSProperties> = {
-    primary: { background: C.gradient, color: '#06121f', border: 'none', fontWeight: 700 },
-    ghost: { background: 'rgba(255,255,255,.06)', color: C.text, border: `1px solid ${C.borderStrong}` },
-    danger: { background: C.dangerBg, color: C.danger, border: '1px solid rgba(255,80,80,.3)' },
+    primary: { background: C.green, color: C.onGreen, border: 'none', fontWeight: 600 },
+    ghost: { background: 'transparent', color: C.text, border: `1px solid ${C.borderStrong}` },
+    danger: { background: C.dangerBg, color: C.danger, border: '1px solid rgba(255,143,128,.3)' },
     subtle: { background: 'transparent', color: C.muted, border: '1px solid transparent' },
   };
   return (
@@ -94,10 +102,10 @@ export function Button({ variant = 'ghost', children, icon, style, ...rest }: Re
 export function Badge({ tone = 'neutral', children }: { tone?: 'live' | 'draft' | 'scheduled' | 'neutral' | 'danger'; children: React.ReactNode }) {
   const tones: Record<string, React.CSSProperties> = {
     live: { background: 'rgba(84,218,137,.16)', color: C.green },
-    scheduled: { background: 'rgba(10,150,236,.16)', color: '#6cc4ff' },
-    draft: { background: 'rgba(255,255,255,.1)', color: C.muted },
+    scheduled: { background: 'rgba(90,169,255,.16)', color: '#8ec5ff' },
+    draft: { background: 'rgba(234,240,251,.1)', color: C.muted },
     danger: { background: C.dangerBg, color: C.danger },
-    neutral: { background: 'rgba(255,255,255,.08)', color: C.muted },
+    neutral: { background: 'rgba(234,240,251,.08)', color: C.muted },
   };
   return <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, borderRadius: 999, padding: '3px 10px', fontSize: 11.5, fontWeight: 600, ...tones[tone] }}>{children}</span>;
 }
@@ -105,8 +113,8 @@ export function Badge({ tone = 'neutral', children }: { tone?: 'live' | 'draft' 
 export const field: Record<string, React.CSSProperties> = {
   label: { display: 'block', fontSize: 12, color: C.muted, marginBottom: 6, fontWeight: 500 },
   input: {
-    width: '100%', background: 'rgba(255,255,255,.05)', border: `1px solid ${C.borderStrong}`, borderRadius: 10,
-    padding: '10px 12px', color: C.text, fontSize: 14, outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
+    width: '100%', background: 'rgba(234,240,251,.05)', border: `1px solid ${C.borderStrong}`, borderRadius: 12,
+    padding: '11px 14px', color: C.text, fontSize: 14, outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
   },
 };
 
@@ -137,10 +145,10 @@ export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
 
 export function Modal({ title, onClose, children, footer, width = 720 }: { title: string; onClose: () => void; children: React.ReactNode; footer?: React.ReactNode; width?: number }) {
   return (
-    <div onClick={(e) => e.target === e.currentTarget && onClose()} style={{ position: 'fixed', inset: 0, background: 'rgba(2,6,14,.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '40px 20px', zIndex: 60, overflowY: 'auto' }}>
-      <div style={{ width: '100%', maxWidth: width, background: C.panel, border: `1px solid ${C.border}`, borderRadius: 18, color: C.text, boxShadow: '0 24px 70px rgba(0,0,0,.5)' }}>
+    <div onClick={(e) => e.target === e.currentTarget && onClose()} style={{ position: 'fixed', inset: 0, background: 'rgba(5,10,20,.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '40px 20px', zIndex: 60, overflowY: 'auto' }}>
+      <div style={{ width: '100%', maxWidth: width, background: C.panel, border: `1px solid ${C.border}`, borderRadius: 24, color: C.text, boxShadow: '0 24px 70px rgba(0,0,0,.5)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 22px', borderBottom: `1px solid ${C.border}` }}>
-          <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700 }}>{title}</h2>
+          <h2 style={{ margin: 0, fontSize: 19, fontWeight: 800, fontFamily: C.display, letterSpacing: '-0.03em' }}>{title}</h2>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: C.muted, cursor: 'pointer', padding: 4 }}><Icon name="x" size={18} /></button>
         </div>
         <div style={{ padding: 22 }}>{children}</div>
@@ -155,13 +163,13 @@ export function PageHeader({ title, subtitle, actions, icon }: { title: string; 
     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 22 }}>
       <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
         {icon && (
-          <span style={{ width: 40, height: 40, borderRadius: 11, background: 'rgba(10,150,236,.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.green }}>
+          <span style={{ width: 44, height: 44, borderRadius: 999, background: 'rgba(84,218,137,.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.green }}>
             <Icon name={icon} size={20} />
           </span>
         )}
         <div>
-          <h1 style={{ fontSize: 23, fontWeight: 800, margin: 0, letterSpacing: -0.3 }}>{title}</h1>
-          {subtitle && <p style={{ color: C.muted, margin: '3px 0 0', fontSize: 13.5 }}>{subtitle}</p>}
+          <h1 style={{ fontSize: 30, fontWeight: 800, margin: 0, letterSpacing: '-0.04em', lineHeight: 1.05, fontFamily: C.display }}>{title}</h1>
+          {subtitle && <p style={{ color: C.muted, margin: '6px 0 0', fontSize: 14.5 }}>{subtitle}</p>}
         </div>
       </div>
       {actions && <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>{actions}</div>}
@@ -170,7 +178,7 @@ export function PageHeader({ title, subtitle, actions, icon }: { title: string; 
 }
 
 export function ErrorBar({ children }: { children: React.ReactNode }) {
-  return <div style={{ color: C.danger, background: C.dangerBg, padding: '9px 13px', borderRadius: 10, margin: '14px 0', fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><Icon name="alert" size={15} />{children}</div>;
+  return <div style={{ color: C.danger, background: C.dangerBg, padding: '10px 14px', borderRadius: 14, margin: '14px 0', fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}><Icon name="alert" size={15} />{children}</div>;
 }
 
 export function Spinner({ label }: { label?: string }) {
@@ -185,6 +193,6 @@ export function Spinner({ label }: { label?: string }) {
 
 export const table: Record<string, React.CSSProperties> = {
   table: { width: '100%', borderCollapse: 'collapse', background: C.panel, borderRadius: C.radius, overflow: 'hidden', border: `1px solid ${C.border}` },
-  th: { textAlign: 'left', padding: '12px 16px', fontSize: 11.5, color: C.faint, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.4, borderBottom: `1px solid ${C.border}` },
+  th: { textAlign: 'left', padding: '12px 16px', fontSize: 12.5, color: C.muted, fontWeight: 600, borderBottom: `1px solid ${C.border}` },
   td: { padding: '12px 16px', fontSize: 14, borderTop: `1px solid ${C.border}`, verticalAlign: 'middle' },
 };

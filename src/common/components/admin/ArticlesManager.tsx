@@ -683,7 +683,7 @@ export function ArticlesManager() {
               // eslint-disable-next-line @next/next/no-img-element
               <img src={form.imageUrl} alt="" style={{ width: '100%', borderRadius: 10, marginBottom: 18, maxHeight: 280, objectFit: 'cover' }} />
             )}
-            <h1 style={{ fontSize: 30, margin: '0 0 6px', fontWeight: 800 }}>{getI18n('title') || '(sem título)'}</h1>
+            <h1 style={{ fontSize: 32, margin: '0 0 6px', fontWeight: 800, fontFamily: C.display, letterSpacing: '-0.04em' }}>{getI18n('title') || '(sem título)'}</h1>
             {getI18n('subTitle') && <p style={{ fontSize: 18, color: '#475569', margin: '0 0 18px' }}>{getI18n('subTitle')}</p>}
             <div style={{ lineHeight: 1.7, fontSize: 16 }} dangerouslySetInnerHTML={{ __html: getI18n('content') || '<p style="color:#94a3b8">(sem conteúdo neste idioma)</p>' }} />
           </article>
@@ -709,11 +709,11 @@ const tabBtn = (active: boolean): React.CSSProperties => ({
 });
 const langBtn = (active: boolean): React.CSSProperties => ({
   display: 'inline-flex', alignItems: 'center', gap: 7,
-  background: active ? 'rgba(10,150,236,.15)' : 'rgba(255,255,255,.04)', border: `1px solid ${active ? 'rgba(10,150,236,.4)' : C.border}`,
+  background: active ? 'rgba(90,169,255,.15)' : 'rgba(255,255,255,.04)', border: `1px solid ${active ? 'rgba(90,169,255,.4)' : C.border}`,
   color: active ? C.text : C.muted, padding: '6px 11px', borderRadius: 8, fontSize: 12.5, cursor: 'pointer', fontWeight: 500,
 });
 const origBadge: React.CSSProperties = {
-  fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5,
+  fontSize: 9, fontWeight: 700, letterSpacing: 0.5,
   background: 'rgba(84,218,137,.16)', color: C.green, borderRadius: 5, padding: '1px 5px',
 };
 const helperBar: React.CSSProperties = {
@@ -726,7 +726,7 @@ const statusOpt = (active: boolean): React.CSSProperties => ({
   background: active ? 'rgba(84,218,137,.14)' : 'rgba(255,255,255,.04)', border: `1px solid ${active ? 'rgba(84,218,137,.4)' : C.borderStrong}`,
   color: active ? C.text : C.muted, padding: '11px', borderRadius: 10, fontSize: 13.5, cursor: 'pointer', fontWeight: 600,
 });
-const chip: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(10,150,236,.12)', color: '#7cc6ff', borderRadius: 999, padding: '4px 6px 4px 11px', fontSize: 12.5 };
+const chip: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(90,169,255,.12)', color: '#7cc6ff', borderRadius: 999, padding: '4px 6px 4px 11px', fontSize: 12.5 };
 const chipX: React.CSSProperties = { background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', display: 'flex', padding: 2, opacity: 0.8 };
 const uploadBtn: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(255,255,255,.06)', border: `1px solid ${C.borderStrong}`, color: C.text, borderRadius: 10, padding: '9px 14px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer' };
 const docRow: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 9, background: 'rgba(255,255,255,.04)', border: `1px solid ${C.border}`, borderRadius: 9, padding: '8px 11px', color: C.muted };

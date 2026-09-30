@@ -28,9 +28,8 @@ export default function AdminLogin() {
   return (
     <div style={S.wrap}>
       <form onSubmit={handleSubmit} style={S.card}>
-        <div style={S.logo}>
-          Drive<span style={{ color: '#0a96ec' }}>Data</span> · Admin
-        </div>
+        <img src="/logotipo-drivedata.webp" alt="DriveData" width={150} height={36} style={S.logoImg} />
+        <div style={S.logo}>Console do site</div>
         <p style={S.sub}>Acesse para gerenciar o conteúdo do site.</p>
         <label style={S.label}>E-mail</label>
         <input
@@ -59,50 +58,55 @@ export default function AdminLogin() {
   );
 }
 
+// Identidade DriveData (a mesma do site, versão escura): azul-marinho chapado,
+// título em Sora e o verde só no botão de entrar.
 const S: Record<string, React.CSSProperties> = {
   wrap: {
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: 'radial-gradient(ellipse at top, #0f1f3d 0%, #0b1220 70%)',
+    background: '#0a1322',
     padding: 20,
   },
   card: {
     width: '100%',
-    maxWidth: 380,
-    background: '#0d1526',
-    border: '1px solid rgba(255,255,255,.08)',
-    borderRadius: 16,
-    padding: 28,
+    maxWidth: 400,
+    background: '#111d31',
+    border: '1px solid rgba(234,240,251,.08)',
+    borderRadius: 28,
+    padding: 32,
     display: 'flex',
     flexDirection: 'column',
     gap: 8,
-    color: '#fff',
-    fontFamily: 'system-ui, sans-serif',
+    color: '#e8eef8',
+    fontFamily: "var(--font-inter), 'Inter', system-ui, sans-serif",
   },
-  logo: { fontSize: 22, fontWeight: 800, marginBottom: 2 },
-  sub: { fontSize: 13, opacity: 0.7, margin: '0 0 14px' },
-  label: { fontSize: 12, opacity: 0.8, marginTop: 8 },
+  logoImg: { height: 32, width: 'auto', display: 'block', marginBottom: 18, alignSelf: 'flex-start' },
+  logo: { fontSize: 26, fontWeight: 800, marginBottom: 2, fontFamily: "var(--font-sora), 'Sora', system-ui, sans-serif", letterSpacing: '-0.04em' },
+  sub: { fontSize: 14, color: 'rgba(234,240,251,.68)', margin: '0 0 14px' },
+  label: { fontSize: 13, color: 'rgba(234,240,251,.78)', marginTop: 8 },
   input: {
-    background: 'rgba(255,255,255,.06)',
-    border: '1px solid rgba(255,255,255,.14)',
-    borderRadius: 10,
-    padding: '11px 13px',
-    color: '#fff',
-    fontSize: 14,
-    outline: 'none',
-  },
-  error: { color: '#ff8a8a', fontSize: 13, marginTop: 8 },
-  btn: {
-    marginTop: 16,
-    background: 'linear-gradient(120deg,#0a96ec,#54da89)',
-    color: '#fff',
-    border: 'none',
-    borderRadius: 10,
-    padding: '12px',
+    background: 'rgba(234,240,251,.05)',
+    border: '1px solid rgba(234,240,251,.16)',
+    borderRadius: 12,
+    padding: '12px 14px',
+    color: '#e8eef8',
     fontSize: 15,
-    fontWeight: 700,
+    outline: 'none',
+    fontFamily: 'inherit',
+  },
+  error: { color: '#ff8f80', fontSize: 13, marginTop: 8 },
+  btn: {
+    marginTop: 18,
+    background: '#54da89',
+    color: '#0a1628',
+    border: 'none',
+    borderRadius: 999,
+    padding: '14px',
+    fontSize: 15,
+    fontWeight: 600,
     cursor: 'pointer',
+    fontFamily: 'inherit',
   },
 };

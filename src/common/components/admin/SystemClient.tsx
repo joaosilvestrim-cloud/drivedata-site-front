@@ -79,7 +79,7 @@ export function SystemClient() {
 
         <Card>
           <h3 style={h3}><Icon name="image" size={15} /> Armazenamento</h3>
-          <div style={{ fontSize: 32, fontWeight: 800 }}>{fmtBytes(storage?.bytes || 0)}</div>
+          <div style={{ fontSize: 32, fontWeight: 800, fontFamily: C.display, letterSpacing: '-0.04em' }}>{fmtBytes(storage?.bytes || 0)}</div>
           <div style={{ color: C.muted, fontSize: 13, marginTop: 4 }}>{storage?.files || 0} arquivos · {storage?.images || 0} imagens · {storage?.documents || 0} documentos</div>
 
           <h3 style={{ ...h3, marginTop: 22 }}><Icon name="calendar" size={15} /> Publicação agendada</h3>
@@ -263,4 +263,4 @@ function Row({ label, ok, detail }: { label: string; ok: boolean; detail: string
     </div>
   );
 }
-const h3: React.CSSProperties = { fontSize: 14, fontWeight: 700, margin: '0 0 14px', display: 'flex', alignItems: 'center', gap: 8 };
+const h3: React.CSSProperties = { fontSize: 16, fontWeight: 700, margin: '0 0 14px', display: 'flex', alignItems: 'center', gap: 8, fontFamily: C.display, letterSpacing: '-0.02em' };
