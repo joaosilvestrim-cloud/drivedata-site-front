@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
-import { DaltLanding } from '@/dalt';
+import { DaltClean } from '@/common/components/site-clean/dalt';
 import { SHOW_DALT } from '@/common/config/site';
 
+// Metadata, fontes e scripts de rastreamento ficam no layout.tsx desta rota.
 export default function DaltPage() {
-  // A DALT só existe no Brasil; no Canadá a rota redireciona para a home.
   if (!SHOW_DALT) redirect('/');
-  return <DaltLanding />;
+  return <DaltClean />;
 }

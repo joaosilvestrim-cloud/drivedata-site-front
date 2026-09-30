@@ -1,7 +1,4 @@
-import { Header } from '@/common/components';
-import { Footer } from '@/common/components/footer';
-import { PartnerPortalSection } from '@/common/components/partner-portal-section';
-import { ThemeScope } from '@/common/components/theme-scope';
+import { PartnersClean } from '@/common/components/site-clean/partners';
 import { SITE_COUNTRY } from '@/common/config/site';
 import { pageMetadata } from '@/common/seo';
 import type { Metadata } from 'next';
@@ -24,12 +21,5 @@ const META = {
 export const metadata: Metadata = pageMetadata({ path: '/parceiros', ...META });
 
 export default function Page() {
-  return (
-    <>
-      <ThemeScope />
-      <Header />
-      <PartnerPortalSection />
-      <Footer />
-    </>
-  );
+  return <PartnersClean />;
 }

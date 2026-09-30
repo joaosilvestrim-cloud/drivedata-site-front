@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { SHOW_DALT, SITE_BASE_URL } from '@/common/config/site';
 import { getArticles } from '@/server/content-db';
 import { listOpenJobs } from '@/server/jobs';
+import { CASES } from '@/common/components/site-clean/cases-data';
 
 // Sitemap do site. Ajuda o Google (e as IAs) a descobrir/priorizar as páginas
 // reais e os artigos do blog — antes os artigos ficavam de fora, então o
@@ -23,6 +24,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   entries.push({ url: `${BASE}/parceiros`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 });
   // Landing do Portal sobre Microsoft Fabric (BR e CA). Estava fora do sitemap.
   entries.push({ url: `${BASE}/portal-fabric`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 });
+
+  // Cases de clientes: a lista e uma página por case.
+  entries.push({ url: `${BASE}/cases`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 });
+  for (const c of CASES) {
+    entries.push({ url: `${BASE}/cases/${c.slug}`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 });
+  }
 
   // A página DALT só existe no Brasil.
   if (SHOW_DALT) {

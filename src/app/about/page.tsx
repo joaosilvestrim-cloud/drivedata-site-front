@@ -1,17 +1,10 @@
-import { AboutUsSection, DevicesShowcaseSection, Header, IntegrationsSection, MainAboutSection, PartnersSection, SolutionsAccordionSection, TestimonialsSection } from '@/common/components';
-import { ThemeScope } from '@/common/components/theme-scope';
-import { ArticlesSection } from '@/common/components/articles-section';
-import { ContactSection } from '@/common/components/contact-section';
-import { FaqSection } from '@/common/components/faq-section';
-import { FloatingContact } from '@/common/components/floating-contact';
-import { Footer } from '@/common/components/footer';
-import { PreviewSolutionsSection } from '@/common/components/preview-solutions-section';
+import { AboutClean, type AboutPartner } from '@/common/components/site-clean/about';
+import { listArticlesReadOnly, type CleanArticleCard } from '@/common/components/site-clean/articles-data';
 import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
 import { FaqModel } from '@/common/model/faq.model';
 import { SolutionModel } from '@/common/model/solution.model';
 import { TestimonialModel } from '@/common/model/testimonial.model';
-import { FindManyArticleResult } from '@/modules/article/types/find-many-article-case';
-import { getArticles, getFaqs, getPartners, getSolutions, getTestimonials } from '@/server/content-db';
+import { getFaqs, getPartners, getSolutions, getTestimonials } from '@/server/content-db';
 import { SITE_BASE_URL, SITE_COUNTRY } from '@/common/config/site';
 import { pageMetadata } from '@/common/seo';
 
@@ -42,13 +35,13 @@ export default async function About() {
   const [solutions, testimonials, articles, faqs, partners] = await Promise.all([
     getSolutions(lang).then(r => r as SolutionModel[]).catch(() => [] as SolutionModel[]),
     getTestimonials(lang).then(r => r as TestimonialModel[]).catch(() => [] as TestimonialModel[]),
-    getArticles({ limit: 3 }, lang).then(r => r as FindManyArticleResult).catch(() => [] as FindManyArticleResult),
+    listArticlesReadOnly(lang).then(r => r.slice(0, 3)).catch(() => [] as CleanArticleCard[]),
     getFaqs(lang).then(r => r as FaqModel[]).catch(() => [] as FaqModel[]),
     // Logos do carrossel: vêm do servidor já filtrados por país. Antes a seção
     // buscava sozinha no cliente e, com a hidratação quebrada, o efeito nunca
     // rodava: a página ficava presa na lista de reserva do código.
-    getPartners().then(r => r.map(p => ({ imageUrl: p.imageUrl as string, name: p.name, featured: p.featured })))
-      .catch(() => [] as { imageUrl: string; name: string | null; featured: boolean }[]),
+    getPartners().then(r => r.map((p): AboutPartner => ({ imageUrl: p.imageUrl as string, name: p.name, featured: p.featured })))
+      .catch(() => [] as AboutPartner[]),
   ]);
 
   // Texto puro a partir de HTML (respostas do FAQ e conteúdo das soluções).
@@ -63,7 +56,7 @@ export default async function About() {
       name: s.title,
       description: plain(s.content).slice(0, 300) || undefined,
       provider: { '@id': `${SITE_BASE_URL}/#organization` },
-      areaServed: 'BR',
+      areaServed: SITE_COUNTRY,
       serviceType: s.title,
     });
   }
@@ -88,21 +81,7 @@ export default async function About() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutLd) }}
         />
       )}
-      <ThemeScope />
-      <Header />
-      <MainAboutSection />
-      <PartnersSection partners={partners} />
-      <SolutionsAccordionSection solutions={solutions} />
-      <DevicesShowcaseSection />
-      <IntegrationsSection />
-      <AboutUsSection />
-      <PreviewSolutionsSection />
-      <TestimonialsSection testimonials={testimonials} />
-      <ArticlesSection articles={articles} />
-      <FaqSection faqs={faqs} />
-      <ContactSection />
-      <Footer />
-      <FloatingContact />
+      <AboutClean solutions={solutions} testimonials={testimonials} articles={articles} faqs={faqs} partners={partners} />
     </>
   );
 }

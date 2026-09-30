@@ -1,7 +1,4 @@
-import { Header } from '@/common/components';
-import { Footer } from '@/common/components/footer';
-import { JobDetailSection } from '@/common/components/job-detail-section';
-import { ThemeScope } from '@/common/components/theme-scope';
+import { JobDetailClean } from '@/common/components/site-clean/job-detail';
 import { SITE_BASE_URL } from '@/common/config/site';
 import { getOpenJobBySlug } from '@/server/jobs';
 import type { Metadata } from 'next';
@@ -71,10 +68,7 @@ export default async function Page({ params }: Props) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <ThemeScope />
-      <Header />
-      <JobDetailSection job={job} canonical={canonical} />
-      <Footer />
+      <JobDetailClean job={job} canonical={canonical} />
     </>
   );
 }

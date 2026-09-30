@@ -1,0 +1,185 @@
+/* Cases do site "clean" (lista, detalhe e vitrine da home). Os tokens
+   (--ink, --fog, --green…) vêm de .root em clean.module.css. */
+
+/* ─────────── Cartão de case ─────────── */
+.caseCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  padding: 32px;
+  border-radius: 28px;
+  background: var(--paper);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+.caseCard:hover { background: var(--mist); }
+.onPaper .caseCard { background: var(--fog); }
+.onPaper .caseCard:hover { background: var(--mist); }
+
+.brand { display: flex; align-items: center; height: 60px; }
+/* logo na cor original; multiply some com o fundo branco de alguns arquivos */
+.brand img { width: auto; max-width: 220px; object-fit: contain; mix-blend-mode: multiply; }
+.wordmark { color: var(--ink); font: 800 24px/1 var(--display); letter-spacing: -0.04em; }
+.wordmarkBig { font-size: 34px; }
+
+.caseTitle {
+  color: var(--ink-deep);
+  font: 800 clamp(24px, 2.3vw, 30px)/1.08 var(--display);
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.caseFoot { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 14px 20px; margin-top: auto; padding-top: 12px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  padding: 7px 12px;
+  border-radius: 9999px;
+  background: var(--fog);
+  color: var(--ink);
+  font: 600 13px/1 var(--text);
+}
+.caseCard .tag { background: var(--fog); }
+.onPaper .caseCard .tag, .caseCard:hover .tag { background: var(--paper); }
+.more {
+  color: var(--ink);
+  font: 600 16px/1 var(--text);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+  white-space: nowrap;
+}
+
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.grid3 { grid-template-columns: repeat(3, 1fr); }
+
+/* ─────────── Lista ─────────── */
+.toolbar { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 24px 48px; margin-bottom: 36px; }
+.count { color: var(--ink-deep); font: 800 clamp(30px, 3.4vw, 44px)/1 var(--display); letter-spacing: -0.04em; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  min-height: 40px;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 500 15px/1 var(--text);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.chip:hover { background: var(--mist); }
+.chip[aria-pressed='true'] { background: var(--ink); color: var(--paper); font-weight: 600; }
+
+/* Entregas rápidas: uma linha por projeto. */
+.quick { border-top: 1px solid var(--line); }
+.quick li {
+  display: grid;
+  grid-template-columns: 1.2fr 1.4fr 1fr 0.6fr;
+  gap: 8px 32px;
+  align-items: baseline;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+}
+.quickBrand { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.quickBrand .wordmark { font-size: 20px; }
+.quickBrand img { width: auto; max-width: 150px; mix-blend-mode: multiply; }
+.quickSector { color: var(--slate); font-size: 15px; }
+.quickWhat { color: var(--ink-deep); font: 700 19px/1.3 var(--text); letter-spacing: -0.01em; }
+.quickStack { color: var(--body); font-size: 16px; }
+.quickTime { color: var(--ink); font: 600 16px/1.3 var(--text); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Depoimento grande sobre navy. */
+.bigQuote { display: grid; gap: 28px; max-width: 900px; }
+.bigQuote blockquote { margin: 0; color: #fff; font: 700 clamp(24px, 2.8vw, 36px)/1.25 var(--display); letter-spacing: -0.03em; text-wrap: pretty; }
+.bigQuote figcaption { color: var(--on-ink); font-size: 17px; }
+.bigQuote figcaption strong { display: block; color: var(--green); font-weight: 600; }
+
+/* ─────────── Detalhe ─────────── */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 40px;
+  color: var(--ink);
+  font: 600 15px/1 var(--text);
+  text-decoration: none;
+}
+.back:hover { text-decoration: underline; text-underline-offset: 5px; }
+.detailHero { padding: clamp(40px, 6vw, 72px) 0 clamp(40px, 5vw, 64px); }
+.detailHead { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px 64px; align-items: start; }
+.detailTitle {
+  color: var(--ink-deep);
+  font: 800 clamp(38px, 5.2vw, 68px)/1.02 var(--display);
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  max-width: 18ch;
+}
+.detailLead { max-width: 58ch; margin-top: 24px; color: var(--body); font-size: clamp(18px, 1.6vw, 21px); line-height: 1.55; }
+.brand.detailBrand {
+  justify-content: center;
+  width: 240px;
+  height: 144px;
+  padding: 24px;
+  border-radius: 28px;
+  background: var(--fog);
+}
+.detailBrand img { max-width: 180px; }
+.detailHero .tags { margin-top: 32px; }
+
+.body { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 48px 72px; align-items: start; }
+.article { display: flex; flex-direction: column; gap: 48px; }
+.block h2 { margin-bottom: 18px; color: var(--ink-deep); font: 800 clamp(24px, 2.4vw, 30px)/1.1 var(--display); letter-spacing: -0.035em; }
+.block p { max-width: 62ch; font-size: 18px; line-height: 1.65; }
+.workList { border-top: 1px solid var(--line); }
+.workList li { padding: 18px 0; border-bottom: 1px solid var(--line); color: var(--ink); font-size: 18px; line-height: 1.5; }
+
+.aside { position: sticky; top: 104px; display: flex; flex-direction: column; gap: 28px; padding: 32px; border-radius: 28px; background: var(--fog); }
+.facts { display: grid; gap: 20px; margin: 0; }
+.facts div { display: grid; gap: 6px; }
+.facts dt { color: var(--slate); font: 500 14px/1 var(--text); }
+.facts dd { margin: 0; color: var(--ink-deep); font: 600 18px/1.35 var(--text); }
+.aside .tag { background: var(--paper); }
+.asideTitle { margin-bottom: 12px; color: var(--slate); font: 500 14px/1 var(--text); }
+
+.quoteCard { margin: 0; padding: 40px; border-radius: 28px; background: var(--ink); }
+.quoteCard blockquote { margin: 0; color: #fff; font: 700 clamp(20px, 2vw, 26px)/1.35 var(--display); letter-spacing: -0.025em; }
+.quoteCard figcaption { margin-top: 24px; color: var(--on-ink); font-size: 16px; }
+.quoteCard figcaption strong { color: var(--green); font-weight: 600; }
+
+/* Nota interna de aprovação: só aparece no desenvolvimento local. */
+.review {
+  padding: 18px 22px;
+  border: 1.5px dashed #c98a00;
+  border-radius: 18px;
+  background: #fff8e6;
+  color: #5c4100;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.review strong { display: block; margin-bottom: 4px; font-weight: 700; }
+.caseCard .review { margin-top: 4px; padding: 10px 14px; border-radius: 14px; font-size: 13px; }
+
+/* ─────────── Responsivo ─────────── */
+@media (max-width: 1120px) {
+  .grid3 { grid-template-columns: 1fr 1fr; }
+  .grid3 > :nth-child(3) { display: none; }
+}
+@media (max-width: 900px) {
+  .body { grid-template-columns: 1fr; }
+  .aside { position: static; }
+  .quick li { grid-template-columns: 1fr auto; }
+  .quickBrand { grid-column: 1 / -1; }
+  .quickStack { grid-column: 1; }
+  .quickTime { grid-row: 2; grid-column: 2; }
+}
+@media (max-width: 760px) {
+  .grid, .grid3 { grid-template-columns: 1fr; }
+  .grid3 > :nth-child(3) { display: block; }
+  .detailHead { grid-template-columns: 1fr; }
+  .brand.detailBrand { order: -1; width: 100%; max-width: 320px; height: 120px; }
+}
+@media (max-width: 560px) {
+  .caseCard { padding: 26px; border-radius: 22px; }
+  .aside, .quoteCard { padding: 26px; border-radius: 22px; }
+}

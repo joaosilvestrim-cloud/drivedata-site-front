@@ -23,6 +23,7 @@ export async function GET() {
     `- [Início](${BASE}/): visão geral das soluções de dados, BI e IA.`,
     `- [Sobre](${BASE}/about): quem somos, soluções, clientes e resultados.`,
     `- [Blog](${BASE}/article): artigos sobre BI, IA, logística, indústria e análise de dados.`,
+    `- [Cases](${BASE}/cases): projetos reais com clientes como PepsiCo, Unilever e TV TEM.`,
     `- [Política de Privacidade](${BASE}/privacy-policy): tratamento de dados pessoais.`,
   ];
 

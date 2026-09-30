@@ -1,10 +1,7 @@
-import { Header } from '@/common/components';
-import { ThemeScope } from '@/common/components/theme-scope';
-import { ArticlesSection } from '@/common/components/articles-section';
-import { Footer } from '@/common/components/footer';
+import { ArticlesClean } from '@/common/components/site-clean/articles';
+import { listArticlesReadOnly, type CleanArticleCard } from '@/common/components/site-clean/articles-data';
 import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
-import { FindManyArticleResult } from '@/modules/article/types/find-many-article-case';
-import { getArticles } from '@/server/content-db';
+import { publishDueScheduled } from '@/server/content-db';
 import { SITE_COUNTRY } from '@/common/config/site';
 import { pageMetadata } from '@/common/seo';
 
@@ -24,24 +21,18 @@ export const metadata = pageMetadata(
       },
 );
 
-
 export default async function Page() {
   const lang = await getLanguageSafeAsync();
-  let articles: FindManyArticleResult = [];
+  // Publica os agendados que já venceram (o que getArticles fazia antes).
+  void publishDueScheduled().catch(() => {});
 
+  let articles: CleanArticleCard[] = [];
+  let failed = false;
   try {
-    articles = (await getArticles({}, lang)) as FindManyArticleResult;
+    articles = await listArticlesReadOnly(lang);
   } catch (error) {
     console.error(error);
+    failed = true;
   }
-
-  return (
-    <>
-      <ThemeScope />
-      <Header />
-      {/* Aqui a seção é a página inteira, então o título vira o H1. */}
-      <ArticlesSection articles={articles} titleAs="h1" />
-      <Footer />
-    </>
-  );
+  return <ArticlesClean articles={articles} failed={failed} />;
 }

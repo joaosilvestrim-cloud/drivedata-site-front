@@ -38,11 +38,12 @@ const HTML_LANG: Record<string, string> = {
 // Fora do site institucional o trilho não aparece.
 const HIDDEN_PREFIXES = ['/admin', '/tambasa'];
 
-// Rotas já migradas para tema claro. Só nelas o botão de tema aparece, porque
-// nas outras ele não teria efeito e seria só confusão.
-// A home entra por igualdade exata: com startsWith, '/' casaria com tudo.
-const THEMED_PREFIXES = ['/portal-fabric', '/about', '/article'];
-const THEMED_EXACT = ['/'];
+// Rotas com alternância de tema. O site novo (home, sobre, artigos, cases, DALT,
+// Portal Fabric, vagas e parceiros) é só claro, então o botão de tema não aparece
+// em nenhuma rota por enquanto. Para voltar a ter, liste as rotas aqui.
+// A home entraria por igualdade exata: com startsWith, '/' casaria com tudo.
+const THEMED_PREFIXES: string[] = [];
+const THEMED_EXACT: string[] = [];
 const isThemedRoute = (path?: string | null) =>
   !!path && (THEMED_EXACT.includes(path) || THEMED_PREFIXES.some(p => path.startsWith(p)));
 

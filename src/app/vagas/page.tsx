@@ -1,7 +1,4 @@
-import { Header } from '@/common/components';
-import { Footer } from '@/common/components/footer';
-import { JobsSection } from '@/common/components/jobs-section';
-import { ThemeScope } from '@/common/components/theme-scope';
+import { JobsClean } from '@/common/components/site-clean/jobs';
 import { SITE_BASE_URL } from '@/common/config/site';
 import type { JobModel } from '@/common/model/job.model';
 import { listOpenJobs } from '@/server/jobs';
@@ -34,12 +31,5 @@ export default async function Page() {
     console.error(error);
   }
 
-  return (
-    <>
-      <ThemeScope />
-      <Header />
-      <JobsSection jobs={jobs} />
-      <Footer />
-    </>
-  );
+  return <JobsClean jobs={jobs} />;
 }
