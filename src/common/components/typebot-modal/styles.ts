@@ -7,9 +7,9 @@ export const TypebotModalBackdrop = styled.div<{ isOpen: boolean }>`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(7, 12, 22, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: ${theme.zIndex.modal};
   opacity: ${(props) => (props.isOpen ? '1' : '0')};
   visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
@@ -22,13 +22,15 @@ export const TypebotModalBackdrop = styled.div<{ isOpen: boolean }>`
 
 export const TypebotModalContainer = styled.div<{ isOpen: boolean }>`
   width: 100%;
-  max-width: 800px;
+  max-width: 560px;
   height: 90vh;
-  max-height: 800px;
-  background: white;
-  border-radius: 16px;
+  max-height: 720px;
+  background: #ffffff;
+  border-radius: 28px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 24px 64px rgba(7, 12, 22, 0.28);
+  html[data-site-theme='dark'] & { background: #0d192c; box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5); }
+  @media (max-width: 560px) { height: 100%; max-height: none; border-radius: 22px; }
   transform: ${(props) =>
     props.isOpen ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(20px)'};
   transition: transform 0.3s ease-in-out;
@@ -39,12 +41,12 @@ export const TypebotModalContainer = styled.div<{ isOpen: boolean }>`
 
 export const TypebotModalCloseButton = styled.button`
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 21px;
+  right: 20px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(234, 240, 251, 0.12);
   border: none;
   color: white;
   cursor: pointer;
@@ -57,8 +59,12 @@ export const TypebotModalCloseButton = styled.button`
   transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.7);
-    transform: scale(1.1);
+    background: rgba(234, 240, 251, 0.22);
+  }
+
+  &:focus-visible {
+    outline: 3px solid rgba(84, 218, 137, 0.6);
+    outline-offset: 2px;
   }
 
   &:active {

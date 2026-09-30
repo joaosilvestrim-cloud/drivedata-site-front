@@ -203,54 +203,79 @@ export function LeadChat() {
 }
 
 // ─── estilos ───────────────────────────────────────────────
+// Identidade DriveData (a mesma do site): cabeçalho azul-marinho, conversa sobre
+// névoa, balões chapados, opções em pílula de contorno e o verde só no Enviar.
+// No tema escuro do site (html[data-site-theme="dark"]) as superfícies escurecem.
+const DARK = "html[data-site-theme='dark'] &";
 const Root = styled.div`
+  --c-ink: #0a1628; --c-body: #3d4a5c; --c-slate: #5b6778; --c-fog: #eef2f7; --c-paper: #ffffff;
+  --c-line: #dbe2ea; --c-bot: #ffffff; --c-bot-text: #0a1628; --c-user: #0a1628; --c-user-text: #ffffff;
+  --c-green: #54da89; --c-green-hover: #6fe39d; --c-danger: #b42318;
+  ${DARK} {
+    --c-ink: #e8eef8; --c-body: #b6c2d4; --c-slate: #8d9ab0; --c-fog: #0a1322; --c-paper: #0d192c;
+    --c-line: #22314a; --c-bot: #14233c; --c-bot-text: #e8eef8; --c-user: #e8eef8; --c-user-text: #0a1628;
+    --c-danger: #ff8f80;
+  }
   display: flex; flex-direction: column; height: 100%; width: 100%;
-  background: #0b1220; color: #fff; overflow: hidden;
+  background: var(--c-paper); color: var(--c-body); overflow: hidden;
+  font-family: var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif;
 `;
 const HeaderBar = styled.div`
-  display: flex; align-items: center; gap: 12px; padding: 14px 18px;
-  background: linear-gradient(120deg, #0a96ec, #54da89); flex-shrink: 0;
+  display: flex; align-items: center; gap: 14px; padding: 18px 76px 18px 22px;
+  background: #0a1628; color: #fff; flex-shrink: 0;
 `;
 const Avatar = styled.div`
-  width: 40px; height: 40px; border-radius: 50%; background-size: cover; background-position: center;
-  border: 2px solid rgba(255,255,255,.6); flex-shrink: 0;
+  width: 46px; height: 46px; border-radius: 50%; background-size: cover; background-position: center;
+  box-shadow: 0 0 0 2px #0a1628, 0 0 0 4px #54da89; flex-shrink: 0;
 `;
 const MiniAvatar = styled.div`
-  width: 26px; height: 26px; border-radius: 50%; background-size: cover; background-position: center; flex-shrink: 0;
+  width: 28px; height: 28px; border-radius: 50%; background-size: cover; background-position: center; flex-shrink: 0;
 `;
-const HeaderName = styled.p` font-weight: 700; font-size: 14px; line-height: 1.1; margin: 0; `;
-const HeaderStatus = styled.p` font-size: 11px; opacity: .85; margin: 2px 0 0; `;
+const HeaderName = styled.p`
+  margin: 0; font: 700 17px/1.15 var(--font-sora), 'Sora', ui-sans-serif, system-ui, sans-serif; letter-spacing: -0.02em;
+`;
+const HeaderStatus = styled.p`
+  display: flex; align-items: center; gap: 6px; margin: 4px 0 0; font-size: 13px; color: rgba(234, 240, 251, 0.72);
+  &::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #54da89; }
+`;
 const Messages = styled.div`
-  flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 10px;
-  background: radial-gradient(ellipse at top, #0f1f3d 0%, #0b1220 70%);
+  flex: 1; overflow-y: auto; padding: 22px; display: flex; flex-direction: column; gap: 12px;
+  background: var(--c-fog);
 `;
 const Row = styled.div<{ variant: 'bot' | 'user' }>`
   display: flex; align-items: flex-end; gap: 8px;
   justify-content: ${(p) => (p.variant === 'user' ? 'flex-end' : 'flex-start')};
 `;
 const Bubble = styled.div<{ variant: 'bot' | 'user' }>`
-  max-width: 78%; padding: 10px 14px; font-size: 14px; line-height: 1.45;
-  border-radius: ${(p) => (p.variant === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px')};
-  background: ${(p) => (p.variant === 'user' ? 'linear-gradient(120deg,#0a96ec,#0b7fce)' : 'rgba(255,255,255,.07)')};
-  color: #fff; border: 1px solid rgba(255,255,255,.08); white-space: pre-wrap;
+  max-width: 80%; padding: 12px 16px; font-size: 15px; line-height: 1.5; white-space: pre-wrap;
+  border-radius: ${(p) => (p.variant === 'user' ? '20px 20px 6px 20px' : '20px 20px 20px 6px')};
+  background: ${(p) => (p.variant === 'user' ? 'var(--c-user)' : 'var(--c-bot)')};
+  color: ${(p) => (p.variant === 'user' ? 'var(--c-user-text)' : 'var(--c-bot-text)')};
 `;
-const Composer = styled.div` padding: 14px; border-top: 1px solid rgba(255,255,255,.08); flex-shrink: 0; background: #0b1220; `;
+const Composer = styled.div`
+  padding: 16px 18px 18px; border-top: 1px solid var(--c-line); flex-shrink: 0; background: var(--c-paper);
+`;
 const Options = styled.div` display: flex; flex-wrap: wrap; gap: 8px; `;
 const OptionBtn = styled.button`
-  border: 1px solid rgba(84,218,137,.5); background: rgba(84,218,137,.1); color: #54da89;
-  padding: 9px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer; transition: .15s;
-  &:hover { background: rgba(84,218,137,.2); }
+  border: 0; background: transparent; color: var(--c-ink); box-shadow: inset 0 0 0 1.5px var(--c-ink);
+  padding: 10px 16px; min-height: 42px; border-radius: 999px; font-size: 14px; font-weight: 600; line-height: 1.2; font-family: inherit;
+  cursor: pointer; transition: background-color 0.15s ease, color 0.15s ease;
+  &:hover { background: var(--c-ink); color: var(--c-paper); }
+  &:focus-visible { outline: 3px solid rgba(10, 114, 196, 0.45); outline-offset: 2px; }
 `;
-const InputRow = styled.div` display: flex; gap: 8px; `;
+const InputRow = styled.div` display: flex; gap: 10px; `;
 const TextInput = styled.input`
-  flex: 1; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: #fff;
-  padding: 11px 14px; border-radius: 12px; font-size: 14px; outline: none;
-  &::placeholder { color: rgba(255,255,255,.4); }
-  &:focus { border-color: #0a96ec; }
+  flex: 1; min-width: 0; background: var(--c-fog); border: 0; color: var(--c-ink);
+  padding: 0 18px; min-height: 48px; border-radius: 999px; font-size: 15px; line-height: 1.4; font-family: inherit; outline: none;
+  transition: box-shadow 0.15s ease;
+  &::placeholder { color: var(--c-slate); }
+  &:focus { box-shadow: 0 0 0 3px rgba(10, 114, 196, 0.35); }
 `;
 const SendBtn = styled.button`
-  background: linear-gradient(120deg,#0a96ec,#54da89); color: #fff; border: none; font-weight: 700;
-  padding: 0 18px; border-radius: 12px; font-size: 14px; cursor: pointer;
-  &:disabled { opacity: .45; cursor: default; }
+  background: var(--c-green); color: #0a1628; border: 0; font-size: 15px; font-weight: 600; line-height: 1; font-family: inherit;
+  padding: 0 22px; min-height: 48px; border-radius: 999px; cursor: pointer; transition: background-color 0.15s ease;
+  &:hover:not(:disabled) { background: var(--c-green-hover); }
+  &:disabled { opacity: 0.45; cursor: default; }
+  &:focus-visible { outline: 3px solid rgba(10, 114, 196, 0.45); outline-offset: 2px; }
 `;
-const ErrorText = styled.p` color: #ff8a8a; font-size: 12px; margin: 8px 2px 0; `;
+const ErrorText = styled.p` color: var(--c-danger); font-size: 13px; margin: 10px 4px 0; `;
