@@ -1,27 +1,37 @@
 import { JobsClean } from '@/common/components/site-clean/jobs';
-import { SITE_BASE_URL } from '@/common/config/site';
 import type { JobModel } from '@/common/model/job.model';
 import { listOpenJobs } from '@/server/jobs';
-import type { Metadata } from 'next';
+import { localizedMetadata } from '@/common/seo/localized';
 
-const title = 'Vagas · DriveData';
-const description =
-  'Oportunidades abertas na DriveData: dados, BI, engenharia e IA. Conheça as vagas e candidate-se em poucos minutos.';
-
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: { canonical: `${SITE_BASE_URL}/vagas` },
-  openGraph: {
-    title,
-    description,
-    url: `${SITE_BASE_URL}/vagas`,
-    type: 'website',
-    siteName: 'DriveData',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: title }],
-  },
-  twitter: { card: 'summary_large_image', title, description },
-};
+// A lista de vagas é traduzida; o conteúdo de cada vaga continua em português,
+// por isso sem hreflang (languages: false).
+export const generateMetadata = () =>
+  localizedMetadata(
+    '/vagas',
+    {
+      pt: {
+        title: 'Vagas · DriveData',
+        description:
+          'Oportunidades abertas na DriveData: dados, BI, engenharia e IA. Conheça as vagas e candidate-se em poucos minutos.',
+      },
+      en: {
+        title: 'Careers · DriveData',
+        description:
+          'Open positions at DriveData: data, BI, engineering and AI. See the openings and apply in a few minutes.',
+      },
+      es: {
+        title: 'Empleos · DriveData',
+        description:
+          'Vacantes abiertas en DriveData: datos, BI, ingeniería e IA. Conozca las vacantes y postúlese en pocos minutos.',
+      },
+      fr: {
+        title: 'Carrières · DriveData',
+        description:
+          'Postes ouverts chez DriveData : données, BI, ingénierie et IA. Découvrez les offres et postulez en quelques minutes.',
+      },
+    },
+    { languages: false },
+  );
 
 export default async function Page() {
   let jobs: JobModel[] = [];

@@ -6,23 +6,31 @@ import { SolutionModel } from '@/common/model/solution.model';
 import { TestimonialModel } from '@/common/model/testimonial.model';
 import { getFaqs, getPartners, getSolutions, getTestimonials } from '@/server/content-db';
 import { SITE_BASE_URL, SITE_COUNTRY } from '@/common/config/site';
-import { pageMetadata } from '@/common/seo';
+import { localizedMetadata } from '@/common/seo/localized';
 
-export const metadata = pageMetadata(
-  SITE_COUNTRY === 'CA'
-    ? {
-        path: '/about',
-        title: 'About DriveData · BI, Data Engineering and AI',
-        description:
-          'Meet DriveData: Business Intelligence, data engineering, Microsoft Fabric and AI consulting for mid-size and large operations. Solutions, clients and case studies.',
-      }
-    : {
-        path: '/about',
-        title: 'Sobre a DriveData · BI, Engenharia de Dados e IA',
-        description:
-          'Conheça a DriveData: consultoria em Business Intelligence, engenharia de dados, Microsoft Fabric e IA para operações de médio e grande porte. Soluções, clientes e cases.',
-      },
-);
+export const generateMetadata = () =>
+  localizedMetadata('/about', {
+    pt: {
+      title: 'Sobre a DriveData · BI, Engenharia de Dados e IA',
+      description:
+        'Conheça a DriveData: consultoria em Business Intelligence, engenharia de dados, Microsoft Fabric e IA para operações de médio e grande porte. Soluções, clientes e cases.',
+    },
+    en: {
+      title: 'About DriveData · BI, Data Engineering and AI',
+      description:
+        'Meet DriveData: Business Intelligence, data engineering, Microsoft Fabric and AI consulting for mid-size and large operations. Solutions, clients and case studies.',
+    },
+    es: {
+      title: 'Sobre DriveData · BI, Ingeniería de Datos e IA',
+      description:
+        'Conozca DriveData: consultoría en Business Intelligence, ingeniería de datos, Microsoft Fabric e IA para operaciones medianas y grandes. Soluciones, clientes y casos.',
+    },
+    fr: {
+      title: 'À propos de DriveData · BI, ingénierie des données et IA',
+      description:
+        'Découvrez DriveData : conseil en Business Intelligence, ingénierie des données, Microsoft Fabric et IA pour les moyennes et grandes organisations. Solutions, clients et études de cas.',
+    },
+  });
 
 
 export default async function About() {

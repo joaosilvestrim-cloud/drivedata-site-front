@@ -10,6 +10,7 @@ import { EmotionProvider } from '../common/providers/EmotionProvider';
 import { I18nProvider } from '../common/providers/I18nProvider';
 import { TypebotProvider } from '../common/providers/TypebotProvider';
 import { SITE_BASE_URL } from '../common/config/site';
+import { siteThemeBootScript } from '../common/components/site-clean/theme-boot';
 import {
   generateMetadata as generateSEOMetadata,
   getSEOConfigByLanguage,
@@ -51,11 +52,16 @@ export default async function RootLayout({
   const language = await getServerLanguage();
 
   return (
+    // suppressHydrationWarning: o script de tema marca data-site-theme no <html>
+    // antes do React hidratar (só atributos do próprio <html>, não os filhos).
     <html
+      suppressHydrationWarning
       lang={htmlLanguageByAppLanguage[language]}
       className={`${sora.variable} ${inter.variable}`}
     >
       <head>
+        {/* Tema do site (claro/escuro) antes da primeira pintura: ver site-clean/theme-boot. */}
+        <script dangerouslySetInnerHTML={{ __html: siteThemeBootScript }} />
         {/* Preconnect para performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

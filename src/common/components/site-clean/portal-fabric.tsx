@@ -39,7 +39,22 @@ type PageSource = {
   schedule: PortalCopy['schedule'];
   cta: Pick<PortalCopy['cta'], 'title' | 'ctaPrimary' | 'ctaSecondary'>;
 };
-const page = (c: PageSource): PageSource => c;
+// A lei de privacidade citada acompanha o país do site em qualquer idioma: LGPD no
+// Brasil, Lei 25 (Quebec) e PIPEDA no Canadá. A landing antiga citava a Lei 25 em
+// inglês e francês mesmo no site do Brasil.
+const LAW_SWAPS: [RegExp, string][] =
+  SITE_COUNTRY === 'CA'
+    ? [[/LGPD/g, 'Lei 25']]
+    : [[/Law 25 \/ PIPEDA|Loi 25 \/ LPRPDE/g, 'LGPD'], [/Law 25|Loi 25/g, 'LGPD']];
+function localLaw<T>(v: T): T {
+  if (typeof v === 'string') return LAW_SWAPS.reduce<string>((acc, [re, to]) => acc.replace(re, to), v) as T;
+  if (Array.isArray(v)) return v.map(localLaw) as T;
+  if (v && typeof v === 'object') {
+    return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, localLaw(x)])) as T;
+  }
+  return v;
+}
+const page = (c: PageSource): PageSource => localLaw(c);
 
 const COMPAT_TAIL = ['Microsoft Entra ID', 'Azure Active Directory', 'Microsoft 365', 'Power BI Embedded A-SKU'];
 // Lei de privacidade citada no espanhol (o inglês e o francês da landing já citam a Lei 25).

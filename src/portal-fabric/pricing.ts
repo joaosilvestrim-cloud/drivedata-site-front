@@ -6,10 +6,12 @@
  * simulador calcula em USD e aplica a cotação. Já a licença Power BI Pro/PPU é
  * precificada POR MERCADO (não é conversão), então cada país tem o seu valor.
  *
- * ⚠️ Números para conferir com a Microsoft antes de tratar como oficial:
- *    - REGIONS[].mult de Canada Central e West Europe são estimativas.
- *      Brazil South (US$ 0,23/CU/h) e East US (US$ 0,18) têm fonte.
- *    - FX (cotação) é fixa aqui; atualize quando variar muito.
+ * Conferido em 30/09/2026 na API pública de preços do Azure
+ * (prices.azure.com, serviceName 'Microsoft Fabric', pay-as-you-go por CU/hora):
+ * East US US$ 0,18 · Brazil South US$ 0,28 · Canada Central US$ 0,20 ·
+ * West Europe US$ 0,22. Reserva de 1 ano: US$ 938 por CU/ano em East US,
+ * ou seja 0,595 do pay-as-you-go. Licenças Pro/PPU: páginas oficiais de preço
+ * do Power BI no Brasil e no Canadá. A cotação é fixa; atualize quando variar muito.
  */
 
 export type Country = 'BR' | 'CA'
@@ -17,7 +19,7 @@ export type Country = 'BR' | 'CA'
 // ── Constantes da Microsoft ───────────────────────────────────
 export const USD_PER_CU_HOUR = 0.18   // East US, pay-as-you-go
 export const HOURS_PER_MONTH = 730
-export const RESERVED_FACTOR = 0.59   // reserva de 1 ano ≈ 41% de desconto
+export const RESERVED_FACTOR = 0.595  // reserva de 1 ano ≈ 40% de desconto (938 / 12 / (0,18 × 730))
 
 export interface Sku { id: string; cu: number; hint: string }
 export const SKUS: Sku[] = [
@@ -31,10 +33,10 @@ export const SKUS: Sku[] = [
 
 export interface Region { id: string; label: string; mult: number; sourced: boolean }
 export const REGIONS: Region[] = [
-  { id: 'eastus',   label: 'East US',        mult: 1.00, sourced: true  },
-  { id: 'brazil',   label: 'Brazil South',   mult: 1.28, sourced: true  },
-  { id: 'canada',   label: 'Canada Central', mult: 1.06, sourced: false },
-  { id: 'westeu',   label: 'West Europe',    mult: 1.22, sourced: false },
+  { id: 'eastus',   label: 'East US',        mult: 1,           sourced: true },
+  { id: 'brazil',   label: 'Brazil South',   mult: 0.28 / 0.18, sourced: true },
+  { id: 'canada',   label: 'Canada Central', mult: 0.20 / 0.18, sourced: true },
+  { id: 'westeu',   label: 'West Europe',    mult: 0.22 / 0.18, sourced: true },
 ]
 
 // Agenda da capacidade (só faz diferença no pay-as-you-go, que pode ser pausado).
@@ -60,14 +62,14 @@ export interface CountryPricing {
 export const COUNTRY: Record<Country, CountryPricing> = {
   BR: {
     currency: 'R$', locale: 'pt-BR',
-    fx: 5.14, fxLabel: 'R$ 5,14',
-    proPrice: 80, ppuPrice: 137,
+    fx: 5.19, fxLabel: 'R$ 5,19',
+    proPrice: 80.2, ppuPrice: 137.4,
     defaultRegion: 'brazil', defaultUsers: 200,
   },
   CA: {
     currency: 'CA$', locale: 'en-CA',
-    fx: 1.37, fxLabel: 'CA$ 1,37',
-    proPrice: 13.6, ppuPrice: 23.3,
+    fx: 1.42, fxLabel: 'CA$ 1.42',
+    proPrice: 19, ppuPrice: 32.6,
     defaultRegion: 'canada', defaultUsers: 200,
   },
 }

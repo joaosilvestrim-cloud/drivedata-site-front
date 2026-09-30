@@ -142,7 +142,7 @@
 .aside .tag { background: var(--paper); }
 .asideTitle { margin-bottom: 12px; color: var(--slate); font: 500 14px/1 var(--text); }
 
-.quoteCard { margin: 0; padding: 40px; border-radius: 28px; background: var(--ink); }
+.quoteCard { margin: 0; padding: 40px; border-radius: 28px; background: var(--panel); }
 .quoteCard blockquote { margin: 0; color: #fff; font: 700 clamp(20px, 2vw, 26px)/1.35 var(--display); letter-spacing: -0.025em; }
 .quoteCard figcaption { margin-top: 24px; color: var(--on-ink); font-size: 16px; }
 .quoteCard figcaption strong { color: var(--green); font-weight: 600; }
@@ -182,4 +182,14 @@
 @media (max-width: 560px) {
   .caseCard { padding: 26px; border-radius: 22px; }
   .aside, .quoteCard { padding: 26px; border-radius: 22px; }
+}
+
+/* ─────────── Tema escuro: logos dos cases ─────────── */
+:global(html[data-site-theme='dark']) .caseCard .brand { width: fit-content; padding: 8px 14px; border-radius: 14px; background: #ffffff; }
+:global(html[data-site-theme='dark']) .brand.detailBrand { background: #ffffff; }
+:global(html[data-site-theme='dark']) .quickBrand img { padding: 6px 10px; border-radius: 10px; background: #ffffff; box-sizing: content-box; mix-blend-mode: normal; }
+@media (prefers-color-scheme: dark) {
+  :global(html:not([data-site-theme='light'])) .caseCard .brand { width: fit-content; padding: 8px 14px; border-radius: 14px; background: #ffffff; }
+  :global(html:not([data-site-theme='light'])) .brand.detailBrand { background: #ffffff; }
+  :global(html:not([data-site-theme='light'])) .quickBrand img { padding: 6px 10px; border-radius: 10px; background: #ffffff; box-sizing: content-box; mix-blend-mode: normal; }
 }

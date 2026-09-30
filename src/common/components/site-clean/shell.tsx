@@ -125,7 +125,8 @@ export function CleanShell({ children, current }: { children: ReactNode; current
       <header className={`${s.header} ${scrolled ? s.headerScrolled : ''}`}>
         <div className={`${s.wrap} ${s.headerInner}`}>
           <a href={ROUTES.home} className={s.logo} aria-label={t.home}>
-            <img src="/logotipo-drivedata-ink.png" alt="DriveData" width={117} height={28} />
+            <img className={s.logoLight} src="/logotipo-drivedata-ink.png" alt="DriveData" width={117} height={28} />
+            <img className={s.logoDark} src="/logotipo-drivedata.png" alt="DriveData" width={117} height={28} />
           </a>
           <nav className={s.nav} aria-label={t.mainNav}>
             {NAV.map((n) => (

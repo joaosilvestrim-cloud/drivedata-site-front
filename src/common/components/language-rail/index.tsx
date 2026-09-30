@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import { theme } from '@/common/theme';
 import { SITE_COUNTRY } from '@/common/config/site';
 import { normalizeLanguageCode } from '@/common/i18n';
-import { useThemeMode } from '@/common/theme/useThemeMode';
+import { useSiteTheme } from '@/common/components/site-clean/theme';
  import { Flag, type FlagCode } from '@/common/components/flags';
 
 /**
@@ -38,12 +38,18 @@ const HTML_LANG: Record<string, string> = {
 // Fora do site institucional o trilho não aparece.
 const HIDDEN_PREFIXES = ['/admin', '/tambasa'];
 
-// Rotas com alternância de tema. O site novo (home, sobre, artigos, cases, DALT,
-// Portal Fabric, vagas e parceiros) é só claro, então o botão de tema não aparece
-// em nenhuma rota por enquanto. Para voltar a ter, liste as rotas aqui.
-// A home entraria por igualdade exata: com startsWith, '/' casaria com tudo.
-const THEMED_PREFIXES: string[] = [];
-const THEMED_EXACT: string[] = [];
+// Rotas do site novo, que têm tema claro e escuro (ver site-clean/theme-boot).
+// Nas outras (política de privacidade, proposta, Tambasa) o botão não aparece.
+// A home entra por igualdade exata: com startsWith, '/' casaria com tudo.
+const THEMED_PREFIXES = ['/about', '/article', '/cases', '/dalt', '/portal-fabric', '/vagas', '/parceiros'];
+const THEMED_EXACT = ['/'];
+
+const THEME_LABEL: Record<string, { toDark: string; toLight: string; dark: string; light: string }> = {
+  pt: { toDark: 'Mudar para tema escuro', toLight: 'Mudar para tema claro', dark: 'Tema escuro', light: 'Tema claro' },
+  en: { toDark: 'Switch to dark theme', toLight: 'Switch to light theme', dark: 'Dark theme', light: 'Light theme' },
+  es: { toDark: 'Cambiar a tema oscuro', toLight: 'Cambiar a tema claro', dark: 'Tema oscuro', light: 'Tema claro' },
+  fr: { toDark: 'Passer au thème sombre', toLight: 'Passer au thème clair', dark: 'Thème sombre', light: 'Thème clair' },
+};
 const isThemedRoute = (path?: string | null) =>
   !!path && (THEMED_EXACT.includes(path) || THEMED_PREFIXES.some(p => path.startsWith(p)));
 
@@ -132,7 +138,7 @@ const ThemeBtn = styled(Btn)`
 export function LanguageRail() {
   const { i18n } = useTranslation();
   const pathname = usePathname();
-  const { mode, toggle } = useThemeMode();
+  const { theme: mode, toggle } = useSiteTheme();
   const [mounted, setMounted] = useState(false);
   const [current, setCurrent] = useState('pt');
 
@@ -181,8 +187,8 @@ export function LanguageRail() {
           <ThemeBtn
             type="button"
             isActive={false}
-            data-label={mode === 'light' ? 'Tema escuro' : 'Tema claro'}
-            aria-label={mode === 'light' ? 'Mudar para tema escuro' : 'Mudar para tema claro'}
+            data-label={mode === 'light' ? THEME_LABEL[current].dark : THEME_LABEL[current].light}
+            aria-label={mode === 'light' ? THEME_LABEL[current].toDark : THEME_LABEL[current].toLight}
             onClick={toggle}
           >
             {mounted && mode === 'light' ? (

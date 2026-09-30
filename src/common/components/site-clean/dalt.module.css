@@ -66,7 +66,7 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  background: var(--ink-deep);
+  background: var(--panel-deep);
 }
 .case video:focus-visible { outline: 3px solid var(--green); outline-offset: -3px; }
 .caseBody { display: flex; flex-direction: column; gap: 8px; padding: 24px 28px 32px; }
@@ -91,4 +91,10 @@
   .caseBody { padding: 20px 22px 26px; }
   .tags { margin-top: 32px; }
   .tags li { font-size: 13px; padding: 9px 14px; }
+}
+
+/* ─────────── Tema escuro: logos ─────────── */
+:global(html[data-site-theme='dark']) .logos li img, :global(html[data-site-theme='dark']) .logos li img:hover { filter: brightness(0) invert(1); }
+@media (prefers-color-scheme: dark) {
+  :global(html:not([data-site-theme='light'])) .logos li img, :global(html:not([data-site-theme='light'])) .logos li img:hover { filter: brightness(0) invert(1); }
 }

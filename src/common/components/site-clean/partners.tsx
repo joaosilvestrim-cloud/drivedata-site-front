@@ -11,6 +11,7 @@ import {
   PARTNERSHIP_TYPES,
   type PartnershipType,
 } from '@/common/model/partner-application.model';
+import { SITE_CONTACT, SITE_COUNTRY } from '@/common/config/site';
 import { useCopy, useLang, type Copy, type Lang } from './i18n';
 import { CleanShell } from './shell';
 import { Icon, PageHero, SectionHead } from './ui';
@@ -101,6 +102,7 @@ const PT = {
   formTitle: 'Demonstre seu interesse.',
   formLead: 'Preencha o formulário e respondemos em até dois dias úteis.',
   formAside: 'Prefere falar direto com alguém do comercial? Escreva para o e-mail abaixo.',
+  formAsidePhone: 'Prefere falar direto com alguém do comercial? Ligue para o número abaixo.',
   successTitle: 'Recebemos seu interesse.',
   successBody: 'Obrigado. Nosso time comercial responde em até dois dias úteis, no e-mail que você informou.',
   requiredNote: 'Campos com * são obrigatórios.',
@@ -206,6 +208,7 @@ const COPY: Copy<typeof PT> = {
     formTitle: 'Register your interest.',
     formLead: 'Fill in the form and we answer within two business days.',
     formAside: 'Rather talk to someone on the sales team directly? Write to the address below.',
+    formAsidePhone: 'Rather talk to someone on the sales team directly? Call the number below.',
     successTitle: 'We got your message.',
     successBody: 'Thank you. Our sales team replies within two business days, to the email you provided.',
     requiredNote: 'Fields marked * are required.',
@@ -314,6 +317,7 @@ const COPY: Copy<typeof PT> = {
     formTitle: 'Registra tu interés.',
     formLead: 'Completa el formulario y respondemos en hasta dos días hábiles.',
     formAside: '¿Prefieres hablar directo con alguien de comercial? Escribe al correo de abajo.',
+    formAsidePhone: '¿Prefieres hablar directo con alguien de comercial? Llama al número de abajo.',
     successTitle: 'Recibimos tu interés.',
     successBody: 'Gracias. Nuestro equipo comercial responde en hasta dos días hábiles, al correo que indicaste.',
     requiredNote: 'Los campos con * son obligatorios.',
@@ -422,6 +426,7 @@ const COPY: Copy<typeof PT> = {
     formTitle: 'Manifestez votre intérêt.',
     formLead: 'Remplissez le formulaire et nous répondons sous deux jours ouvrés.',
     formAside: 'Vous préférez parler directement au commercial ? Écrivez à l’adresse ci-dessous.',
+    formAsidePhone: 'Vous préférez parler directement au commercial ? Appelez le numéro ci-dessous.',
     successTitle: 'Nous avons bien reçu votre message.',
     successBody: 'Merci. Notre équipe commerciale répond sous deux jours ouvrés, à l’adresse que vous avez indiquée.',
     requiredNote: 'Les champs marqués * sont obligatoires.',
@@ -575,8 +580,18 @@ export function PartnersClean() {
           <div className={p.formAside} data-reveal>
             <h2 id="interesse-titulo" className={s.h2}>{t.formTitle}</h2>
             <p className={s.lead}>{t.formLead}</p>
-            <p className={s.muted}>{t.formAside}</p>
-            <a className={s.link} href="mailto:comercial@drivedata.com.br">comercial@drivedata.com.br</a>
+            {/* O Canadá não tem e-mail comercial próprio: lá o contato direto é o telefone. */}
+            {SITE_COUNTRY === 'CA' ? (
+              <>
+                <p className={s.muted}>{t.formAsidePhone}</p>
+                <a className={s.link} href={`tel:${SITE_CONTACT.phone.replace(/[^+\d]/g, '')}`}>{SITE_CONTACT.phone}</a>
+              </>
+            ) : (
+              <>
+                <p className={s.muted}>{t.formAside}</p>
+                <a className={s.link} href="mailto:comercial@drivedata.com.br">comercial@drivedata.com.br</a>
+              </>
+            )}
           </div>
           <div className={p.formCard} data-reveal style={delay(100)}>
             <PartnerForm type={type} onType={setType} />

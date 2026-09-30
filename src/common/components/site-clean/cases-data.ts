@@ -196,9 +196,9 @@ export const CASES: ClientCase[] = [
     ),
     challenge: L(
       'A torre corporativa que mantinha os painéis de manutenção foi desmobilizada. O painel perdeu a fonte de dados e o controle voltou a ser manual.',
-      'The corporate tower that maintained the maintenance dashboards was disbanded. The dashboard lost its data source and control went back to manual work.',
-      'La torre corporativa que mantenía los paneles de mantenimiento fue desmovilizada. El panel perdió su fuente de datos y el control volvió a ser manual.',
-      'La tour corporative qui maintenait les tableaux de bord de maintenance a été démobilisée. Le tableau de bord a perdu sa source de données et le contrôle est redevenu manuel.',
+      'The central corporate team that maintained the maintenance dashboards was disbanded. The dashboard lost its data source and control went back to manual work.',
+      'El equipo corporativo central que mantenía los paneles de mantenimiento fue desmovilizado. El panel perdió su fuente de datos y el control volvió a ser manual.',
+      'L’équipe corporative centrale qui maintenait les tableaux de bord de maintenance a été démobilisée. Le tableau de bord a perdu sa source de données et le contrôle est redevenu manuel.',
     ),
     work: {
       pt: [

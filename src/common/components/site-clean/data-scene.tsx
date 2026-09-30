@@ -8,6 +8,7 @@
 // oculta; com movimento reduzido mostra o estado "Conectado" parado.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { INTL_LOCALE, useLang, type Copy } from './i18n';
+import { useSiteTheme } from './theme';
 import s from './clean.module.css';
 
 type Stage = 'caos' | 'conectado' | 'previsao';
@@ -81,11 +82,28 @@ const COPY: Copy<typeof PT> = {
   },
 };
 
-const SOURCE_RGB = [
-  [10, 22, 40],
-  [10, 114, 196],
-  [21, 128, 61],
-];
+// Cores do canvas por tema. No escuro o ERP (navy) sumiria no fundo, então vira
+// um cinza claro; as linhas e os rótulos seguem o texto do tema.
+const PALETTE = {
+  light: {
+    src: [[10, 22, 40], [10, 114, 196], [21, 128, 61]],
+    axis: 'rgba(10,22,40,0.25)',
+    label: 'rgba(91,103,120,0.9)',
+    future: '#15803d',
+    futureFill: 'rgba(84,218,137,0.22)',
+    today: 'rgba(10,22,40,0.5)',
+    todayText: '#0a1628',
+  },
+  dark: {
+    src: [[203, 213, 225], [90, 169, 255], [84, 218, 137]],
+    axis: 'rgba(234,240,251,0.22)',
+    label: 'rgba(160,172,190,0.95)',
+    future: '#54da89',
+    futureFill: 'rgba(84,218,137,0.16)',
+    today: 'rgba(234,240,251,0.5)',
+    todayText: '#e8eef8',
+  },
+};
 
 /** Meses abreviados no idioma atual (jan., Jan, janv. viram Jan, Janv). */
 function monthNames(locale: string): string[] {
@@ -129,6 +147,10 @@ export function DataScene() {
   const t = COPY[lang];
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const months = useMemo(() => monthNames(INTL_LOCALE[lang]), [lang]);
+  const { theme } = useSiteTheme();
+  const pal = PALETTE[theme];
+  const palRef = useRef(pal);
+  palRef.current = pal;
   // textos que o canvas desenha: lidos a cada quadro, então seguem a troca de idioma
   const labels = useRef({ months, today: t.today });
   labels.current = { months, today: t.today };
@@ -187,9 +209,9 @@ export function DataScene() {
         ctx.globalAlpha = b;
         const x0 = (-(HIST + FUT - 1) / 2 - 0.6) * GAP, x1 = ((HIST + FUT - 1) / 2 + 0.6) * GAP;
         const a = project(x0, -2.2, 0), c = project(x1, -2.2, 0);
-        ctx.strokeStyle = 'rgba(10,22,40,0.25)'; ctx.lineWidth = 1;
+        ctx.strokeStyle = palRef.current.axis; ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(c.x, c.y); ctx.stroke();
-        ctx.fillStyle = 'rgba(91,103,120,0.9)';
+        ctx.fillStyle = palRef.current.label;
         ctx.font = '600 11px Inter, system-ui, sans-serif'; ctx.textAlign = 'center';
         // rótulo só onde cabe: pula o mês se ficaria colado no anterior
         let lastX = -Infinity;
@@ -198,16 +220,16 @@ export function DataScene() {
           const p = project((m - (HIST + FUT - 1) / 2) * GAP, -2.2, 0);
           if (p.x - lastX < 30) continue;
           lastX = p.x;
-          ctx.fillStyle = m < HIST ? 'rgba(91,103,120,0.9)' : '#15803d';
+          ctx.fillStyle = m < HIST ? palRef.current.label : palRef.current.future;
           ctx.fillText(labels.current.months[m % 12], p.x, p.y + 18);
         }
         if (showFuture > 0.05) {
           const t = project((HIST - 0.5 - (HIST + FUT - 1) / 2) * GAP, -2.2, 0);
           const top = project((HIST - 0.5 - (HIST + FUT - 1) / 2) * GAP, 2.2, 0);
           ctx.globalAlpha = b * showFuture;
-          ctx.setLineDash([4, 4]); ctx.strokeStyle = 'rgba(10,22,40,0.5)';
+          ctx.setLineDash([4, 4]); ctx.strokeStyle = palRef.current.today;
           ctx.beginPath(); ctx.moveTo(t.x, t.y); ctx.lineTo(top.x, top.y); ctx.stroke(); ctx.setLineDash([]);
-          ctx.fillStyle = '#0a1628'; ctx.font = '700 12px Inter, system-ui, sans-serif';
+          ctx.fillStyle = palRef.current.todayText; ctx.font = '700 12px Inter, system-ui, sans-serif';
           ctx.fillText(labels.current.today, top.x, top.y - 8);
         }
         ctx.restore();
@@ -237,12 +259,12 @@ export function DataScene() {
         const bw = (UNIT * 0.86 + (GAP * 0.66 - UNIT * 0.86) * own) * p.k * p.sc;
         const size = UNIT * 0.86 * p.k * p.sc;
         const depth = Math.max(0.55, Math.min(1, 0.78 + p.z * 0.06));
-        const [r, g, bb] = SOURCE_RGB[bl.src];
+        const [r, g, bb] = palRef.current.src[bl.src];
         ctx.globalAlpha = alpha * depth;
         if (bl.future) {
-          ctx.strokeStyle = '#15803d'; ctx.lineWidth = 1.5;
+          ctx.strokeStyle = palRef.current.future; ctx.lineWidth = 1.5;
           ctx.strokeRect(p.x - bw / 2 + 0.75, p.y - size / 2 + 0.75, bw - 1.5, size - 1.5);
-          ctx.fillStyle = 'rgba(84,218,137,0.22)';
+          ctx.fillStyle = palRef.current.futureFill;
           ctx.fillRect(p.x - bw / 2, p.y - size / 2, bw, size);
         } else {
           ctx.fillStyle = `rgb(${r},${g},${bb})`;
@@ -319,7 +341,7 @@ export function DataScene() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       (canvasRef.current as (HTMLCanvasElement & { __snap?: () => void }) | null)?.__snap?.();
     }
-  }, [stage, horizon, lang]);
+  }, [stage, horizon, lang, theme]);
 
   const current = t.stages[stage];
   const sources = ['ERP', 'CRM', t.sheets];
@@ -335,7 +357,7 @@ export function DataScene() {
         </div>
         <ul className={s.sceneLegend} aria-label={t.legendLabel}>
           {sources.map((name, i) => (
-            <li key={i}><i style={{ background: `rgb(${SOURCE_RGB[i].join(',')})` }} />{name}</li>
+            <li key={i}><i style={{ background: `rgb(${pal.src[i].join(',')})` }} />{name}</li>
           ))}
           <li className={stage === 'previsao' ? '' : s.legendOff}><i className={s.legendFuture} />{t.forecast}</li>
         </ul>

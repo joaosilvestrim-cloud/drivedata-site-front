@@ -19,6 +19,18 @@
   --on-ink: rgba(234, 240, 251, 0.8);
   --on-ink-muted: rgba(234, 240, 251, 0.66);
   --line-ink: rgba(234, 240, 251, 0.14);
+  /* painéis navy (faixa escura, rodapé, chamadas): continuam escuros no tema escuro */
+  --panel: #0a1628;
+  --panel-deep: #070c16;
+  --on-panel: #ffffff;
+  --on-green: #0a1628;
+  --line-strong: #c7d0db;
+  --line-hover: #9fabbb;
+  --placeholder: #6b7687;
+  --danger: #b42318;
+  --danger-bg: #fdecea;
+  --danger-text: #8a1c12;
+  color-scheme: light;
 
   --display: var(--font-sora), 'Sora', ui-sans-serif, system-ui, sans-serif;
   --text: var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -35,6 +47,63 @@
   overflow-x: clip;
   -webkit-font-smoothing: antialiased;
 }
+/* ─────────── Tema escuro ───────────
+   Vale quando a pessoa escolhe no trilho (data-site-theme="dark") ou, sem
+   escolha, quando o sistema dela está no escuro. Os papéis continuam os mesmos:
+   --ink é o texto forte e o fundo dos elementos invertidos (chips ativos), então
+   vira claro; os painéis navy usam --panel e seguem escuros. */
+:global(html[data-site-theme='dark']) .root {
+  --ink: #e8eef8;
+  --ink-deep: #ffffff;
+  --ink-2: #1b2c48;
+  --blue: #5aa9ff;
+  --mist: #16362a;
+  --fog: #101b2e;
+  --paper: #0a1322;
+  --body: #b6c2d4;
+  --slate: #8d9ab0;
+  --line: #22314a;
+  --panel: #14233c;
+  --panel-deep: #0d192c;
+  --line-strong: #2e3d58;
+  --line-hover: #475877;
+  --placeholder: #7f8ca3;
+  --danger: #ff8f80;
+  --danger-bg: #3b1512;
+  --danger-text: #ffb3a8;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :global(html:not([data-site-theme='light'])) .root {
+    --ink: #e8eef8;
+    --ink-deep: #ffffff;
+    --ink-2: #1b2c48;
+    --blue: #5aa9ff;
+    --mist: #16362a;
+    --fog: #101b2e;
+    --paper: #0a1322;
+    --body: #b6c2d4;
+    --slate: #8d9ab0;
+    --line: #22314a;
+    --panel: #14233c;
+    --panel-deep: #0d192c;
+    --line-strong: #2e3d58;
+    --line-hover: #475877;
+    --placeholder: #7f8ca3;
+    --danger: #ff8f80;
+    --danger-bg: #3b1512;
+    --danger-text: #ffb3a8;
+    color-scheme: dark;
+  }
+}
+
+:global(html):has(.root), :global(html):has(.root) :global(body) { background: #ffffff; }
+:global(html[data-site-theme='dark']):has(.root), :global(html[data-site-theme='dark']):has(.root) :global(body) { background: #0a1322; }
+@media (prefers-color-scheme: dark) {
+  :global(html:not([data-site-theme='light'])):has(.root), :global(html:not([data-site-theme='light'])):has(.root) :global(body) { background: #0a1322; }
+}
+/* o fundo da página (fora do .root) acompanha o tema: sem faixa escura ao rolar além do fim */
+
 :where(.root) *, :where(.root) *::before, :where(.root) *::after { box-sizing: border-box; }
 /* resets com especificidade zero: qualquer classe do componente prevalece */
 :where(.root) :where(ul, ol) { list-style: none; margin: 0; padding: 0; }
@@ -53,7 +122,7 @@
   border: 0;
   border-radius: 9999px;
   background: var(--green);
-  color: var(--ink);
+  color: var(--on-green);
   font: 600 16px/1 var(--text);
   letter-spacing: -0.006em;
   text-decoration: none;
@@ -62,7 +131,7 @@
   transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
 .btn:hover { background: var(--green-hover); }
-.btnOutline { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ink); }
+.btnOutline { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
 .btnOutline:hover { background: var(--ink); color: var(--paper); }
 .btnSm { min-height: 44px; padding: 10px 20px; font-size: 15px; }
 
@@ -183,8 +252,8 @@
 .band { padding: clamp(72px, 9vw, 120px) 0; }
 .bandTight { padding-top: 0; }
 .bandFog { background: var(--fog); }
-.bandInk { background: var(--ink); color: var(--on-ink); }
-.bandInk .h2, .bandInk .h3 { color: var(--paper); }
+.bandInk { background: var(--panel); color: var(--on-ink); }
+.bandInk .h2, .bandInk .h3 { color: var(--on-panel); }
 
 /* ─────────── Problema e ganhos ─────────── */
 .split { display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px 80px; align-items: end; }
@@ -276,31 +345,31 @@
   align-items: center;
   padding: clamp(40px, 6vw, 80px);
   border-radius: 28px;
-  background: var(--ink);
+  background: var(--panel);
 }
 .cta .h2 { color: var(--green); font-size: clamp(32px, 3.9vw, 52px); }
 .ctaActions { display: flex; flex-direction: column; gap: 28px; }
 .ctaActions p { color: var(--on-ink); font-size: 18px; line-height: 1.55; }
 .ctaButtons { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 28px; }
-.cta .link { color: var(--paper); }
+.cta .link { color: var(--on-panel); }
 .cta .link:focus-visible, .cta .btn:focus-visible { outline-color: var(--green); }
 
 /* ─────────── Rodapé ─────────── */
-.footer { background: var(--ink); color: var(--on-ink); padding: 72px 0 32px; }
+.footer { background: var(--panel); color: var(--on-ink); padding: 72px 0 32px; }
 .footerTop { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 40px; }
 .footerBrand { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
 .footerBrand > img { height: 32px; width: auto; }
 .footerBrand p { color: var(--on-ink-muted); font-size: 15px; max-width: 30ch; }
 .partner { display: inline-flex; padding: 10px 14px; border-radius: 10px; background: var(--paper); }
 .partner img { height: 26px; width: auto; }
-.footerCol h2 { margin-bottom: 16px; color: var(--paper); font: 600 15px/1 var(--text); }
+.footerCol h2 { margin-bottom: 16px; color: var(--on-panel); font: 600 15px/1 var(--text); }
 .footerCol ul { display: flex; flex-direction: column; gap: 12px; }
 .footerCol a, .footerBottom a, .footerBottom button {
   color: var(--on-ink-muted);
   font: 400 15px/1.3 var(--text);
   text-decoration: none;
 }
-.footerCol a:hover, .footerBottom a:hover, .footerBottom button:hover { color: var(--paper); text-decoration: underline; text-underline-offset: 4px; }
+.footerCol a:hover, .footerBottom a:hover, .footerBottom button:hover { color: var(--on-panel); text-decoration: underline; text-underline-offset: 4px; }
 .footerBottom {
   display: flex;
   flex-wrap: wrap;
@@ -484,6 +553,24 @@
   .cardTitle { font-size: 28px; }
   .cta { border-radius: 22px; }
   .footerTop { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+
+:global(html[data-site-theme='dark']) .legendFuture { box-shadow: inset 0 0 0 1.5px var(--green); background: rgba(84, 218, 137, 0.16); }
+@media (prefers-color-scheme: dark) {
+  :global(html:not([data-site-theme='light'])) .legendFuture { box-shadow: inset 0 0 0 1.5px var(--green); background: rgba(84, 218, 137, 0.16); }
+}
+
+/* ─────────── Tema escuro: logos ─────────── */
+.logoDark { display: none; }
+:global(html[data-site-theme='dark']) .logoLight { display: none; }
+:global(html[data-site-theme='dark']) .logoDark { display: block; }
+:global(html[data-site-theme='dark']) .marqueeTrack img { filter: grayscale(1) invert(1); mix-blend-mode: screen; opacity: 0.7; }
+:global(html[data-site-theme='dark']) .marqueeTrack img:hover { filter: grayscale(1) invert(1); opacity: 1; }
+@media (prefers-color-scheme: dark) {
+  :global(html:not([data-site-theme='light'])) .logoLight { display: none; }
+  :global(html:not([data-site-theme='light'])) .logoDark { display: block; }
+  :global(html:not([data-site-theme='light'])) .marqueeTrack img { filter: grayscale(1) invert(1); mix-blend-mode: screen; opacity: 0.7; }
+  :global(html:not([data-site-theme='light'])) .marqueeTrack img:hover { filter: grayscale(1) invert(1); opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {

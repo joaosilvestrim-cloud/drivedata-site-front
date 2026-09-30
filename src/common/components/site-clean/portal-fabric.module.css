@@ -35,7 +35,7 @@ h1.heroTitle { font-size: clamp(44px, 6.4vw, 88px); line-height: 0.95; max-width
   aspect-ratio: 16 / 9;
   border-radius: 28px;
   overflow: hidden;
-  background: var(--ink);
+  background: var(--panel);
 }
 .videoFrame iframe {
   position: absolute;
@@ -209,13 +209,13 @@ ol.steps4 { grid-template-columns: repeat(4, 1fr); gap: 32px; }
 }
 
 /* resultado (navy) */
-.result { padding: 40px; border-radius: 28px; background: var(--ink); color: var(--on-ink); }
+.result { padding: 40px; border-radius: 28px; background: var(--panel); color: var(--on-ink); }
 .levelRow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
 .levelPill {
   padding: 9px 16px;
   border-radius: 9999px;
   background: rgba(234, 240, 251, 0.1);
-  color: var(--paper);
+  color: var(--on-panel);
   font: 600 14px/1 var(--text);
 }
 .meter { display: flex; gap: 6px; }
@@ -230,12 +230,12 @@ ol.steps4 { grid-template-columns: repeat(4, 1fr); gap: 32px; }
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.bigNeg { color: var(--paper) !important; }
+.bigNeg { color: var(--on-panel) !important; }
 .resultLine { margin-top: 14px; color: var(--on-ink); font-size: 17px; line-height: 1.5; }
 .nextGoal { margin-top: 6px; color: var(--on-ink-muted); font-size: 15px; line-height: 1.5; }
 
 .chartBlock { margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line-ink); }
-.chartTitle { margin-bottom: 18px; color: var(--paper); font: 600 16px/1.2 var(--text); }
+.chartTitle { margin-bottom: 18px; color: var(--on-panel); font: 600 16px/1.2 var(--text); }
 .chart { margin: 0; }
 .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
 .cGrid { stroke: var(--line-ink); }
@@ -244,10 +244,10 @@ ol.steps4 { grid-template-columns: repeat(4, 1fr); gap: 32px; }
 .cCap { stroke: var(--green); }
 .cLic { stroke: rgba(234, 240, 251, 0.78); }
 .cGuide { stroke: var(--on-ink-muted); }
-.cNode { fill: var(--ink); stroke: var(--paper); }
+.cNode { fill: var(--ink); stroke: var(--on-panel); }
 .cMe { stroke: var(--ink); }
 .cMeOn { fill: var(--green); }
-.cMeOff { fill: var(--paper); }
+.cMeOff { fill: var(--on-panel); }
 .plot { position: relative; }
 .cTag {
   position: absolute;
@@ -260,7 +260,7 @@ ol.steps4 { grid-template-columns: repeat(4, 1fr); gap: 32px; }
 .cTagTop { transform: translate(-50%, -100%); }
 .cTagTopStart { transform: translate(-10px, -100%); }
 .cTagTopEnd { transform: translate(calc(-100% + 10px), -100%); }
-.cTagMe { transform: translate(-50%, -100%); color: var(--paper); font-weight: 700; }
+.cTagMe { transform: translate(-50%, -100%); color: var(--on-panel); font-weight: 700; }
 .cTagStart { transform: translate(0, -100%); }
 .cTagEnd { transform: translate(-100%, -100%); }
 .legend { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 16px; color: var(--on-ink-muted); font-size: 14px; line-height: 1.4; }
@@ -279,8 +279,8 @@ ol.steps4 { grid-template-columns: repeat(4, 1fr); gap: 32px; }
   border-bottom: 1px solid var(--line-ink);
 }
 .row dt { color: var(--on-ink); font-size: 15px; line-height: 1.4; }
-.row dd { margin: 0; flex-shrink: 0; color: var(--paper); font: 700 18px/1 var(--display); font-variant-numeric: tabular-nums; }
-.rowTotal dt { color: var(--paper); font-weight: 600; }
+.row dd { margin: 0; flex-shrink: 0; color: var(--on-panel); font: 700 18px/1 var(--display); font-variant-numeric: tabular-nums; }
+.rowTotal dt { color: var(--on-panel); font-weight: 600; }
 .rowTotal dd { color: var(--green); font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
 .resultNote { margin-top: 18px; color: var(--on-ink-muted); font-size: 14px; line-height: 1.55; }
 
@@ -325,13 +325,13 @@ ol.steps4 { grid-template-columns: repeat(4, 1fr); gap: 32px; }
 .stats strong { color: var(--green); font: 800 clamp(48px, 5vw, 68px)/0.9 var(--display); letter-spacing: -0.045em; }
 .stats span { color: var(--on-ink-muted); font-size: 16px; line-height: 1.55; }
 .compat { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 20px; margin-top: 64px; }
-.compat h3 { color: var(--paper); font: 600 16px/1 var(--text); }
+.compat h3 { color: var(--on-panel); font: 600 16px/1 var(--text); }
 .compat ul { display: flex; flex-wrap: wrap; gap: 8px; }
 .compat li {
   padding: 9px 16px;
   border-radius: 9999px;
   background: rgba(234, 240, 251, 0.08);
-  color: var(--paper);
+  color: var(--on-panel);
   font: 500 14px/1.2 var(--text);
 }
 

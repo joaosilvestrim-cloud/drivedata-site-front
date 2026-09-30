@@ -225,7 +225,7 @@ const COPY: Copy<typeof PT> = {
     cases: [
       { title: 'Logistique opérationnelle', text: "Flux logistique optimisé grâce à l'ingénierie de données." },
       { title: 'Cockpit de gestion logistique', text: 'Contrôle opérationnel en temps réel pour de grandes flottes.' },
-      { title: 'Mines et agroalimentaire', text: "Intelligence de données appliquée aux mines et à l'agroalimentaire." },
+      { title: 'Mines et agro-industrie', text: "Intelligence de données appliquée aux mines et à l'agro-industrie." },
     ],
     caseVideo: (title: string) => `Vidéo de l'étude de cas ${title}`,
     fitTitle: "La technologie pour ceux qui décident de l'avenir des grandes opérations.",
@@ -348,7 +348,7 @@ export function DaltClean() {
             {t.cases.map((c, i) => (
               <li key={i} className={d.case} data-reveal style={delay(i * 100)}>
                 <video controls playsInline preload="metadata" aria-label={t.caseVideo(c.title)}>
-                  <source src={CASE_VIDEOS[i]} type="video/mp4" />
+                  <source src={`${CASE_VIDEOS[i]}#t=2`} type="video/mp4" />
                 </video>
                 <div className={d.caseBody}>
                   <h3 className={s.h3}>{c.title}</h3>
