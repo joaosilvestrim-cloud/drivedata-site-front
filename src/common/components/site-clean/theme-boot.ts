@@ -1,5 +1,5 @@
-// Tema do site (claro ou escuro). Sem escolha salva, segue o sistema da pessoa
-// (prefers-color-scheme). A escolha feita no botão do trilho fica no cookie e
+// Tema do site (claro ou escuro). O claro é sempre o padrão, mesmo com o sistema
+// da pessoa no escuro. A escolha feita no botão do trilho fica no cookie e
 // vira o atributo data-site-theme no <html>, aplicado por este script ANTES da
 // primeira pintura para não piscar. O React não renderiza esse atributo, então
 // não há divergência de hidratação.

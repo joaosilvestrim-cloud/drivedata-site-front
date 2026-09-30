@@ -95,6 +95,3 @@
 
 /* ─────────── Tema escuro: logos ─────────── */
 :global(html[data-site-theme='dark']) .logos li img, :global(html[data-site-theme='dark']) .logos li img:hover { filter: brightness(0) invert(1); }
-@media (prefers-color-scheme: dark) {
-  :global(html:not([data-site-theme='light'])) .logos li img, :global(html:not([data-site-theme='light'])) .logos li img:hover { filter: brightness(0) invert(1); }
-}

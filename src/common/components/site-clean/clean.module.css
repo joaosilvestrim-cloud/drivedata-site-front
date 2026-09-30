@@ -48,8 +48,8 @@
   -webkit-font-smoothing: antialiased;
 }
 /* ─────────── Tema escuro ───────────
-   Vale quando a pessoa escolhe no trilho (data-site-theme="dark") ou, sem
-   escolha, quando o sistema dela está no escuro. Os papéis continuam os mesmos:
+   Só vale quando a pessoa escolhe no trilho (data-site-theme="dark"). O site
+   sempre abre no claro, mesmo com o sistema no escuro. Os papéis continuam os mesmos:
    --ink é o texto forte e o fundo dos elementos invertidos (chips ativos), então
    vira claro; os painéis navy usam --panel e seguem escuros. */
 :global(html[data-site-theme='dark']) .root {
@@ -73,35 +73,9 @@
   --danger-text: #ffb3a8;
   color-scheme: dark;
 }
-@media (prefers-color-scheme: dark) {
-  :global(html:not([data-site-theme='light'])) .root {
-    --ink: #e8eef8;
-    --ink-deep: #ffffff;
-    --ink-2: #1b2c48;
-    --blue: #5aa9ff;
-    --mist: #16362a;
-    --fog: #101b2e;
-    --paper: #0a1322;
-    --body: #b6c2d4;
-    --slate: #8d9ab0;
-    --line: #22314a;
-    --panel: #14233c;
-    --panel-deep: #0d192c;
-    --line-strong: #2e3d58;
-    --line-hover: #475877;
-    --placeholder: #7f8ca3;
-    --danger: #ff8f80;
-    --danger-bg: #3b1512;
-    --danger-text: #ffb3a8;
-    color-scheme: dark;
-  }
-}
 
 :global(html):has(.root), :global(html):has(.root) :global(body) { background: #ffffff; }
 :global(html[data-site-theme='dark']):has(.root), :global(html[data-site-theme='dark']):has(.root) :global(body) { background: #0a1322; }
-@media (prefers-color-scheme: dark) {
-  :global(html:not([data-site-theme='light'])):has(.root), :global(html:not([data-site-theme='light'])):has(.root) :global(body) { background: #0a1322; }
-}
 /* o fundo da página (fora do .root) acompanha o tema: sem faixa escura ao rolar além do fim */
 
 :where(.root) *, :where(.root) *::before, :where(.root) *::after { box-sizing: border-box; }
@@ -556,9 +530,6 @@
 }
 
 :global(html[data-site-theme='dark']) .legendFuture { box-shadow: inset 0 0 0 1.5px var(--green); background: rgba(84, 218, 137, 0.16); }
-@media (prefers-color-scheme: dark) {
-  :global(html:not([data-site-theme='light'])) .legendFuture { box-shadow: inset 0 0 0 1.5px var(--green); background: rgba(84, 218, 137, 0.16); }
-}
 
 /* ─────────── Tema escuro: logos ─────────── */
 .logoDark { display: none; }
@@ -566,12 +537,6 @@
 :global(html[data-site-theme='dark']) .logoDark { display: block; }
 :global(html[data-site-theme='dark']) .marqueeTrack img { filter: grayscale(1) invert(1); mix-blend-mode: screen; opacity: 0.7; }
 :global(html[data-site-theme='dark']) .marqueeTrack img:hover { filter: grayscale(1) invert(1); opacity: 1; }
-@media (prefers-color-scheme: dark) {
-  :global(html:not([data-site-theme='light'])) .logoLight { display: none; }
-  :global(html:not([data-site-theme='light'])) .logoDark { display: block; }
-  :global(html:not([data-site-theme='light'])) .marqueeTrack img { filter: grayscale(1) invert(1); mix-blend-mode: screen; opacity: 0.7; }
-  :global(html:not([data-site-theme='light'])) .marqueeTrack img:hover { filter: grayscale(1) invert(1); opacity: 1; }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .root *, .root *::before, .root *::after { transition: none !important; animation: none !important; }

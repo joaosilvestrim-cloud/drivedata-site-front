@@ -311,7 +311,3 @@ textarea.input { min-height: 132px; resize: vertical; }
 /* ─────────── Tema escuro: logos ─────────── */
 :global(html[data-site-theme='dark']) .platform img, :global(html[data-site-theme='dark']) .platform:hover img { filter: grayscale(1) invert(1); mix-blend-mode: screen; opacity: 0.8; }
 :global(html[data-site-theme='dark']) .seal { background: #ffffff; }
-@media (prefers-color-scheme: dark) {
-  :global(html:not([data-site-theme='light'])) .platform img, :global(html:not([data-site-theme='light'])) .platform:hover img { filter: grayscale(1) invert(1); mix-blend-mode: screen; opacity: 0.8; }
-  :global(html:not([data-site-theme='light'])) .seal { background: #ffffff; }
-}

@@ -188,8 +188,3 @@
 :global(html[data-site-theme='dark']) .caseCard .brand { width: fit-content; padding: 8px 14px; border-radius: 14px; background: #ffffff; }
 :global(html[data-site-theme='dark']) .brand.detailBrand { background: #ffffff; }
 :global(html[data-site-theme='dark']) .quickBrand img { padding: 6px 10px; border-radius: 10px; background: #ffffff; box-sizing: content-box; mix-blend-mode: normal; }
-@media (prefers-color-scheme: dark) {
-  :global(html:not([data-site-theme='light'])) .caseCard .brand { width: fit-content; padding: 8px 14px; border-radius: 14px; background: #ffffff; }
-  :global(html:not([data-site-theme='light'])) .brand.detailBrand { background: #ffffff; }
-  :global(html:not([data-site-theme='light'])) .quickBrand img { padding: 6px 10px; border-radius: 10px; background: #ffffff; box-sizing: content-box; mix-blend-mode: normal; }
-}

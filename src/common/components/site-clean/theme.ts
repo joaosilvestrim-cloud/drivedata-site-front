@@ -6,26 +6,17 @@ import { SITE_THEME_ATTR, SITE_THEME_COOKIE } from './theme-boot';
 
 export type SiteTheme = 'light' | 'dark';
 
-const DARK_QUERY = '(prefers-color-scheme: dark)';
-
-/** Tema em vigor: a escolha salva no <html> ou, sem ela, o do sistema. */
+/** Tema em vigor: o escuro só quando a pessoa escolheu; sem escolha, claro. */
 export function currentSiteTheme(): SiteTheme {
   if (typeof document === 'undefined') return 'light';
-  const chosen = document.documentElement.getAttribute(SITE_THEME_ATTR);
-  if (chosen === 'light' || chosen === 'dark') return chosen;
-  return window.matchMedia(DARK_QUERY).matches ? 'dark' : 'light';
+  return document.documentElement.getAttribute(SITE_THEME_ATTR) === 'dark' ? 'dark' : 'light';
 }
 
-/** Chama `fn` sempre que o tema em vigor pode ter mudado. Devolve o cancelamento. */
+/** Chama `fn` quando o tema muda (troca pelo botão). Devolve o cancelamento. */
 export function onSiteThemeChange(fn: () => void): () => void {
-  const mq = window.matchMedia(DARK_QUERY);
   const mo = new MutationObserver(fn);
   mo.observe(document.documentElement, { attributes: true, attributeFilter: [SITE_THEME_ATTR] });
-  mq.addEventListener('change', fn);
-  return () => {
-    mo.disconnect();
-    mq.removeEventListener('change', fn);
-  };
+  return () => mo.disconnect();
 }
 
 /**
