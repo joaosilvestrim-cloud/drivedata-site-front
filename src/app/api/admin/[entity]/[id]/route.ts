@@ -1,5 +1,9 @@
 import { adminRemove, adminUpdate } from '@/server/content-admin';
 import { getAdminUser } from '@/server/supabase-server';
+import { revalidateTag } from 'next/cache';
+
+// Depois de gravar, o cache das páginas públicas (server/site-cache) expira na hora.
+const refreshSite = () => revalidateTag('site-content', { expire: 0 });
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -9,7 +13,9 @@ export async function PUT(req: Request, { params }: { params: Promise<{ entity: 
   try {
     const { entity, id } = await params;
     const body = await req.json();
-    return Response.json(await adminUpdate(entity, id, body));
+    const out = await adminUpdate(entity, id, body);
+    refreshSite();
+    return Response.json(out);
   } catch (e) {
     return Response.json({ error: (e as Error).message }, { status: 400 });
   }
@@ -19,7 +25,9 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ enti
   if (!(await getAdminUser())) return Response.json({ error: 'não autorizado' }, { status: 401 });
   try {
     const { entity, id } = await params;
-    return Response.json(await adminRemove(entity, id));
+    const out = await adminRemove(entity, id);
+    refreshSite();
+    return Response.json(out);
   } catch (e) {
     return Response.json({ error: (e as Error).message }, { status: 400 });
   }

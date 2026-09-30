@@ -464,7 +464,10 @@ const ICON_PIN = 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0zM12 13a3 3 0 1 0
 function PartnerLogos({ partners }: { partners: AboutPartner[] }) {
   const t = useCopy(COPY);
   if (!partners.length) return null;
-  const logos = partners.map((p) => ({ src: p.imageUrl, name: p.name || logoName(p.imageUrl) || t.logoAlt }));
+  // destaques primeiro (mesma regra da home), depois a ordem do cadastro
+  const logos = [...partners]
+    .sort((x, y) => Number(y.featured) - Number(x.featured))
+    .map((p) => ({ src: p.imageUrl, name: p.name || logoName(p.imageUrl) || t.logoAlt }));
   return <LogoWall title={t.proofTitle} logos={logos} />;
 }
 

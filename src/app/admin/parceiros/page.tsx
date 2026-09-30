@@ -7,12 +7,12 @@ export default function Page() {
     <EntityManager
       entity="partner"
       title="Parceiros"
-      description="Logos de clientes/parceiros do carrossel da home. Marque 'Top' para o logo rodar no carrossel; os demais ficam atrás do botão 'Ver mais'. Use 'Aparece em' quando o cliente for só de um país."
+      description="Logos de clientes na faixa que passa na home e na página Sobre. Todos os logos ativos aparecem; os marcados como destaque vêm primeiro e depois vale a ordem. Use 'Aparece em' quando o cliente for só de um país. Mudanças aparecem no site na hora."
       icon="image"
       fields={[
         { key: 'imageUrl', label: 'Logo', type: 'image' },
         { key: 'name', label: 'Nome (opcional)', type: 'text' },
-        { key: 'featured', label: 'Top (roda no carrossel)', type: 'bool' },
+        { key: 'featured', label: 'Destaque (aparece primeiro)', type: 'bool' },
         {
           key: 'country',
           label: 'Aparece em',

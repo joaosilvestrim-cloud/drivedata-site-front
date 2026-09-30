@@ -1,5 +1,9 @@
 import { adminCreate, adminList } from '@/server/content-admin';
 import { getAdminUser } from '@/server/supabase-server';
+import { revalidateTag } from 'next/cache';
+
+// Depois de gravar, o cache das páginas públicas (server/site-cache) expira na hora.
+const refreshSite = () => revalidateTag('site-content', { expire: 0 });
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -19,7 +23,9 @@ export async function POST(req: Request, { params }: { params: Promise<{ entity:
   try {
     const { entity } = await params;
     const body = await req.json();
-    return Response.json(await adminCreate(entity, body));
+    const out = await adminCreate(entity, body);
+    refreshSite();
+    return Response.json(out);
   } catch (e) {
     return Response.json({ error: (e as Error).message }, { status: 400 });
   }

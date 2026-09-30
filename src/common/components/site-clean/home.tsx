@@ -9,7 +9,7 @@ import { DataScene } from './data-scene';
 import { Hero4D } from './hero-4d';
 import { CasesTeaser } from './cases';
 import type { ClientCase } from './cases-data';
-import { Icon, LogoWall, SectionHead } from './ui';
+import { Icon, LogoWall, SectionHead, type WallLogo } from './ui';
 import s from './clean.module.css';
 import { SmartLink } from './link';
 
@@ -197,7 +197,7 @@ const SOLUTION_LINKS = [
 
 const delay = (ms: number) => ({ ['--d' as string]: `${ms}ms` });
 
-export function HomeClean({ profiles, cases }: { profiles: TargetAudienceProfileModel[]; cases: ClientCase[] }) {
+export function HomeClean({ profiles, cases, logos }: { profiles: TargetAudienceProfileModel[]; cases: ClientCase[]; logos: WallLogo[] }) {
   const t = useCopy(COPY);
   const isFor = profiles.filter((p) => p.type === 'CUSTOMER');
   const notFor = profiles.filter((p) => p.type === 'NON_CUSTOMER');
@@ -223,7 +223,7 @@ export function HomeClean({ profiles, cases }: { profiles: TargetAudienceProfile
       </section>
 
       <section id="clientes" className={s.proofBand} aria-label={t.clients}>
-        <div className={s.wrap}><LogoWall title={t.marquee} /></div>
+        <div className={s.wrap}><LogoWall title={t.marquee} logos={logos} /></div>
       </section>
 
       <section className={s.band} aria-labelledby="caos-titulo">
