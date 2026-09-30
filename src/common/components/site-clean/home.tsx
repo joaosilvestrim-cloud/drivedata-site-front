@@ -1,21 +1,23 @@
 'use client';
 
 // Home do site (rota /).
-import { useEffect, useRef } from 'react';
 import type { TargetAudienceProfileModel } from '@/common/model/target-audience-profile.model';
 import { ACADEMY, ROUTES, ext, stripHtml } from './content';
 import { useCopy, type Copy } from './i18n';
 import { CleanShell, ContactButton } from './shell';
 import { DataScene } from './data-scene';
+import { Hero4D } from './hero-4d';
 import { CasesTeaser } from './cases';
 import type { ClientCase } from './cases-data';
-import { Icon, LogoMarquee, SectionHead } from './ui';
+import { Icon, LogoWall, SectionHead } from './ui';
 import s from './clean.module.css';
+import { SmartLink } from './link';
 
 const PT = {
   headline: ['Decida', 'com', 'dados,', 'não', 'com', 'achismo.'],
   lead: 'Conectamos seus sistemas, automatizamos os relatórios e colocamos os números certos na mão de quem decide. Dados, BI, engenharia e IA para empresas que jogam para ganhar.',
   demo: 'Agende uma demonstração',
+  heroVisual: 'Escultura de dados em movimento: uma esfera de pontos vira o D da DriveData, um gráfico de barras, uma rosca, uma linha de tendência, um banco de dados e uma superfície de dados.',
   seeSolutions: 'Ver soluções',
   clients: 'Clientes',
   marquee: 'Empresas que já trocaram o achismo por dados',
@@ -59,6 +61,7 @@ const COPY: Copy<typeof PT> = {
     headline: ['Decide', 'with', 'data,', 'not', 'gut', 'feeling.'],
     lead: 'We connect your systems, automate your reports and put the right numbers in the hands of decision makers. Data, BI, engineering and AI for companies that play to win.',
     demo: 'Schedule a demo',
+    heroVisual: 'Moving data sculpture: a sphere of points becomes the DriveData D, a bar chart, a donut chart, a trend line, a database and a data surface.',
     seeSolutions: 'See solutions',
     clients: 'Clients',
     marquee: 'Companies that traded gut feeling for data',
@@ -99,6 +102,7 @@ const COPY: Copy<typeof PT> = {
     headline: ['Decida', 'con', 'datos,', 'no', 'por', 'intuición.'],
     lead: 'Conectamos sus sistemas, automatizamos los informes y ponemos los números correctos en manos de quien decide. Datos, BI, ingeniería e IA para empresas que juegan para ganar.',
     demo: 'Agende una demostración',
+    heroVisual: 'Escultura de datos en movimiento: una esfera de puntos se convierte en la D de DriveData, un gráfico de barras, una dona, una línea de tendencia, una base de datos y una superficie de datos.',
     seeSolutions: 'Ver soluciones',
     clients: 'Clientes',
     marquee: 'Empresas que ya cambiaron la intuición por datos',
@@ -139,6 +143,7 @@ const COPY: Copy<typeof PT> = {
     headline: ['Décidez', 'avec', 'des', 'données,', 'pas', 'à', 'l’intuition.'],
     lead: 'Nous connectons vos systèmes, automatisons vos rapports et mettons les bons chiffres entre les mains de ceux qui décident. Données, BI, ingénierie et IA pour les entreprises qui jouent pour gagner.',
     demo: 'Planifier une démo',
+    heroVisual: 'Sculpture de données en mouvement : une sphère de points devient le D de DriveData, un histogramme, un anneau, une courbe de tendance, une base de données et une surface de données.',
     seeSolutions: 'Voir les solutions',
     clients: 'Clients',
     marquee: 'Des entreprises qui ont remplacé l’intuition par les données',
@@ -192,38 +197,6 @@ const SOLUTION_LINKS = [
 
 const delay = (ms: number) => ({ ['--d' as string]: `${ms}ms` });
 
-/** O "D" do logo acompanha o ponteiro em 3D (inclinação suave com amortecimento). */
-function HeroMark() {
-  const mark = useRef<HTMLImageElement>(null);
-  useEffect(() => {
-    const img = mark.current;
-    if (!img || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    let raf = 0, tx = 0, ty = 0, x = 0, y = 0;
-    const tick = () => {
-      x += (tx - x) * 0.08; y += (ty - y) * 0.08;
-      img.style.transform = `perspective(900px) rotateY(${x * 16}deg) rotateX(${-y * 12}deg)`;
-      raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.001 ? requestAnimationFrame(tick) : 0;
-    };
-    const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
-    const onMove = (e: PointerEvent) => { tx = e.clientX / window.innerWidth - 0.5; ty = e.clientY / window.innerHeight - 0.5; kick(); };
-    const onLeave = () => { tx = 0; ty = 0; kick(); };
-    window.addEventListener('pointermove', onMove, { passive: true });
-    document.documentElement.addEventListener('pointerleave', onLeave);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('pointermove', onMove);
-      document.documentElement.removeEventListener('pointerleave', onLeave);
-    };
-  }, []);
-  return (
-    <div className={s.stage}>
-      <div className={s.floater}>
-        <img ref={mark} src="/logo.png" alt="" width={512} height={512} fetchPriority="high" />
-      </div>
-    </div>
-  );
-}
-
 export function HomeClean({ profiles, cases }: { profiles: TargetAudienceProfileModel[]; cases: ClientCase[] }) {
   const t = useCopy(COPY);
   const isFor = profiles.filter((p) => p.type === 'CUSTOMER');
@@ -244,11 +217,13 @@ export function HomeClean({ profiles, cases }: { profiles: TargetAudienceProfile
             <a href="#solucoes" className={s.link}>{t.seeSolutions}</a>
           </div>
         </div>
-        <HeroMark />
+        <div className={s.stage}>
+          <Hero4D label={t.heroVisual} />
+        </div>
       </section>
 
       <section id="clientes" className={s.proofBand} aria-label={t.clients}>
-        <div className={s.wrap}><LogoMarquee title={t.marquee} /></div>
+        <div className={s.wrap}><LogoWall title={t.marquee} /></div>
       </section>
 
       <section className={s.band} aria-labelledby="caos-titulo">
@@ -275,12 +250,12 @@ export function HomeClean({ profiles, cases }: { profiles: TargetAudienceProfile
           <ul className={s.cards}>
             {t.solutions.map((c, i) => (
               <li key={SOLUTION_LINKS[i].title} data-reveal style={delay(i * 90)}>
-                <a href={SOLUTION_LINKS[i].href} className={s.card} {...ext(SOLUTION_LINKS[i].href)}>
+                <SmartLink href={SOLUTION_LINKS[i].href} className={s.card} {...ext(SOLUTION_LINKS[i].href)}>
                   <span className={s.cardTag}>{c.tag}</span>
                   <h3 className={s.cardTitle}>{SOLUTION_LINKS[i].title}</h3>
                   <p className={s.muted}>{c.text}</p>
                   <span className={s.cardMore}>{t.learnMore} <span className={s.arrow} aria-hidden="true">→</span></span>
-                </a>
+                </SmartLink>
               </li>
             ))}
           </ul>
@@ -345,7 +320,7 @@ export function HomeClean({ profiles, cases }: { profiles: TargetAudienceProfile
               <p>{t.ctaText}</p>
               <div className={s.ctaButtons}>
                 <ContactButton>{t.ctaButton}</ContactButton>
-                <a href={ROUTES.about} className={s.link}>{t.ctaAbout}</a>
+                <SmartLink href={ROUTES.about} className={s.link}>{t.ctaAbout}</SmartLink>
               </div>
             </div>
           </div>

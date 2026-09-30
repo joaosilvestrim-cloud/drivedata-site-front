@@ -11,6 +11,7 @@ import { CleanShell } from './shell';
 import { PageHero } from './ui';
 import s from './clean.module.css';
 import j from './jobs.module.css';
+import { SmartLink } from './link';
 
 export const LINKEDIN = 'https://www.linkedin.com/company/drivedatabi/';
 
@@ -161,7 +162,7 @@ export function JobsClean({ jobs }: { jobs: JobModel[] }) {
     <CleanShell current="jobs">
       <PageHero title={t.heroTitle} lead={t.heroLead}>
         {jobs.length > 0 && <a href="#lista" className={s.btn}>{t.seeAll(jobs.length)}</a>}
-        <a href={LINKEDIN} className={s.link} target="_blank" rel="noopener noreferrer">{t.follow}</a>
+        <SmartLink href={LINKEDIN} className={s.link} target="_blank" rel="noopener noreferrer">{t.follow}</SmartLink>
       </PageHero>
 
       <section id="lista" className={`${s.band} ${s.bandFog} ${j.anchor}`} aria-labelledby="lista-titulo">
@@ -171,7 +172,7 @@ export function JobsClean({ jobs }: { jobs: JobModel[] }) {
               <h2 id="lista-titulo" className={j.srOnly}>{t.listTitle}</h2>
               <div className={j.empty} data-reveal>
                 <p>{t.empty}</p>
-                <a href={LINKEDIN} className={s.link} target="_blank" rel="noopener noreferrer">{t.followFull}</a>
+                <SmartLink href={LINKEDIN} className={s.link} target="_blank" rel="noopener noreferrer">{t.followFull}</SmartLink>
               </div>
             </>
           ) : (
@@ -215,14 +216,14 @@ export function JobsClean({ jobs }: { jobs: JobModel[] }) {
                 <ul className={j.jobList}>
                   {filtered.map((x) => (
                     <li key={x.id}>
-                      <a href={`${ROUTES.jobs}/${x.slug}`} className={j.job}>
+                      <SmartLink href={`${ROUTES.jobs}/${x.slug}`} className={j.job}>
                         <div>
                           <h3 className={j.jobTitle}>{x.title}</h3>
                           <JobTags job={x} />
                           {x.summary && <p className={`${s.muted} ${j.jobSummary}`}>{x.summary}</p>}
                         </div>
                         <span className={j.jobMore}>{t.seeJob}<span className={j.jobArrow} aria-hidden="true">→</span></span>
-                      </a>
+                      </SmartLink>
                     </li>
                   ))}
                 </ul>

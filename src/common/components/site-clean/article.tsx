@@ -13,6 +13,7 @@ import { ArticleCard, ArticleCover, ArticleDate, ArticlesCta } from './articles'
 import s from './clean.module.css';
 import a from './articles.module.css';
 import r from './article.module.css';
+import { SmartLink } from './link';
 
 const PT = {
   back: 'Todos os artigos',
@@ -76,9 +77,9 @@ export function ArticleClean({ article, related }: { article: CleanArticleFull; 
       <article aria-labelledby="artigo-titulo">
         <header className={r.head}>
           <div className={r.column}>
-            <a href={ROUTES.articles} className={r.back}>
+            <SmartLink href={ROUTES.articles} className={r.back}>
               <span aria-hidden="true">←</span> {t.back}
-            </a>
+            </SmartLink>
             {article.categoryName && <span className={`${s.cardTag} ${r.tag}`}>{article.categoryName}</span>}
             <h1 id="artigo-titulo" className={r.title}>{article.title}</h1>
             {article.subTitle && <p className={r.sub}>{article.subTitle}</p>}
@@ -130,7 +131,7 @@ export function ArticleClean({ article, related }: { article: CleanArticleFull; 
           <div className={s.wrap}>
             <div className={s.sectionHead} data-reveal>
               <h2 id="relacionados-titulo" className={s.h2}>{t.relatedTitle}</h2>
-              <a href={ROUTES.articles} className={s.link}>{t.seeAll}</a>
+              <SmartLink href={ROUTES.articles} className={s.link}>{t.seeAll}</SmartLink>
             </div>
             <ul className={a.grid} data-reveal>
               {related.map((x) => (

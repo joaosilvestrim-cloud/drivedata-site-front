@@ -1,11 +1,6 @@
 import { ArticleClean } from '@/common/components/site-clean/article';
-import {
-  findArticleReadOnly,
-  jsonLd,
-  listArticlesReadOnly,
-  pickRelated,
-  type CleanArticleCard,
-} from '@/common/components/site-clean/articles-data';
+import { jsonLd, pickRelated, type CleanArticleCard } from '@/common/components/site-clean/articles-data';
+import { cachedArticle, cachedArticles } from '@/server/site-cache';
 import { TrackView } from '@/common/components/track-view';
 import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
 import { SITE_BASE_URL } from '@/common/config/site';
@@ -18,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   try {
     const { id } = await params;
     const lang = await getLanguageSafeAsync();
-    const found = await findArticleReadOnly(id, lang);
+    const found = await cachedArticle(id, lang);
     if (found.kind !== 'found') return { title: 'Artigo · DriveData' };
     const a = found.raw;
     const title = a.seoTitle || a.title;
@@ -48,7 +43,7 @@ export default async function Article({ params }: { params: Promise<{ id: string
 
   // banco fora: deixa o erro subir (500) em vez de responder 404, que o Google
   // entenderia como página removida
-  const found = await findArticleReadOnly(id, lang);
+  const found = await cachedArticle(id, lang);
   // slug antigo (trocado no admin ou corrigido): 301 para o endereço atual
   if (found.kind === 'redirect') permanentRedirect(found.to);
   if (found.kind === 'missing') notFound();
@@ -57,7 +52,7 @@ export default async function Article({ params }: { params: Promise<{ id: string
 
   let related: CleanArticleCard[] = [];
   try {
-    related = pickRelated(await listArticlesReadOnly(lang), article);
+    related = pickRelated(await cachedArticles(lang), article);
   } catch (error) {
     console.error(error);
   }

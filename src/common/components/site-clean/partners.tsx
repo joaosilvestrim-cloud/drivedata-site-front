@@ -18,6 +18,7 @@ import { Icon, PageHero, SectionHead } from './ui';
 import s from './clean.module.css';
 import f from './jobs.module.css';
 import p from './partners.module.css';
+import { SmartLink } from './link';
 
 type Item = { title: string; body: string };
 type Model = { title: string; body: string; for: string };
@@ -746,7 +747,7 @@ function PartnerForm({ type, onType }: { type: PartnershipType; onType: (v: Part
         <input id="pt-consent" name="consent" type="checkbox" value="true" required />
         <label htmlFor="pt-consent">
           {t.consent}{' '}
-          <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">{t.privacy}</a>.
+          <SmartLink href="/privacy-policy" target="_blank" rel="noopener noreferrer">{t.privacy}</SmartLink>.
         </label>
       </div>
 

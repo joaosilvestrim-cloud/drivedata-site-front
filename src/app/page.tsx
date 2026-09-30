@@ -5,7 +5,7 @@ import { SITE_BASE_URL } from '@/common/config/site';
 import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
 import type { TargetAudienceProfileModel } from '@/common/model/target-audience-profile.model';
 import { hreflang } from '@/common/seo';
-import { getProfiles } from '@/server/content-db';
+import { cachedProfiles } from '@/server/site-cache';
 
 // Título e descrição vêm do layout raiz (por idioma). Aqui só o canonical, que o
 // layout não define mais para não vazar a home para as outras páginas.
@@ -17,7 +17,7 @@ export default async function Home() {
   let profiles: TargetAudienceProfileModel[] = [];
   const lang = await getLanguageSafeAsync();
   try {
-    profiles = (await getProfiles(lang)) as TargetAudienceProfileModel[];
+    profiles = (await cachedProfiles(lang)) as TargetAudienceProfileModel[];
   } catch (error) {
     console.error(error);
   }

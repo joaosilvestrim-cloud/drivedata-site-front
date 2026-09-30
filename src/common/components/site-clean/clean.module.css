@@ -137,7 +137,7 @@
 .headerScrolled { box-shadow: 0 1px 0 var(--line); }
 .headerInner { display: flex; align-items: center; gap: 24px; height: 76px; }
 .logo { flex-shrink: 0; }
-.logo img { height: 28px; width: auto; }
+.logo img { height: 40px; width: auto; }
 
 .nav {
   display: flex;
@@ -209,6 +209,7 @@
   z-index: 0;
 }
 .stage img { position: relative; z-index: 1; width: clamp(220px, 27vw, 340px); height: auto; margin: 0 auto; }
+.orb { position: relative; z-index: 1; display: block; width: min(92vw, 560px); aspect-ratio: 1 / 0.86; margin: -12px auto 0; touch-action: pan-y; }
 
 /* ─────────── Clientes ─────────── */
 .proofBand { background: var(--fog); }
@@ -435,6 +436,43 @@
   transition: opacity 0.2s ease, filter 0.2s ease;
 }
 .marqueeTrack img:hover { opacity: 1; filter: none; }
+/* Parede de clientes: plaquinhas brancas com o logo colorido, duas fileiras em
+   sentidos opostos. A plaquinha é branca nos dois temas (logo de marca pede fundo claro). */
+.wall {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.wallRow { overflow: hidden; }
+.wallTrack {
+  --gap: 16px;
+  display: flex;
+  gap: var(--gap);
+  width: max-content;
+  animation: marquee 60s linear infinite;
+}
+.wallReverse { animation-direction: reverse; }
+.wall:hover .wallTrack, .wall:focus-within .wallTrack { animation-play-state: paused; }
+.wallTile {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 188px;
+  height: 96px;
+  padding: 18px 24px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.wallTile:hover { transform: translateY(-3px); box-shadow: inset 0 0 0 1px var(--line), 0 10px 24px rgba(10, 22, 40, 0.08); }
+.wallTile img { width: auto; height: auto; max-width: 100%; max-height: 52px; object-fit: contain; }
+:global(html[data-site-theme='dark']) .wallTile { box-shadow: none; }
+
 /* metade da faixa + meio espaço = exatamente uma volta, sem pulo */
 @keyframes marquee { to { transform: translateX(calc(-50% - var(--gap) / 2)); } }
 
@@ -513,6 +551,7 @@
 @media (max-width: 560px) {
   .wrap { padding: 0 16px; }
   .headerInner { height: 64px; }
+  .logo img { height: 32px; }
   .mobileMenuOpen { padding: 4px 16px 20px; }
   .actions { flex-direction: column; gap: 20px; }
   /* no topo das páginas internas o bloco de ações ocupa a linha inteira */
@@ -521,6 +560,10 @@
   .actions .btn, .mobileMenuOpen .btn { width: 100%; }
   .gains { grid-template-columns: 1fr; gap: 32px; }
   .marqueeTrack { --gap: 40px; }
+  .wall { gap: 12px; }
+  .wallTrack { --gap: 12px; }
+  .wallTile { width: 140px; height: 76px; padding: 14px 18px; border-radius: 16px; }
+  .wallTile img { max-height: 40px; }
   .marqueeTrack li { height: 36px; }
   .marqueeTrack img { max-height: 28px; max-width: 96px; }
   .card { padding: 26px; border-radius: 22px; }
@@ -543,5 +586,8 @@
   .revealReady [data-reveal] { opacity: 1; transform: none; }
   .marqueeTrack { flex-wrap: wrap; justify-content: center; width: auto; }
   .marqueeTrack li[aria-hidden] { display: none; }
+  .wallTrack { flex-wrap: wrap; justify-content: center; width: auto; }
+  .wallTrack li[aria-hidden] { display: none; }
+  .wall { -webkit-mask-image: none; mask-image: none; }
   .marquee { -webkit-mask-image: none; mask-image: none; }
 }

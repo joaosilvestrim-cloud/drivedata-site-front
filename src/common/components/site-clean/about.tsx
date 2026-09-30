@@ -13,10 +13,10 @@ import type { TestimonialModel } from '@/common/model/testimonial.model';
 import { useTypebot } from '@/common/providers/TypebotProvider';
 import { httpCreateContactRequest } from '@/modules/contact/api/create-contact-request/http-create-contact-request';
 import type { CleanArticleCard } from './articles-data';
-import { logoName, marqueeSpeed, ROUTES, stripHtml } from './content';
+import { logoName, ROUTES, stripHtml } from './content';
 import { useCopy, type Copy } from './i18n';
 import { CleanShell } from './shell';
-import { Icon, SectionHead } from './ui';
+import { Icon, LogoWall, SectionHead } from './ui';
 import s from './clean.module.css';
 import a from './about.module.css';
 
@@ -460,32 +460,12 @@ const ICON_PHONE =
 const ICON_PIN = 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0zM12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z';
 
 /* ─────────── Logos de clientes (tabela partner) ─────────── */
-// Todos os logos passam na faixa (sem "Ver mais"). A velocidade acompanha a quantidade.
+// Todos os logos do cadastro na parede de clientes (sem "Ver mais").
 function PartnerLogos({ partners }: { partners: AboutPartner[] }) {
   const t = useCopy(COPY);
   if (!partners.length) return null;
-  // Com poucos logos, repete a lista até encher a faixa.
-  const reps = Math.max(1, Math.ceil(12 / partners.length));
-  const half = Array.from({ length: reps }).flatMap(() => partners);
-  const alt = (p: AboutPartner) => p.name || logoName(p.imageUrl) || t.logoAlt;
-
-  return (
-    <div className={s.proof}>
-      <h2 className={s.proofTitle}>{t.proofTitle}</h2>
-      <div className={s.marquee}>
-        <ul className={s.marqueeTrack} style={marqueeSpeed(half.length)}>
-          {[...half, ...half].map((p, i) => {
-            const dup = i >= partners.length; // só a primeira volta é lida por leitor de tela
-            return (
-              <li key={`${p.imageUrl}-${i}`} aria-hidden={dup ? true : undefined}>
-                <img src={src(p.imageUrl)} alt={dup ? '' : alt(p)} className={a.logo} loading="lazy" />
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </div>
-  );
+  const logos = partners.map((p) => ({ src: p.imageUrl, name: p.name || logoName(p.imageUrl) || t.logoAlt }));
+  return <LogoWall title={t.proofTitle} logos={logos} />;
 }
 
 /* ─────────── Acordeão acessível ─────────── */

@@ -1,5 +1,6 @@
 import { ArticlesClean } from '@/common/components/site-clean/articles';
-import { listArticlesReadOnly, type CleanArticleCard } from '@/common/components/site-clean/articles-data';
+import type { CleanArticleCard } from '@/common/components/site-clean/articles-data';
+import { cachedArticles } from '@/server/site-cache';
 import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
 import { publishDueScheduled } from '@/server/content-db';
 import { localizedMetadata } from '@/common/seo/localized';
@@ -36,7 +37,7 @@ export default async function Page() {
   let articles: CleanArticleCard[] = [];
   let failed = false;
   try {
-    articles = await listArticlesReadOnly(lang);
+    articles = await cachedArticles(lang);
   } catch (error) {
     console.error(error);
     failed = true;

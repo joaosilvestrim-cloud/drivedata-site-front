@@ -9,6 +9,7 @@ import { useTypebot } from '@/common/providers/TypebotProvider';
 import { ACADEMY, ROUTES, ext, footer, nav, type NavKey } from './content';
 import { useLang, type Copy } from './i18n';
 import s from './clean.module.css';
+import { SmartLink } from './link';
 
 const PT = {
   skip: 'Pular para o conteúdo',
@@ -124,17 +125,17 @@ export function CleanShell({ children, current }: { children: ReactNode; current
       <a href="#conteudo" className={s.skip}>{t.skip}</a>
       <header className={`${s.header} ${scrolled ? s.headerScrolled : ''}`}>
         <div className={`${s.wrap} ${s.headerInner}`}>
-          <a href={ROUTES.home} className={s.logo} aria-label={t.home}>
-            <img className={s.logoLight} src="/logotipo-drivedata-ink.png" alt="DriveData" width={117} height={28} />
-            <img className={s.logoDark} src="/logotipo-drivedata.png" alt="DriveData" width={117} height={28} />
-          </a>
+          <SmartLink href={ROUTES.home} className={s.logo} aria-label={t.home}>
+            <img className={s.logoLight} src="/logotipo-drivedata-ink.webp" alt="DriveData" width={168} height={40} fetchPriority="high" />
+            <img className={s.logoDark} src="/logotipo-drivedata.webp" alt="DriveData" width={168} height={40} loading="lazy" />
+          </SmartLink>
           <nav className={s.nav} aria-label={t.mainNav}>
             {NAV.map((n) => (
-              <a key={n.href} href={n.href} className={s.navLink} aria-current={current === n.key ? 'page' : undefined}>{n.label}</a>
+              <SmartLink key={n.href} href={n.href} className={s.navLink} aria-current={current === n.key ? 'page' : undefined}>{n.label}</SmartLink>
             ))}
           </nav>
           <div className={s.headerActions}>
-            <a href={ACADEMY} className={s.textNav} {...ext(ACADEMY)}>Academy</a>
+            <SmartLink href={ACADEMY} className={s.textNav} {...ext(ACADEMY)}>Academy</SmartLink>
             <button type="button" className={`${s.btn} ${s.btnOutline} ${s.btnSm}`} onClick={contact}>{t.talk}</button>
           </div>
           <button type="button" className={s.menuBtn} aria-expanded={menuOpen} aria-controls="menu-mobile"
@@ -145,8 +146,8 @@ export function CleanShell({ children, current }: { children: ReactNode; current
           </button>
         </div>
         <nav id="menu-mobile" aria-label={t.menu} className={`${s.mobileMenu} ${menuOpen ? s.mobileMenuOpen : ''}`} hidden={!menuOpen}>
-          {NAV.map((n) => <a key={n.href} href={n.href} onClick={() => setMenuOpen(false)}>{n.label}</a>)}
-          <a href={ACADEMY} {...ext(ACADEMY)}>Academy</a>
+          {NAV.map((n) => <SmartLink key={n.href} href={n.href} onClick={() => setMenuOpen(false)}>{n.label}</SmartLink>)}
+          <SmartLink href={ACADEMY} {...ext(ACADEMY)}>Academy</SmartLink>
           <button type="button" className={s.btn} onClick={contact}>{t.talk}</button>
         </nav>
       </header>
@@ -157,20 +158,20 @@ export function CleanShell({ children, current }: { children: ReactNode; current
         <div className={s.wrap}>
           <div className={s.footerTop}>
             <div className={s.footerBrand}>
-              <img src="/logotipo-drivedata.png" alt="DriveData" width={134} height={32} />
+              <img src="/logotipo-drivedata.webp" alt="DriveData" width={150} height={36} loading="lazy" />
               <p>{t.tagline}</p>
               <span className={s.partner}><img src="/microsoftPartner.png" alt="Microsoft Partner" width={92} height={26} /></span>
             </div>
             {FOOTER.map((col) => (
               <nav key={col.title} className={s.footerCol} aria-label={col.title}>
                 <h2>{col.title}</h2>
-                <ul>{col.links.map((l) => <li key={l.href}><a href={l.href} {...ext(l.href)}>{l.label}</a></li>)}</ul>
+                <ul>{col.links.map((l) => <li key={l.href}><SmartLink href={l.href} {...ext(l.href)}>{l.label}</SmartLink></li>)}</ul>
               </nav>
             ))}
           </div>
           <div className={s.footerBottom}>
             <span>© {new Date().getFullYear()} DriveData</span>
-            <a href="/privacy-policy">{t.privacy}</a>
+            <SmartLink href="/privacy-policy">{t.privacy}</SmartLink>
             <button type="button" onClick={() => CookieConsent.showPreferences()}>{t.cookies}</button>
           </div>
         </div>

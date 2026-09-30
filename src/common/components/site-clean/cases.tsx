@@ -6,13 +6,14 @@
 // do ambiente local. Textos da interface em pt, en, es e fr (COPY); os textos de
 // cada case vêm localizados em cases-data.ts e são lidos com `campo[lang]`.
 import { useMemo, useState } from 'react';
-import { ROUTES } from './content';
+import { ROUTES, optLogo } from './content';
 import type { CaseQuote, CaseTerm, CaseType, ClientCase, QuickCase } from './cases-data';
 import { useCopy, useLang, type Copy, type Lang } from './i18n';
 import { CleanShell, ContactButton } from './shell';
 import { PageHero, SectionHead } from './ui';
 import s from './clean.module.css';
 import c from './cases.module.css';
+import { SmartLink } from './link';
 
 const PT = {
   heroTitle: 'Projetos reais, do dado à decisão.',
@@ -176,7 +177,7 @@ function Brand({ item, big }: { item: ClientCase; big?: boolean }) {
   if (item.logo) {
     return (
       <div className={`${c.brand} ${big ? c.detailBrand : ''}`}>
-        <img src={encodeURI(item.logo.src)} alt={item.client} style={{ height: Math.min(big ? 76 : 56, item.logo.h * (big ? 1.9 : 1.35)) }} loading="lazy" />
+        <img src={encodeURI(optLogo(item.logo.src))} alt={item.client} style={{ height: Math.min(big ? 76 : 56, item.logo.h * (big ? 1.9 : 1.35)) }} loading="lazy" />
       </div>
     );
   }
@@ -204,7 +205,7 @@ export function CaseCard({ item }: { item: ClientCase }) {
   const lang = useLang();
   const t = COPY[lang];
   return (
-    <a href={caseHref(item)} className={c.caseCard}>
+    <SmartLink href={caseHref(item)} className={c.caseCard}>
       <Brand item={item} />
       <h3 className={c.caseTitle}>{item.title[lang]}</h3>
       <p className={s.muted}>{item.summary[lang]}</p>
@@ -215,7 +216,7 @@ export function CaseCard({ item }: { item: ClientCase }) {
         </ul>
         <span className={c.more}>{t.readCase} <span className={s.arrow} aria-hidden="true">→</span></span>
       </div>
-    </a>
+    </SmartLink>
   );
 }
 
@@ -241,7 +242,7 @@ function Cta({ title, text }: { title: string; text: string }) {
             <p>{text}</p>
             <div className={s.ctaButtons}>
               <ContactButton>{t.ctaButton}</ContactButton>
-              <a href={ROUTES.cases} className={s.link}>{t.seeAllCases}</a>
+              <SmartLink href={ROUTES.cases} className={s.link}>{t.seeAllCases}</SmartLink>
             </div>
           </div>
         </div>
@@ -296,7 +297,7 @@ export function CasesClean({ cases, quick, types }: { cases: ClientCase[]; quick
                 <li key={q.client}>
                   <span className={c.quickBrand}>
                     {q.logo
-                      ? <img src={encodeURI(q.logo.src)} alt={q.client} style={{ height: q.logo.h }} loading="lazy" />
+                      ? <img src={encodeURI(optLogo(q.logo.src))} alt={q.client} style={{ height: q.logo.h }} loading="lazy" />
                       : <span className={c.wordmark}>{q.client}</span>}
                     <span className={c.quickSector}>{q.sector[lang]}</span>
                   </span>
@@ -335,7 +336,7 @@ export function CaseDetailClean({ item, related }: { item: ClientCase; related: 
     <CleanShell current="cases">
       <section className={c.detailHero} aria-labelledby="page-titulo">
         <div className={s.wrap}>
-          <a href={ROUTES.cases} className={c.back}><span aria-hidden="true">←</span> {t.back}</a>
+          <SmartLink href={ROUTES.cases} className={c.back}><span aria-hidden="true">←</span> {t.back}</SmartLink>
           <div className={c.detailHead}>
             <div>
               <h1 id="page-titulo" className={c.detailTitle}>{item.title[lang]}</h1>
@@ -421,7 +422,7 @@ export function CasesTeaser({ cases }: { cases: ClientCase[] }) {
     <section id="cases" className={s.band} aria-labelledby="cases-titulo">
       <div className={`${s.wrap} ${c.onPaper}`}>
         <SectionHead id="cases-titulo" title={t.teaserTitle}>
-          {t.teaserLead} <a href={ROUTES.cases} className={s.link}>{t.seeAll}</a>
+          {t.teaserLead} <SmartLink href={ROUTES.cases} className={s.link}>{t.seeAll}</SmartLink>
         </SectionHead>
         <ul className={`${c.grid} ${c.grid3}`}>
           {cases.map((x, i) => (

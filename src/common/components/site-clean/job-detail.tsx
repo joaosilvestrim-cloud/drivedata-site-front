@@ -13,6 +13,7 @@ import { Icon } from './ui';
 import { JobTags } from './jobs';
 import s from './clean.module.css';
 import j from './jobs.module.css';
+import { SmartLink } from './link';
 
 // As mensagens de erro guardadas no estado são sempre as em português (as mesmas que
 // o servidor devolve). Na tela, cada uma é trocada pela versão do idioma atual.
@@ -260,14 +261,14 @@ export function JobDetailClean({ job, canonical }: { job: JobModel; canonical: s
     <CleanShell current="jobs">
       <section className={j.detailHero} aria-labelledby="vaga-titulo">
         <div className={s.wrap}>
-          <a href={ROUTES.jobs} className={`${s.link} ${j.back}`}><span aria-hidden="true">←</span> {t.back}</a>
+          <SmartLink href={ROUTES.jobs} className={`${s.link} ${j.back}`}><span aria-hidden="true">←</span> {t.back}</SmartLink>
           <h1 id="vaga-titulo" className={j.detailTitle}>{job.title}</h1>
           <JobTags job={job} />
           <div className={j.detailActions}>
             <a href="#candidatura" className={s.btn}>{t.apply}</a>
-            <a href={shareUrl} className={j.shareBtn} target="_blank" rel="noopener noreferrer">
+            <SmartLink href={shareUrl} className={j.shareBtn} target="_blank" rel="noopener noreferrer">
               <LinkedInIcon /> {t.shareLinkedin}
-            </a>
+            </SmartLink>
             <button type="button" className={j.shareBtn} onClick={copy}>
               <LinkIcon /> {copied ? t.copied : t.copyLink}
             </button>
@@ -341,9 +342,9 @@ function ApplyForm({ job }: { job: JobModel }) {
       <div className={j.done}>
         <h2 id="candidatura-titulo" className={j.panelTitle}>{t.apply}</h2>
         <p>{t.errors.external}</p>
-        <a href={job.applyUrl} className={s.btn} target="_blank" rel="noopener noreferrer">
+        <SmartLink href={job.applyUrl} className={s.btn} target="_blank" rel="noopener noreferrer">
           {t.externalApply} <span aria-hidden="true">&nbsp;↗</span>
-        </a>
+        </SmartLink>
       </div>
     );
   }
@@ -463,7 +464,7 @@ function ApplyForm({ job }: { job: JobModel }) {
         <input id="ap-consent" name="consent" type="checkbox" value="true" required />
         <label htmlFor="ap-consent">
           {t.consent}{' '}
-          <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">{t.privacy}</a>.
+          <SmartLink href="/privacy-policy" target="_blank" rel="noopener noreferrer">{t.privacy}</SmartLink>.
         </label>
       </div>
 

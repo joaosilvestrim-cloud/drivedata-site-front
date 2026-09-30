@@ -1,10 +1,10 @@
 import { AboutClean, type AboutPartner } from '@/common/components/site-clean/about';
-import { listArticlesReadOnly, type CleanArticleCard } from '@/common/components/site-clean/articles-data';
+import type { CleanArticleCard } from '@/common/components/site-clean/articles-data';
 import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
 import { FaqModel } from '@/common/model/faq.model';
 import { SolutionModel } from '@/common/model/solution.model';
 import { TestimonialModel } from '@/common/model/testimonial.model';
-import { getFaqs, getPartners, getSolutions, getTestimonials } from '@/server/content-db';
+import { cachedArticles, cachedFaqs, cachedPartners, cachedSolutions, cachedTestimonials } from '@/server/site-cache';
 import { SITE_BASE_URL, SITE_COUNTRY } from '@/common/config/site';
 import { localizedMetadata } from '@/common/seo/localized';
 
@@ -41,14 +41,14 @@ export default async function About() {
   // navegação até tudo carregar. Com Promise.all o tempo cai para o da consulta
   // mais lenta. Cada uma degrada para lista vazia se falhar.
   const [solutions, testimonials, articles, faqs, partners] = await Promise.all([
-    getSolutions(lang).then(r => r as SolutionModel[]).catch(() => [] as SolutionModel[]),
-    getTestimonials(lang).then(r => r as TestimonialModel[]).catch(() => [] as TestimonialModel[]),
-    listArticlesReadOnly(lang).then(r => r.slice(0, 3)).catch(() => [] as CleanArticleCard[]),
-    getFaqs(lang).then(r => r as FaqModel[]).catch(() => [] as FaqModel[]),
+    cachedSolutions(lang).then(r => r as SolutionModel[]).catch(() => [] as SolutionModel[]),
+    cachedTestimonials(lang).then(r => r as TestimonialModel[]).catch(() => [] as TestimonialModel[]),
+    cachedArticles(lang).then(r => r.slice(0, 3)).catch(() => [] as CleanArticleCard[]),
+    cachedFaqs(lang).then(r => r as FaqModel[]).catch(() => [] as FaqModel[]),
     // Logos do carrossel: vêm do servidor já filtrados por país. Antes a seção
     // buscava sozinha no cliente e, com a hidratação quebrada, o efeito nunca
     // rodava: a página ficava presa na lista de reserva do código.
-    getPartners().then(r => r.map((p): AboutPartner => ({ imageUrl: p.imageUrl as string, name: p.name, featured: p.featured })))
+    cachedPartners().then(r => r.map((p): AboutPartner => ({ imageUrl: p.imageUrl as string, name: p.name, featured: p.featured })))
       .catch(() => [] as AboutPartner[]),
   ]);
 

@@ -12,6 +12,7 @@ import { CleanShell, ContactButton } from './shell';
 import { PageHero } from './ui';
 import s from './clean.module.css';
 import a from './articles.module.css';
+import { SmartLink } from './link';
 
 const PT = {
   heroTitle: 'Dados, BI e IA na prática.',
@@ -134,7 +135,7 @@ export function ArticleCard({ article, headingLevel = 3 }: { article: CleanArtic
   const H = headingLevel === 2 ? 'h2' : 'h3';
   const hasDate = Boolean(article.date || article.dateIso);
   return (
-    <a href={article.href} className={a.card}>
+    <SmartLink href={article.href} className={a.card}>
       <ArticleCover src={article.imageUrl} alt={article.title} />
       <div className={a.cardBody}>
         {(article.categoryName || hasDate) && (
@@ -146,7 +147,7 @@ export function ArticleCard({ article, headingLevel = 3 }: { article: CleanArtic
         <H className={a.cardTitle}>{article.title}</H>
         {article.excerpt && <p className={a.cardExcerpt}>{article.excerpt}</p>}
       </div>
-    </a>
+    </SmartLink>
   );
 }
 
@@ -163,7 +164,7 @@ export function ArticlesCta({ title, text, link }: { title: string; text: string
             <p>{text}</p>
             <div className={s.ctaButtons}>
               <ContactButton>{t.talk}</ContactButton>
-              {link && <a href={link.href} className={s.link}>{link.label}</a>}
+              {link && <SmartLink href={link.href} className={s.link}>{link.label}</SmartLink>}
             </div>
           </div>
         </div>
@@ -233,7 +234,7 @@ export function ArticlesClean({ articles, failed = false }: { articles: CleanArt
               </div>
 
               {featured && (
-                <a href={featured.href} className={a.featured}>
+                <SmartLink href={featured.href} className={a.featured}>
                   <ArticleCover src={featured.imageUrl} alt={featured.title} eager className={a.featuredCover} />
                   <div className={a.featuredBody}>
                     {(featured.categoryName || featured.date || featured.dateIso) && (
@@ -248,7 +249,7 @@ export function ArticlesClean({ articles, failed = false }: { articles: CleanArt
                       {t.readArticle} <span className={a.arrow} aria-hidden="true">→</span>
                     </span>
                   </div>
-                </a>
+                </SmartLink>
               )}
 
               {shown.length > 0 && (

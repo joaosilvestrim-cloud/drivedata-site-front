@@ -123,6 +123,19 @@ export const LOGOS = [
   { src: '/clientes/image 28021.svg', name: 'Logo de cliente', h: 38 },
 ];
 
+/**
+ * Versão leve do logo: os SVGs originais pesam até 400 KB (alguns trazem imagem
+ * embutida). public/clientes/opt tem cada um em WebP com 120 px de altura
+ * (2x o maior tamanho exibido). Arquivo fora da lista segue como está.
+ */
+const OPT_SKIP = new Set(['baldan']); // original já é pequeno; ampliar só borraria
+export const optLogo = (src: string): string => {
+  const m = src.match(/^\/(?:clientes\/)?([^/]+)\.(svg|png|webp)$/i);
+  if (!m || !(src.startsWith('/clientes/') || src === '/PepsiCo_logo.svg')) return src;
+  const name = m[1].toLowerCase().replace(/ /g, '-');
+  return OPT_SKIP.has(name) ? src : `/clientes/opt/${name}.webp`;
+};
+
 /** Nome do cliente pelo arquivo do logo (a tabela partner quase nunca tem nome). */
 export const logoName = (src: string) => LOGOS.find((l) => l.src === src)?.name ?? null;
 /** A faixa anda na mesma velocidade qualquer que seja o número de logos. */

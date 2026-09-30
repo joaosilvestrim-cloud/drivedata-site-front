@@ -9,6 +9,7 @@ import { CleanShell, ContactButton } from './shell';
 import { Icon } from './ui';
 import s from './clean.module.css';
 import d from './dalt.module.css';
+import { SmartLink } from './link';
 
 type Service = { title: string; items: string[] };
 type Case = { title: string; text: string };
@@ -388,7 +389,7 @@ export function DaltClean() {
               <p>{t.ctaText}</p>
               <div className={s.ctaButtons}>
                 <ContactButton>{t.ctaButton}</ContactButton>
-                <a href={ROUTES.about} className={s.link}>{t.aboutLink}</a>
+                <SmartLink href={ROUTES.about} className={s.link}>{t.aboutLink}</SmartLink>
               </div>
             </div>
           </div>

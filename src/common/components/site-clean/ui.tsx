@@ -2,7 +2,7 @@
 
 // Peças reutilizáveis do site "clean".
 import type { ReactNode } from 'react';
-import { LOGOS, marqueeSpeed } from './content';
+import { LOGOS, marqueeSpeed, optLogo } from './content';
 import s from './clean.module.css';
 
 export const Icon = ({ d }: { d: string }) => (
@@ -11,19 +11,35 @@ export const Icon = ({ d }: { d: string }) => (
   </svg>
 );
 
-/** Faixa contínua de logos de clientes. Pausa no hover/foco; parada com movimento reduzido. */
-export function LogoMarquee({ title }: { title: string }) {
+export type WallLogo = { src: string; name: string };
+
+/**
+ * Parede de clientes: logos coloridos em plaquinhas brancas, em duas fileiras que
+ * andam em sentidos opostos. Pausa no hover/foco; com movimento reduzido fica
+ * parada e mostra tudo. As cópias que fecham o laço ficam fora do leitor de tela.
+ */
+export function LogoWall({ title, logos = LOGOS }: { title: string; logos?: WallLogo[] }) {
+  const rows = [logos.filter((_, i) => i % 2 === 0), logos.filter((_, i) => i % 2 === 1)].filter((r) => r.length);
   return (
     <div className={s.proof}>
       <h2 className={s.proofTitle}>{title}</h2>
-      <div className={s.marquee}>
-        <ul className={s.marqueeTrack} style={marqueeSpeed(LOGOS.length)}>
-          {[...LOGOS, ...LOGOS].map((l, i) => (
-            <li key={`${l.name}-${i}`} aria-hidden={i >= LOGOS.length ? true : undefined}>
-              <img src={encodeURI(l.src)} alt={i >= LOGOS.length ? '' : l.name} loading="lazy" style={{ height: l.h }} />
-            </li>
-          ))}
-        </ul>
+      <div className={s.wall}>
+        {rows.map((row, r) => {
+          // fileira curta repete até cobrir a tela; depois dobra para o laço
+          const reps = Math.max(1, Math.ceil(10 / row.length));
+          const lap = Array.from({ length: reps }).flatMap(() => row);
+          return (
+            <div key={r} className={s.wallRow}>
+              <ul className={`${s.wallTrack} ${r % 2 ? s.wallReverse : ''}`} style={marqueeSpeed(lap.length * 1.2)}>
+                {[...lap, ...lap].map((l, i) => (
+                  <li key={`${l.src}-${i}`} className={s.wallTile} aria-hidden={i >= row.length ? true : undefined}>
+                    <img src={encodeURI(optLogo(l.src))} alt={i >= row.length ? '' : l.name} loading="lazy" decoding="async" />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
