@@ -494,9 +494,9 @@
 /* ─────────── Do caos à decisão (cena 3D) ─────────── */
 .horizon { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px 64px; align-items: center; }
 .horizonText { display: flex; flex-direction: column; gap: 24px; }
-.scene { display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: 28px; background: var(--fog); }
+.scene { display: flex; flex-direction: column; gap: 16px; padding: 24px 24px 22px; border-radius: 28px; background: var(--paper); }
 .sceneTop { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 20px; }
-.stageTabs { display: inline-flex; padding: 4px; gap: 2px; border-radius: 9999px; background: var(--paper); }
+.stageTabs { display: inline-flex; padding: 4px; gap: 2px; border-radius: 9999px; background: var(--fog); }
 .stageTabs button {
   padding: 9px 16px;
   border: 0;
@@ -514,7 +514,15 @@
 .sceneLegend i { width: 10px; height: 10px; border-radius: 2px; }
 .legendFuture { box-shadow: inset 0 0 0 1.5px #15803d; background: rgba(84, 218, 137, 0.22); }
 .legendOff { opacity: 0.35; }
-.sceneCanvas { display: block; width: 100%; aspect-ratio: 1 / 0.6; cursor: grab; touch-action: pan-y; }
+.sceneStage { position: relative; }
+.sceneCanvas { display: block; width: 100%; aspect-ratio: 1 / 0.62; cursor: grab; touch-action: pan-y; }
+/* leitura em destaque sobre o gráfico: um número só, ou o valor previsto */
+.sceneReadout { position: absolute; top: 4px; left: 4px; display: flex; flex-direction: column; gap: 6px; pointer-events: none; transition: opacity 0.35s ease, transform 0.35s ease; }
+.sceneReadout span { color: var(--slate); font: 500 13px/1.2 var(--text); }
+.sceneReadout strong { color: var(--ink); font: 800 clamp(26px, 2.6vw, 34px)/1 var(--display); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.sceneReadoutFuture strong { color: #15803d; }
+:global(html[data-site-theme='dark']) .sceneReadoutFuture strong { color: var(--green); }
+.sceneReadoutOff { opacity: 0; transform: translateY(6px); }
 .sceneCanvas:active { cursor: grabbing; }
 .sceneFoot { display: flex; flex-direction: column; gap: 10px; }
 .sceneText { min-height: 3.2em; color: var(--body); font-size: 16px; line-height: 1.6; }
@@ -522,7 +530,17 @@
 .timeDim { opacity: 0.55; }
 .timeLabel { flex-shrink: 0; min-width: 150px; color: var(--slate); font: 500 14px/1 var(--text); }
 .timeLabel strong { color: var(--ink); font-weight: 700; }
-.timeControl input[type='range'] { flex: 1; accent-color: var(--ink); height: 28px; cursor: pointer; }
+/* régua do horizonte: trilho fino, parte percorrida em azul-marinho */
+.timeControl input[type='range'] { flex: 1; height: 28px; margin: 0; background: transparent; cursor: pointer; appearance: none; -webkit-appearance: none; }
+.timeControl input[type='range']::-webkit-slider-runnable-track { height: 4px; border-radius: 9999px; background: linear-gradient(to right, var(--ink) var(--pct, 0%), var(--line) var(--pct, 0%)); }
+.timeControl input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -8px; border-radius: 9999px; background: var(--paper); box-shadow: inset 0 0 0 2px var(--ink); transition: transform 0.15s ease; }
+.timeControl input[type='range']:active::-webkit-slider-thumb { transform: scale(1.12); }
+.timeControl input[type='range']::-moz-range-track { height: 4px; border-radius: 9999px; background: var(--line); }
+.timeControl input[type='range']::-moz-range-progress { height: 4px; border-radius: 9999px; background: var(--ink); }
+.timeControl input[type='range']::-moz-range-thumb { width: 16px; height: 16px; border: 2px solid var(--ink); border-radius: 9999px; background: var(--paper); }
+.timeControl input[type='range']:focus { outline: none; }
+.timeControl input[type='range']:focus-visible::-webkit-slider-thumb { box-shadow: inset 0 0 0 2px var(--ink), 0 0 0 4px rgba(10, 114, 196, 0.35); }
+.timeControl input[type='range']:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px rgba(10, 114, 196, 0.35); }
 
 /* ─────────── Páginas internas ─────────── */
 .pageHero { padding: clamp(56px, 8vw, 104px) 0 clamp(48px, 6vw, 80px); }
@@ -570,6 +588,12 @@
   .pageHeroFoot .actions { margin-top: 24px; align-items: stretch; }
   .actions .btn, .mobileMenuOpen .btn { width: 100%; }
   .gains { grid-template-columns: 1fr; gap: 32px; }
+  /* cena: mais altura no celular e o número em destaque acima do gráfico */
+  .scene { padding: 18px 16px; }
+  .sceneStage { display: flex; flex-direction: column-reverse; gap: 4px; }
+  .sceneCanvas { aspect-ratio: 1 / 0.7; }
+  .sceneReadout { position: static; }
+  .sceneReadoutOff { display: none; }
   .marqueeTrack { --gap: 40px; }
   .wall { gap: 12px; }
   .wallTrack { --gap: 12px; }
