@@ -4,7 +4,8 @@
 // o tempo (a quarta dimensão): esfera de dados, o "D" da DriveData, gráfico de
 // barras, rosca, linha de tendência, banco de dados e uma superfície de dados. Gira sozinha, inclina com o ponteiro e os
 // pontos se afastam do cursor. Canvas 2D puro, sem biblioteca.
-// Pausa fora da tela e com a aba oculta; com movimento reduzido mostra o "D" parado.
+// Pausa fora da tela e com a aba oculta. Com "reduzir movimento" segue girando
+// (é a vitrine do topo), mas sem reagir ao ponteiro.
 import { useEffect, useRef } from 'react';
 import s from './clean.module.css';
 
@@ -207,7 +208,7 @@ export function Hero4D({ label }: { label: string }) {
     const counts = new Uint32Array(BUCKETS), starts = new Uint32Array(BUCKETS), order = new Uint32Array(N);
     const px = new Float32Array(N), py = new Float32Array(N), pz = new Float32Array(N);
 
-    let w = 0, h = 0, dpr = 1, raf = 0, visible = true, last = performance.now(), clock = reduce ? HOLD + MORPH + 0.5 : 0;
+    let w = 0, h = 0, dpr = 1, raf = 0, visible = true, last = performance.now(), clock = 0;
     let spin = 0, dFront = 2 * Math.PI, tiltX = 0, tiltY = 0, aimX = 0, aimY = 0;
     let mx = -9999, my = -9999, hover = 0, hoverAim = 0;
 
@@ -310,7 +311,7 @@ export function Hero4D({ label }: { label: string }) {
       draw();
       raf = visible && !document.hidden ? requestAnimationFrame(frame) : 0;
     };
-    const start = () => { if (!raf && !reduce) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+    const start = () => { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } };
 
     const onMove = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
@@ -327,9 +328,8 @@ export function Hero4D({ label }: { label: string }) {
     const frozen = /hero-freeze/.test(window.location.hash);
 
     resize();
-    if (reduce) { clock = HOLD + MORPH + 0.5; draw(); } // parado no "D"
 
-    const ro = new ResizeObserver(() => { resize(); if (reduce) draw(); });
+    const ro = new ResizeObserver(() => { resize(); draw(); });
     ro.observe(canvas);
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) start(); }, { rootMargin: '80px' });
     io.observe(canvas);

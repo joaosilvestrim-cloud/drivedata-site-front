@@ -5,7 +5,7 @@
 // O envio não muda: multipart para /api/vagas/candidatar, com os mesmos campos,
 // honeypot e aceite.
 import { useState, type ChangeEvent, type FormEvent } from 'react';
-import type { JobModel } from '@/common/model/job.model';
+import { localizeJob, type JobModel } from '@/common/model/job.model';
 import { useCopy, useLang, INTL_LOCALE, type Copy, type Lang } from './i18n';
 import { ROUTES } from './content';
 import { CleanShell } from './shell';
@@ -233,9 +233,10 @@ const lines = (v?: string | null) =>
     .map((x) => x.replace(/^[-•*]\s*/, '').trim())
     .filter(Boolean);
 
-export function JobDetailClean({ job, canonical }: { job: JobModel; canonical: string }) {
+export function JobDetailClean({ job: source, canonical }: { job: JobModel; canonical: string }) {
   const t = useCopy(COPY);
   const lang = useLang();
+  const job = localizeJob(source, lang);
   const [copied, setCopied] = useState(false);
   const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonical)}`;
   const copy = async () => {

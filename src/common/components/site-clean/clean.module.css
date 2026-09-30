@@ -616,13 +616,10 @@
 :global(html[data-site-theme='dark']) .marqueeTrack img { filter: grayscale(1) invert(1); mix-blend-mode: screen; opacity: 0.7; }
 :global(html[data-site-theme='dark']) .marqueeTrack img:hover { filter: grayscale(1) invert(1); opacity: 1; }
 
+/* Celular com "reduzir movimento" (acessibilidade ou economia de bateria): as
+   entradas e transições saem, mas as faixas de logos seguem passando devagar,
+   como a vitrine pede (pedido do cliente, 30/09/2026). */
 @media (prefers-reduced-motion: reduce) {
-  .root *, .root *::before, .root *::after { transition: none !important; animation: none !important; }
+  .root *:not(.marqueeTrack):not(.wallTrack), .root *::before, .root *::after { transition: none !important; animation: none !important; }
   .revealReady [data-reveal] { opacity: 1; transform: none; }
-  .marqueeTrack { flex-wrap: wrap; justify-content: center; width: auto; }
-  .marqueeTrack li[aria-hidden] { display: none; }
-  .wallTrack { flex-wrap: wrap; justify-content: center; width: auto; }
-  .wallTrack li[aria-hidden] { display: none; }
-  .wall { -webkit-mask-image: none; mask-image: none; }
-  .marquee { -webkit-mask-image: none; mask-image: none; }
 }

@@ -7,13 +7,16 @@ import {
   APPLICATION_STATUSES,
   CONTRACT_TYPES,
   JOB_STATUSES,
+  JOB_TRANSLATED_FIELDS,
   WORK_MODELS,
   type ApplicationStatus,
   type JobApplicationModel,
   type JobModel,
+  type JobTranslations,
 } from '@/common/model/job.model';
 import { slugify } from './content-admin';
-import { getPool } from './content-db';
+import { getPool, logError } from './content-db';
+import { hasTranslationProvider, translateText } from './translate';
 
 const iso = (v: unknown) => (v ? new Date(v as string).toISOString() : null);
 
@@ -38,6 +41,7 @@ function mapJob(r: any): JobModel {
     closesAt: iso(r.closes_at),
     createdAt: iso(r.created_at)!,
     updatedAt: iso(r.updated_at)!,
+    translations: (r.translations ?? {}) as JobTranslations,
     applications: r.applications != null ? Number(r.applications) : undefined,
   };
 }
@@ -169,6 +173,36 @@ export async function updateJob(id: string, body: Record<string, unknown>): Prom
   const row = await getPool().query(sql, params).then((r) => r.rows[0]);
   if (!row) throw new Error('vaga não encontrada');
   return row;
+}
+
+// ───────── tradução ─────────
+
+/** Algum texto traduzível veio no payload? (salvar só o status não retraduz) */
+export const touchesJobText = (body: Record<string, unknown>) => JOB_TRANSLATED_FIELDS.some((f) => f in body);
+
+/**
+ * Traduz os textos da vaga (escritos em português) para EN, ES e FR e grava em
+ * job.translations. Roda depois da resposta do admin (after); se falhar, só
+ * registra no log de erros e a vaga continua no ar em português.
+ */
+export async function translateJob(id: string): Promise<void> {
+  if (!hasTranslationProvider()) return;
+  try {
+    const row = await getPool().query(`select * from job where id = $1`, [id]).then((r) => r.rows[0]);
+    if (!row) return;
+    const out: JobTranslations = {};
+    await Promise.all((['en', 'es', 'fr'] as const).map(async (to) => {
+      const fields: Partial<Record<(typeof JOB_TRANSLATED_FIELDS)[number], string>> = {};
+      for (const f of JOB_TRANSLATED_FIELDS) {
+        const src = row[f] as string | null;
+        if (src && src.trim()) fields[f] = await translateText(src, 'pt', to);
+      }
+      out[to] = fields;
+    }));
+    await getPool().query(`update job set translations = $1 where id = $2`, [JSON.stringify(out), id]);
+  } catch (e) {
+    await logError({ source: 'jobs/translate', message: (e as Error).message, stack: (e as Error).stack }).catch(() => {});
+  }
 }
 
 export async function removeJob(id: string): Promise<{ ok: true }> {

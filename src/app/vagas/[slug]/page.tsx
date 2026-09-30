@@ -1,6 +1,8 @@
 import { JobDetailClean } from '@/common/components/site-clean/job-detail';
 import { SITE_BASE_URL } from '@/common/config/site';
 import { getOpenJobBySlug } from '@/server/jobs';
+import { localizeJob } from '@/common/model/job.model';
+import { getLanguageSafeAsync } from '@/common/helpers/get-language-server';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -10,9 +12,12 @@ const plain = (s?: string | null) => (s || '').replace(/<[^>]*>/g, ' ').replace(
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const job = await getOpenJobBySlug(slug).catch(() => null);
-  if (!job) return { title: 'Vaga · DriveData', robots: { index: false } };
-  const title = `${job.title} · Vagas DriveData`;
+  const found = await getOpenJobBySlug(slug).catch(() => null);
+  if (!found) return { title: 'Vaga · DriveData', robots: { index: false } };
+  // título e resumo no idioma da visita (inglês no .ca), com a tradução gravada
+  const lang = await getLanguageSafeAsync();
+  const job = localizeJob(found, lang);
+  const title = `${job.title} · ${{ pt: 'Vagas', en: 'Careers', es: 'Empleos', fr: 'Carrières' }[lang] ?? 'Vagas'} DriveData`;
   const description = (job.summary || plain(job.description)).slice(0, 160);
   const canonical = `${SITE_BASE_URL}/vagas/${job.slug}`;
   // A imagem do card (og:image) vem do opengraph-image.tsx desta rota.

@@ -7,7 +7,8 @@
 // dimensão é o tempo; a régua estende os próximos meses com linha de tendência
 // e faixa de incerteza. Arrastar gira a cena.
 // Toca sozinha em ciclo até a pessoa interagir. Pausa fora da tela e com a aba
-// oculta; com movimento reduzido mostra o estado final de cada etapa, parado.
+// oculta. Anima também com "reduzir movimento" ligado: é a vitrine da home e
+// muitos celulares ligam essa opção só pela economia de bateria.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { INTL_LOCALE, useLang, type Copy } from './i18n';
 import { useSiteTheme } from './theme';
@@ -200,7 +201,7 @@ export function DataScene() {
 
   // ciclo automático até a pessoa mexer
   useEffect(() => {
-    if (touched || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (touched) return;
     const id = window.setInterval(() => {
       setStage((cur) => STAGE_IDS[(STAGE_IDS.indexOf(cur) + 1) % STAGE_IDS.length]);
     }, 4600);
@@ -210,7 +211,6 @@ export function DataScene() {
   useEffect(() => {
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext('2d')!;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const blocks = buildBlocks();
     // progresso animado de cada estado (0..1), perseguindo o alvo
     let toBar = 0, showFuture = 0, futureCount = 0;
@@ -431,17 +431,15 @@ export function DataScene() {
       step(dt); draw();
       raf = visible && !document.hidden ? requestAnimationFrame(loop) : 0;
     };
-    const start = () => { if (!raf && !reduce) { last = performance.now(); raf = requestAnimationFrame(loop); } };
+    const start = () => { if (!raf) { last = performance.now(); raf = requestAnimationFrame(loop); } };
 
     const onDown = (e: PointerEvent) => { drag = { x: e.clientX, yaw: targetYaw }; userYaw = true; canvas.setPointerCapture(e.pointerId); setTouched(true); };
     const onMove = (e: PointerEvent) => {
       if (!drag) return;
       targetYaw = drag.yaw + (e.clientX - drag.x) * 0.01;
-      if (reduce) { yaw = targetYaw; draw(); }
     };
     const onUp = () => { drag = null; };
 
-    if (reduce) { toBar = 1; }
     size(); draw();
     const ro = new ResizeObserver(() => { size(); draw(); }); ro.observe(canvas);
     const io = new IntersectionObserver(([en]) => { visible = en.isIntersecting; if (visible) start(); }, { threshold: 0.05 });
@@ -452,12 +450,6 @@ export function DataScene() {
     canvas.addEventListener('pointermove', onMove);
     canvas.addEventListener('pointerup', onUp);
     canvas.addEventListener('pointercancel', onUp);
-    // movimento reduzido: sem laço; redesenha o estado final quando algo muda
-    (canvas as HTMLCanvasElement & { __snap?: () => void }).__snap = () => {
-      const { stage: st, horizon: hz } = live.current;
-      toBar = st === 'caos' ? 0 : 1; showFuture = st === 'previsao' ? 1 : 0; futureCount = st === 'previsao' ? hz : 0;
-      draw();
-    };
     start();
     return () => {
       cancelAnimationFrame(raf); ro.disconnect(); io.disconnect();
@@ -466,12 +458,6 @@ export function DataScene() {
       canvas.removeEventListener('pointerup', onUp); canvas.removeEventListener('pointercancel', onUp);
     };
   }, []);
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      (canvasRef.current as (HTMLCanvasElement & { __snap?: () => void }) | null)?.__snap?.();
-    }
-  }, [stage, horizon, lang, theme]);
 
   const current = t.stages[stage];
   const sources = ['ERP', 'CRM', t.sheets];

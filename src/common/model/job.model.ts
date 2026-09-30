@@ -35,8 +35,27 @@ export interface JobModel {
   closesAt: string | null;
   createdAt: string;
   updatedAt: string;
+  /** Traduções dos textos da vaga (preenchidas pelo servidor ao salvar). */
+  translations?: JobTranslations;
   /** Só na listagem do admin. */
   applications?: number;
+}
+
+// Textos da vaga que ganham tradução automática (EN, ES, FR). Os códigos
+// (modelo, contrato) já têm rótulo. A senioridade também é traduzida, mas o site
+// prefere o dicionário dele para os valores conhecidos (Júnior, Pleno, Sênior...).
+export const JOB_TEXT_FIELDS = ['title', 'area', 'location', 'summary', 'description', 'requirements', 'benefits'] as const;
+export const JOB_TRANSLATED_FIELDS = [...JOB_TEXT_FIELDS, 'seniority'] as const;
+export type JobTextField = (typeof JOB_TRANSLATED_FIELDS)[number];
+export type JobTranslations = Partial<Record<'en' | 'es' | 'fr', Partial<Record<JobTextField, string>>>>;
+
+/** A vaga no idioma pedido: usa a tradução quando existe, senão o português. */
+export function localizeJob(job: JobModel, lang: string): JobModel {
+  const tr = lang === 'pt' ? undefined : job.translations?.[lang as 'en' | 'es' | 'fr'];
+  if (!tr) return job;
+  const out: JobModel = { ...job };
+  for (const f of JOB_TEXT_FIELDS) if (tr[f] && job[f]) out[f] = tr[f]!;
+  return out;
 }
 
 export interface JobApplicationModel {

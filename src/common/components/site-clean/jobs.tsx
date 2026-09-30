@@ -4,8 +4,8 @@
 // Textos em pt, en, es e fr; os dados da vaga (título, resumo, área...) vêm do banco
 // e não são traduzidos. Só os códigos (modelo, contrato, senioridade) ganham rótulo.
 import { useMemo, useState } from 'react';
-import { WORK_MODELS, type ContractType, type JobModel, type WorkModel } from '@/common/model/job.model';
-import { useCopy, type Copy } from './i18n';
+import { WORK_MODELS, localizeJob, type ContractType, type JobModel, type WorkModel } from '@/common/model/job.model';
+import { useCopy, useLang, type Copy } from './i18n';
 import { ROUTES } from './content';
 import { CleanShell } from './shell';
 import { PageHero } from './ui';
@@ -130,12 +130,17 @@ const norm = (v: string) => v.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCa
 /** Etiquetas de meta de uma vaga, na mesma ordem da página atual. */
 export function JobTags({ job, withArea = true }: { job: JobModel; withArea?: boolean }) {
   const t = useCopy(COPY);
+  const lang = useLang();
+  // senioridade: dicionário do site para os valores conhecidos; senão, a tradução gravada
+  const seniority = job.seniority
+    ? t.seniority[norm(job.seniority.trim())] ?? (lang === 'pt' ? undefined : job.translations?.[lang]?.seniority) ?? job.seniority
+    : null;
   const items = [
     withArea ? job.area : null,
     t.workModel[job.workModel],
     job.location,
     t.contract[job.contractType],
-    job.seniority ? t.seniority[norm(job.seniority.trim())] ?? job.seniority : null,
+    seniority,
   ].filter(Boolean) as string[];
   // Senioridade "Estagio" repete o contrato "Estágio": mostra uma vez só.
   const unique = items.filter((v, i) => items.findIndex((w) => norm(w) === norm(v)) === i);
@@ -146,8 +151,11 @@ export function JobTags({ job, withArea = true }: { job: JobModel; withArea?: bo
   );
 }
 
-export function JobsClean({ jobs }: { jobs: JobModel[] }) {
+export function JobsClean({ jobs: source }: { jobs: JobModel[] }) {
   const t = useCopy(COPY);
+  const lang = useLang();
+  // textos da vaga no idioma escolhido (tradução gravada ao salvar no admin)
+  const jobs = useMemo(() => source.map((x) => localizeJob(x, lang)), [source, lang]);
   const [area, setArea] = useState('all');
   const [model, setModel] = useState<'all' | WorkModel>('all');
 

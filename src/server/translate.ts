@@ -169,7 +169,8 @@ async function translateChunk(texts: string[], from: string, to: string): Promis
   return deeplTranslate(texts, from, to);
 }
 
-async function translateOneField(text: string, from: string, to: string): Promise<string> {
+/** Traduz um texto solto (aceita HTML), fatiando se for grande. */
+export async function translateText(text: string, from: string, to: string): Promise<string> {
   const chunks = splitHtml(text, CHUNK_BUDGET);
   if (chunks.length === 1) return (await translateChunk(chunks, from, to))[0] ?? '';
   const out: string[] = [];
@@ -183,6 +184,6 @@ export async function translateFields(fields: TranslatableFields, from: string, 
     (k) => typeof fields[k] === 'string' && (fields[k] as string).trim().length > 0,
   );
   const out: TranslatableFields = {};
-  for (const k of keys) out[k] = await translateOneField(fields[k] as string, from, to);
+  for (const k of keys) out[k] = await translateText(fields[k] as string, from, to);
   return out;
 }
