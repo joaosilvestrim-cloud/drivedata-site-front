@@ -14,9 +14,7 @@
   text-decoration: none;
   transition: background-color 0.2s ease;
 }
-.caseCard:hover { background: var(--mist); }
 .onPaper .caseCard { background: var(--fog); }
-.onPaper .caseCard:hover { background: var(--mist); }
 
 .brand { display: flex; align-items: center; height: 60px; }
 /* logo na cor original; multiply some com o fundo branco de alguns arquivos */
@@ -40,7 +38,8 @@
   font: 600 13px/1 var(--text);
 }
 .caseCard .tag { background: var(--fog); }
-.onPaper .caseCard .tag, .caseCard:hover .tag { background: var(--paper); }
+.onPaper .caseCard .tag { background: var(--paper); }
+.stack { color: var(--slate); font-size: 13.5px; }
 .more {
   color: var(--ink);
   font: 600 16px/1 var(--text);
@@ -75,9 +74,9 @@
 .quick { border-top: 1px solid var(--line); }
 .quick li {
   display: grid;
-  grid-template-columns: 1.2fr 1.4fr 1fr 0.6fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   gap: 8px 32px;
-  align-items: baseline;
+  align-items: center;
   padding: 22px 0;
   border-bottom: 1px solid var(--line);
 }
@@ -168,10 +167,7 @@
 @media (max-width: 900px) {
   .body { grid-template-columns: 1fr; }
   .aside { position: static; }
-  .quick li { grid-template-columns: 1fr auto; }
-  .quickBrand { grid-column: 1 / -1; }
-  .quickStack { grid-column: 1; }
-  .quickTime { grid-row: 2; grid-column: 2; }
+  .quick li { grid-template-columns: 1fr; }
 }
 @media (max-width: 760px) {
   .grid, .grid3 { grid-template-columns: 1fr; }
