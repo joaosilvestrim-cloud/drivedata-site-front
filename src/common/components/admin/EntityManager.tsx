@@ -195,7 +195,7 @@ export function EntityManager({ entity, title, description, icon = 'layers', fie
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={form[f.key]} alt="" style={{ height: 60, borderRadius: 8, marginBottom: 8, display: 'block' }} />
                     )}
-                    <label style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(255,255,255,.06)', border: `1px solid ${C.borderStrong}`, color: C.text, borderRadius: 10, padding: '8px 13px', fontSize: 13, cursor: 'pointer' }}>
+                    <label style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(10,22,40,.06)', border: `1px solid ${C.borderStrong}`, color: C.text, borderRadius: 10, padding: '8px 13px', fontSize: 13, cursor: 'pointer' }}>
                       <Icon name="upload" size={15} /> Enviar imagem
                       <input type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && handleUpload(f.key, e.target.files[0])} />
                     </label>

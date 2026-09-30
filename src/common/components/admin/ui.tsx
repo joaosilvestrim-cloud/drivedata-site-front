@@ -3,26 +3,30 @@
 import React from 'react';
 
 // ───────────────────────── Design tokens (identidade DriveData) ─────────────────────────
-// A mesma do site, na versão escura: azul-marinho nas superfícies, verde como
-// destaque único (botão principal, barras, estado ativo), títulos em Sora.
+// A mesma do site: fundo névoa, cartões brancos, texto azul-marinho, menu
+// lateral azul-marinho e o verde como destaque único. O verde da marca só vai
+// em FUNDO (botão principal, barras, item ativo); texto verde usa `greenText`,
+// porque o verde claro sobre branco não tem leitura.
 // `gradient` virou o verde sólido: o nome ficou para não mexer em quem usa.
 export const C = {
-  bg: '#0a1322',
-  panel: '#111d31',
-  panel2: '#0d182a',
-  panelHover: '#16253d',
-  border: 'rgba(234,240,251,.08)',
-  borderStrong: 'rgba(234,240,251,.16)',
-  text: '#e8eef8',
-  muted: 'rgba(234,240,251,.68)',
-  faint: 'rgba(234,240,251,.44)',
-  blue: '#5aa9ff',
+  bg: '#eef2f7',
+  panel: '#ffffff',
+  panel2: '#f4f6f9',
+  panelHover: '#f7f9fb',
+  border: '#dbe2ea',
+  borderStrong: '#c7d0db',
+  text: '#0a1628',
+  muted: '#3d4a5c',
+  faint: '#6b7687',
+  blue: '#0a72c4',
   green: '#54da89',
+  greenText: '#15803d',
+  mist: '#e3f7ec',
   gradient: '#54da89',
   onGreen: '#0a1628',
-  danger: '#ff8f80',
-  dangerBg: 'rgba(255,143,128,.12)',
-  warn: '#f6c455',
+  danger: '#b42318',
+  dangerBg: '#fdecea',
+  warn: '#b54708',
   radius: 20,
   display: "var(--font-sora), 'Sora', ui-sans-serif, system-ui, sans-serif",
   font: "var(--font-inter), 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif",
@@ -87,8 +91,8 @@ export function Button({ variant = 'ghost', children, icon, style, ...rest }: Re
   };
   const variants: Record<BtnVariant, React.CSSProperties> = {
     primary: { background: C.green, color: C.onGreen, border: 'none', fontWeight: 600 },
-    ghost: { background: 'transparent', color: C.text, border: `1px solid ${C.borderStrong}` },
-    danger: { background: C.dangerBg, color: C.danger, border: '1px solid rgba(255,143,128,.3)' },
+    ghost: { background: C.panel, color: C.text, border: `1px solid ${C.borderStrong}` },
+    danger: { background: C.dangerBg, color: C.danger, border: '1px solid rgba(180,35,24,.25)' },
     subtle: { background: 'transparent', color: C.muted, border: '1px solid transparent' },
   };
   return (
@@ -101,11 +105,11 @@ export function Button({ variant = 'ghost', children, icon, style, ...rest }: Re
 
 export function Badge({ tone = 'neutral', children }: { tone?: 'live' | 'draft' | 'scheduled' | 'neutral' | 'danger'; children: React.ReactNode }) {
   const tones: Record<string, React.CSSProperties> = {
-    live: { background: 'rgba(84,218,137,.16)', color: C.green },
-    scheduled: { background: 'rgba(90,169,255,.16)', color: '#8ec5ff' },
-    draft: { background: 'rgba(234,240,251,.1)', color: C.muted },
+    live: { background: C.mist, color: C.greenText },
+    scheduled: { background: 'rgba(10,114,196,.1)', color: C.blue },
+    draft: { background: C.bg, color: C.muted },
     danger: { background: C.dangerBg, color: C.danger },
-    neutral: { background: 'rgba(234,240,251,.08)', color: C.muted },
+    neutral: { background: C.bg, color: C.muted },
   };
   return <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, borderRadius: 999, padding: '3px 10px', fontSize: 11.5, fontWeight: 600, ...tones[tone] }}>{children}</span>;
 }
@@ -113,7 +117,7 @@ export function Badge({ tone = 'neutral', children }: { tone?: 'live' | 'draft' 
 export const field: Record<string, React.CSSProperties> = {
   label: { display: 'block', fontSize: 12, color: C.muted, marginBottom: 6, fontWeight: 500 },
   input: {
-    width: '100%', background: 'rgba(234,240,251,.05)', border: `1px solid ${C.borderStrong}`, borderRadius: 12,
+    width: '100%', background: C.panel, border: `1px solid ${C.borderStrong}`, borderRadius: 12,
     padding: '11px 14px', color: C.text, fontSize: 14, outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
   },
 };
@@ -145,8 +149,8 @@ export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
 
 export function Modal({ title, onClose, children, footer, width = 720 }: { title: string; onClose: () => void; children: React.ReactNode; footer?: React.ReactNode; width?: number }) {
   return (
-    <div onClick={(e) => e.target === e.currentTarget && onClose()} style={{ position: 'fixed', inset: 0, background: 'rgba(5,10,20,.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '40px 20px', zIndex: 60, overflowY: 'auto' }}>
-      <div style={{ width: '100%', maxWidth: width, background: C.panel, border: `1px solid ${C.border}`, borderRadius: 24, color: C.text, boxShadow: '0 24px 70px rgba(0,0,0,.5)' }}>
+    <div onClick={(e) => e.target === e.currentTarget && onClose()} style={{ position: 'fixed', inset: 0, background: 'rgba(10,22,40,.45)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '40px 20px', zIndex: 60, overflowY: 'auto' }}>
+      <div style={{ width: '100%', maxWidth: width, background: C.panel, border: `1px solid ${C.border}`, borderRadius: 24, color: C.text, boxShadow: '0 24px 70px rgba(10,22,40,.25)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 22px', borderBottom: `1px solid ${C.border}` }}>
           <h2 style={{ margin: 0, fontSize: 19, fontWeight: 800, fontFamily: C.display, letterSpacing: '-0.03em' }}>{title}</h2>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: C.muted, cursor: 'pointer', padding: 4 }}><Icon name="x" size={18} /></button>
@@ -163,7 +167,7 @@ export function PageHeader({ title, subtitle, actions, icon }: { title: string; 
     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 22 }}>
       <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
         {icon && (
-          <span style={{ width: 44, height: 44, borderRadius: 999, background: 'rgba(84,218,137,.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.green }}>
+          <span style={{ width: 44, height: 44, borderRadius: 999, background: C.mist, display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.greenText }}>
             <Icon name={icon} size={20} />
           </span>
         )}

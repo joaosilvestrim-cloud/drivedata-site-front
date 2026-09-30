@@ -100,7 +100,7 @@ export function ConversionsClient() {
       />
 
       {/* Introdução pra quem opera (marketing) */}
-      <div style={{ background: 'rgba(90,169,255,.10)', border: `1px solid rgba(90,169,255,.25)`, borderRadius: C.radius, padding: 16, marginBottom: 16 }}>
+      <div style={{ background: 'rgba(10,114,196,.10)', border: `1px solid rgba(10,114,196,.25)`, borderRadius: C.radius, padding: 16, marginBottom: 16 }}>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8 }}>
           <Icon name="help" size={18} color={C.blue} />
           <strong style={{ fontSize: 14 }}>Para que serve esta página</strong>
@@ -130,7 +130,7 @@ export function ConversionsClient() {
             return (
               <Card key={p}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 10 }}>
-                  <span style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(90,169,255,.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.green }}>
+                  <span style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(10,114,196,.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.greenText }}>
                     <Icon name={m.icon} size={19} />
                   </span>
                   <div style={{ fontSize: 16, fontWeight: 700 }}>{m.label}</div>
@@ -167,7 +167,7 @@ export function ConversionsClient() {
             </div>
           </div>
           <div style={{ display: 'flex', gap: 9 }}>
-            <Icon name="upload" size={16} color={C.green} />
+            <Icon name="upload" size={16} color={C.greenText} />
             <div style={{ fontSize: 12.5, color: C.muted, lineHeight: 1.6 }}>
               <b style={{ color: C.text }}>Baixar e marcar enviado</b><br />
               Baixa <b>e</b> marca como enviado, pra <b>não sair de novo</b> na próxima vez. Use este quando for

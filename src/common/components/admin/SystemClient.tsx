@@ -96,7 +96,7 @@ export function SystemClient() {
           {logs.length > 0 && <Button variant="danger" icon="trash" onClick={clearLogs}>Limpar logs</Button>}
         </div>
         {logs.length === 0 ? (
-          <div style={{ color: C.green, fontSize: 13, padding: '10px 0', display: 'flex', alignItems: 'center', gap: 8 }}><Icon name="check" size={15} /> Nenhum erro registrado. Tudo certo!</div>
+          <div style={{ color: C.greenText, fontSize: 13, padding: '10px 0', display: 'flex', alignItems: 'center', gap: 8 }}><Icon name="check" size={15} /> Nenhum erro registrado. Tudo certo!</div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {logs.map((l) => (
@@ -256,9 +256,9 @@ function Row({ label, ok, detail }: { label: string; ok: boolean; detail: string
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0', borderTop: `1px solid ${C.border}` }}>
       <span style={{ fontSize: 13.5 }}>{label}</span>
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, color: ok ? C.green : C.danger, fontWeight: 600 }}>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, color: ok ? C.greenText : C.danger, fontWeight: 600 }}>
         {detail}
-        <span style={{ width: 9, height: 9, borderRadius: '50%', background: ok ? C.green : C.danger, boxShadow: ok ? `0 0 7px ${C.green}` : 'none' }} />
+        <span style={{ width: 9, height: 9, borderRadius: '50%', background: ok ? C.green : C.danger }} />
       </span>
     </div>
   );

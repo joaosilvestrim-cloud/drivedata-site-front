@@ -171,7 +171,7 @@ export function JobsManager() {
                   <Badge tone={STATUS[j.status].tone}>{STATUS[j.status].label}</Badge>
                 </td>
                 <td style={T.td}>
-                  <a href={`/admin/candidaturas?job=${j.id}`} style={{ color: C.green, fontWeight: 600, textDecoration: 'none' }}>
+                  <a href={`/admin/candidaturas?job=${j.id}`} style={{ color: C.greenText, fontWeight: 600, textDecoration: 'none' }}>
                     {j.applications ?? 0}
                   </a>
                 </td>
@@ -288,7 +288,7 @@ export function JobsManager() {
             )}
           </div>
           <style>{`
-            .job-quill .ql-toolbar{border-color:${C.borderStrong};border-radius:10px 10px 0 0;background:rgba(255,255,255,.04)}
+            .job-quill .ql-toolbar{border-color:${C.borderStrong};border-radius:10px 10px 0 0;background:rgba(10,22,40,.04)}
             .job-quill .ql-container{border-color:${C.borderStrong};border-radius:0 0 10px 10px;color:${C.text};font-family:inherit;font-size:14px}
             .job-quill .ql-editor{min-height:180px}
             .job-quill .ql-snow .ql-stroke{stroke:${C.muted}} .job-quill .ql-snow .ql-fill{fill:${C.muted}}

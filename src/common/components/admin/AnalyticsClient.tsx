@@ -96,7 +96,7 @@ export function AnalyticsClient() {
             </div>
             <div style={{ display: 'flex', gap: 3, marginTop: 6, borderTop: `1px solid ${C.border}`, paddingTop: 6 }}>
               {s.viewsByDay.map((d) => (
-                <div key={d.day} style={{ flex: 1, textAlign: 'center', fontSize: 9.5, color: selDay === d.day ? C.green : C.faint, fontWeight: selDay === d.day ? 700 : 400, fontVariantNumeric: 'tabular-nums' }}>
+                <div key={d.day} style={{ flex: 1, textAlign: 'center', fontSize: 9.5, color: selDay === d.day ? C.greenText : C.faint, fontWeight: selDay === d.day ? 700 : 400, fontVariantNumeric: 'tabular-nums' }}>
                   {parseDay(d.day).getDate()}
                 </div>
               ))}
@@ -139,7 +139,7 @@ export function AnalyticsClient() {
                   <tr key={a.id} style={{ borderTop: i ? `1px solid ${C.border}` : 'none' }}>
                     <td style={{ padding: '9px 0', fontSize: 13, color: C.faint, width: 24 }}>{i + 1}</td>
                     <td style={{ padding: '9px 0', fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200 }}>{a.title}</td>
-                    <td style={{ padding: '9px 0', fontSize: 13, fontWeight: 700, color: C.green, textAlign: 'right' }}>{fmt(a.views)}</td>
+                    <td style={{ padding: '9px 0', fontSize: 13, fontWeight: 700, color: C.greenText, textAlign: 'right' }}>{fmt(a.views)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -186,7 +186,7 @@ function Mini({ label, value, hint, trend }: { label: string; value: string; hin
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginTop: 6 }}>
         <div style={{ fontSize: 30, fontWeight: 800, fontFamily: C.display, letterSpacing: '-0.04em' }}>{value}</div>
         {typeof trend === 'number' && (
-          <span style={{ fontSize: 12.5, fontWeight: 700, color: up ? C.green : '#f87171' }}>{up ? '▲' : '▼'} {Math.abs(trend)}%</span>
+          <span style={{ fontSize: 12.5, fontWeight: 700, color: up ? C.greenText : C.danger }}>{up ? '▲' : '▼'} {Math.abs(trend)}%</span>
         )}
       </div>
       {hint && <div style={{ color: C.faint, fontSize: 11, marginTop: 6, lineHeight: 1.4 }}>{hint}</div>}
@@ -206,7 +206,7 @@ function BarList({ items, pct = false }: { items: { label: string; n: number }[]
             <span style={{ color: C.muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{it.label}</span>
             <span style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>{fmt(it.n)}{pct && <span style={{ color: C.faint, fontWeight: 400 }}> · {Math.round((it.n / total) * 100)}%</span>}</span>
           </div>
-          <div style={{ height: 6, background: 'rgba(255,255,255,.06)', borderRadius: 4, overflow: 'hidden' }}>
+          <div style={{ height: 6, background: 'rgba(10,22,40,.06)', borderRadius: 4, overflow: 'hidden' }}>
             <div style={{ width: `${(it.n / max) * 100}%`, height: '100%', background: C.gradient }} />
           </div>
         </div>

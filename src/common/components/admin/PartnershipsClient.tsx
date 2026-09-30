@@ -75,7 +75,7 @@ export function PartnershipsClient() {
   const novas = items.filter((a) => a.status === 'new').length;
   const link = (href: string | null, label: string) =>
     href ? (
-      <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: C.green, textDecoration: 'none', marginRight: 10 }}>
+      <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: C.greenText, textDecoration: 'none', marginRight: 10 }}>
         {label} ↗
       </a>
     ) : null;
@@ -104,7 +104,7 @@ export function PartnershipsClient() {
           <b style={{ color: C.text, fontSize: 18 }}>{items.length}</b> solicitaç{items.length === 1 ? 'ão' : 'ões'}
         </span>
         <span>
-          <b style={{ color: C.green, fontSize: 18 }}>{novas}</b> nova{novas === 1 ? '' : 's'}
+          <b style={{ color: C.greenText, fontSize: 18 }}>{novas}</b> nova{novas === 1 ? '' : 's'}
         </span>
       </div>
 

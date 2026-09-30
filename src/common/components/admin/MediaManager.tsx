@@ -78,7 +78,7 @@ export function MediaManager() {
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
         {[['', 'Tudo'], ['image', 'Imagens'], ['document', 'Documentos']].map(([v, l]) => (
-          <button key={v} onClick={() => setKind(v)} style={{ background: kind === v ? 'rgba(90,169,255,.15)' : 'rgba(255,255,255,.04)', border: `1px solid ${kind === v ? 'rgba(90,169,255,.4)' : C.border}`, color: kind === v ? C.text : C.muted, padding: '7px 14px', borderRadius: 9, fontSize: 13, cursor: 'pointer', fontWeight: 600 }}>{l}</button>
+          <button key={v} onClick={() => setKind(v)} style={{ background: kind === v ? 'rgba(90,169,255,.15)' : 'rgba(10,22,40,.04)', border: `1px solid ${kind === v ? 'rgba(90,169,255,.4)' : C.border}`, color: kind === v ? C.text : C.muted, padding: '7px 14px', borderRadius: 9, fontSize: 13, cursor: 'pointer', fontWeight: 600 }}>{l}</button>
         ))}
       </div>
 

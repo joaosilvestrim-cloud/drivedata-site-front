@@ -76,8 +76,8 @@ export function DashboardClient() {
         subtitle="Visão geral do conteúdo, audiência e saúde da plataforma."
         icon="dashboard"
         actions={
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, color: live ? C.green : C.faint, background: 'rgba(255,255,255,.04)', border: `1px solid ${C.border}`, borderRadius: 999, padding: '6px 12px' }}>
-            <span style={{ width: 8, height: 8, borderRadius: '50%', background: live ? C.green : C.faint, boxShadow: live ? `0 0 8px ${C.green}` : 'none' }} />
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, color: live ? C.greenText : C.faint, background: C.panel, border: `1px solid ${C.border}`, borderRadius: 999, padding: '7px 14px', fontWeight: 600 }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: live ? C.green : C.faint }} />
             {live ? 'Tempo real · ativo' : 'Conectando…'}
           </span>
         }
@@ -86,7 +86,7 @@ export function DashboardClient() {
       {alerts.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 18 }}>
           {alerts.map((a, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13, padding: '10px 14px', borderRadius: 11, background: a.tone === 'danger' ? C.dangerBg : 'rgba(90,169,255,.1)', color: a.tone === 'danger' ? C.danger : '#7cc6ff', border: `1px solid ${a.tone === 'danger' ? 'rgba(255,80,80,.25)' : 'rgba(90,169,255,.25)'}` }}>
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13, padding: '10px 14px', borderRadius: 11, background: a.tone === 'danger' ? C.dangerBg : 'rgba(10,114,196,.1)', color: a.tone === 'danger' ? C.danger : C.blue, border: `1px solid ${a.tone === 'danger' ? 'rgba(255,80,80,.25)' : 'rgba(10,114,196,.25)'}` }}>
               <Icon name="alert" size={15} /> {a.text}
             </div>
           ))}
@@ -181,7 +181,7 @@ function Stat({ icon, label, value, sub, href }: { icon: string; label: string; 
       <Card style={{ transition: 'border-color .15s' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <span style={{ color: C.muted, fontSize: 12.5 }}>{label}</span>
-          <span style={{ color: C.green }}><Icon name={icon} size={18} /></span>
+          <span style={{ color: C.greenText }}><Icon name={icon} size={18} /></span>
         </div>
         <div style={{ fontSize: 34, fontWeight: 800, marginTop: 8, color: C.text, fontFamily: C.display, letterSpacing: '-0.04em', lineHeight: 1 }}>{value}</div>
         {sub && <div style={{ fontSize: 11.5, color: C.faint, marginTop: 3 }}>{sub}</div>}
@@ -194,7 +194,7 @@ function CardTitle({ icon, title, right }: { icon: string; title: string; right?
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 16, fontWeight: 700, fontFamily: C.display, letterSpacing: '-0.02em' }}>
-        <span style={{ color: C.green }}><Icon name={icon} size={16} /></span> {title}
+        <span style={{ color: C.greenText }}><Icon name={icon} size={16} /></span> {title}
       </div>
       {right}
     </div>
@@ -225,7 +225,7 @@ function BarList({ items }: { items: { label: string; n: number }[] }) {
             <span style={{ color: C.muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 150 }}>{it.label}</span>
             <span style={{ color: C.text, fontWeight: 600 }}>{fmt(it.n)}</span>
           </div>
-          <div style={{ height: 6, background: 'rgba(255,255,255,.06)', borderRadius: 4, overflow: 'hidden' }}>
+          <div style={{ height: 6, background: 'rgba(10,22,40,.06)', borderRadius: 4, overflow: 'hidden' }}>
             <div style={{ width: `${(it.n / max) * 100}%`, height: '100%', background: C.gradient }} />
           </div>
         </div>
@@ -238,7 +238,7 @@ function HealthRow({ label, ok, value }: { label: string; ok: boolean; value?: s
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderTop: `1px solid ${C.border}` }}>
       <span style={{ fontSize: 13, color: C.muted }}>{label}</span>
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, color: ok ? C.green : C.danger, fontWeight: 600 }}>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, color: ok ? C.greenText : C.danger, fontWeight: 600 }}>
         {value ?? (ok ? 'OK' : 'Falha')}
         <span style={{ width: 8, height: 8, borderRadius: '50%', background: ok ? C.green : C.danger }} />
       </span>
@@ -247,7 +247,7 @@ function HealthRow({ label, ok, value }: { label: string; ok: boolean; value?: s
 }
 
 const rowStyle: React.CSSProperties = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '8px 0', borderTop: `1px solid ${C.border}` };
-const linkStyle: React.CSSProperties = { color: C.green, fontSize: 12.5, textDecoration: 'none', fontWeight: 600 };
+const linkStyle: React.CSSProperties = { color: C.greenText, fontSize: 12.5, textDecoration: 'none', fontWeight: 600 };
 function Empty({ children }: { children: React.ReactNode }) {
   return <div style={{ color: C.faint, fontSize: 13, padding: '12px 0' }}>{children}</div>;
 }

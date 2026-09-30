@@ -6,6 +6,17 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { C, Icon } from './ui';
 
+// O menu é a faixa azul-marinho da marca (como o rodapé do site): cores próprias.
+const N = {
+  bg: '#0a1628',
+  text: '#ffffff',
+  muted: 'rgba(234,240,251,.74)',
+  faint: 'rgba(234,240,251,.5)',
+  border: 'rgba(234,240,251,.1)',
+  borderStrong: 'rgba(234,240,251,.2)',
+  active: 'rgba(84,218,137,.14)',
+};
+
 const GROUPS: { title: string; links: { href: string; label: string; icon: string; exact?: boolean }[] }[] = [
   {
     title: 'Conteúdo',
@@ -64,7 +75,7 @@ export function AdminNav({ email }: { email?: string }) {
       <div style={S.brand}>
         <div>
           <Image src="/logotipo-drivedata.webp" alt="DriveData" width={134} height={32} priority style={S.logoMark} />
-          <div style={{ fontSize: 12.5, color: C.faint, marginTop: 8 }}>Console do site</div>
+          <div style={{ fontSize: 12.5, color: N.faint, marginTop: 8 }}>Console do site</div>
         </div>
       </div>
 
@@ -77,7 +88,7 @@ export function AdminNav({ email }: { email?: string }) {
                 const active = l.exact ? pathname === l.href : pathname === l.href || pathname.startsWith(l.href + '/');
                 return (
                   <Link key={l.href} href={l.href} style={{ ...S.link, ...(active ? S.linkActive : {}) }}>
-                    <Icon name={l.icon} size={17} color={active ? C.green : C.muted} />
+                    <Icon name={l.icon} size={17} color={active ? C.green : N.muted} />
                     <span>{l.label}</span>
                   </Link>
                 );
@@ -104,16 +115,16 @@ export function AdminNav({ email }: { email?: string }) {
 
 const S: Record<string, React.CSSProperties> = {
   aside: {
-    width: 248, minHeight: '100vh', background: C.panel2, borderRight: `1px solid ${C.border}`,
+    width: 248, minHeight: '100vh', background: N.bg, color: N.text,
     padding: '20px 14px', display: 'flex', flexDirection: 'column', gap: 18, position: 'sticky', top: 0, alignSelf: 'flex-start',
   },
-  brand: { display: 'flex', alignItems: 'center', gap: 11, padding: '4px 8px 14px', borderBottom: `1px solid ${C.border}` },
+  brand: { display: 'flex', alignItems: 'center', gap: 11, padding: '4px 8px 16px', borderBottom: `1px solid ${N.border}` },
   logoMark: { width: 'auto', height: 32, objectFit: 'contain', display: 'block' },
-  groupTitle: { fontSize: 12.5, color: C.faint, fontWeight: 600, padding: '0 14px 6px' },
-  link: { display: 'flex', alignItems: 'center', gap: 11, color: C.muted, textDecoration: 'none', padding: '9px 14px', borderRadius: 999, fontSize: 14, fontWeight: 500 },
-  linkActive: { background: 'rgba(84,218,137,.12)', color: C.text, fontWeight: 600 },
-  footer: { marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8, paddingTop: 12, borderTop: `1px solid ${C.border}` },
-  email: { fontSize: 11, color: C.faint, wordBreak: 'break-all', padding: '0 4px' },
-  logout: { flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: 'transparent', border: `1px solid ${C.borderStrong}`, color: C.text, borderRadius: 999, padding: '9px', cursor: 'pointer', fontSize: 13, fontFamily: 'inherit' },
-  viewsite: { flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, color: C.muted, fontSize: 12.5, textDecoration: 'none', border: `1px solid ${C.borderStrong}`, borderRadius: 999, padding: '9px' },
+  groupTitle: { fontSize: 12.5, color: N.faint, fontWeight: 600, padding: '0 14px 6px' },
+  link: { display: 'flex', alignItems: 'center', gap: 11, color: N.muted, textDecoration: 'none', padding: '9px 14px', borderRadius: 999, fontSize: 14, fontWeight: 500 },
+  linkActive: { background: N.active, color: N.text, fontWeight: 600 },
+  footer: { marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8, paddingTop: 12, borderTop: `1px solid ${N.border}` },
+  email: { fontSize: 11.5, color: N.faint, wordBreak: 'break-all', padding: '0 4px' },
+  logout: { flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: 'transparent', border: `1px solid ${N.borderStrong}`, color: N.text, borderRadius: 999, padding: '9px', cursor: 'pointer', fontSize: 13, fontFamily: 'inherit' },
+  viewsite: { flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, color: N.muted, fontSize: 12.5, textDecoration: 'none', border: `1px solid ${N.borderStrong}`, borderRadius: 999, padding: '9px' },
 };

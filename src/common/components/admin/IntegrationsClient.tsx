@@ -13,10 +13,10 @@ interface Health {
 }
 
 const TONE: Record<Status, { color: string; bg: string; icon: string }> = {
-  ok: { color: C.green, bg: 'rgba(84,218,137,.14)', icon: 'check' },
+  ok: { color: C.greenText, bg: 'rgba(84,218,137,.14)', icon: 'check' },
   error: { color: C.danger, bg: C.dangerBg, icon: 'x' },
   warn: { color: C.warn, bg: 'rgba(246,196,85,.14)', icon: 'alert' },
-  info: { color: '#8ec5ff', bg: 'rgba(90,169,255,.14)', icon: 'doc' },
+  info: { color: C.blue, bg: 'rgba(10,114,196,.1)', icon: 'doc' },
 };
 
 export function IntegrationsClient() {
@@ -49,14 +49,14 @@ export function IntegrationsClient() {
         actions={<Button variant="ghost" icon="refresh" onClick={() => void load()}>Revalidar</Button>}
       />
 
-      <div style={{ background: 'rgba(90,169,255,.10)', border: `1px solid rgba(90,169,255,.25)`, borderRadius: C.radius, padding: 16, marginBottom: 16 }}>
+      <div style={{ background: 'rgba(10,114,196,.10)', border: `1px solid rgba(10,114,196,.25)`, borderRadius: C.radius, padding: 16, marginBottom: 16 }}>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8 }}>
           <Icon name="help" size={18} color={C.blue} />
           <strong style={{ fontSize: 14 }}>O que é esta página</strong>
         </div>
         <p style={{ margin: 0, fontSize: 13, color: C.muted, lineHeight: 1.6 }}>
           É um <b>raio-x</b> da integração com os anúncios. Cada linha é um teste automático.
-          <b style={{ color: C.green }}> Verde = tudo certo</b>;
+          <b style={{ color: C.greenText }}> Verde = tudo certo</b>;
           <b style={{ color: C.warn }}> amarelo = atenção</b>;
           <b style={{ color: C.danger }}> vermelho = algo quebrou</b> (nesse caso, avise o time técnico).
           Clique em <b>Revalidar</b> a qualquer momento pra checar de novo. Você não precisa fazer nada aqui —
@@ -74,11 +74,11 @@ export function IntegrationsClient() {
         <>
           {/* Resumo */}
           <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
-            <Pill color={C.green} label={`${data.summary.ok} OK`} />
+            <Pill color={C.greenText} label={`${data.summary.ok} OK`} />
             {data.summary.warn > 0 && <Pill color={C.warn} label={`${data.summary.warn} aviso${data.summary.warn > 1 ? 's' : ''}`} />}
             {data.summary.error > 0 && <Pill color={C.danger} label={`${data.summary.error} erro${data.summary.error > 1 ? 's' : ''}`} />}
             {data.summary.error === 0 && data.summary.warn === 0 && (
-              <span style={{ color: C.green, fontSize: 13, alignSelf: 'center', fontWeight: 600 }}>Tudo certo nas integrações.</span>
+              <span style={{ color: C.greenText, fontSize: 13, alignSelf: 'center', fontWeight: 600 }}>Tudo certo nas integrações.</span>
             )}
           </div>
 
@@ -105,7 +105,7 @@ export function IntegrationsClient() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12, marginBottom: 16 }}>
             <Stat label="Conversões (total)" value={data.ledger.total} />
             <Stat label="Pendentes" value={data.ledger.pending} color={C.warn} />
-            <Stat label="Enviadas" value={data.ledger.sent} color={C.green} />
+            <Stat label="Enviadas" value={data.ledger.sent} color={C.greenText} />
             <Stat label="Com erro" value={data.ledger.errored} color={data.ledger.errored ? C.danger : undefined} />
           </div>
 
@@ -114,7 +114,7 @@ export function IntegrationsClient() {
             <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 10 }}>Tags configuradas</div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {Object.entries(data.tags).map(([name, id]) => (
-                <span key={name} style={{ display: 'inline-flex', gap: 6, alignItems: 'center', background: 'rgba(255,255,255,.05)', border: `1px solid ${C.border}`, borderRadius: 8, padding: '6px 10px', fontSize: 12 }}>
+                <span key={name} style={{ display: 'inline-flex', gap: 6, alignItems: 'center', background: 'rgba(10,22,40,.05)', border: `1px solid ${C.border}`, borderRadius: 8, padding: '6px 10px', fontSize: 12 }}>
                   <span style={{ color: C.muted }}>{name}</span>
                   <code style={{ color: C.text, fontSize: 11.5 }}>{id}</code>
                 </span>
@@ -131,7 +131,7 @@ export function IntegrationsClient() {
 }
 
 function Pill({ color, label }: { color: string; label: string }) {
-  return <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,.05)', border: `1px solid ${C.border}`, borderRadius: 999, padding: '5px 12px', fontSize: 12.5, fontWeight: 600, color }}>
+  return <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(10,22,40,.05)', border: `1px solid ${C.border}`, borderRadius: 999, padding: '5px 12px', fontSize: 12.5, fontWeight: 600, color }}>
     <span style={{ width: 8, height: 8, borderRadius: '50%', background: color }} /> {label}
   </span>;
 }

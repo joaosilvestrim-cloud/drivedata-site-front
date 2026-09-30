@@ -210,7 +210,7 @@ export function ArticlesManager() {
   const transAction = (key: string) =>
     lang !== 'pt' && transEnabled ? (
       <button type="button" onClick={() => translateField(key)} disabled={translatingField === key}
-        style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'none', border: 'none', color: C.green, fontSize: 11.5, fontWeight: 600, cursor: 'pointer', padding: 0 }}>
+        style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'none', border: 'none', color: C.greenText, fontSize: 11.5, fontWeight: 600, cursor: 'pointer', padding: 0 }}>
         <Icon name="translate" size={13} /> {translatingField === key ? 'Traduzindo…' : 'Traduzir do português'}
       </button>
     ) : null;
@@ -489,7 +489,7 @@ export function ArticlesManager() {
               {lang === 'pt' ? (
                 <div style={helperBar}>
                   <span style={helperText}>
-                    <Icon name="globe" size={15} color={C.green} />
+                    <Icon name="globe" size={15} color={C.greenText} />
                     Idioma <b style={{ color: C.text }}>original</b> — escreva aqui e depois gere as traduções.
                   </span>
                   <Button variant="primary" icon="translate" onClick={translate} disabled={translating || !transEnabled}
@@ -500,7 +500,7 @@ export function ArticlesManager() {
               ) : (
                 <div style={helperBar}>
                   <span style={helperText}>
-                    <Icon name="translate" size={15} color={C.green} />
+                    <Icon name="translate" size={15} color={C.greenText} />
                     Tradução para <b style={{ color: C.text }}>{LANGS.find((x) => x.code === lang)?.label}</b> — gere e <b style={{ color: C.text }}>revise</b> antes de publicar.
                   </span>
                   <Button variant="primary" icon="translate" onClick={() => translateAllTo(lang)} disabled={translating || !transEnabled}
@@ -565,7 +565,7 @@ export function ArticlesManager() {
               <Field label="Perguntas frequentes (FAQ)" hint="Vira o schema FAQPage — o que mais ajuda a ser citado por IA (ChatGPT, Gemini, Claude)">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {(form.faqs || []).map((f, i) => (
-                    <div key={i} style={{ border: '1px solid rgba(255,255,255,0.12)', borderRadius: 10, padding: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    <div key={i} style={{ border: `1px solid ${C.border}`, borderRadius: 10, padding: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
                       <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
                         <Input value={f.q} placeholder="Pergunta"
                           onChange={(e) => setForm((p) => ({ ...p, faqs: (p.faqs || []).map((x, j) => j === i ? { ...x, q: e.target.value } : x) }))} />
@@ -579,7 +579,7 @@ export function ArticlesManager() {
                   ))}
                   <button type="button"
                     onClick={() => setForm((p) => ({ ...p, faqs: [...(p.faqs || []), { q: '', a: '' }] }))}
-                    style={{ alignSelf: 'flex-start', padding: '8px 14px', borderRadius: 8, border: '1px dashed rgba(255,255,255,0.25)', background: 'transparent', color: '#4dc3ee', cursor: 'pointer', fontSize: 13, fontWeight: 600 }}>
+                    style={{ alignSelf: 'flex-start', padding: '8px 14px', borderRadius: 8, border: `1px dashed ${C.borderStrong}`, background: 'transparent', color: C.blue, cursor: 'pointer', fontSize: 13, fontWeight: 600 }}>
                     + Adicionar pergunta
                   </button>
                 </div>
@@ -709,24 +709,24 @@ const tabBtn = (active: boolean): React.CSSProperties => ({
 });
 const langBtn = (active: boolean): React.CSSProperties => ({
   display: 'inline-flex', alignItems: 'center', gap: 7,
-  background: active ? 'rgba(90,169,255,.15)' : 'rgba(255,255,255,.04)', border: `1px solid ${active ? 'rgba(90,169,255,.4)' : C.border}`,
+  background: active ? 'rgba(10,114,196,.15)' : 'rgba(10,22,40,.04)', border: `1px solid ${active ? 'rgba(10,114,196,.4)' : C.border}`,
   color: active ? C.text : C.muted, padding: '6px 11px', borderRadius: 8, fontSize: 12.5, cursor: 'pointer', fontWeight: 500,
 });
 const origBadge: React.CSSProperties = {
   fontSize: 9, fontWeight: 700, letterSpacing: 0.5,
-  background: 'rgba(84,218,137,.16)', color: C.green, borderRadius: 5, padding: '1px 5px',
+  background: 'rgba(84,218,137,.16)', color: C.greenText, borderRadius: 5, padding: '1px 5px',
 };
 const helperBar: React.CSSProperties = {
   display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap',
-  background: 'rgba(255,255,255,.035)', border: `1px solid ${C.border}`, borderRadius: 12, padding: '10px 14px',
+  background: 'rgba(10,22,40,.03)', border: `1px solid ${C.border}`, borderRadius: 12, padding: '10px 14px',
 };
 const helperText: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: C.muted, lineHeight: 1.4 };
 const statusOpt = (active: boolean): React.CSSProperties => ({
   flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7,
-  background: active ? 'rgba(84,218,137,.14)' : 'rgba(255,255,255,.04)', border: `1px solid ${active ? 'rgba(84,218,137,.4)' : C.borderStrong}`,
+  background: active ? 'rgba(84,218,137,.14)' : 'rgba(10,22,40,.04)', border: `1px solid ${active ? 'rgba(84,218,137,.4)' : C.borderStrong}`,
   color: active ? C.text : C.muted, padding: '11px', borderRadius: 10, fontSize: 13.5, cursor: 'pointer', fontWeight: 600,
 });
-const chip: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(90,169,255,.12)', color: '#7cc6ff', borderRadius: 999, padding: '4px 6px 4px 11px', fontSize: 12.5 };
+const chip: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(10,114,196,.1)', color: C.blue, borderRadius: 999, padding: '4px 6px 4px 11px', fontSize: 12.5 };
 const chipX: React.CSSProperties = { background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', display: 'flex', padding: 2, opacity: 0.8 };
-const uploadBtn: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(255,255,255,.06)', border: `1px solid ${C.borderStrong}`, color: C.text, borderRadius: 10, padding: '9px 14px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer' };
-const docRow: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 9, background: 'rgba(255,255,255,.04)', border: `1px solid ${C.border}`, borderRadius: 9, padding: '8px 11px', color: C.muted };
+const uploadBtn: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(10,22,40,.06)', border: `1px solid ${C.borderStrong}`, color: C.text, borderRadius: 10, padding: '9px 14px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer' };
+const docRow: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 9, background: 'rgba(10,22,40,.04)', border: `1px solid ${C.border}`, borderRadius: 9, padding: '8px 11px', color: C.muted };

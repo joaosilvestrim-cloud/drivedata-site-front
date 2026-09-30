@@ -110,7 +110,7 @@ export function ApplicationsClient() {
 
       <div style={{ display: 'flex', gap: 14, marginBottom: 16, color: C.muted, fontSize: 13 }}>
         <span><b style={{ color: C.text, fontSize: 18 }}>{items.length}</b> candidatura{items.length === 1 ? '' : 's'}</span>
-        <span><b style={{ color: C.green, fontSize: 18 }}>{novas}</b> nova{novas === 1 ? '' : 's'}</span>
+        <span><b style={{ color: C.greenText, fontSize: 18 }}>{novas}</b> nova{novas === 1 ? '' : 's'}</span>
       </div>
 
       {loading ? (
@@ -182,7 +182,7 @@ function Row({ a, open, notes, setNotes, onToggle, onStatus, onSaveNotes, onCv, 
 }) {
   const link = (href: string | null, label: string) =>
     href ? (
-      <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: C.green, textDecoration: 'none', marginRight: 10 }}>
+      <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: C.greenText, textDecoration: 'none', marginRight: 10 }}>
         {label} ↗
       </a>
     ) : null;
