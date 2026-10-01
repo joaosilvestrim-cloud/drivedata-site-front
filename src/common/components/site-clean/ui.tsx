@@ -11,15 +11,21 @@ export const Icon = ({ d }: { d: string }) => (
   </svg>
 );
 
-export type WallLogo = { src: string; name: string };
+export type WallLogo = { src: string; name: string; featured?: boolean };
 
 /**
- * Parede de clientes: logos coloridos em plaquinhas brancas, em duas fileiras que
- * andam em sentidos opostos. Pausa no hover/foco; com movimento reduzido fica
- * parada e mostra tudo. As cópias que fecham o laço ficam fora do leitor de tela.
+ * Parede de clientes: logos em plaquinhas brancas, em duas fileiras que andam em
+ * sentidos opostos. Em cima, só as marcas globais (destaque no admin), em
+ * plaquinhas maiores; embaixo, as demais. Sem nenhum destaque, divide ao meio.
+ * Pausa no hover/foco. As cópias que fecham o laço ficam fora do leitor de tela.
  */
 export function LogoWall({ title, logos = LOGOS }: { title: string; logos?: WallLogo[] }) {
-  const rows = [logos.filter((_, i) => i % 2 === 0), logos.filter((_, i) => i % 2 === 1)].filter((r) => r.length);
+  const top = logos.filter((l) => l.featured);
+  const rows = (top.length && top.length < logos.length
+    ? [top, logos.filter((l) => !l.featured)]
+    : [logos.filter((_, i) => i % 2 === 0), logos.filter((_, i) => i % 2 === 1)]
+  ).filter((r) => r.length);
+  const featuredRow = top.length > 0 && top.length < logos.length;
   return (
     <div className={s.proof}>
       <h2 className={s.proofTitle}>{title}</h2>
@@ -29,7 +35,7 @@ export function LogoWall({ title, logos = LOGOS }: { title: string; logos?: Wall
           const reps = Math.max(1, Math.ceil(10 / row.length));
           const lap = Array.from({ length: reps }).flatMap(() => row);
           return (
-            <div key={r} className={s.wallRow}>
+            <div key={r} className={`${s.wallRow} ${featuredRow && r === 0 ? s.wallRowTop : ''}`}>
               <ul className={`${s.wallTrack} ${r % 2 ? s.wallReverse : ''}`} style={marqueeSpeed(lap.length * 1.2)}>
                 {[...lap, ...lap].map((l, i) => (
                   <li key={`${l.src}-${i}`} className={s.wallTile} aria-hidden={i >= row.length ? true : undefined}>

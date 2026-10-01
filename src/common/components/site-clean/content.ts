@@ -1,5 +1,4 @@
 // Conteúdo compartilhado do site "clean": rotas, menu, rodapé e logos.
-import { SITE_COUNTRY } from '@/common/config/site';
 import type { Copy, Lang } from './i18n';
 
 export const ACADEMY = 'https://academy.drivedata.com.br/';
@@ -84,21 +83,24 @@ export const footer = (lang: Lang): { title: string; links: Link[] }[] => {
 // Todos os logos de clientes do site (mesmos arquivos da tabela partner), com
 // nome para leitor de tela. `h` é a altura em px: símbolos quadrados precisam de
 // mais altura que logotipos em texto para ter o mesmo peso visual na faixa.
-// Teck só aparece no site do Canadá (no cadastro ela é só CA).
-export const LOGOS = [
-  { src: '/PepsiCo_logo.svg', name: 'PepsiCo', h: 30 },
-  { src: '/clientes/layer1.svg', name: 'Unilever', h: 44 },
+// `featured` = marca global conhecida: vai na fileira de cima da parede de
+// clientes (pedido de 01/10/2026: o cliente de fora tem que reconhecer de cara).
+// Vale entra como herança da DataCraft Intelligence (abre portas na mineração).
+export const LOGOS: { src: string; name: string; h: number; featured?: boolean }[] = [
+  { src: '/PepsiCo_logo.svg', name: 'PepsiCo', h: 30, featured: true },
+  { src: '/clientes/layer1.svg', name: 'Unilever', h: 44, featured: true },
+  { src: '/clientes/image 28006.svg', name: "McDonald's", h: 38, featured: true },
+  { src: '/clientes/VISA LOGO 1.svg', name: 'Visa', h: 28, featured: true },
+  { src: '/clientes/vale.svg', name: 'Vale', h: 40, featured: true },
+  { src: '/clientes/image 28018.svg', name: 'JBS', h: 30, featured: true },
+  { src: '/clientes/teck.svg', name: 'Teck', h: 30, featured: true },
   { src: '/clientes/image 28009.svg', name: 'McCain', h: 38 },
-  { src: '/clientes/image 28018.svg', name: 'JBS', h: 30 },
-  { src: '/clientes/VISA LOGO 1.svg', name: 'Visa', h: 28 },
   { src: '/clientes/image 28004.svg', name: 'Vertiv', h: 24 },
-  ...(SITE_COUNTRY === 'CA' ? [{ src: '/clientes/teck.svg', name: 'Teck', h: 30 }] : []),
   { src: '/clientes/Camada_1.svg', name: 'Tambasa', h: 28 },
   { src: '/clientes/image 28012.svg', name: 'ITT', h: 30 },
   { src: '/clientes/image 28005.svg', name: 'Bericap', h: 28 },
   { src: '/clientes/image 28010.svg', name: 'TV TEM', h: 36 },
   { src: '/clientes/image 28016.svg', name: 'TMG', h: 26 },
-  { src: '/clientes/image 28006.svg', name: "McDonald's", h: 38 },
   { src: '/clientes/image 27999.svg', name: 'OEC', h: 30 },
   { src: '/clientes/FROSTY_portal 1.svg', name: 'Frosty', h: 34 },
   { src: '/clientes/image 28019.svg', name: 'Contatus', h: 38 },

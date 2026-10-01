@@ -482,6 +482,9 @@
   transition: filter 0.25s ease, opacity 0.25s ease;
 }
 .wallTile:hover img { filter: none; opacity: 1; }
+/* fileira de cima: marcas globais em plaquinhas maiores */
+.wallRowTop .wallTile { width: 236px; height: 116px; padding: 22px 30px; border-radius: 24px; }
+.wallRowTop .wallTile img { max-height: 64px; }
 :global(html[data-site-theme='dark']) .wallTile { box-shadow: none; }
 
 /* metade da faixa + meio espaço = exatamente uma volta, sem pulo */
@@ -599,6 +602,8 @@
   .wallTrack { --gap: 12px; }
   .wallTile { width: 140px; height: 76px; padding: 14px 18px; border-radius: 16px; }
   .wallTile img { max-height: 40px; }
+  .wallRowTop .wallTile { width: 168px; height: 90px; padding: 16px 22px; border-radius: 18px; }
+  .wallRowTop .wallTile img { max-height: 50px; }
   .marqueeTrack li { height: 36px; }
   .marqueeTrack img { max-height: 28px; max-width: 96px; }
   .card { padding: 26px; border-radius: 22px; }

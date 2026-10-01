@@ -467,7 +467,7 @@ function PartnerLogos({ partners }: { partners: AboutPartner[] }) {
   // destaques primeiro (mesma regra da home), depois a ordem do cadastro
   const logos = [...partners]
     .sort((x, y) => Number(y.featured) - Number(x.featured))
-    .map((p) => ({ src: p.imageUrl, name: p.name || logoName(p.imageUrl) || t.logoAlt }));
+    .map((p) => ({ src: p.imageUrl, name: p.name || logoName(p.imageUrl) || t.logoAlt, featured: p.featured }));
   return <LogoWall title={t.proofTitle} logos={logos} />;
 }
 

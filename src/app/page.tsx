@@ -32,7 +32,7 @@ export default async function Home() {
     if (partners.length) {
       logos = [...partners]
         .sort((a, b) => Number(b.featured) - Number(a.featured))
-        .map((p) => ({ src: p.imageUrl as string, name: p.name || logoName(p.imageUrl as string) || 'Cliente' }));
+        .map((p) => ({ src: p.imageUrl as string, name: p.name || logoName(p.imageUrl as string) || 'Cliente', featured: p.featured }));
     }
   } catch (error) {
     console.error(error);
