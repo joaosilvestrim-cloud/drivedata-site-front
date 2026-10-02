@@ -2,8 +2,8 @@
 
 // Home do site (rota /).
 import type { TargetAudienceProfileModel } from '@/common/model/target-audience-profile.model';
-import { ACADEMY, ROUTES, ext, stripHtml } from './content';
-import { useCopy, type Copy } from './i18n';
+import { ROUTES, ext, products, stripHtml } from './content';
+import { useCopy, type Copy, useLang } from './i18n';
 import { CleanShell, ContactButton } from './shell';
 import { DataScene } from './data-scene';
 import { Hero4D } from './hero-4d';
@@ -30,7 +30,7 @@ const PT = {
     { title: 'Liberar seu tempo', text: 'Horas de coleta viram minutos de análise. A equipe foca no que decide.' },
   ],
   solutionsTitle: 'Por onde começar',
-  solutionsText: 'Três caminhos para o mesmo objetivo: menos planilha e mais decisão.',
+  solutionsText: 'Consultoria, produtos e treinamento para o mesmo objetivo: menos planilha e mais decisão.',
   solutions: [
     { tag: 'Consultoria', text: 'Dados, BI, engenharia e IA sob medida para a sua operação. Do diagnóstico ao painel em uso.' },
     { tag: 'Produto', text: 'Acesso e governança sobre o Microsoft Fabric, com cada usuário vendo só o que deve ver.' },
@@ -74,7 +74,7 @@ const COPY: Copy<typeof PT> = {
       { title: 'Free up your time', text: 'Hours of data gathering become minutes of analysis. Your team focuses on decisions.' },
     ],
     solutionsTitle: 'Where to start',
-    solutionsText: 'Three paths to the same goal: fewer spreadsheets and more decisions.',
+    solutionsText: 'Consulting, products and training for the same goal: fewer spreadsheets and more decisions.',
     solutions: [
       { tag: 'Consulting', text: 'Data, BI, engineering and AI tailored to your operation. From diagnosis to a dashboard in use.' },
       { tag: 'Product', text: 'Access and governance on top of Microsoft Fabric, with each user seeing only what they should.' },
@@ -115,7 +115,7 @@ const COPY: Copy<typeof PT> = {
       { title: 'Liberar su tiempo', text: 'Horas de recopilación se vuelven minutos de análisis. El equipo se enfoca en decidir.' },
     ],
     solutionsTitle: 'Por dónde empezar',
-    solutionsText: 'Tres caminos para el mismo objetivo: menos hojas de cálculo y más decisiones.',
+    solutionsText: 'Consultoría, productos y formación para el mismo objetivo: menos hojas de cálculo y más decisiones.',
     solutions: [
       { tag: 'Consultoría', text: 'Datos, BI, ingeniería e IA a la medida de su operación. Del diagnóstico al panel en uso.' },
       { tag: 'Producto', text: 'Acceso y gobernanza sobre Microsoft Fabric, con cada usuario viendo solo lo que debe ver.' },
@@ -156,7 +156,7 @@ const COPY: Copy<typeof PT> = {
       { title: 'Libérer votre temps', text: 'Des heures de collecte deviennent des minutes d’analyse. L’équipe se concentre sur la décision.' },
     ],
     solutionsTitle: 'Par où commencer',
-    solutionsText: 'Trois chemins vers le même objectif : moins de tableurs et plus de décisions.',
+    solutionsText: 'Conseil, produits et formation pour le même objectif : moins de tableurs et plus de décisions.',
     solutions: [
       { tag: 'Conseil', text: 'Données, BI, ingénierie et IA sur mesure pour votre activité. Du diagnostic au tableau de bord en service.' },
       { tag: 'Produit', text: 'Accès et gouvernance sur Microsoft Fabric, chaque utilisateur ne voyant que ce qu’il doit voir.' },
@@ -189,16 +189,13 @@ const GAIN_ICONS = [
   'M12 6v6l4 2M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z',
 ];
 
-const SOLUTION_LINKS = [
-  { title: 'DALT', href: ROUTES.dalt },
-  { title: 'Portal Fabric', href: ROUTES.fabric },
-  { title: 'Academy', href: ACADEMY },
-];
+// Cartões "Por onde começar": a mesma lista de produtos do submenu (DriveVision só no Brasil).
 
 const delay = (ms: number) => ({ ['--d' as string]: `${ms}ms` });
 
 export function HomeClean({ profiles, cases, logos }: { profiles: TargetAudienceProfileModel[]; cases: ClientCase[]; logos: WallLogo[] }) {
   const t = useCopy(COPY);
+  const lang = useLang();
   const isFor = profiles.filter((p) => p.type === 'CUSTOMER');
   const notFor = profiles.filter((p) => p.type === 'NON_CUSTOMER');
 
@@ -247,12 +244,12 @@ export function HomeClean({ profiles, cases, logos }: { profiles: TargetAudience
       <section id="solucoes" className={`${s.band} ${s.bandFog}`} aria-labelledby="solucoes-titulo">
         <div className={s.wrap}>
           <SectionHead id="solucoes-titulo" title={t.solutionsTitle}>{t.solutionsText}</SectionHead>
-          <ul className={s.cards}>
-            {t.solutions.map((c, i) => (
-              <li key={SOLUTION_LINKS[i].title} data-reveal style={delay(i * 90)}>
-                <SmartLink href={SOLUTION_LINKS[i].href} className={s.card} {...ext(SOLUTION_LINKS[i].href)}>
+          <ul className={`${s.cards} ${products(lang).length > 3 ? s.cards4 : ''}`}>
+            {products(lang).map((c, i) => (
+              <li key={c.key} data-reveal style={delay(i * 90)}>
+                <SmartLink href={c.href} className={s.card} {...ext(c.href)}>
                   <span className={s.cardTag}>{c.tag}</span>
-                  <h3 className={s.cardTitle}>{SOLUTION_LINKS[i].title}</h3>
+                  <h3 className={s.cardTitle}>{c.name}</h3>
                   <p className={s.muted}>{c.text}</p>
                   <span className={s.cardMore}>{t.learnMore} <span className={s.arrow} aria-hidden="true">→</span></span>
                 </SmartLink>

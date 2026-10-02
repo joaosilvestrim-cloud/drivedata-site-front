@@ -6,7 +6,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import * as CookieConsent from 'vanilla-cookieconsent';
 import { useTypebot } from '@/common/providers/TypebotProvider';
-import { ACADEMY, ROUTES, ext, footer, nav, type NavKey } from './content';
+import { ACADEMY, ROUTES, ext, footer, nav, type NavKey, products, ALL_SOLUTIONS_LABEL } from './content';
 import { useLang, type Copy } from './i18n';
 import s from './clean.module.css';
 import { SmartLink } from './link';
@@ -72,6 +72,18 @@ export function CleanShell({ children, current }: { children: ReactNode; current
   const rootRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  // submenu "Soluções": abre no hover (CSS) e no clique; fecha com Esc ou clique fora
+  const [solOpen, setSolOpen] = useState(false);
+  const solRef = useRef<HTMLDivElement>(null);
+  const PRODUCTS = products(lang);
+  useEffect(() => {
+    if (!solOpen) return;
+    const onDown = (e: PointerEvent) => { if (!solRef.current?.contains(e.target as Node)) setSolOpen(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setSolOpen(false); };
+    document.addEventListener('pointerdown', onDown);
+    window.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('pointerdown', onDown); window.removeEventListener('keydown', onKey); };
+  }, [solOpen]);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -130,7 +142,29 @@ export function CleanShell({ children, current }: { children: ReactNode; current
             <img className={s.logoDark} src="/logotipo-drivedata.webp" alt="DriveData" width={168} height={40} loading="lazy" />
           </SmartLink>
           <nav className={s.nav} aria-label={t.mainNav}>
-            {NAV.map((n) => (
+            {NAV.map((n) => n.key === 'solutions' ? (
+              <div key={n.href} ref={solRef} className={`${s.navDrop} ${solOpen ? s.navDropOpen : ''}`}>
+                <button type="button" className={s.navLink} aria-expanded={solOpen} aria-haspopup="true" aria-controls="submenu-solucoes"
+                  aria-current={current === n.key ? 'page' : undefined} onClick={() => setSolOpen((v) => !v)}>
+                  {n.label}
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+                </button>
+                <div id="submenu-solucoes" className={s.navPanel}>
+                  <ul>
+                    {PRODUCTS.map((p) => (
+                      <li key={p.key}>
+                        <SmartLink href={p.href} className={s.navItem} onClick={() => setSolOpen(false)} {...ext(p.href)}>
+                          <span className={s.navItemTag}>{p.tag}</span>
+                          <strong>{p.name}</strong>
+                          <span className={s.navItemText}>{p.text}</span>
+                        </SmartLink>
+                      </li>
+                    ))}
+                  </ul>
+                  <SmartLink href={n.href} className={s.navAll} onClick={() => setSolOpen(false)}>{ALL_SOLUTIONS_LABEL[lang]} <span aria-hidden="true">→</span></SmartLink>
+                </div>
+              </div>
+            ) : (
               <SmartLink key={n.href} href={n.href} className={s.navLink} aria-current={current === n.key ? 'page' : undefined}>{n.label}</SmartLink>
             ))}
           </nav>
@@ -146,7 +180,12 @@ export function CleanShell({ children, current }: { children: ReactNode; current
           </button>
         </div>
         <nav id="menu-mobile" aria-label={t.menu} className={`${s.mobileMenu} ${menuOpen ? s.mobileMenuOpen : ''}`} hidden={!menuOpen}>
-          {NAV.map((n) => <SmartLink key={n.href} href={n.href} onClick={() => setMenuOpen(false)}>{n.label}</SmartLink>)}
+          {NAV.map((n) => n.key === 'solutions' ? (
+            <div key={n.href} className={s.mobileGroup}>
+              <SmartLink href={n.href} onClick={() => setMenuOpen(false)}>{n.label}</SmartLink>
+              {PRODUCTS.map((p) => <SmartLink key={p.key} href={p.href} className={s.mobileSub} onClick={() => setMenuOpen(false)} {...ext(p.href)}>{p.name}</SmartLink>)}
+            </div>
+          ) : <SmartLink key={n.href} href={n.href} onClick={() => setMenuOpen(false)}>{n.label}</SmartLink>)}
           <SmartLink href={ACADEMY} {...ext(ACADEMY)}>Academy</SmartLink>
           <button type="button" className={s.btn} onClick={contact}>{t.talk}</button>
         </nav>

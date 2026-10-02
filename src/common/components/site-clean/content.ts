@@ -1,7 +1,12 @@
 // Conteúdo compartilhado do site "clean": rotas, menu, rodapé e logos.
+import { SITE_COUNTRY } from '@/common/config/site';
 import type { Copy, Lang } from './i18n';
 
 export const ACADEMY = 'https://academy.drivedata.com.br/';
+// DriveVision: workspace de dashboards por assinatura (R$, Asaas, site em português).
+// Só aparece no site do Brasil.
+export const VISION = 'https://vision.drivedata.com.br/';
+export const SHOW_VISION = SITE_COUNTRY !== 'CA';
 
 /** Rotas oficiais do site. As URLs antigas foram mantidas por causa do SEO. */
 export const ROUTES = {
@@ -39,6 +44,46 @@ export const nav = (lang: Lang) => {
 };
 export type NavKey = ReturnType<typeof nav>[number]['key'];
 
+/** Produtos e serviços: submenu "Soluções", rodapé e cartões da home. */
+export type Product = { key: 'dalt' | 'fabric' | 'vision' | 'academy'; href: string; name: string; tag: string; text: string };
+const PRODUCT_COPY: Copy<Record<Product['key'], { tag: string; text: string }>> = {
+  pt: {
+    dalt: { tag: 'Consultoria', text: 'Dados, BI, engenharia e IA sob medida para a sua operação.' },
+    fabric: { tag: 'Produto', text: 'Acesso e governança sobre o Microsoft Fabric, com cada usuário vendo só o que deve.' },
+    vision: { tag: 'Produto', text: 'Seu workspace de dashboards a partir de Excel, CSV, OneDrive e SharePoint.' },
+    academy: { tag: 'Treinamento', text: 'Cursos e trilhas práticas de dados, BI e analytics.' },
+  },
+  en: {
+    dalt: { tag: 'Consulting', text: 'Tailored data, BI, engineering and AI for your operation.' },
+    fabric: { tag: 'Product', text: 'Access and governance on Microsoft Fabric, each user seeing only what they should.' },
+    vision: { tag: 'Product', text: 'Your dashboard workspace built from Excel, CSV, OneDrive and SharePoint.' },
+    academy: { tag: 'Training', text: 'Hands-on courses and tracks in data, BI and analytics.' },
+  },
+  es: {
+    dalt: { tag: 'Consultoría', text: 'Datos, BI, ingeniería e IA a la medida de su operación.' },
+    fabric: { tag: 'Producto', text: 'Acceso y gobernanza sobre Microsoft Fabric, cada usuario ve solo lo que debe.' },
+    vision: { tag: 'Producto', text: 'Su espacio de dashboards a partir de Excel, CSV, OneDrive y SharePoint.' },
+    academy: { tag: 'Formación', text: 'Cursos y rutas prácticas de datos, BI y analytics.' },
+  },
+  fr: {
+    dalt: { tag: 'Conseil', text: 'Données, BI, ingénierie et IA sur mesure pour votre activité.' },
+    fabric: { tag: 'Produit', text: 'Accès et gouvernance sur Microsoft Fabric, chacun ne voit que ce qu’il doit voir.' },
+    vision: { tag: 'Produit', text: 'Votre espace de tableaux de bord à partir d’Excel, CSV, OneDrive et SharePoint.' },
+    academy: { tag: 'Formation', text: 'Cours et parcours pratiques en données, BI et analytics.' },
+  },
+};
+export const products = (lang: Lang): Product[] => {
+  const t = PRODUCT_COPY[lang];
+  const all: Product[] = [
+    { key: 'dalt', href: ROUTES.dalt, name: 'DALT', ...t.dalt },
+    { key: 'fabric', href: ROUTES.fabric, name: 'Portal Fabric', ...t.fabric },
+    { key: 'vision', href: VISION, name: 'DriveVision', ...t.vision },
+    { key: 'academy', href: ACADEMY, name: 'Academy', ...t.academy },
+  ];
+  return all.filter((p) => p.key !== 'vision' || SHOW_VISION);
+};
+export const ALL_SOLUTIONS_LABEL: Copy<string> = { pt: 'Todas as soluções', en: 'All solutions', es: 'Todas las soluciones', fr: 'Toutes les solutions' };
+
 const FOOTER_COPY: Copy<{ solutions: string; allSolutions: string; company: string; partner: string; social: string }> = {
   pt: { solutions: 'Soluções', allSolutions: 'Todas as soluções', company: 'Empresa', partner: 'Seja parceiro', social: 'Redes' },
   en: { solutions: 'Solutions', allSolutions: 'All solutions', company: 'Company', partner: 'Become a partner', social: 'Social' },
@@ -53,9 +98,7 @@ export const footer = (lang: Lang): { title: string; links: Link[] }[] => {
     {
       title: t.solutions,
       links: [
-        { href: ROUTES.dalt, label: 'DALT' },
-        { href: ROUTES.fabric, label: 'Portal Fabric' },
-        { href: ACADEMY, label: 'Academy' },
+        ...products(lang).map((p) => ({ href: p.href, label: p.name })),
         { href: ROUTES.solutions, label: t.allSolutions },
       ],
     },
