@@ -2,8 +2,20 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 // Renova a sessão do Supabase e protege as rotas /admin/* (exceto /admin/login).
-// O matcher restringe a /admin — o site público não é afetado.
+// Nas rotas dinâmicas públicas só barra endereço com %XX inválido (ex.:
+// /article/%E2%80, link cortado no meio do acento): o Next quebra ao decodificar
+// o parâmetro e responde 500, que o Google conta como erro de servidor.
 export async function middleware(request: NextRequest) {
+  const path = request.nextUrl.pathname;
+  if (!path.startsWith('/admin')) {
+    try {
+      decodeURIComponent(path);
+      return NextResponse.next();
+    } catch {
+      return new NextResponse('Not found', { status: 404 });
+    }
+  }
+
   let response = NextResponse.next({ request });
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -35,7 +47,6 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const path = request.nextUrl.pathname;
   const isLogin = path.startsWith('/admin/login');
 
   if (path.startsWith('/admin') && !isLogin && !user) {
@@ -54,5 +65,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/article/:path*', '/vagas/:path*', '/cases/:path*', '/proposta/:path*'],
 };
