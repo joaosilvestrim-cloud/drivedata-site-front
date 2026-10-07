@@ -158,7 +158,14 @@ export type ArticleLookup =
 export async function findArticleReadOnly(idOrSlug: string, lang: Lang): Promise<ArticleLookup> {
   const raw: any = await getArticleById(idOrSlug, lang);
   if (!raw) {
-    const target = await getArticleRedirect(decodeURIComponent(idOrSlug));
+    // endereço com %XX quebrado (ex.: /article/%E2%80) dava 500; vira 404
+    let key: string;
+    try {
+      key = decodeURIComponent(idOrSlug);
+    } catch {
+      return { kind: 'missing' };
+    }
+    const target = await getArticleRedirect(key);
     return target ? { kind: 'redirect', to: articleHref(target) } : { kind: 'missing' };
   }
   const iso = toIso(raw.publishedAt ?? raw.createdAt);
