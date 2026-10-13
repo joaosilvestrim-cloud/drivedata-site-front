@@ -5,15 +5,27 @@ import { NextResponse, type NextRequest } from 'next/server';
 // Nas rotas dinâmicas públicas só barra endereço com %XX inválido (ex.:
 // /article/%E2%80, link cortado no meio do acento): o Next quebra ao decodificar
 // o parâmetro e responde 500, que o Google conta como erro de servidor.
+// ?lang=es|fr|en|pt (links por idioma do post do LinkedIn) vira a escolha de
+// idioma do visitante: grava o cookie e a própria resposta já sai nesse idioma.
+const LANG_COOKIE = 'drive-data-lp:selected-language';
+const LANGS = ['pt', 'en', 'es', 'fr'];
+
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   if (!path.startsWith('/admin')) {
     try {
       decodeURIComponent(path);
-      return NextResponse.next();
     } catch {
       return new NextResponse('Not found', { status: 404 });
     }
+    const lang = request.nextUrl.searchParams.get('lang')?.toLowerCase();
+    if (lang && LANGS.includes(lang)) {
+      request.cookies.set(LANG_COOKIE, lang);
+      const res = NextResponse.next({ request });
+      res.cookies.set(LANG_COOKIE, lang, { path: '/', maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' });
+      return res;
+    }
+    return NextResponse.next();
   }
 
   let response = NextResponse.next({ request });

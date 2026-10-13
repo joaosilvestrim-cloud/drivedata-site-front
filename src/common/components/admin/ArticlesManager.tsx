@@ -7,6 +7,7 @@ import 'react-quill-new/dist/quill.snow.css';
 import { C, Card, Button, Badge, Icon, Modal, Field, Input, Textarea, Select, PageHeader, ErrorBar, Spinner, table as T } from './ui';
 import { MediaPicker } from './MediaPicker';
 import { VideoInsertModal, type VideoInsert } from './VideoInsertModal';
+import { LinkedInShare } from './LinkedInShare';
 
 // Registra os blots de vídeo (MP4 + YouTube) no Quill ao carregar o editor no
 // cliente, antes de renderizar.
@@ -91,6 +92,7 @@ export function ArticlesManager() {
   const [slugTouched, setSlugTouched] = useState(false);
   const [transEnabled, setTransEnabled] = useState(false);
   const [showMedia, setShowMedia] = useState(false);
+  const [sharing, setSharing] = useState<Article | null>(null);
   // Editor de vídeo: guarda a instância do Quill + posição do cursor enquanto o
   // modal de inserção de vídeo está aberto.
   const [videoCtx, setVideoCtx] = useState<{ quill: QuillLike; range: number } | null>(null);
@@ -425,6 +427,8 @@ export function ArticlesManager() {
                   <span onClick={() => quickToggle(a)} style={{ cursor: 'pointer' }} title="Alternar publicação">{statusBadge(a)}</span>
                 </td>
                 <td style={{ ...T.td, textAlign: 'right', whiteSpace: 'nowrap' }}>
+                  <Button variant="subtle" icon="link" onClick={() => setSharing(a)} disabled={a.status !== 'published'}
+                    title={a.status !== 'published' ? 'Publique o artigo antes de compartilhar' : 'Post do LinkedIn com todos os idiomas'} style={{ marginRight: 6 }}>LinkedIn</Button>
                   <Button variant="ghost" icon="edit" onClick={() => open(a)} style={{ marginRight: 6 }}>Editar</Button>
                   <Button variant="danger" icon="trash" onClick={() => remove(a.id)}>Excluir</Button>
                 </td>
@@ -437,6 +441,8 @@ export function ArticlesManager() {
         </table>
       )}
 
+      {sharing && <LinkedInShare article={sharing} onClose={() => setSharing(null)} />}
+
       {editing && (
         <Modal
           title={editing.id ? 'Editar artigo' : 'Novo artigo'}
@@ -445,6 +451,7 @@ export function ArticlesManager() {
           footer={
             <>
               <Button variant="subtle" icon="eye" onClick={() => setPreview(true)}>Pré-visualizar</Button>
+              {editing.id && form.status === 'published' && <Button variant="subtle" icon="link" onClick={() => setSharing({ ...form, id: editing.id })}>LinkedIn</Button>}
               <div style={{ flex: 1 }} />
               <Button variant="ghost" onClick={() => setEditing(null)}>Cancelar</Button>
               <Button variant="primary" onClick={save} disabled={saving}>{saving ? 'Salvando…' : 'Salvar'}</Button>

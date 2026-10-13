@@ -42,6 +42,17 @@ const detectionOptions = {
   cookieSecure: false, // true em produção com HTTPS
 };
 
+// Link com ?lang= (post do LinkedIn por idioma): vale mais que a escolha antiga
+// guardada no navegador, senão a interface voltaria ao idioma anterior.
+if (typeof window !== 'undefined') {
+  try {
+    const q = new URLSearchParams(window.location.search).get('lang')?.toLowerCase();
+    if (q && ['pt', 'en', 'es', 'fr'].includes(q)) window.localStorage.setItem('drive-data-lp:selected-language', q);
+  } catch {
+    /* sem armazenamento: o cookie do middleware cobre */
+  }
+}
+
 if (!i18n.isInitialized) {
   i18n
     .use(LanguageDetector)
