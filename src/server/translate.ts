@@ -1,6 +1,6 @@
 // Tradução automática de conteúdo (PT -> EN/ES/FR), usada pelo editor de artigos.
 // Provedores (escolhido por env, sem mudar código):
-//   • OpenAI                     — OPENAI_API_KEY (OPENAI_TRANSLATE_MODEL, padrão gpt-4.1-mini)
+//   • OpenAI                     — OPENAI_API_KEY (OPENAI_TRANSLATE_MODEL, padrão gpt-4.1)
 //   • Groq                       — GROQ_API_KEY (plano grátis: 8 mil tokens por minuto)
 //   • Google Cloud Translate v2  — GOOGLE_TRANSLATE_API_KEY
 //   • DeepL                      — DEEPL_API_KEY (Free termina em ":fx")
@@ -86,7 +86,17 @@ function hardSplit(s: string, budget: number): string[] {
 const LANG_NAME: Record<string, string> = { pt: 'português (Brasil)', en: 'inglês', es: 'espanhol', fr: 'francês' };
 // LLM (OpenAI ou Groq, mesma API de chat). Traduz preservando o HTML — só o texto visível.
 const GROQ_MODEL = process.env.GROQ_MODEL || 'openai/gpt-oss-120b';
-const OPENAI_MODEL = process.env.OPENAI_TRANSLATE_MODEL || 'gpt-4.1-mini';
+const OPENAI_MODEL = process.env.OPENAI_TRANSLATE_MODEL || 'gpt-4.1';
+// Na OpenAI os pedaços vão em paralelo (até OPENAI_PARALLEL chamadas de uma vez): o tempo
+// total cai para o do pedaço mais lento em vez da soma de todos.
+const MAX_PARALLEL = Math.max(1, Math.min(12, Number(process.env.OPENAI_PARALLEL) || 6));
+let active = 0;
+const waiting: (() => void)[] = [];
+async function limited<T>(fn: () => Promise<T>): Promise<T> {
+  if (active >= MAX_PARALLEL) await new Promise<void>((r) => waiting.push(r));
+  active++;
+  try { return await fn(); } finally { active--; waiting.shift()?.(); }
+}
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 function systemPrompt(from: string, to: string) {
   const src = LANG_NAME[from] ?? from, tgt = LANG_NAME[to] ?? to;
@@ -105,7 +115,7 @@ async function llmTranslate(kind: 'openai' | 'groq', texts: string[], from: stri
     if (!q || !q.trim()) { out.push(q ?? ''); continue; }
     let model = isOpenAi ? OPENAI_MODEL : GROQ_MODEL;
     for (let attempt = 0; ; attempt++) {
-      const res = await fetch(url, {
+      const call = () => fetch(url, {
         method: 'POST',
         headers: { 'content-type': 'application/json', Authorization: `Bearer ${key}` },
         body: JSON.stringify({
@@ -116,6 +126,7 @@ async function llmTranslate(kind: 'openai' | 'groq', texts: string[], from: stri
         }),
         signal: AbortSignal.timeout(110_000),
       });
+      const res = isOpenAi ? await limited(call) : await call();
       if (res.ok) {
         const data = await res.json();
         let text = (data?.choices?.[0]?.message?.content ?? '') as string;
@@ -126,7 +137,7 @@ async function llmTranslate(kind: 'openai' | 'groq', texts: string[], from: stri
       }
       const t = await res.text().catch(() => '');
       // modelo fora da conta OpenAI: tenta o mini anterior uma vez
-      if (isOpenAi && res.status === 404 && model !== 'gpt-4o-mini') { model = 'gpt-4o-mini'; continue; }
+      if (isOpenAi && res.status === 404 && model !== 'gpt-4.1-mini') { model = 'gpt-4.1-mini'; continue; }
       // limite por minuto (429, ou 413 da Groq por TPM): espera e tenta de novo
       const perMinute = res.status === 429 || (res.status === 413 && /per minute|TPM/i.test(t));
       if (perMinute && attempt < 3) {
@@ -213,7 +224,7 @@ async function translateChunk(texts: string[], from: string, to: string): Promis
 // Groq grátis tem 8 mil tokens por minuto somando entrada e saída.
 function chunkBudget(): number {
   const p = provider();
-  if (p === 'openai') return 24_000;
+  if (p === 'openai') return 8_000;
   if (p === 'groq') return 7_000;
   return CHUNK_BUDGET;
 }
@@ -223,6 +234,10 @@ export async function translateText(text: string, from: string, to: string): Pro
   const { text: safe, kept } = protect(text);
   const chunks = splitHtml(safe, chunkBudget());
   if (chunks.length === 1) return restore((await translateChunk(chunks, from, to))[0] ?? '', kept);
+  if (parallelSafe()) {
+    const parts = await Promise.all(chunks.map(async (c) => (await translateChunk([c], from, to))[0] ?? ''));
+    return restore(parts.join(''), kept);
+  }
   const out: string[] = [];
   for (const c of chunks) out.push((await translateChunk([c], from, to))[0] ?? '');
   return restore(out.join(''), kept);
@@ -239,6 +254,11 @@ export async function translateFields(fields: TranslatableFields, from: string, 
     (k) => typeof fields[k] === 'string' && (fields[k] as string).trim().length > 0,
   );
   const out: TranslatableFields = {};
+  if (parallelSafe()) {
+    const done = await Promise.all(keys.map((k) => translateText(fields[k] as string, from, to)));
+    keys.forEach((k, i) => { out[k] = done[i]; });
+    return out;
+  }
   for (const k of keys) out[k] = await translateText(fields[k] as string, from, to);
   return out;
 }
