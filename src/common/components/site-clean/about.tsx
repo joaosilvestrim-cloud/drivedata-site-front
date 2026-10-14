@@ -129,6 +129,7 @@ const PT = {
   testimonialsText: 'Junte-se às empresas que confiam em nós para impulsionar seus negócios.',
   testimonialsEmpty: 'Os depoimentos não puderam ser carregados agora.',
   photoOf: (name: string) => `Foto de ${name}`,
+  playOf: (name: string) => `Assistir ao depoimento de ${name}`,
   // Sobre
   slogan: 'Tecnologia que move pessoas. Inteligência que move resultados.',
   about1: 'Na DriveData, transformamos tecnologia em crescimento real. Atuamos com inteligência artificial, desenvolvimento de sistemas, automação e engenharia de dados.',
@@ -232,6 +233,7 @@ const COPY: Copy<typeof PT> = {
     testimonialsText: 'Join the companies that trust us to boost their business.',
     testimonialsEmpty: 'Testimonials could not be loaded right now.',
     photoOf: (name: string) => `Photo of ${name}`,
+    playOf: (name: string) => `Watch ${name}'s testimonial`,
     slogan: 'Technology that moves people. Intelligence that drives results.',
     about1: 'At DriveData, we transform technology into real growth. We work with artificial intelligence, system development, automation and data engineering.',
     about2: 'Our multidisciplinary team dives deep into your operations. Developers, engineers and AI specialists build tailored systems, integrations, automations and dashboards. Less rework, more predictability.',
@@ -328,6 +330,7 @@ const COPY: Copy<typeof PT> = {
     testimonialsText: 'Únete a las empresas que confían en nosotros para impulsar sus negocios.',
     testimonialsEmpty: 'No fue posible cargar los testimonios en este momento.',
     photoOf: (name: string) => `Foto de ${name}`,
+    playOf: (name: string) => `Ver el testimonio de ${name}`,
     slogan: 'Tecnología que mueve personas. Inteligencia que impulsa resultados.',
     about1: 'En DriveData, transformamos la tecnología en crecimiento real. Trabajamos con inteligencia artificial, desarrollo de sistemas, automatización e ingeniería de datos.',
     about2: 'Nuestro equipo multidisciplinar se sumerge en tu operación. Desarrolladores, ingenieros y especialistas en IA crean sistemas, integraciones, automatizaciones y dashboards a medida. Menos retrabajo, más previsibilidad.',
@@ -424,6 +427,7 @@ const COPY: Copy<typeof PT> = {
     testimonialsText: 'Rejoignez les entreprises qui nous font confiance pour dynamiser leur activité.',
     testimonialsEmpty: "Les témoignages n'ont pas pu être chargés pour le moment.",
     photoOf: (name: string) => `Photo de ${name}`,
+    playOf: (name: string) => `Voir le témoignage de ${name}`,
     slogan: "La technologie qui mobilise les personnes. L'intelligence qui propulse les résultats.",
     about1: "Chez DriveData, nous transformons la technologie en croissance réelle. Nous travaillons avec l'intelligence artificielle, le développement de systèmes, l'automatisation et l'ingénierie des données.",
     about2: "Notre équipe multidisciplinaire s'immerge dans vos opérations. Développeurs, ingénieurs et spécialistes IA créent des systèmes, intégrations, automatisations et tableaux de bord sur mesure. Moins de retravail, plus de prévisibilité.",
@@ -509,9 +513,11 @@ function Accordion({ items, prefix, initialOpen, compact, onFog }: {
 function Quote({ t }: { t: TestimonialModel }) {
   const c = useCopy(COPY);
   const initials = t.clientName.split(' ').filter(Boolean).map((n) => n[0]).slice(0, 2).join('').toUpperCase();
+  const text = stripHtml(t.testimonial);
   return (
-    <figure className={a.quote}>
-      <blockquote>{stripHtml(t.testimonial)}</blockquote>
+    <figure className={cx(a.quote, t.videoUrl && a.quoteVideo)}>
+      {t.videoUrl && <QuoteVideo url={t.videoUrl} label={c.playOf(t.clientName)} />}
+      {text && <blockquote>{text}</blockquote>}
       <figcaption>
         <span className={a.avatar} aria-hidden={t.clientAvatar ? undefined : true}>
           {t.clientAvatar ? <img src={t.clientAvatar} alt={c.photoOf(t.clientName)} loading="lazy" /> : initials}
@@ -522,6 +528,33 @@ function Quote({ t }: { t: TestimonialModel }) {
         </span>
       </figcaption>
     </figure>
+  );
+}
+
+/* vídeo do depoimento: capa com play; o player só carrega no clique (página leve) */
+const ytId = (u: string) => {
+  const m = u.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/);
+  return m ? m[1] : /^[\w-]{11}$/.test(u.trim()) ? u.trim() : null;
+};
+function QuoteVideo({ url, label }: { url: string; label: string }) {
+  const [playing, setPlaying] = useState(false);
+  const yt = ytId(url);
+  if (playing) {
+    return (
+      <div className={a.quoteMedia}>
+        {yt
+          ? <iframe src={`https://www.youtube-nocookie.com/embed/${yt}?autoplay=1&rel=0&modestbranding=1&playsinline=1`} title={label} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />
+          : <video src={url} controls autoPlay playsInline />}
+      </div>
+    );
+  }
+  return (
+    <button type="button" className={a.quoteMedia} onClick={() => setPlaying(true)} aria-label={label}>
+      {yt
+        ? <img src={`https://i.ytimg.com/vi/${yt}/hqdefault.jpg`} alt="" loading="lazy" />
+        : <video src={`${url}#t=0.5`} preload="metadata" muted playsInline tabIndex={-1} aria-hidden />}
+      <span className={a.quotePlay} aria-hidden><svg viewBox="0 0 24 24" width="26" height="26"><path d="M8 5v14l11-7z" fill="currentColor" /></svg></span>
+    </button>
   );
 }
 

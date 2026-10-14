@@ -65,6 +65,7 @@ export const ENTITIES: Record<string, EntityConfig> = {
       clientName: { col: 'client_name', type: 'i18n' },
       clientCompany: { col: 'client_company', type: 'i18n' },
       clientAvatar: { col: 'client_avatar', type: 'text' },
+      videoUrl: { col: 'video_url', type: 'text' },
       testimonial: { col: 'testimonial', type: 'i18n' },
       rating: { col: 'rating', type: 'int' },
       isActive: { col: 'is_active', type: 'bool' },

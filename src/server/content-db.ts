@@ -196,6 +196,7 @@ export async function getTestimonials(lang: Lang = 'pt') {
     clientName: t(r.client_name, lang),
     clientCompany: t(r.client_company, lang) || undefined,
     clientAvatar: r.client_avatar ?? undefined,
+    videoUrl: r.video_url || undefined,
     testimonial: t(r.testimonial, lang),
     rating: r.rating ?? undefined,
     isActive: r.is_active,

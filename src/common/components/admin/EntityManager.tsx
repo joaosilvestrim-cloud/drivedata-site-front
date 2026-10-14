@@ -3,8 +3,9 @@
 import { uploadImage } from '@/common/supabase/upload';
 import { useEffect, useState } from 'react';
 import { C, Card, Button, Badge, Icon, Modal, Field, Input, Textarea, Select, PageHeader, ErrorBar, Spinner, table as T } from './ui';
+import { VideoField } from './VideoField';
 
-export type FieldType = 'text' | 'textarea' | 'int' | 'bool' | 'image' | 'select';
+export type FieldType = 'text' | 'textarea' | 'int' | 'bool' | 'image' | 'select' | 'video';
 export interface FieldDef {
   key: string;
   label: string;
@@ -189,6 +190,8 @@ export function EntityManager({ entity, title, description, icon = 'layers', fie
                   <label style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 14, color: C.muted }}>
                     <input type="checkbox" checked={!!form[f.key]} onChange={(e) => setForm((p) => ({ ...p, [f.key]: e.target.checked }))} /> Ativo
                   </label>
+                ) : f.type === 'video' ? (
+                  <VideoField value={form[f.key] ?? ''} onChange={(v) => setForm((p) => ({ ...p, [f.key]: v }))} />
                 ) : f.type === 'image' ? (
                   <div>
                     {form[f.key] && (
