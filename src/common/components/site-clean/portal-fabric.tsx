@@ -871,22 +871,38 @@ function Faq() {
   );
 }
 
-// O Bookings leva alguns segundos para desenhar o calendário. Até lá fica um esqueleto
-// com a mesma forma (título, mês, horários) em vez da moldura branca; se passar de 15s,
-// o aviso oferece abrir a agenda em nova aba. O iframe entra só depois da hidratação
-// para o onLoad nunca escapar.
+// O Bookings leva alguns segundos para desenhar o calendário, e o navegador só desenha
+// o iframe quando ele aparece na tela. Até lá fica um esqueleto com a mesma forma
+// (título, mês, horários) em vez da moldura branca: ele sai 3,5s depois de o iframe ter
+// carregado E estar visível. Se a agenda visível passar de 15s sem abrir, o aviso oferece
+// a nova aba. O iframe entra só depois da hidratação para o onLoad nunca escapar.
 function Agenda() {
   const t = useCopy(COPY);
   const sc = t.src.schedule;
   const [src, setSrc] = useState<string>();
   const [state, setState] = useState<'loading' | 'slow' | 'ready'>('loading');
+  const [loaded, setLoaded] = useState(false);
+  const [seen, setSeen] = useState(false);
+  const frameRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const raf = requestAnimationFrame(() => setSrc(BOOKING_URL));
-    const slow = setTimeout(() => setState((v) => (v === 'loading' ? 'slow' : v)), 15000);
-    return () => { cancelAnimationFrame(raf); clearTimeout(slow); };
+    const el = frameRef.current;
+    const io = new IntersectionObserver(([en]) => {
+      if (en.isIntersecting) { setSeen(true); io.disconnect(); }
+    }, { threshold: 0.2 });
+    if (el) io.observe(el);
+    return () => { cancelAnimationFrame(raf); io.disconnect(); };
   }, []);
-  // O load chega um pouco antes de a Microsoft pintar a agenda; a folga esconde o spinner dela.
-  const onLoad = () => { setTimeout(() => setState('ready'), 1200); };
+  useEffect(() => {
+    if (!seen) return;
+    const slow = setTimeout(() => setState((v) => (v === 'loading' ? 'slow' : v)), 15000);
+    return () => clearTimeout(slow);
+  }, [seen]);
+  useEffect(() => {
+    if (!seen || !loaded) return;
+    const ready = setTimeout(() => setState('ready'), 3500);
+    return () => clearTimeout(ready);
+  }, [seen, loaded]);
   const newTab = <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">{sc.fallbackLink}</a>;
 
   return (
@@ -902,7 +918,7 @@ function Agenda() {
           </dl>
           <p className={p.agendaAlt}>{sc.fallback} {newTab}</p>
         </div>
-        <div className={p.agendaFrame} data-reveal data-state={state} style={delay(100)}>
+        <div ref={frameRef} className={p.agendaFrame} data-reveal data-state={state} style={delay(100)}>
           <div className={p.agendaSkel} aria-hidden={state === 'ready'}>
             <span className={p.skTitle} />
             <span className={p.skSub} />
@@ -914,7 +930,7 @@ function Agenda() {
             </p>
           </div>
           {/* Agenda pública do Microsoft Bookings: os agendamentos caem no Outlook do time. */}
-          {src && <iframe src={src} title={sc.title} onLoad={onLoad} />}
+          {src && <iframe src={src} title={sc.title} onLoad={() => setLoaded(true)} />}
         </div>
       </div>
     </section>
