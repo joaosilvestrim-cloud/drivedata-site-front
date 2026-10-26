@@ -80,7 +80,7 @@ export interface PortalCopy {
     cta: string;
   };
   faq: { eyebrow: string; title: string; subtitle: string; items: { q: string; a: string }[] };
-  schedule: { title: string; subtitle: string; fallback: string; fallbackLink: string };
+  schedule: { title: string; subtitle: string; fallback: string; fallbackLink: string; loading: string };
   cta: { title: string; subtitle: string; ctaPrimary: string; ctaSecondary: string; badges: string[] };
   footer: { tagline: string; rights: string };
 }
@@ -388,6 +388,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       subtitle: 'Escolha o melhor horário abaixo. O convite cai direto na sua agenda e na nossa.',
       fallback: 'A agenda não apareceu?',
       fallbackLink: 'Abrir em nova aba',
+      loading: 'Carregando a agenda…',
     },
     cta: {
       title: 'Pronto para transformar como sua empresa consome dados?',
@@ -667,6 +668,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       subtitle: 'Pick the best time below. The invite lands straight in your calendar and ours.',
       fallback: 'Calendar not showing?',
       fallbackLink: 'Open in a new tab',
+      loading: 'Loading the calendar…',
     },
     cta: {
       title: 'Ready to transform how your company consumes data?',
@@ -946,6 +948,7 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
       subtitle: 'Choisissez le meilleur créneau ci-dessous. L’invitation arrive directement dans votre agenda et le nôtre.',
       fallback: 'L’agenda ne s’affiche pas ?',
       fallbackLink: 'Ouvrir dans un nouvel onglet',
+      loading: 'Chargement de l’agenda…',
     },
     cta: {
       title: 'Prêt à transformer la façon dont votre entreprise consomme les données ?',

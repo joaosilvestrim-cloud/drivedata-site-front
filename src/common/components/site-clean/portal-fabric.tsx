@@ -249,6 +249,7 @@ const ES_SOURCE = page({
     subtitle: 'Elija el mejor horario abajo. La invitación llega directo a su agenda y a la nuestra.',
     fallback: '¿No aparece la agenda?',
     fallbackLink: 'Abrir en una pestaña nueva',
+    loading: 'Cargando la agenda…',
   },
   cta: {
     title: '¿Listo para transformar la forma en que su empresa consume datos?',
@@ -1015,7 +1016,10 @@ export function PortalFabricClean({ videoUrl }: { videoUrl?: string | null }) {
           </div>
           <div className={p.agendaFrame} data-reveal style={delay(100)}>
             {/* Agenda pública do Microsoft Bookings: os agendamentos caem no Outlook do time. */}
-            <iframe src={BOOKING_URL} title={copy.schedule.title} loading="lazy" />
+            {/* O Bookings demora ~10s para abrir: carrega junto com a página (sem lazy) e o
+                aviso fica atrás do iframe transparente até a Microsoft pintar a agenda. */}
+            <span className={p.agendaLoading} aria-hidden="true">{copy.schedule.loading}</span>
+            <iframe src={BOOKING_URL} title={copy.schedule.title} />
           </div>
         </div>
       </section>
