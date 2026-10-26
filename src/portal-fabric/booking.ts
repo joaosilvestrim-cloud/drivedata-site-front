@@ -3,7 +3,9 @@
 // todos os botões "Agendar" da landing de uma vez.
 import { trackLeadConversion } from '@/common/helpers/track-conversion';
 
-export const BOOKING_URL = 'https://outlook.office.com/book/DemonstraoPortalFabric2@drivedata.com.br/';
+// A Microsoft passou a redirecionar outlook.office.com/book para bookings.cloud.microsoft;
+// usar o endereço final poupa um redirecionamento na abertura do iframe.
+export const BOOKING_URL = 'https://bookings.cloud.microsoft/book/DemonstraoPortalFabric2@drivedata.com.br/';
 
 /**
  * Leva o usuário ao agendamento. Prioriza a agenda embutida na própria página

@@ -277,6 +277,12 @@ const PT = {
   traditional: 'Tradicional',
   proofLead: 'Organizações de diferentes setores usam o Portal DriveData para ganhar governança, melhorar a experiência de quem consome relatórios e reduzir o custo com licenças Power BI.',
   ctaLead: 'Agende uma demonstração gratuita e veja na prática como a capacidade Microsoft Fabric reduz o custo com licenças e eleva a governança de BI da sua empresa.',
+  agendaFacts: [
+    ['30 minutos', 'Conversa online. O link da reunião vai no convite.'],
+    ['Na prática', 'Você vê o portal funcionando e tira dúvidas de licença e capacidade.'],
+    ['Sem custo', 'A demonstração é gratuita e não gera compromisso.'],
+  ] as [string, string][],
+  agendaSlow: 'A agenda está demorando para abrir.',
 };
 
 const COPY: Copy<typeof PT> = {
@@ -303,6 +309,12 @@ const COPY: Copy<typeof PT> = {
     traditional: 'Traditional',
     proofLead: 'Organizations across sectors use Portal DriveData to gain governance, improve the experience of report consumers and cut Power BI licensing costs.',
     ctaLead: 'Book a free demo and see in practice how Microsoft Fabric capacity cuts licensing costs and raises your company’s BI governance.',
+    agendaFacts: [
+      ['30 minutes', 'Online call. The meeting link comes in the invite.'],
+      ['Hands-on', 'You see the portal running and get your licensing and capacity questions answered.'],
+      ['Free', 'The demo is free and carries no commitment.'],
+    ],
+    agendaSlow: 'The calendar is taking a while to open.',
   },
   es: {
     src: ES_SOURCE,
@@ -323,6 +335,12 @@ const COPY: Copy<typeof PT> = {
     traditional: 'Tradicional',
     proofLead: 'Organizaciones de distintos sectores usan Portal DriveData para ganar gobernanza, mejorar la experiencia de quienes consumen informes y reducir el costo de las licencias Power BI.',
     ctaLead: 'Agende una demostración gratuita y vea en la práctica cómo la capacidad Microsoft Fabric reduce el costo de licencias y eleva la gobernanza de BI de su empresa.',
+    agendaFacts: [
+      ['30 minutos', 'Reunión en línea. El enlace llega en la invitación.'],
+      ['En la práctica', 'Ve el portal funcionando y resuelve sus dudas de licencias y capacidad.'],
+      ['Sin costo', 'La demostración es gratuita y sin compromiso.'],
+    ],
+    agendaSlow: 'La agenda está tardando en abrir.',
   },
   fr: {
     src: page({
@@ -346,6 +364,12 @@ const COPY: Copy<typeof PT> = {
     traditional: 'Traditionnel',
     proofLead: 'Des organisations de divers secteurs utilisent Portal DriveData pour gagner en gouvernance, améliorer l’expérience des consommateurs de rapports et réduire les coûts de licences Power BI.',
     ctaLead: 'Planifiez une démo gratuite et voyez concrètement comment la capacité Microsoft Fabric réduit les coûts de licences et rehausse la gouvernance BI de votre entreprise.',
+    agendaFacts: [
+      ['30 minutes', 'Rencontre en ligne. Le lien arrive dans l’invitation.'],
+      ['Concrètement', 'Vous voyez le portail en action et posez vos questions sur les licences et la capacité.'],
+      ['Gratuit', 'La démo est gratuite et sans engagement.'],
+    ],
+    agendaSlow: 'L’agenda met du temps à s’ouvrir.',
   },
 };
 
@@ -847,6 +871,56 @@ function Faq() {
   );
 }
 
+// O Bookings leva alguns segundos para desenhar o calendário. Até lá fica um esqueleto
+// com a mesma forma (título, mês, horários) em vez da moldura branca; se passar de 15s,
+// o aviso oferece abrir a agenda em nova aba. O iframe entra só depois da hidratação
+// para o onLoad nunca escapar.
+function Agenda() {
+  const t = useCopy(COPY);
+  const sc = t.src.schedule;
+  const [src, setSrc] = useState<string>();
+  const [state, setState] = useState<'loading' | 'slow' | 'ready'>('loading');
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setSrc(BOOKING_URL));
+    const slow = setTimeout(() => setState((v) => (v === 'loading' ? 'slow' : v)), 15000);
+    return () => { cancelAnimationFrame(raf); clearTimeout(slow); };
+  }, []);
+  // O load chega um pouco antes de a Microsoft pintar a agenda; a folga esconde o spinner dela.
+  const onLoad = () => { setTimeout(() => setState('ready'), 1200); };
+  const newTab = <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">{sc.fallbackLink}</a>;
+
+  return (
+    <section id="agenda" className={s.band} aria-labelledby="agenda-titulo">
+      <div className={`${s.wrap} ${p.agendaGrid}`}>
+        <div className={p.agendaHead} data-reveal>
+          <h2 id="agenda-titulo" className={s.h2}>{sc.title}</h2>
+          <p className={s.lead}>{sc.subtitle}</p>
+          <dl className={p.agendaFacts}>
+            {t.agendaFacts.map(([k, v]) => (
+              <div key={k}><dt>{k}</dt><dd>{v}</dd></div>
+            ))}
+          </dl>
+          <p className={p.agendaAlt}>{sc.fallback} {newTab}</p>
+        </div>
+        <div className={p.agendaFrame} data-reveal data-state={state} style={delay(100)}>
+          <div className={p.agendaSkel} aria-hidden={state === 'ready'}>
+            <span className={p.skTitle} />
+            <span className={p.skSub} />
+            <span className={p.skBox} />
+            <div className={p.skGrid}>{Array.from({ length: 35 }, (_, i) => <i key={i} />)}</div>
+            <div className={p.skSlots}>{Array.from({ length: 5 }, (_, i) => <i key={i} />)}</div>
+            <p className={p.skMsg} role="status">
+              {state === 'slow' ? <>{t.agendaSlow} {newTab}</> : sc.loading}
+            </p>
+          </div>
+          {/* Agenda pública do Microsoft Bookings: os agendamentos caem no Outlook do time. */}
+          {src && <iframe src={src} title={sc.title} onLoad={onLoad} />}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ─────────── Página ───────────
 export function PortalFabricClean({ videoUrl }: { videoUrl?: string | null }) {
   const { openTypebot } = useTypebot();
@@ -1002,27 +1076,7 @@ export function PortalFabricClean({ videoUrl }: { videoUrl?: string | null }) {
 
       <Faq />
 
-      <section id="agenda" className={s.band} aria-labelledby="agenda-titulo">
-        <div className={`${s.wrap} ${p.agendaGrid}`}>
-          <div className={p.agendaHead} data-reveal>
-            <h2 id="agenda-titulo" className={s.h2}>{copy.schedule.title}</h2>
-            <p className={s.lead}>{copy.schedule.subtitle}</p>
-            {/* Alguns navegadores (aba anônima, Safari, Edge com prevenção rígida) bloqueiam o
-                iframe do Bookings e ele fica em branco; o link abre a mesma agenda fora da página. */}
-            <p className={p.agendaAlt}>
-              {copy.schedule.fallback}{' '}
-              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">{copy.schedule.fallbackLink}</a>
-            </p>
-          </div>
-          <div className={p.agendaFrame} data-reveal style={delay(100)}>
-            {/* Agenda pública do Microsoft Bookings: os agendamentos caem no Outlook do time. */}
-            {/* O Bookings demora ~10s para abrir: carrega junto com a página (sem lazy) e o
-                aviso fica atrás do iframe transparente até a Microsoft pintar a agenda. */}
-            <span className={p.agendaLoading} aria-hidden="true">{copy.schedule.loading}</span>
-            <iframe src={BOOKING_URL} title={copy.schedule.title} />
-          </div>
-        </div>
-      </section>
+      <Agenda />
 
       <section className={`${s.band} ${s.bandTight}`} aria-labelledby="cta-titulo">
         <div className={s.wrap}>
