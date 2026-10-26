@@ -80,7 +80,7 @@ export interface PortalCopy {
     cta: string;
   };
   faq: { eyebrow: string; title: string; subtitle: string; items: { q: string; a: string }[] };
-  schedule: { title: string; subtitle: string };
+  schedule: { title: string; subtitle: string; fallback: string; fallbackLink: string };
   cta: { title: string; subtitle: string; ctaPrimary: string; ctaSecondary: string; badges: string[] };
   footer: { tagline: string; rights: string };
 }
@@ -386,6 +386,8 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
     schedule: {
       title: 'Agende sua demonstração',
       subtitle: 'Escolha o melhor horário abaixo. O convite cai direto na sua agenda e na nossa.',
+      fallback: 'A agenda não apareceu?',
+      fallbackLink: 'Abrir em nova aba',
     },
     cta: {
       title: 'Pronto para transformar como sua empresa consome dados?',
@@ -663,6 +665,8 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
     schedule: {
       title: 'Book your demo',
       subtitle: 'Pick the best time below. The invite lands straight in your calendar and ours.',
+      fallback: 'Calendar not showing?',
+      fallbackLink: 'Open in a new tab',
     },
     cta: {
       title: 'Ready to transform how your company consumes data?',
@@ -940,6 +944,8 @@ export const PORTAL_COPY: Record<PortalLang, PortalCopy> = {
     schedule: {
       title: 'Réservez votre démo',
       subtitle: 'Choisissez le meilleur créneau ci-dessous. L’invitation arrive directement dans votre agenda et le nôtre.',
+      fallback: 'L’agenda ne s’affiche pas ?',
+      fallbackLink: 'Ouvrir dans un nouvel onglet',
     },
     cta: {
       title: 'Prêt à transformer la façon dont votre entreprise consomme les données ?',

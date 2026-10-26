@@ -406,6 +406,8 @@ div.splitTop { align-items: start; }
   box-shadow: inset 0 0 0 1px var(--line);
 }
 .agendaFrame iframe { display: block; width: 100%; height: 760px; border: 0; background: #fff; }
+.agendaAlt { font-size: 15px; color: var(--slate); }
+.agendaAlt a { color: var(--blue); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 
 /* ─────────── Responsivo ─────────── */
 @media (max-width: 1080px) {

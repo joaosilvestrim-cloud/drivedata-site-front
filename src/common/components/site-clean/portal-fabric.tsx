@@ -247,6 +247,8 @@ const ES_SOURCE = page({
   schedule: {
     title: 'Agende su demostración',
     subtitle: 'Elija el mejor horario abajo. La invitación llega directo a su agenda y a la nuestra.',
+    fallback: '¿No aparece la agenda?',
+    fallbackLink: 'Abrir en una pestaña nueva',
   },
   cta: {
     title: '¿Listo para transformar la forma en que su empresa consume datos?',
@@ -1004,6 +1006,12 @@ export function PortalFabricClean({ videoUrl }: { videoUrl?: string | null }) {
           <div className={p.agendaHead} data-reveal>
             <h2 id="agenda-titulo" className={s.h2}>{copy.schedule.title}</h2>
             <p className={s.lead}>{copy.schedule.subtitle}</p>
+            {/* Alguns navegadores (aba anônima, Safari, Edge com prevenção rígida) bloqueiam o
+                iframe do Bookings e ele fica em branco; o link abre a mesma agenda fora da página. */}
+            <p className={p.agendaAlt}>
+              {copy.schedule.fallback}{' '}
+              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">{copy.schedule.fallbackLink}</a>
+            </p>
           </div>
           <div className={p.agendaFrame} data-reveal style={delay(100)}>
             {/* Agenda pública do Microsoft Bookings: os agendamentos caem no Outlook do time. */}
