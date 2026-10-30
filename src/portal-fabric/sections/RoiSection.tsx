@@ -448,7 +448,7 @@ export function RoiSection() {
     `${cfg.currency} ${new Intl.NumberFormat(cfg.locale, { maximumFractionDigits: 0 }).format(Math.round(n))}`,
   [cfg])
 
-  const input = { users, licensePrice, skuId, regionId, billing, scheduleId, fx: cfg.fx }
+  const input = { users, licensePrice, skuId, regionId, billing, scheduleId, fx: cfg.fx, portalFee: 0, publishers: 0, publisherPrice: cfg.proPrice }
   const sim   = useMemo(() => simulate(input), [users, licensePrice, skuId, regionId, billing, scheduleId, cfg.fx]) // eslint-disable-line react-hooks/exhaustive-deps
   const level = levelOf(sim.savingsPct)
   const { mode } = useThemeMode()

@@ -81,9 +81,10 @@ ol.steps4 { grid-template-columns: repeat(4, 1fr); gap: 32px; }
 /* ─────────── Funcionalidades ─────────── */
 .tabs {
   display: inline-flex;
+  flex-wrap: wrap;
   gap: 2px;
   padding: 4px;
-  border-radius: 9999px;
+  border-radius: 26px;
   background: var(--fog);
 }
 .tab {
@@ -209,7 +210,7 @@ ol.steps4 { grid-template-columns: repeat(4, 1fr); gap: 32px; }
 }
 
 /* resultado (navy) */
-.result { padding: 40px; border-radius: 28px; background: var(--panel); color: var(--on-ink); }
+.result { padding: 40px; border-radius: 28px; background: var(--panel); color: var(--on-ink); container-type: inline-size; }
 .levelRow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
 .levelPill {
   padding: 9px 16px;
@@ -283,6 +284,52 @@ ol.steps4 { grid-template-columns: repeat(4, 1fr); gap: 32px; }
 .rowTotal dt { color: var(--on-panel); font-weight: 600; }
 .rowTotal dd { color: var(--green); font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
 .resultNote { margin-top: 18px; color: var(--on-ink-muted); font-size: 14px; line-height: 1.55; }
+.rowSub dt { color: var(--on-panel); font-weight: 600; }
+
+/* ─────────── Simulador de capacidade ─────────── */
+.skuRows { display: flex; flex-direction: column; gap: 4px; margin-top: 32px; }
+.skuRow {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) minmax(0, 1fr) 92px 104px;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: var(--on-ink);
+  font-size: 14px;
+}
+.skuRow strong { color: var(--on-panel); font: 700 15px/1 var(--display); }
+.skuHead { padding-block: 0 6px; color: var(--on-ink-muted); font-size: 12px; line-height: 1.3; }
+.skuRowRec { box-shadow: inset 0 0 0 1.5px var(--green); }
+.barCell { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.barCell > span:last-child { min-width: 44px; text-align: right; font-variant-numeric: tabular-nums; }
+.bar { position: relative; flex: 1; height: 6px; border-radius: 9999px; background: var(--line-ink); overflow: hidden; }
+.bar i { position: absolute; inset: 0 auto 0 0; border-radius: inherit; background: var(--green); }
+.barWarn i { background: #fbbf24; }
+.barOver i { background: #f87171; }
+.memNo { color: #fca5a5; }
+.skuSt { font-size: 12px; font-weight: 600; text-align: right; }
+.st_rec { color: var(--green); }
+.st_over { color: var(--on-ink-muted); }
+.st_min { color: #fde68a; }
+.st_no { color: #fca5a5; }
+.sizeApply { margin-top: 28px; }
+.barLbl { display: none; }
+/* coluna estreita (painel ao lado dos controles ou celular): cada SKU vira um bloco */
+@container (max-width: 600px) {
+  .skuHead { display: none; }
+  .skuRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'sku st' 'peak peak' 'day day' 'mem mem';
+    gap: 6px 12px;
+  }
+  .skuRow > strong { grid-area: sku; }
+  .skuRow > .barCell:nth-of-type(1) { grid-area: peak; }
+  .skuRow > .barCell:nth-of-type(2) { grid-area: day; }
+  .skuMem { grid-area: mem; font-size: 12px; color: var(--on-ink-muted); }
+  .skuSt { grid-area: st; }
+  .barLbl { display: block; flex: 0 0 104px; font-style: normal; font-size: 12px; color: var(--on-ink-muted); }
+}
 
 .eqs {
   display: grid;
