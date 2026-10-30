@@ -1520,6 +1520,10 @@ function Faq() {
 // (título, mês, horários) em vez da moldura branca: ele sai 3,5s depois de o iframe ter
 // carregado E estar visível. Se a agenda visível passar de 15s sem abrir, o aviso oferece
 // a nova aba. O iframe entra só depois da hidratação para o onLoad nunca escapar.
+// O Bookings puxa o foco para dentro dele quando termina de carregar, e o navegador
+// rolava a página inteira até a agenda (30/10/2026: quem abria a página caía no fim).
+// Por isso o iframe só entra quando a agenda está a até ~1 tela de distância e, se o
+// foco for roubado sem a pessoa ter mexido, a página volta para onde estava.
 function Agenda() {
   const t = useCopy(COPY);
   const sc = t.src.schedule;
@@ -1528,14 +1532,40 @@ function Agenda() {
   const [loaded, setLoaded] = useState(false);
   const [seen, setSeen] = useState(false);
   const frameRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   useEffect(() => {
-    const raf = requestAnimationFrame(() => setSrc(BOOKING_URL));
     const el = frameRef.current;
+    const near = new IntersectionObserver(([en]) => {
+      if (en.isIntersecting) { setSrc(BOOKING_URL); near.disconnect(); }
+    }, { rootMargin: '900px 0px' });
     const io = new IntersectionObserver(([en]) => {
       if (en.isIntersecting) { setSeen(true); io.disconnect(); }
     }, { threshold: 0.2 });
-    if (el) io.observe(el);
-    return () => { cancelAnimationFrame(raf); io.disconnect(); };
+    if (el) { near.observe(el); io.observe(el); }
+    return () => { near.disconnect(); io.disconnect(); };
+  }, []);
+
+  // trava contra o foco roubado: rolagem grande com o foco no iframe e sem gesto da pessoa
+  useEffect(() => {
+    let lastY = window.scrollY, userAt = 0;
+    const touch = () => { userAt = performance.now(); };
+    const onScroll = () => {
+      const y = window.scrollY, frame = iframeRef.current;
+      const stolen = frame && document.activeElement === frame && performance.now() - userAt > 1200 && Math.abs(y - lastY) > 300;
+      if (stolen) {
+        frame.blur();
+        window.scrollTo({ top: lastY, behavior: 'instant' as ScrollBehavior });
+        return;
+      }
+      lastY = y;
+    };
+    const opts = { passive: true, capture: true };
+    ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach((ev) => window.addEventListener(ev, touch, opts));
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach((ev) => window.removeEventListener(ev, touch, opts));
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
   useEffect(() => {
     if (!seen) return;
@@ -1574,7 +1604,7 @@ function Agenda() {
             </p>
           </div>
           {/* Agenda pública do Microsoft Bookings: os agendamentos caem no Outlook do time. */}
-          {src && <iframe src={src} title={sc.title} onLoad={() => setLoaded(true)} />}
+          {src && <iframe ref={iframeRef} src={src} title={sc.title} onLoad={() => setLoaded(true)} />}
         </div>
       </div>
     </section>
