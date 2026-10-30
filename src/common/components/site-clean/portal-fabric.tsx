@@ -18,6 +18,7 @@ import {
 } from '@/portal-fabric/pricing';
 import { INTL_LOCALE, useCopy, useLang, type Copy } from './i18n';
 import { CleanShell } from './shell';
+import { Portal4D } from './portal-4d';
 import { Icon, SectionHead } from './ui';
 import s from './clean.module.css';
 import p from './portal-fabric.module.css';
@@ -309,6 +310,12 @@ const PT = {
   traditional: 'Tradicional',
   proofLead: 'Organizações de diferentes setores usam o Portal DriveData para ganhar governança, melhorar a experiência de quem consome relatórios e reduzir o custo com licenças Power BI.',
   ctaLead: 'Agende uma demonstração gratuita e veja na prática como a capacidade Microsoft Fabric reduz o custo com licenças e eleva a governança de BI da sua empresa.',
+  pageNav: {
+    label: 'Nesta página',
+    items: { pilares: 'Pilares', 'como-funciona': 'Como funciona', features: 'Funcionalidades', capacidade: 'Capacidade', roi: 'Economia', comparativo: 'Comparativo', instalacao: 'Instalação', faq: 'Dúvidas', agenda: 'Agenda' },
+    cta: 'Agendar demonstração',
+  },
+  scene: { capacity: 'Capacidade Fabric', portal: 'Portal DriveData', people: 'Cada área, só o seu dado', aria: 'Animação: os dados saem da capacidade Fabric, passam pelo Portal DriveData e chegam a cada pessoa só com o que ela pode ver.' },
   sizing: {
     title: 'Qual capacidade Fabric você precisa?',
     lead: 'Responda sobre o uso de hoje. O simulador estima o tamanho pela consulta no pico, pela atualização dos dados e pela memória do maior modelo.',
@@ -398,6 +405,12 @@ const COPY: Copy<typeof PT> = {
     traditional: 'Traditional',
     proofLead: 'Organizations across sectors use Portal DriveData to gain governance, improve the experience of report consumers and cut Power BI licensing costs.',
     ctaLead: 'Book a free demo and see in practice how Microsoft Fabric capacity cuts licensing costs and raises your company’s BI governance.',
+    pageNav: {
+      label: 'On this page',
+      items: { pilares: 'Pillars', 'como-funciona': 'How it works', features: 'Features', capacidade: 'Capacity', roi: 'Savings', comparativo: 'Comparison', instalacao: 'Setup', faq: 'FAQ', agenda: 'Book' },
+      cta: 'Book a demo',
+    },
+    scene: { capacity: 'Fabric capacity', portal: 'DriveData Portal', people: 'Each area, only its data', aria: 'Animation: data leaves the Fabric capacity, goes through the DriveData Portal and reaches each person with only what they may see.' },
     sizing: {
       title: 'Which Fabric capacity do you need?',
       lead: 'Answer about today’s usage. The simulator estimates the size from peak queries, data refreshes and the memory of the largest model.',
@@ -481,6 +494,12 @@ const COPY: Copy<typeof PT> = {
     traditional: 'Tradicional',
     proofLead: 'Organizaciones de distintos sectores usan Portal DriveData para ganar gobernanza, mejorar la experiencia de quienes consumen informes y reducir el costo de las licencias Power BI.',
     ctaLead: 'Agende una demostración gratuita y vea en la práctica cómo la capacidad Microsoft Fabric reduce el costo de licencias y eleva la gobernanza de BI de su empresa.',
+    pageNav: {
+      label: 'En esta página',
+      items: { pilares: 'Pilares', 'como-funciona': 'Cómo funciona', features: 'Funcionalidades', capacidade: 'Capacidad', roi: 'Ahorro', comparativo: 'Comparativo', instalacao: 'Instalación', faq: 'Preguntas', agenda: 'Agenda' },
+      cta: 'Agendar demostración',
+    },
+    scene: { capacity: 'Capacidad Fabric', portal: 'Portal DriveData', people: 'Cada área, solo sus datos', aria: 'Animación: los datos salen de la capacidad Fabric, pasan por el Portal DriveData y llegan a cada persona solo con lo que puede ver.' },
     sizing: {
       title: '¿Qué capacidad Fabric necesita?',
       lead: 'Responda sobre el uso de hoy. El simulador estima el tamaño por la consulta en el pico, la actualización de los datos y la memoria del modelo más grande.',
@@ -567,6 +586,12 @@ const COPY: Copy<typeof PT> = {
     traditional: 'Traditionnel',
     proofLead: 'Des organisations de divers secteurs utilisent Portal DriveData pour gagner en gouvernance, améliorer l’expérience des consommateurs de rapports et réduire les coûts de licences Power BI.',
     ctaLead: 'Planifiez une démo gratuite et voyez concrètement comment la capacité Microsoft Fabric réduit les coûts de licences et rehausse la gouvernance BI de votre entreprise.',
+    pageNav: {
+      label: 'Sur cette page',
+      items: { pilares: 'Piliers', 'como-funciona': 'Fonctionnement', features: 'Fonctionnalités', capacidade: 'Capacité', roi: 'Économies', comparativo: 'Comparatif', instalacao: 'Installation', faq: 'Questions', agenda: 'Rendez-vous' },
+      cta: 'Planifier une démo',
+    },
+    scene: { capacity: 'Capacité Fabric', portal: 'Portail DriveData', people: 'Chaque domaine, ses données', aria: 'Animation : les données quittent la capacité Fabric, passent par le Portail DriveData et arrivent à chaque personne avec seulement ce qu’elle peut voir.' },
     sizing: {
       title: 'De quelle capacité Fabric avez-vous besoin ?',
       lead: 'Répondez sur votre usage actuel. Le simulateur estime la taille à partir des requêtes en pointe, des actualisations de données et de la mémoire du plus gros modèle.',
@@ -741,54 +766,173 @@ function Video({ url }: { url?: string | null }) {
   );
 }
 
+// ─────────── Menu da página ───────────
+// Fica preso logo abaixo do cabeçalho do site. Marca a seção em que a pessoa está
+// (traço verde que desliza até o item) e mostra o quanto da página já foi lido.
+const PAGE_SECTIONS = ['pilares', 'como-funciona', 'features', 'capacidade', 'roi', 'comparativo', 'instalacao', 'faq', 'agenda'] as const;
+function PageNav() {
+  const t = useCopy(COPY);
+  const n = t.pageNav;
+  const [active, setActive] = useState<string>(PAGE_SECTIONS[0]);
+  const [bar, setBar] = useState({ x: 0, w: 0 });
+  const navRef = useRef<HTMLElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const progRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      const line = (navRef.current?.getBoundingClientRect().bottom ?? 0) + 48;
+      let cur: string = PAGE_SECTIONS[0];
+      for (const id of PAGE_SECTIONS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) cur = id;
+      }
+      setActive(cur);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (progRef.current) progRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+    };
+    const on = () => { if (!raf) raf = requestAnimationFrame(check); };
+    check();
+    window.addEventListener('scroll', on, { passive: true });
+    window.addEventListener('resize', on, { passive: true });
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('scroll', on); window.removeEventListener('resize', on); };
+  }, []);
+
+  // o traço vai até o item ativo; no celular a lista rola para mostrá-lo
+  useEffect(() => {
+    const list = listRef.current;
+    const a = list?.querySelector<HTMLAnchorElement>(`a[href="#${active}"]`);
+    if (!list || !a) return;
+    const raf = requestAnimationFrame(() => setBar({ x: a.offsetLeft, w: a.offsetWidth }));
+    const target = a.offsetLeft - list.clientWidth / 2 + a.offsetWidth / 2;
+    list.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+    return () => cancelAnimationFrame(raf);
+  }, [active, n]);
+
+  return (
+    <nav ref={navRef} className={p.pageNav} aria-label={n.label}>
+      <div className={`${s.wrap} ${p.pageNavInner}`}>
+        <ul ref={listRef} className={p.pageNavList}>
+          {PAGE_SECTIONS.map((id) => (
+            <li key={id}>
+              <a href={`#${id}`} className={p.pageNavLink} aria-current={active === id ? 'location' : undefined}>{n.items[id]}</a>
+            </li>
+          ))}
+          <span className={p.pageNavBar} style={{ transform: `translateX(${bar.x}px)`, width: bar.w }} aria-hidden="true" />
+        </ul>
+        <button type="button" className={`${s.btn} ${p.pageNavCta}`} onClick={openBooking}>{n.cta}</button>
+      </div>
+      <span ref={progRef} className={p.pageNavProgress} aria-hidden="true" />
+    </nav>
+  );
+}
+
+// Número da faixa de resultados: conta até o valor quando aparece na tela.
+// Aceita prefixo e sufixo ("+500", "73%", "<30d"); sem número, mostra o texto.
+function StatValue({ value }: { value: string }) {
+  const m = /^(\D*)(\d+)(.*)$/.exec(value);
+  const target = m ? Number(m[2]) : 0;
+  const [n, setN] = useState(target);
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !m || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let raf = 0;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      const t0 = performance.now();
+      const step = (now: number) => {
+        const k = Math.min(1, (now - t0) / 1100);
+        setN(Math.round(target * (1 - Math.pow(1 - k, 3))));
+        if (k < 1) raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame((now) => { setN(0); step(now); });
+    }, { threshold: 0.6 });
+    io.observe(el);
+    return () => { io.disconnect(); cancelAnimationFrame(raf); };
+  }, [target]); // eslint-disable-line react-hooks/exhaustive-deps
+  return <strong ref={ref} aria-label={value}>{m ? `${m[1]}${n}${m[3]}` : value}</strong>;
+}
+
 // ─────────── Funcionalidades (abas por pilar) ───────────
 function Features() {
   const t = useCopy(COPY);
   const f = t.src.features;
   const [active, setActive] = useState(0);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const listRef = useRef<HTMLDivElement>(null);
+  // menu lateral no desktop (setas para cima e para baixo), fileira que rola no celular
   const onKey = (e: KeyboardEvent<HTMLButtonElement>, i: number) => {
     const n = f.groups.length;
-    const to = e.key === 'ArrowRight' ? (i + 1) % n : e.key === 'ArrowLeft' ? (i - 1 + n) % n
-      : e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : -1;
+    const next = e.key === 'ArrowDown' || e.key === 'ArrowRight', prev = e.key === 'ArrowUp' || e.key === 'ArrowLeft';
+    const to = next ? (i + 1) % n : prev ? (i - 1 + n) % n : e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : -1;
     if (to < 0) return;
     e.preventDefault();
     setActive(to);
     tabs.current[to]?.focus();
   };
   const group = f.groups[active];
+  // o traço verde vai até a frente escolhida: na vertical à esquerda, na horizontal embaixo
+  const [thumb, setThumb] = useState({ x: 0, y: 0, w: 0, h: 0 });
+  useEffect(() => {
+    const place = () => {
+      const el = tabs.current[active], list = listRef.current;
+      if (!el || !list) return;
+      const vertical = getComputedStyle(list).flexDirection === 'column';
+      setThumb(vertical
+        ? { x: 0, y: el.offsetTop, w: 2, h: el.offsetHeight }
+        : { x: el.offsetLeft, y: el.offsetTop + el.offsetHeight - 2, w: el.offsetWidth, h: 2 });
+      if (!vertical) list.scrollTo({ left: Math.max(0, el.offsetLeft - list.clientWidth / 2 + el.offsetWidth / 2), behavior: 'smooth' });
+    };
+    const raf = requestAnimationFrame(place);
+    window.addEventListener('resize', place);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', place); };
+  }, [active, f.groups]);
+  const count = (n: number) => String(n).padStart(2, '0');
+
   return (
     <section id="features" className={s.band} aria-labelledby="features-titulo">
       <div className={s.wrap}>
         <SectionHead id="features-titulo" title={f.title}>{t.featuresLead}</SectionHead>
-        <div role="tablist" aria-label={t.pillarsTabs} className={p.tabs} data-reveal>
-          {f.groups.map((g, i) => (
-            <button
-              key={g.tag}
-              ref={(el) => { tabs.current[i] = el; }}
-              type="button"
-              role="tab"
-              id={`pf-tab-${i}`}
-              aria-selected={i === active}
-              aria-controls="pf-tabpanel"
-              tabIndex={i === active ? 0 : -1}
-              className={p.tab}
-              onClick={() => setActive(i)}
-              onKeyDown={(e) => onKey(e, i)}
-            >
-              {g.tag}
-            </button>
-          ))}
-        </div>
-        <div role="tabpanel" id="pf-tabpanel" aria-labelledby={`pf-tab-${active}`} tabIndex={0} className={p.tabPanel}>
-          <ul className={p.featGrid}>
-            {group.items.map((it) => (
-              <li key={it.title}>
-                <h3 className={s.h3}>{it.title}</h3>
-                <p className={s.muted}>{it.desc}</p>
-              </li>
+        <div className={p.featLayout}>
+          <div ref={listRef} role="tablist" aria-label={t.pillarsTabs} aria-orientation="vertical" className={p.fTabs} data-reveal>
+            <span className={p.fThumb} style={{ transform: `translate(${thumb.x}px, ${thumb.y}px)`, width: thumb.w, height: thumb.h }} aria-hidden="true" />
+            {f.groups.map((g, i) => (
+              <button
+                key={g.tag}
+                ref={(el) => { tabs.current[i] = el; }}
+                type="button"
+                role="tab"
+                id={`pf-tab-${i}`}
+                aria-selected={i === active}
+                aria-controls="pf-tabpanel"
+                tabIndex={i === active ? 0 : -1}
+                className={p.fTab}
+                onClick={() => setActive(i)}
+                onKeyDown={(e) => onKey(e, i)}
+              >
+                <span>{g.tag}</span>
+                <span className={p.fCount} aria-hidden="true">{count(g.items.length)}</span>
+              </button>
             ))}
-          </ul>
+          </div>
+          <div role="tabpanel" id="pf-tabpanel" aria-labelledby={`pf-tab-${active}`} tabIndex={0} className={p.fPanel}>
+            <p key={`h${active}`} className={p.fPanelHead}>
+              <strong>{group.tag}</strong>
+              <span>{count(active + 1)} / {count(f.groups.length)}</span>
+            </p>
+            <ul key={active} className={p.featGrid}>
+              {group.items.map((it, i) => (
+                <li key={it.title} className={p.featItem} style={{ ['--i' as string]: i }}>
+                  <h3 className={s.h3}>{it.title}</h3>
+                  <p className={s.muted}>{it.desc}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -991,7 +1135,7 @@ function Sizing({ onApply }: { onApply: (sku: string, people: number) => void })
 
           <div className={p.result} data-reveal style={delay(100)}>
             <p className={p.resultLabel}>{z.resultLabel}</p>
-            <p className={p.big} aria-hidden="true">{rec ? rec.id : z.none}</p>
+            <p key={rec?.id ?? 'none'} className={`${p.big} ${p.skuSwap}`} aria-hidden="true">{rec ? rec.id : z.none}</p>
             <p className={p.srOnly} aria-live="polite">{announce}</p>
             <p className={p.resultLine}>{rec ? z.drivers[res.driver] : z.noneNote}</p>
             {rec && res.minimum && (
@@ -1447,18 +1591,23 @@ export function PortalFabricClean({ videoUrl }: { videoUrl?: string | null }) {
 
   return (
     <CleanShell current="solutions">
-      <section className={s.pageHero} aria-labelledby="page-titulo">
-        <div className={s.wrap}>
-          <h1 id="page-titulo" className={`${s.display} ${s.displayLeft} ${p.heroTitle}`}>{h.title}</h1>
-          <div className={s.pageHeroFoot}>
-            <p className={s.lead}>{t.heroLead}</p>
-            <div className={s.actions}>
+      <section className={`${s.pageHero} ${p.hero}`} aria-labelledby="page-titulo">
+        <div className={`${s.wrap} ${p.heroGrid}`}>
+          <div className={p.heroText}>
+            <h1 id="page-titulo" className={`${s.display} ${s.displayLeft} ${p.heroTitle}`}>{h.title}</h1>
+            <p className={`${s.lead} ${p.heroLead}`}>{t.heroLead}</p>
+            <div className={`${s.actions} ${p.heroActions}`}>
               <button type="button" className={s.btn} onClick={openBooking}>{h.ctaPrimary}</button>
               <a href="#roi" className={s.link}>{h.ctaSecondary}</a>
             </div>
           </div>
+          <div className={p.heroScene}>
+            <Portal4D labels={t.scene} />
+          </div>
         </div>
       </section>
+
+      <PageNav />
 
       <Video url={videoUrl} />
 
@@ -1484,6 +1633,8 @@ export function PortalFabricClean({ videoUrl }: { videoUrl?: string | null }) {
             <h2 id="como-titulo" className={s.h2}>{copy.how.title}</h2>
             <p className={p.onInkLead}>{t.howLead}</p>
           </div>
+          <div className={p.stepsWrap}>
+          <span className={p.flowLine} data-reveal aria-hidden="true" />
           <ol className={`${s.steps} ${p.steps4}`}>
             {copy.how.steps.map((st, i) => (
               <li key={st.title} className={s.step} data-reveal style={delay(i * 110)}>
@@ -1493,6 +1644,7 @@ export function PortalFabricClean({ videoUrl }: { videoUrl?: string | null }) {
               </li>
             ))}
           </ol>
+          </div>
           <p className={p.archNote} data-reveal>
             {t.archNote(copy.arch.title)}
           </p>
@@ -1544,7 +1696,7 @@ export function PortalFabricClean({ videoUrl }: { videoUrl?: string | null }) {
           <ul className={p.stats}>
             {copy.proof.stats.map((st, i) => (
               <li key={st.label} data-reveal style={delay(i * 90)}>
-                <strong>{st.value}</strong>
+                <StatValue value={st.value} />
                 <span>{st.label}</span>
               </li>
             ))}
